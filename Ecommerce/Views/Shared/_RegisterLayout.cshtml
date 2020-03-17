@@ -1,0 +1,44 @@
+﻿
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport' />
+    <title>@ViewData["Title"]</title>
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css.map">
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+</head>
+<body>
+    <div id="main">
+        <a href="index.html" class="logo-account"><img src="~/assets/images/logo.png"></a>
+        @RenderBody()
+        <footer class="footer-light">
+            <div class="container">
+                <ul class="footer-light-link">
+                    <li><a href="#">درباره کاربیوتیک</a></li>
+                    <li><a href="#">فرصت‌های شغلی</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                    <li><a href="#">همکاری با سازمان‌ها</a></li>
+                </ul>
+
+                <p class="title-footer">استفاده از مطالب اینترنتی کار بیوتیک،فقط برای مقاصد غیر تجاری و با ذکر منبع بلامانع است.</p>
+
+                <p class="copy-right-footer-light">Copyright © @DateTime.Now.Year Carbiotic.ir</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/countdown.min.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/main.js"></script>
+</body>
+</html>

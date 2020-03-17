@@ -1,0 +1,270 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    background-image: url(../images/background2.jpeg);
+}
+
+a {
+    text-align: center;
+}
+
+    a:hover {
+        text-decoration: none;
+    }
+
+#brand-icon {
+    width: 27px;
+    height: 27px;
+}
+
+#TopLine {
+    width: 100%;
+    height: 2px;
+    background-color: blue;
+}
+
+.container {
+    margin: 0 auto !important;
+    padding: 0 !important;
+}
+
+#Main-div {
+    background-color: white;
+    background: linear-gradient(whitsomke,rgb(220,220,200));
+    border-radius: 3px;
+    padding: 5px !important;
+    box-shadow: 2px 2px 9px 3px black;
+}
+
+.divstyle {
+    border: 1px solid rgb(220,220,200);
+    border-radius: 2px;
+    background-color: whitesmoke;
+}
+
+.div-header {
+    color: rgb(0,0,200);
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.hr {
+    color: green;
+    border: 1px solid;
+    margin-top: 8px;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+#newspartial {
+    padding-top: 10px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+    #newspartial img {
+        border-radius: 45px;
+        border: 1px solid rgb(200,200,20);
+    }
+
+    #newspartial a {
+        color: black;
+    }
+
+        #newspartial a:hover {
+            color: green;
+        }
+
+.minihr {
+    border-radius: 8px;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    height: 1px;
+    background-color: rgb(200,200,255);
+}
+
+.spannwes {
+    margin-right: 10px;
+    font-size: 14px;
+    color: black;
+}
+
+#right-panel-lastnwes {
+    margin-bottom: 10px;
+}
+
+#mainlastbook {
+    background-color: white;
+    border-radius: 2px;
+    border: 1px solid rgb(220,220,200);
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.hr-underimage {
+    color: gray;
+    height: 1px;
+    background-color: gray;
+    margin-top: 8px;
+    border-radius: 15px;
+    margin-bottom: 8px;
+    width: 90%;
+}
+
+#owl_lastbook {
+    direction: ltr;
+    padding-left: 30px;
+}
+
+    #owl_lastbook img {
+        width: 180px;
+        height: 200px;
+        box-shadow: 2px 2px 5px 1px black;
+        margin-bottom: 7px;
+    }
+
+    #owl_lastbook a {
+        color: black;
+        text-align: center;
+    }
+
+        #owl_lastbook a:hover {
+            color: blue;
+        }
+
+#moreViewerBook {
+    background-color: white;
+    border-radius: 2px;
+    border: 1px solid rgb(220,220,200);
+    margin-bottom: 15px;
+}
+
+    #moreViewerBook img {
+        width: 180px;
+        height: 200px;
+        box-shadow: 2px 2px 5px 1px black;
+        margin-bottom: 7px;
+    }
+
+    #moreViewerBook a {
+        color: black;
+        text-align: center;
+    }
+
+        #moreViewerBook a:hover {
+            color: blue;
+        }
+
+.imgposi {
+    margin-bottom: 15px;
+}
+
+
+
+.marginbutoom {
+    margin-bottom: 10px;
+}
+
+/*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/
+/*-------------------------Admin Panel Style-------------------------------*/
+.menu {
+    width: 300px;
+    background: whitesmoke;
+    font-size: 16px;
+    box-shadow: gray 2px 1px;
+    padding-top: 2px;
+    border-radius: 4px;
+}
+
+.dashbord {
+    font-size: 20px;
+    color: #fff;
+    background: #337ab7;
+    padding-right: 20px;
+    border-radius: 2px;
+}
+
+.menu li {
+    list-style: none;
+}
+
+.main-li > a {
+    display: block;
+    padding-top: 7px;
+    padding-bottom: 12px;
+    background: white;
+    color: #4d3d3d;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+    font-size: 18px;
+}
+
+    .main-li > a:hover {
+        transition: all 300ms ease;
+        color: green;
+    }
+
+.menu ul > li > ul > li > a {
+    display: block;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 25px;
+    background: #484769;
+    color: #fff;
+    text-align: right;
+}
+
+    .menu ul > li > ul > li > a:hover {
+        transition: all 300ms ease;
+        background: #b63b4d;
+    }
+
+.menu ul ul {
+    display: none;
+}
+
+.menu ul > li.main-li > a::before {
+    position: absolute;
+    content: "";
+    width: 10px;
+    height: 2px;
+    background: black;
+    right: 30px;
+    left: 0;
+    margin-top: 10px;
+    margin-right: 210px;
+    transition: all 0.1s ease-out;
+}
+
+.menu ul > li.main-li.openul > a::before {
+    transform: rotate(45deg);
+}
+
+.menu ul > li.main-li > a::after {
+    position: absolute;
+    content: "";
+    width: 2px;
+    height: 10px;
+    background: black;
+    right: 34px;
+    left: 0;
+    margin-top: 6px;
+    margin-right: 210px;
+    transition: all 0.1s ease-out;
+}
+
+.menu ul > li.main-li.openul > a::after {
+    transform: rotate(45deg);
+}
+
+/*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/
+/*-------------------------------------------------------------------------*/

@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "GetNumber";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<form asp-controller="User" asp-action="GetNumber" method="post">
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">احراز هویت</span>
+            <div class="content-account">
+                @TempData["SMSNotSend"]
+                <label for="email-phone">شماره موبایل خود را تایید و یا وارد نمایید</label>
+                <input type="text" name="Mobile" id="email-phone" value="@TempData["Mobile"]" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+                <div class="parent-btn">
+                    <button class="dk-btn dk-btn-info">
+                        ارسال کد تایید
+                        <i class="mdi mdi-lock sign-in"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

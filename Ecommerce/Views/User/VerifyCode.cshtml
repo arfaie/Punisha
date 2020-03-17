@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "VerifyCode";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+<form asp-controller="User" asp-action="VerifyCode" method="post">
+
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <div class="message-light">
+                <div class="danger">@TempData["InvalidCode"]</div>
+                <div class="massege-light">
+                    برای شماره همراه @TempData["Mobile"] کد تایید ارسال گردید
+                    <br>
+                    <a href="/User/getNumber" class="form-edit-number">
+                        ویرایش شماره
+                    </a>
+                </div>
+                <div class="content-account">
+                    <label for="email-phone">کد تایید دریافتی</label>
+                    <input type="text" id="email-phone" class="input-email-account" name="inputCode" placeholder="کد تایید خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+                    <div class="parent-btn">
+                        <button class="dk-btn dk-btn-info">
+                            تایید کد
+                            <i class="mdi mdi-lock sign-in"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-account-row">
+                    دریافت مجدد کد تایید(
+                    <p id="countdown-verify-end"><a href="/User/GetNumber" class="link-border-verify form-account-link">ارسال مجدد</a></p>
+                    )
+                </div>
+            </div>
+
+            <div class="account-footer">
+                <span>کاربر جدید هستید؟</span>
+                <a href="/User/Register" class="btn-link-register">ثبت&zwnj;نام در کاربویتیک&zwnj;</a>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="~/Html/assets/js/jquery-3.2.1.min.js"></script>
+<script>
+        $("#btnVerify").click(function () {
+            for (var i = 1; i < 6; i++) {
+                var getVal = $("#in1", "#in2", "#in3", "#in4", "#in5", "#in6").val();
+            }
+            alert(getVal);
+            @TempData["InputCode"]=getVal;
+        });
+    //document.getElementById('btnVerify').onclick = function () {
+
+    //    for (var i = 1; i < 6; i++) {
+    //        var Code =+ document.getElementById('in' + i).value;
+    //    }
+    //    var a=Code;
+
+    //}
+</script>

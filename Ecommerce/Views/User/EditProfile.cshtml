@@ -1,0 +1,139 @@
+﻿@model Ecommerce.Models.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "EditProfile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    string Msg = (string)TempData["CompelateMsg"];
+}
+<form asp-controller="User" asp-action="EditProfile" id="EditProfile" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#EditProfile" data-ajax-mode="replace">
+
+    <div class="col-lg-3 col-md-4 col-xs-12">
+        <div class="sidebar-wrapper">
+            <div class="box-sidebar">
+                <span class="box-header-sidebar">حساب کاربری شما</span>
+                <ul class="profile-menu-items">
+                    <li><a href="profile.html" class="profile-menu-url active-profile"><span class="mdi mdi-account-outline"></span>پروفایل</a></li>
+                    <li><a href="profile-order.html" class="profile-menu-url"><span class="fa fa-shopping-basket"></span>همه سفارش ها</a></li>
+                    <li><a href="profile-order-return.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>در خواست مرجوعی</a></li>
+                    <li><a href="profile-favorites.html" class="profile-menu-url"><span class="fa fa-star-o"></span>لیست علاقه مندی ها</a></li>
+                    <li><a href="profile-comments.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>نظرات</a></li>
+                    <li><a href="profile-addresses.html" class="profile-menu-url"><span class="mdi mdi-map"></span>آدرس ها</a></li>
+                    <li><a href="profile-personal-info.html" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>اطلاعات شخصی</a></li>
+                </ul>
+            </div>
+
+            <div class="box-sidebar">
+                <span class="box-header-sidebar">حساب کاربری شما</span>
+                <ul class="profile-menu-items">
+                    <li><a href="profile.html" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>پروفایل</a></li>
+                    <li><a href="profile-order.html" class="profile-menu-url"><span class="fa fa-shopping-basket"></span>همه سفارش ها</a></li>
+                    <li><a href="profile-order-return.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>در خواست مرجوعی</a></li>
+                    <li><a href="profile-favorites.html" class="profile-menu-url"><span class="fa fa-star-o"></span>لیست علاقه مندی ها</a></li>
+                    <li><a href="profile-comments.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>نقد و نظرات</a></li>
+                    <li><a href="profile-addresses.html" class="profile-menu-url"><span class="mdi mdi-map"></span>آدرس ها</a></li>
+                    <li><a href="#" class="profile-menu-url"><span class="fa fa-clock-o"></span>بازدید های اخیر</a></li>
+                    <li><a href="#" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>اطلاعات شخصی</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-lg-9 col-md-8 col-xs-12 pull-right">
+        <div class="col-lg-12 col-xs-12 pull-right">
+            <div class="profile-navbar">
+                <div class="profile-navbar-back-alignment">
+                    <a href="/User/Profile" class="profile-navbar-btn-back">بازگشت</a>
+                    <h4 class="edit-personal">
+                        ویرایش اطلاعات شخصی
+
+                    </h4>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="form-legal-row">
+                   
+                    <div class="col-lg-6 col-xs-12 mx-auto">
+                        <div class="form-legal-col">
+                            @if (Msg != null)
+                            {
+                                <div class="" style="margin-top:30px;color:orangered">
+                                    @Msg
+                                </div>
+                            }
+                            <fieldset class="form-legal-fieldset">
+                                <h4 class="form-legal-headline">حساب شخصی</h4>
+                                <div class="form-legal-item">
+                                    <label for="name-first">نام</label>
+                                    <input asp-for="FirstName" class="form-control" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-legal-item">
+                                    <label for="name-last">نام خانوادگی</label>
+                                    <input asp-for="LastName" class="form-control" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+
+
+
+                                <div class="form-legal-item">
+                                    <label for="code-national">کد ملی</label>
+                                    @if (Model.Natcode == 0)
+                                    {
+                                        <input asp-for="Natcode" class="form-control" />
+                                        <span asp-validation-for="Natcode" class="text-danger"></span>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="Natcode" class="form-control" />
+                                        <span asp-validation-for="Natcode" class="text-danger"></span>
+                                    }
+
+
+                                </div>
+
+                                <div class="form-legal-item has-diviter-item">
+                                    <div class="form-auth-row">
+
+                                    </div>
+                                </div>
+
+                                <div class="form-legal-item">
+                                    <label for="phone">شماره موبایل</label>
+                                    <input asp-for="PhoneNumber" class="form-control" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                                </div>
+
+                                <div class="form-legal-item">
+                                    <label for="email">آدرس ایمیل</label>
+                                    <input asp-for="Email" class="form-control" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="form-legal-item">
+                                    <label for="selectric">انتخاب خودرو</label>
+                                    <div class="col-lg-12">
+                                        <select asp-for="CarId" asp-items="@Model.CarListItems" class="form-control"></select>
+                                    </div>
+                                </div>
+
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-legal-row-submit">
+                    <div class="parent-btn">
+                        <button class="dk-btn dk-btn-info">
+                            ثبت اطلاعات کاربری
+                            <i class="fa fa-check sign-in"></i>
+                        </button>
+                    </div>
+                    <a href="#" class="btn-default">انصراف</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</form>

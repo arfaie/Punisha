@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+@model Ecommerce.Models.ViewModels.UserViewModel
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+<form asp-controller="User" asp-action="Login" method="post">
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">ورود</span>
+            <div class="content-account">
+                @{ if (TempData["ResenUserPass_Seccecful"] != null)
+                    {
+                        <div class="massege-light">@TempData["ResenUserPass_Seccecful"]</div>
+
+                    }
+                }
+                <label for="email-phone">نام کاربری|شماره موبایل</label>
+                <input name="Username" class="input-email-account" placeholder="شماره موبایل یا نام کاربری خود را وارد نمایید" /><span class="mdi mdi-account-outline" style="top: 150px;"></span>
+                <a href="/User/Getnumber" class="account-link-password">رمز خود را فراموش کرده ام</a>
+                <label for="password">رمز عبور</label>
+                <input asp-for="Password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" />
+
+
+                <div class="parent-btn">
+                    <button class="dk-btn dk-btn-info">
+                        ورود به کاربیوتیک
+                        <i class="mdi mdi-account-plus-outline sign-in"></i>
+                    </button>
+                </div>
+                @*<div class="form-auth-row">
+                        <label for="#" class="ui-checkbox">
+                            <input type="checkbox" value="1" name="login" checked="" id="remember">
+                            <span class="ui-checkbox-check"></span>
+                        </label>
+                        <label for="remember" class="remember-me"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین</a>استفاده از سرویس های سایت دیجی&zwnj;استور را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+                    </div>*@
+            </div>
+
+            <div class="account-footer">
+                <span>کاربر جدید هستید؟</span>
+                <a href="/User/Register" class="btn-link-register">ثبت‌نام در کاربیوتیک</a>
+            </div>
+        </div>
+    </div>
+</form>

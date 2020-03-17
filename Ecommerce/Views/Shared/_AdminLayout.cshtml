@@ -1,0 +1,459 @@
+﻿@*@using Application.Helpers.OptionEnums*@
+@*@using Application.Net*@
+@*@using Application.Net.OptionEnums*@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
+<html lang="en" dir="rtl">
+
+<!-- Mirrored from demo.naksoid.com/elephant-v1.3.0/theme-1-rtl/blank-page.html by HTTrack Website Copier/3.x [XR&CO'2010], Wed, 15 Nov 2017 15:03:12 GMT -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" type="~/Content/ArasLogo.png" href="~/Content/ArasLogo.png" sizes="32x32">
+    <link rel="icon" type="~/Content/ArasLogo.png" href="~/Content/ArasLogo.png" sizes="16x16">
+    <link rel="manifest" href="manifest.json">
+    <link rel="mask-icon" href="safari-pinned-tab.svg" color="#d9230f">
+    <meta name="theme-color" content="#ffffff">
+    <link href="~/Content/AdminHtml/css/elephant-rtl.min.css" rel="stylesheet" />
+
+    <link href="~/Scripts/TimePicker/wickedpicker.min.css" rel="stylesheet" />
+
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="The fastest way to build modern admin site for any platform, browser, or device">
+    <meta property="og:description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+    <meta property="og:image" content="../../elephant/img/ae165ef33d137d3f18b7707466aa774d.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site">
+    <meta name="twitter:creator">
+    <meta name="twitter:title" content="The fastest way to build modern admin site for any platform, browser, or device">
+    <meta name="twitter:description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+    <meta name="twitter:image" content="../../elephant/img/ae165ef33d137d3f18b7707466aa774d.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="~/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="~/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="~/manifest.json">
+    <link rel="mask-icon" href="~/safari-pinned-tab.svg" color="#d9230f">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="~/css/elephant-rtl.min.css">
+    <link rel="stylesheet" href="~/css/application-rtl.min.css">
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.bootstrap.css" rel="stylesheet" />
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.bootstrap4.css" rel="stylesheet" />
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.dataTables.css" rel="stylesheet" />
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.foundation.css" rel="stylesheet" />
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.jqueryui.css" rel="stylesheet" />
+    <link href="~/DataTable/Responsive-2.2.3/css/responsive.semanticui.css" rel="stylesheet" />
+    <link href="~/DataTable/datatables.css" rel="stylesheet" />
+    <link href="~/css/Addon.css" rel="stylesheet" />
+    <link href="~/css/Font.css" rel="stylesheet" />
+    <link href="~/js/iziToast-master/dist/css/iziToast.css" rel="stylesheet" />
+
+</head>
+<body class="layout layout-header-fixed" style="font-family: 'sahel';font-size:small">
+    @{
+        <div class="layout-header">
+            <div class="navbar navbar-default">
+                <div class="navbar-header">
+
+                    <span class="navbar-brand navbar-brand-center">
+                        <div>پنل مدیریت</div>
+                    </span>
+
+
+                    <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse" data-target="#sidenav">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="bars">
+                            <span class="bar-line bar-line-1 out"></span>
+                            <span class="bar-line bar-line-2 out"></span>
+                            <span class="bar-line bar-line-3 out"></span>
+                        </span>
+                        <span class="bars bars-x">
+                            <span class="bar-line bar-line-4"></span>
+                            <span class="bar-line bar-line-5"></span>
+                        </span>
+                    </button>
+                    <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse" data-target="#navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="arrow-up"></span>
+                        <span class="ellipsis ellipsis-vertical">
+                            <img class="ellipsis-object" width="32" height="32" src="~/Content/ArasLogo.png" alt="Menue">
+                        </span>
+                    </button>
+                </div>
+                <div class="navbar-toggleable">
+                    <nav id="navbar" class="navbar-collapse collapse">
+                        <button class="sidenav-toggler hidden-xs" title="Collapse sidenav ( [ )" aria-expanded="true" type="button">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="bars">
+                                <span class="bar-line bar-line-1 out"></span>
+                                <span class="bar-line bar-line-2 out"></span>
+                                <span class="bar-line bar-line-3 out"></span>
+                                <span class="bar-line bar-line-4 in"></span>
+                                <span class="bar-line bar-line-5 in"></span>
+                                <span class="bar-line bar-line-6 in"></span>
+                            </span>
+                        </button>
+                        <ul class="nav navbar-nav navbar-right">
+
+
+
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true">
+                                    <span class="icon-with-child hidden-xs">
+                                        <span class="icon icon-envelope icon-lg icon-fw"></span>
+                                        <span class="badge badge-danger badge-above right">77</span>
+                                    </span>
+                                    <span class="visible-xs-block">
+                                        <span class="icon icon-bell icon-lg icon-fw"></span>
+                                        <span class="badge badge-danger pull-right">77</span>
+                                        نظرات
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                                    <div class="dropdown-header">
+                                        <h5 class="dropdown-heading">نظرات جدید</h5>
+                                    </div>
+                                    <div class="dropdown-body">
+                                        @*<div class="list-group list-group-divided custom-scrollbar">
+                                            @{
+                                                Random rnd = new Random();
+                                            }
+                                            @foreach (var item in Model.CommentListNavbar)
+                                            {
+                                                <span class="list-group-item">
+                                                    <div class="notification">
+                                                        <div class="notification-media">
+                                                            @{
+                                                                int number = rnd.Next(1, 7);
+                                                                string src = "/images/Avatar/" + number + ".png";
+                                                            }
+                                                            <img class="rounded" width="40" height="40" src="@src" />
+                                                        </div>
+                                                        <div class="notification-content">
+                                                            <small class="notification-timestamp">@item.ComDate @item.ComTime</small>
+                                                            <h5 class="notification-heading">@item.BimeType</h5>
+                                                            <p class="notification-text">
+                                                                <small class="truncate">@item.StateName</small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            }
+                                        </div>*@
+                                    </div>
+                                    <div class="dropdown-footer">
+                                        <a class="dropdown-btn" href="/Admin/Comment">مشاهده همه</a>
+                                    </div>
+                                </div>
+                            </li>
+                            @*//////////////////////////////////////////////////////*@
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true">
+                                    <span class="icon-with-child hidden-xs">
+                                        <span class="icon icon-bell-o icon-lg"></span>
+                                        <span class="badge badge-danger badge-above right">88</span>
+                                    </span>
+                                    <span class="visible-xs-block">
+                                        <span class="icon icon-comments-o icon-lg"></span>
+                                        <span class="badge badge-danger pull-right">88</span>
+                                        شکایات
+                                    </span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                                    <div class="dropdown-header">
+                                        <h5 class="dropdown-heading">شکایات جدید</h5>
+                                    </div>
+                                    <div class="dropdown-body">
+                                        @*<div class="list-group list-group-divided custom-scrollbar">
+                                            @{
+                                                Random rnd2 = new Random();
+                                            }
+                                            @foreach (var item in Model.ComplaintsListNavbar)
+                                            {
+
+                                                <span class="list-group-item">
+                                                    <div class="notification">
+                                                        <div class="notification-media">
+                                                            @{
+                                                                int number = rnd.Next(1, 7);
+                                                                string src = "/images/Avatar/" + number + ".png";
+                                                            }
+                                                            <img class="rounded" width="40" height="40" src="@src" />
+                                                        </div>
+                                                        <div class="notification-content">
+                                                            <small class="notification-timestamp">@item.dateSend @item.timeSend</small>
+                                                            <h5 class="notification-heading">@item.lName</h5>
+                                                            <p class="notification-text">
+                                                                <small class="truncate">@item.CityName</small>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            }
+                                        </div>*@
+                                    </div>
+                                    <div class="dropdown-footer">
+                                        <a class="dropdown-btn" href="/Admin/Complaint">مشاهده همه</a>
+                                    </div>
+                                </div>
+                            </li>
+
+
+
+                           
+
+
+                        </ul>
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <div class="layout-main">
+            <div class="layout-sidebar">
+                <div class="layout-sidebar-backdrop"></div>
+                <div class="layout-sidebar-body">
+                    <div class="custom-scrollbar">
+                        <nav id="sidenav" class="sidenav-collapse collapse">
+                            <ul class="sidenav">
+                                <li class="sidenav-heading sideMenueHeaderColor">مدیریت</li>
+                                
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">محصولات</span>
+                                    </a>
+                                </li>
+
+                                @*<li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Addresses" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">آدرس ها</span>
+                                    </a>
+                                </li>*@
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">آزانس ها</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="ApplicationRole" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">نقش ها</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Brand" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">برند</span>
+                                    </a>
+                                </li>
+                                @*<hr style="border: 1px solid gray;" />
+
+        <li class="sidenav-heading sideMenueHeaderColor">دفاتر و ادارات</li>*@
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Car" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label"> ماشین ها</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Category" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label"> دسته بندی</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="City" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">شهر</span>
+                                    </a>
+                                </li>
+                                @*<hr style="border: 1px solid gray;" />*@
+
+                                @*<li class="sidenav-item">
+            <a asp-area="Admin" asp-controller="CommentOrgan" asp-action="Index">
+                <span class="sidenav-icon icon icon-th"></span>
+                <span class="sidenav-label">ارگان</span>
+            </a>
+        </li>*@
+
+                                @*<li class="sidenav-heading sideMenueHeaderColor">اطلاعیه ها</li>*@
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Field" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">فیلدها</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="FieldGroup" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">گروه فیلدها/FieldGroup</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Offer" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">تخفیف ها</span>
+                                    </a>
+                                </li>
+                                @*<hr style="border: 1px solid gray;" />*@
+
+
+                                @*<li class="sidenav-item">
+            <a asp-area="Admin" asp-controller="NazarSanji2" asp-action="Index">
+                <span class="sidenav-icon icon icon-th"></span>
+                <span class="sidenav-label">بستری شدگان</span>
+            </a>
+        </li>*@
+
+
+
+                                @*<li class="sidenav-heading sideMenueHeaderColor">پیام ها</li>*@
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="SelectGroup" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">انتخاب گروه/SelectGroup</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="SelectItem" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">انتخاب آیتم/SelectItem</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Slider" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">گالری اسلاید</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="State" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">استان ها</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Unit" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">واحدها</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="User" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">کاربران</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="UserGroup" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">گروه کاربران</span>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-content">
+
+                @RenderBody()
+            </div>
+
+            <div class="layout-footer">
+
+                <div class="layout-footer-body">
+                    <small class="version" style="font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;font-size:larger">Salamat CMS 2020</small>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+    <script src="~/js/Scripts/jquery-1.8.0.js"></script>
+
+
+    <script src="~/js/Scripts/jquery-1.8.0.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#example').dataTable({
+
+                "sdom": '<"top"i>rt<"right"flp><"clear">',
+                responsive: true,
+
+                "bFilter": true // show search input
+            });
+            $("#listingData_filter").addClass("hidden"); // hidden search input
+
+            $("#serachInput").on("input", function (e) {
+                e.preventDefault();
+                $('#example').DataTable().search($(this).val()).draw();
+            });
+        });
+    </script>
+    <script src="~/js/iziToast-master/dist/js/iziToast.js"></script>
+    @*@RenderSection("toastr", false)*@
+    @RenderSection("Scripts", required: false)
+
+    <script src="~/js/elephant.min.js"></script>
+    <script src="~/js/application.min.js"></script>
+
+    <script src="~/DataTable/datatables.js"></script>
+
+    <script src="~/js/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    @*<script src="~/js/vendor.min.js"></script>
+        <script src="~/js/elephant.min.js"></script>
+        <script src="~/js/application.min.js"></script>*@
+    <script src="~/js/demo.min.js"></script>
+
+    <script src="~/DataTable/Responsive-2.2.3/js/dataTables.responsive.js"></script>
+    <script src="~/DataTable/Responsive-2.2.3/js/responsive.bootstrap.js"></script>
+    <script src="~/DataTable/Responsive-2.2.3/js/responsive.bootstrap4.js"></script>
+    <script src="~/DataTable/Responsive-2.2.3/js/responsive.foundation.js"></script>
+    <script src="~/DataTable/Responsive-2.2.3/js/responsive.jqueryui.js"></script>
+    <script src="~/DataTable/Responsive-2.2.3/js/responsive.semanticui.js"></script>ظ
+
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-83990101-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+
+    @Html.Raw(TempData["Notif"])
+
+
+</body>
+</html>

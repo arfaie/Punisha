@@ -1,0 +1,1119 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport' />
+    <title>فروشگاه اینترنتی کار بیوتیک</title>
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css.map">
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <link href="~/assets/css/style.css" rel="stylesheet" />
+    <link href="~/js/iziToast-master/dist/css/iziToast.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="col-12">
+            <div class="row">
+                <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                    <div class="header-right">
+
+                        <div class="logo">
+                            <a href="#"><img src="~/assets/images/logo.png"></a>
+                        </div>
+
+                        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                            <div class="search-header">
+                                <form method="post" asp-controller="HomePage" asp-action="SearchProduct">
+                                    @*<input type="text" class="header-search-input" placeholder="جستجو در کار بیوتیک...">*@
+
+                                    <select name="carsearch" id="carsearch" style="width: 200px;">
+                                        <option value="date-desc" selected="selected" disabled="disabled">ماشین</option>
+                                        @foreach (var VARIABLE in ViewBag.Cars)
+                                        {
+                                            <option name="carsearch" id="carsearch" value="@VARIABLE.Id">@VARIABLE.Name</option>
+                                        }
+
+                                    </select>
+
+                                    <select name="categorysearch" id="categorysearch" style="width: 200px;">
+                                        <option value="date-desc" selected="selected" disabled="disabled">دسته بندی</option>
+                                        @foreach (var VARIABLE in ViewBag.Categories)
+                                        {
+                                            <option name="categorysearch" id="categorysearch" value="@VARIABLE.Id">@VARIABLE.Title</option>
+                                        }
+
+                                    </select>
+
+                                    <button type="submit" class="btn-search" style="margin-right: 420px; margin-bottom: 10px; text-align: center; font-size: 16px;"><img src="~/assets/images/search.png"></button>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
+                    <div class="header-left">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                        <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="mini-cart-header">
+                                    <a asp-controller="Factor" asp-action="requestedproduct" style="color: #4a5f73;"><span class="mdi mdi-cart"></span></a>
+                                </div>
+                                @*<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="mdi mdi-account-outline"></span>Welcom @UserManager.GetUserName(User)</a>*@
+                                <div class="mini-cart-exit">
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                                </div>
+
+                                <div class="mini-cart-exit">
+                                    <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                                </div>
+                            }
+                            @if (User.IsInRole("User"))
+                            {
+                                <div class="mini-cart-header">
+                                    <a asp-controller="Factor" asp-action="requestedproduct" style="color: #4a5f73;"><span class="mdi mdi-cart"></span></a>
+                                </div>
+                                @*<a href="#"><button class="btn-login" style="width: 40px; text-align: center;">خروج</button><span>Welcom @UserManager.GetUserName(User)</span></a>*@
+                                <div class="mini-cart-exit">
+                                    <a asp-controller="User" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                                </div>
+
+                                <div class="mini-cart-exit">
+                                    <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                                </div>
+                            }
+                        </form>
+                        }
+                        else
+                        {
+                            <div class="mini-cart-header">
+                                <a asp-area="" asp-controller="User" asp-action="Login" style="color: #4a5f73;"><span class="mdi mdi-cart"></span></a>
+                            </div>
+                            <a asp-area="" asp-controller="User" asp-action="Login"><button class="btn-login"><span class="mdi mdi-account-outline"></span>ورود به حساب کاربری</button></a>
+
+                        }
+
+                        <!--responsive header------------------->
+                        <div class="responsive-header-left">
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                                }
+                                @if (User.IsInRole("User"))
+                                {
+                                    <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                                }
+                            }
+                            else
+                            {
+                                <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                            }
+
+
+                            <div class="mini-cart-header-responsive">
+                                <span class="mdi mdi-cart"></span>
+                            </div>
+
+                            <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
+                        </div>
+                        <!--responsive header------------------->
+                    </div>
+                </div>
+            </div>
+
+            <!--Start megamenu----------------->
+            <nav class="main-menu">
+                <ul class="new-list-menu">
+                    <li class="item-list-menu megamenu-1 category">
+                        <a href="#" class="list-category first after" style="font-weight: bold;"><i class="fa fa-navicon"></i> دسته بندی کالاها</a>
+
+                        <ul class="list-menu-level-2">
+
+                            @foreach (var VARIABLE in ViewBag.Categories)
+                            {
+                                <li class="item-menu-2">
+                                    <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@VARIABLE.Id" class="list-category-menu-2"><i class="fa fa-car"></i>@VARIABLE.Title</a>
+                                </li>
+                            }
+
+
+                            @*<ul class="megamenu-level-3" style="display:block;">
+                                    <a href="#" class="list-category-megamenu">همه دسته بندی های کالای دیجیتال</a>
+                                    <div class="menu-level-3">
+
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم جانبی گوشی<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف و کاور گوشی</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پاوربانک</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پایه نگهدارنده گوشی</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>گوشی موبایل<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سامسونگ</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اپل</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نوکیا</a></li>
+                                    </div>
+
+                                    <div class="menu-level-3">
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">هوآوی</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>واقعیت مجازی<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>مچ بند و ساعت هوشمند<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>هدفون، هدست، هندزفری<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>دوربین<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دوربین عکاسی دیجیتال</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دوربین ورزشی و فیلم برداری</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دوربین چاپ سریع</a></li>
+                                    </div>
+
+                                    <div class="menu-level-3">
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم جانبی دوربین<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لنز</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کارت حافظه</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کاغذ چاپ عکس</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کامپیوتر و تجهیزات جانبی<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تجهیزات مخصوص بازی</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">قطعات داخلی کامپیوتر</a></li>
+                                    </div>
+
+                                    <div class="menu-level-3">
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماوس</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیبورد</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لپ تاپ<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم جانبی لپ تاپ<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف ، کوله و کاور</a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>تبلت<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>شارژر تبلت و موبایل<i class="fa fa-angle-left"></i></span></a></li>
+                                        <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>باتری<i class="fa fa-angle-left"></i></span></a></li>
+                                    </div>
+                                </ul>*@
+
+
+                            @*<li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-diamond"></i>آرایشی، بهداشتی و سلامت</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های آرایشی، بهداشتی و سلامت </a>
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم آرایشی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آرایش چشم و ابرو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آرایش لب</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آرایش صورت</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آرایش مو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سنگ پا، بهداشت و زیبایی ناخن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تجهیزات جانبی آرایش</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم آرایشی<i class="fa fa-angle-left"></i></span></a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شامپو و مراقبت مو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">بهداشت دهان و دندان</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">بهداشت و مراقبت بدن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ضد تعریق</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم شخصی برقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماشین اصلاح صورت</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماشین اصلاح سر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سشوار</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اصلاح بدن آقایان</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اصلاح بدن بانوان</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اصلاح موی گوش، بینی ابرو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">برس پاک سازی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اتو مو و حالت دهنده</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">مسواک برقی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لیزر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>طلا و نقره زیور آلات زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">طلا و نقره زیور آلات زنانه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">زیور آلات نفره زنانه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">زیور آلات طلا زنانه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دستبند طلا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گردنبد طلا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گوشوار طلا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>ابزار سلامت و طبی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تست قند خون</a></li>
+                                        </div>
+                                    </ul>
+
+
+                                </li>*@
+                            @*<li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-car"></i>خودرو ، ابزار اداری</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های خودرو ، ابزار اداری    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>خودروهای ایرانی و خارجی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم جانبی خودرو<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم تزیینی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سیستم صوتی و تصویری</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دزدگیر ، قفل فرمان پدال</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم مصرفی خودرو<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">مکمل سوخت</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">انواع فیلتر</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">روغن موتور و ضدیخ</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>موتور سیکلت<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کلاه و لوازم جانبی موتور<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>ابزار برقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دریل، پیچ گوشتی و چکشی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">اره برقی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کارواش</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دستگاه چسب برقی و دستی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سیستم دزگیر و در بازکن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کمپرسور و جک خودرو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ابزار غیر برقی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نردبان</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>ابزار غیر برقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آچار ، انبر ابزار دستی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پیچ گوشتی ، فازمتر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چسب دستی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم باغبانی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>شیر و یراق آلات ساختمانی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>ابزار و تجهیزات ابزار ایمنی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>نظم دهنده ابزار<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>گاو صندوق و قفل<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>ماشین های اداری<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">فکس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پرینتر</a></li>
+                                        </div>
+                                    </ul>
+
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-briefcase"></i>مد پوشاک</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های مد پوشاک   </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لباس مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تی شرت</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پیراهن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شلوار</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لباس زیر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کفش مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کفش ورزشی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کفش رسمی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>اکسسوری مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کمربند</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لباس زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پوشش اسلامی و مانتو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تی شرت</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شلوار</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لباس زیر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کفش زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کفش ورزشی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کفش رسمی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>زیورآلات زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دستبند</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گوشواره</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گردنبد</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>عینک آفتابی زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>عینک آفتابی مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>پوشاک ورزشی زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>پوشاک ورزشی مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>بچه گانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پسرانه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دخترانه </a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-home"></i>خانه آشپزخانه</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های خانه آشپزخانه    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>صوتی وتصویری<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تلویزیون</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">میز تلویزیون</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چند راهی و ولتاژ برق</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سینما خانگی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>دکوراتیو<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ساعت دیواری و رومیزی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تابلو</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">مبلمان خانگی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پرده</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>فرش ماشینی ، دستباف و تابلو<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم خانگی برقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">یخچال و فریزر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماشین لباسشویی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماشین ظرف شویی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">جارو برقی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تلفن بی سیم</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کولر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ترازوی آشپزخانه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سرو و پذیرایی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سرویس غذا خوری</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">قاشق چنگال</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نور و روشنایی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوستر و چراغ تزیینی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لامپ و چراغ</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>آشپزخانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">بشقاب و سایر ظروف</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم ظرف شویی و روشویی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>مواد شوینده<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شوینده لباس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تمیز کننده لباس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>دستمال کاغذی<i class="fa fa-angle-left"></i></span></a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-briefcase"></i>کتاب، لوازم تحریر</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های کتاب، لوازم تحریر    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کتاب و مجله<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کتاب چاپی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کتاب صوتی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>محتوای آموزشی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آموزش موسیقی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آموزش ورزش</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آموزش عکاسی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آموزش زبان</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آموزش نرم افزار</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>نرم افزار<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>فیلم سینمایی ، سریال و مستند<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم تحریر<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کاغذ کادو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چراغ مطالعه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نوشت افزار</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دفتر و کاغذ</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">خودکار و روان نویس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">میز تحریر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آلبوم عکس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>آلات موسیقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گیتار</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیبورد</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پیانو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">درام</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ویولن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سازهای ایرانی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">موسیقی باکلام</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">موسیقی بی کلام</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>صنایع دستی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کالای مسی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف چرمی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سوزن دوزی</a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-car"></i>اسباب بازی ، کودک نوزاد</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های اسباب بازی ، کودک نوزاد    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>بهداشت و حمام کودک و نوزاد<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پوشک</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دستمال مرطوب</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">حوله</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">وان حمام نوزاد</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>پوشاک و کفش کودک و نوزاد<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لباس کودک و لباس نوزادی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کفش</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>اسباب بازی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">فکری و آموزشی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم بازی خانگی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>بازی و سرگرمی کودک<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماشین بازی ، سه چرخ ، موتور</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دوچرخه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تشک بازی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تاب و سرسره</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>سلامتی ، ایمنی و مراقبت<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تصفیه هوا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ترازو</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">دماسنج</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">محافظ و ابزار ایمنی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>خواب کودک<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چراغ خواب کودک</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تشک کودک</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کالسکه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">صندلی کودک و نوزاد</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم جانبی گردش و سفر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم شخصی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پستانک نوزاد</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>غذا خوری<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">صندلی غذا خوری</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شیشه شیر</a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-bicycle"></i>ورزش و سفر</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های ورزش و سفر    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>پوشاک ورزشی مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>پوشاک ورزشی زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کفش ورزشی مردانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کفش ورزشی زنانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم ورزشی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ورزش بدن سازی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چتر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>تجهیزات سفر<i class="fa fa-angle-left"></i></span></a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چمدان و ساک</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف و کوله پشتی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>دوچرخه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لوازم جانبی دوچرخه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چراغ</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تلمبه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">قمقمه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">زنگ و بوق</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">قفل</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">لوازم ایمنی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>اسکوتر برقی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کوهنوردی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چاقو و ابزار چند کاره</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چادر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیسه خواب</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ساک ورزشی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>تجهیزات سفر<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چمدان و ساک</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف و کوله</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیف کمری</a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>
+                                <li class="item-menu-2">
+                                    <a href="#" class="list-category-menu-2"><i class="fa fa-coffee"></i>خوردنی و آشامیدنی</a>
+
+                                    <ul class="megamenu-level-3">
+                                        <a href="#" class="list-category-megamenu">همه دسته بندی های خوردنی و آشامیدنی    </a>
+                                        <div class="menu-level-3">
+
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>کالای اساسی خوار و بار<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نان</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">برنج</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">روغن</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شکر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">قند</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">رب گوجه فرنگی</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">خیارشور و تریشیجات</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماکارونی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">حبوبات و سویا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>لبنیات<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">شیر</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">ماست</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">خامه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پنیر</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>مواد پروتئینی<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">سوسیس و کالباس</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گوشت گوسفندی</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">گوشت مرغ</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">تخم مرغ</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>صبحانه<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">مربا</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">عسل</a></li>
+                                        </div>
+
+                                        <div class="menu-level-3">
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">حلوا شکری</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>نوشیدنی ها<i class="fa fa-angle-left"></i></span></a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">چای</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">نوشابه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">کیک و کلوچه</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">آدامس و خوش بو کننده</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3">پاستیل</a></li>
+                                            <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>خشکبار و شیرینی<i class="fa fa-angle-left"></i></span></a></li>
+                                        </div>
+                                    </ul>
+
+                                </li>*@
+                        </ul>
+
+                    </li>
+
+
+                    <li class="item-list-menu megamenu-1"><a href="#" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
+                    <li class="item-list-menu megamenu-1"><a href="#" class="list-category first after">درباره ما</a></li>
+                </ul>
+
+                <a href="#" class="map-city">لطفا شهر و استان خود را انتخاب کنید<span class="mdi mdi-map-marker-outline"></span></a>
+
+            </nav>
+        </div>
+        <!--End megamenu------------------->
+        <!--responsive-megamenu-mobile----------------->
+        <nav class="sidebar">
+            <div class="nav-header">
+                <!--<img class="pic-header" src="images/header-pic.jpg" alt="">-->
+                <div class="header-cover"></div>
+                <div class="logo-wrap">
+                    <a class="logo-icon" href="#"><img alt="logo-icon" src="~/assets/images/logo.png" width="40"></a>
+                </div>
+            </div>
+            <ul class="nav-categories ul-base">
+                <li class="has-sub">
+                    <a href="#">کالای دیجیتال</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">آرایشی، بهداشتی و سلامت</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خودرو ، ابزار اداری</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">مد پوشاک</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خانه آشپزخانه</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">کتاب، لوازم تحریر</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="has-sub">
+                    <a href="#">اسباب بازی ، کودک نوزاد</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">ورزش و سفر</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خوردنی و آشامیدنی</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">پیشنهاد ها و تخفیف ها</a>
+                    <ul>
+                        <li><a href="#" class="category-level-2">کالاهای شگفت انگیز</a></li>
+                        <li><a href="#" class="category-level-2">فروش ویژه</a></li>
+                        <li><a href="#" class="category-level-2">با هر خرید هدیه بگیرید</a></li>
+                        <li><a href="#" class="category-level-2">تخفیف پایان فصل</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="nav-btn nav-slider">
+            <span class="linee1"></span>
+            <span class="linee2"></span>
+            <span class="linee3"></span>
+        </div>
+        <div class="overlay"></div>
+        <!--    responsive-megamenu-mobile----------------->
+    </header>
+    @RenderBody()
+    <footer>
+        <div class="footer-jump">
+            <a href="#">
+                <span class="footer-jump-angle"><i class="fa fa-angle-up"></i>برگشت به بالا</span>
+            </a>
+        </div>
+
+      
+        <div class="col-12">
+            <div class="middle-bar-footer">
+                @*<div class="col-lg-6 col-xs-12 pull-right">
+                    <div class="footer-links">
+                        <div class="links-col">
+                            <a href="#" class="head-line">راهنمای خرید از کار بیوتیک</a>
+                            <ul class="links-ul">
+                                <li><a href="#">نحوه ثبت سفارش</a></li>
+                                <li><a href="#">رویه ارسال سفارش</a></li>
+                                <li><a href="#">شیوه‌های پرداخت</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="links-col">
+                            <a href="#" class="head-line">خدمات مشتریان</a>
+                            <ul class="links-ul">
+                                <li><a href="#">پرسش یه پاسخ های متداول</a></li>
+                                <li><a href="#">رویه های بازگرداندن کالا</a></li>
+                                <li><a href="#">شرایط استفاده</a></li>
+                                <li><a href="#">حریم خصوصی</a></li>
+                                <li><a href="#">گزارش باگ</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="links-col">
+                            <a href="#" class="head-line">با کار بیوتیک</a>
+                            <ul class="links-ul">
+                                <li><a href="#">اتاق خبر کار بیوتیک</a></li>
+                                <li><a href="#">فروش در کار بیوتیک</a></li>
+                                <li><a href="#">فرصت های شغلی</a></li>
+                                <li><a href="#">تماس با کار بیوتیک</a></li>
+                                <li><a href="#">درباره ما کار بیوتیک</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>*@
+
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="footer-form">
+                        <span class="newslitter-form">
+                            از تخفیف‌ها و جدیدترین‌های کار بیوتیک باخبر
+                            شوید:
+                        </span>
+
+                        <form action="#">
+                            <input type="text" class="input-footer" placeholder="آدرس ایمیل خود را وارد کنید">
+
+                            <button class="btn-footer-post" style="background: rebeccapurple">ارسال</button>
+                        </form>
+                    </div>
+
+                    <div class="footer-social">
+                        <span class="newslitter-form-social">کار بیوتیک را در شبکه‌های اجتماعی دنبال کنید:</span>
+
+                        <div class="social-links">
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-linkedin-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="col-12">
+            <div class="footer-address">
+                <div class="footer-contact">
+                    <ul>
+                        <li>هفت روز هفته ، ۲۴ ساعت شبانه‌روز پاسخگوی شما هستیم</li>
+                        <li style="float:right">
+                            شماره تماس : <a href="#" class="phone-contact">
+                                ۶۱۹۳۰۰۰۰ - ۰۲۱ ، ۹۵۱۱۹۰۹۵
+                                - ۰۲۱
+                            </a>
+                        </li>
+                        <li class="email-title">آدرس ایمیل : <a href="#">info@carbiotic.ir</a></li>
+                    </ul>
+                </div>
+
+                <div class="address-images">
+                    <a href="#">
+                        <img src="~/assets/images/footer-img/1090a120.png">
+                        <img src="~/assets/images/footer-img/71abe5c9.png">
+                    </a>
+                </div>
+            </div>
+        </div>*@
+
+        <div class="more-info">
+            <div class="col-12">
+                @*<div class="about-site">
+                    <h1>فروشگاه اینترنتی کار بیوتیک بررسی، انتخاب و خرید آنلاین</h1>
+                    <p>کار بیوتیک به عنوان یکی از قدیمی‌ترین فروشگاه های اینترنتی با بیش از یک دهه تجربه، با پایبندی به سه اصل، پرداخت در محل، 7 روز ضمانت بازگشت کالا و تضمین اصل‌بودن کالا موفق شده تا همگام با فروشگاه‌های معتبر جهان، به بزرگ‌ترین فروشگاه اینترنتی ایران تبدیل شود. به محض ورود به سایت کار بیوتیک با دنیایی از کالا رو به رو می‌شوید! هر آنچه که نیاز دارید و به ذهن شما خطور می‌کند در اینجا پیدا خواهید کرد.</p>
+
+                    <div class="footer-inner-box">
+                        <a href="#" class="footer-badge">
+                            <img src="~/assets/images/footer-svg/footer-1.svg" style="width: 130px !important;">
+                        </a>
+
+                        <a href="#" class="footer-badge">
+                            <img src="~/assets/images/footer-svg/footer-2.svg" style="width: 130px !important;">
+                        </a>
+
+                        <a href="#" class="footer-badge">
+                            <img src="~/assets/images/footer-svg/footer-3.svg" style="width: 130px !important;">
+                        </a>
+
+                        <a href="#" class="footer-badge">
+                            <img src="~/assets/images/footer-svg/footer-4.svg" style="width: 130px !important;">
+                        </a>
+                        <a href="#" class="footer-badge">
+                            <img src="~/assets/images/footer-svg/footer-5.svg" style="width: 130px !important;">
+                        </a>
+                    </div>
+                </div>*@
+
+                <div class="copy-right-footer">
+                    <p>
+                        استفاده از مطالب فروشگاه اینترنتی کار بیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع
+                        بلامانع است. کلیه حقوق این سایت متعلق به شرکت نوآوران فن آوازه (فروشگاه آنلاین کار بیوتیک) می‌باشد.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--   Footer---------------------------->
+    <script src="~/js/iziToast-master/dist/js/iziToast.js"></script>
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/jquery.countdown.min.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    @Html.Raw(TempData["Notif"])
+</body>
+</html>

@@ -1,0 +1,179 @@
+﻿@model IEnumerable<Ecommerce.Models.ViewModels.FieldsViewModel>
+@using Ecommerce.PublicModel
+@using Microsoft.AspNetCore.Http
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<form asp-controller="Product" asp-action="AddEditProductField">
+    <link href="~/css/dropdownliststyle.css" rel="stylesheet" />
+    @{
+        List<int> lsIdField = new List<int>();
+        List<int> lsTypes = new List<int>();
+        List<int> FirsLoop = new List<int>();
+        foreach (var item in Model)
+        {
+            lsIdField.Add(item.IdField);
+            lsTypes.Add(item.Type);
+        }
+        TempData["lsIdField"] = lsIdField;
+        TempData["lsTypes"] = lsTypes;
+        TempData["idProduct"] = Model.First().idProduct;
+        //Model.First().idProduct =
+        FirsLoop = (List<int>)TempData["loopCnt"];
+        //int IdProduct = (int)HttpContext.
+        //Session.GetInt32("IdProduct");
+        List<SelectListItem> CarListItems = (List<SelectListItem>)TempData["CarListItems"];
+        <input asp-for="First().idProduct" hidden="hidden" />
+        int i = 0;
+
+    }
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            @foreach (var item in FirsLoop)
+            {
+                string Group = "";
+                try
+                {
+                    var selectGroup = Model.Where(x => x.IdFieldGroup == item).FirstOrDefault();
+                    if (selectGroup != null)
+                    {
+                        Group = selectGroup.FieldGroTitle;
+                    }
+                }
+                catch (Exception e)
+                {
+                    string dd = e.Message;
+                    throw;
+                }
+                <div class="form-group">
+                    <div class="col-lg-6 h4">@Group</div>
+                </div>
+                var select = Model.Where(x => x.IdFieldGroup == item);
+
+                foreach (var selectItem in select.GroupBy(x => x.idProductField))
+                {
+                    var selectGrouped = select.GroupBy(x => x.idProductField).Count();
+                    if (selectItem.First().Type == 1)
+                    {
+
+                        <div class="form-group">
+                            <div class="col-lg-2">@selectItem.First().FieldTitle</div>
+                            <div class="col-lg-4">
+                                <input name="@selectItem.First().IdField" value="@selectItem.First().Value" class="form-control" required="required" />
+                            </div>
+                        </div>
+                    }
+                    if (selectItem.First().Type == 2)
+                    {
+                        <div class="form-group">
+                            <div class="col-lg-2">@selectItem.First().FieldTitle</div>
+
+                            <select name="@selectItem.First().IdField">
+                                @if (selectItem.First().Value == "1" || selectItem.First().Value == "true")
+                                {
+                                    <option value="1" selected>بله</option>
+                                    <option value="0">خیر</option>
+                                }
+                                else if (selectItem.First().Value == "0" || selectItem.First().Value == "false")
+                                {
+                                    <option value="1">بله</option>
+                                    <option value="0" selected>خیر</option>
+                                }
+                                else
+                                {
+                                    <option value="true">بله</option>
+                                    <option value="false">خیر</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    if (selectItem.First().Type == 3)
+                    {
+                        <div class="form-group">
+                            <div class="col-lg-2">@selectItem.First().FieldTitle</div>
+
+                            @if (selectItem.First().Value == "1" || selectItem.First().Value == "true")
+                            {
+                                <select name="@selectItem.First().IdField">
+                                    <option value="1" selected>دارد</option>
+                                    <option value="0">ندارد</option>
+                                </select>
+
+                            }
+                            else if (selectItem.First().Value == "0" || selectItem.First().Value == "false")
+                            {
+                                <select name="@selectItem.First().IdField">
+                                    <option value="1">دارد</option>
+                                    <option value="0" selected>ندارد</option>
+                                </select>
+
+                            }
+                            else
+                            {
+                                <select name="@selectItem.First().IdField">
+                                    <option value="1">دارد</option>
+                                    <option value="0">ندارد</option>
+                                </select>
+
+                            }
+
+                        </div>
+                    }
+                    if (selectItem.First().Type == 4)
+                    {
+                        TempData["IdProductField"] = selectItem.First().idProductField;
+                        <div class="form-group">
+                            <div class="col-lg-2">@selectItem.First().FieldTitle</div>
+                            <div class="col-lg-6" style="padding-right: 2px;">
+                                <select asp-for="@selectItem.Where(x=>x.CarName!=null).First().idCars" asp-items="CarListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
+                            </div>
+                        </div>
+                    }
+                    i++;
+                }
+            }
+            @*if (selectItem.Type == 4)
+                {
+                    TempData["IdProductField"] = selectItem.idProductField;
+                    <div class="form-group">
+                        <div class="col-lg-2">
+                            @selectItem.FieldTitle
+                            @{
+                                var aa = Model.FirstOrDefault().id;
+                                var bb = TempData["key"];
+                            }
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                @if (Model.FirstOrDefault().Value == null)
+                                {
+                                    <div class="col-lg-6" style="padding-right: 2px;">
+                                        <select asp-for="FirstOrDefault().CarId" asp-items="@Model.FirstOrDefault().CarListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-lg-6" style="padding-right: 2px;">
+                                        <select asp-for="@bb" asp-items="@Model.FirstOrDefault().CarListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+        <input type="submit" id="submitdata" class="btn btn-success" value="ذخیره فیلدها" />
+    </div>
+
+</form>
+<script src="~/js/MultiSelect/jquery.sumoselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        window.asd = $('.ddlMultiSlectBox').SumoSelect({ csvDispCount: 4 });
+    });
+</script>

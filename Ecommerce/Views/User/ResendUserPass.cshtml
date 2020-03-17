@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "ResendUserPass";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<form asp-controller="User" asp-action="ResendUserPass" method="post">
+    @Html.Hidden("PhoneNumber", TempData["Mobile"])
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">ارسال نام کاربری و رمز عبور</span>
+            <div class="content-account">
+                <label for="email-phone">شماره موبایل @TempData["Mobile"] قبلا در سیستم ثبت شده است</label>
+                <div class="parent-btn">
+                    <button class="dk-btn dk-btn-info">
+                        ارسال مجدد اطلاعات
+                        <i class="mdi mdi-lock sign-in"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

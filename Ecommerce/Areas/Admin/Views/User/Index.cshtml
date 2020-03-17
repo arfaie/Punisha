@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Ecommerce.Models.ViewModels.UserListViewModel>
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+@{
+    ViewData["Title"] = "کاربری";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="top-buffer"></div>
+<div class="panel panel-primary">
+    <div class="panel-heading panel-head">لیست کاربران</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="AddUser"
+               data-target="#modal-action-user">
+                <i class="glyphicon glyphicon-pencil"></i>
+                افزودن
+            </a>
+        </div>
+
+        <div></div>
+        <table class="table table-bordered table-striped table-condensed">
+            <thead>
+                <tr>
+                    <th>نام و نام خانوادگی</th>
+                    <th>ایمیل</th>
+                    <th>گروه</th>
+                    <th style="width: 250px; text-align: center;">عملیات</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                        <td>@item.UserGroupName</td>
+                        <td>
+                            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="EditUser"
+                               data-target="#modal-action-user" asp-route-Id="@item.Id">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                ویرایش
+                            </a>
+
+                            <a class="btn btn-primary" id="showedituser" data-toggle="modal" asp-action="ChangeUserPass"
+                               data-target="#modal-action-user" asp-route-Id="@item.Id">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                ویرایش پسورد
+                            </a>
+                            
+                            <a class="btn btn-danger" id="showedituser" data-toggle="modal" asp-action="UserAddress"
+                               data-target="#modal-action-user" asp-route-Id="@item.Id">
+                                <i class="glyphicon glyphicon-pencil"></i>
+                                آدرس
+                            </a>
+
+                            @*<a class="btn btn-info" id="showedituser" asp-action="ChangeUserPass"
+           data-target="#modal-action-user" asp-route-Id="@item.Id">
+            <i class="glyphicon glyphicon-pencil"></i>
+            ویرایش پسورد
+        </a>*@
+
+
+                        </td>
+                    </tr>
+                }
+
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+
+@Html.Partial("_Modal", new BootstrapModel { ID = "modal-action-user", Size = ModalSize.Medium })
+
+@section Scripts{
+    <script src="~/js/modal-js/user-index.js"></script>
+}
+
+

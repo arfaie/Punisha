@@ -1,0 +1,102 @@
+/**
+* 8.0 Media Queries
+ * ----------------------------------------------------------------------------
+ */
+@import url("../kartpul/responsive.css");
+
+@media only screen and (max-width: 1200px) { 
+    .mobile-navigation, .menu-toggle {
+        padding: 2px 0 0 10px;   
+        line-height: inherit;
+    }    
+    .header-top-center {
+        float: right;
+    }
+}
+@media only screen and (max-width: 979px) {
+    .header-search .header-toggle {
+        background-image: url("images/megnor/search.svg");
+        margin-top: 5px;
+    }
+    .header-top-center {
+        padding-left: 0;
+    }
+    .header-search {
+        float: right;
+        margin: 10px 0 10px 25px;
+    }
+    .header-mob-logo {
+        display: table-cell;
+        position: relative;
+        vertical-align: middle;
+    }
+    .header-logo {
+        display: none;
+    }
+    .footer-top .title-outer::before, .footer-top .toggled-off .title-outer::before {
+        color: #ffffff;
+    }
+    .site-footer .title-outer::before, .site-footer .toggled-off .title-outer::before{
+        color: #ffffff;
+    }
+    .cms-banner-item .text2 {
+        font-size: 18px;
+    }
+    .cms-banner-item .text3 {
+        font-size: 13px;
+    }
+    .sticky-menu .header-top {
+        padding: 0;
+    }
+    .sticky-menu .topbar-link-wrapper, .sticky-menu .topbar-link-wrapper {
+        top: 38px;
+    }
+    .sticky-menu .header-cart .togg .widget.widget_shopping_cart, .sticky-menu .header-cart .togg .widget.widget_shopping_cart {
+        top: 35px;
+    }
+}
+@media only screen and (max-width: 767px) { 
+    .mobile-navigation, .menu-toggle {
+        padding: 0px 0 0 10px;        
+    }
+	.static-wrapper.cms-left-text {
+		text-align:left;
+	}
+}
+@media only screen and (max-width: 479px) { 
+    .menu-toggle::before { 
+        background-size: 20px;
+    }
+    .mobile-navigation, .menu-toggle {
+        padding: 0px 0 0 2px;
+    }
+    .menu-toggle::before {      
+        background-size: 19px;
+        margin-top: 7px;
+    }
+    .box-category::before {        
+        top: 16px;
+        left: 26px;
+    }
+    .header-search .header-toggle {    
+        margin-top: 2px;
+    }
+    .header-search .woocommerce-product-search .search-field, .header-search .search-form .search-field {
+        border: 2px solid #76a72e;        
+    }
+    .sticky-menu .header-top-left {
+        height: 52px;
+    }
+}
+@media only screen and (max-width: 379px) {
+    .cms-banner-item .text2 {
+        font-size: 14px;
+    }
+    .cms-banner-item .text3 {
+        font-size: 11px;
+    }
+	.cms-banner-item .text1 {
+		font-size: 20px;
+		line-height: 20px;
+	}
+}

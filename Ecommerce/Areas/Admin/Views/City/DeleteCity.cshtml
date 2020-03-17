@@ -1,0 +1,20 @@
+﻿@model string
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<form asp-controller="City" asp-action="DeleteCity">
+
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "حذف شهر" })
+
+    <div class="modal-body form-horizontal">
+        آیا از حذف  @Model مطمئن هستید؟
+    </div>
+
+    <input type="hidden" name="redirecturl" value="@Url.Action("index","City")" />
+
+
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "حذف " })
+
+</form>

@@ -1,0 +1,55 @@
+﻿@model Ecommerce.Models.FieldGroup
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+
+<form asp-controller="FieldGroup" asp-action="AddEditFieldGroup" id="addeditFieldGroup" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditFieldGroup" data-ajax-mode="replace">
+
+    @*header*@
+    @if (Model.Id != 0)
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش فیلد" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن فیلد" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","FieldGroup")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (Model.Id != 0)
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش فیلد" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن فیلد" })
+    }
+
+</form>

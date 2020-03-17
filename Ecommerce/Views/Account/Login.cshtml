@@ -1,0 +1,167 @@
+﻿@model Ecommerce.Models.ViewModels.LoginViewModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+
+@*<!DOCTYPE html>*@
+@*<html lang="en" dir="rtl">
+
+     Mirrored from demo.naksoid.com/elephant-v1.3.0/theme-1-rtl/login-3.html by HTTrack Website Copier/3.x [XR&CO'2010], Wed, 15 Nov 2017 15:02:14 GMT
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Log In</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+        <meta name="description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+        <meta property="og:url" content="http://demo.naksoid.com/elephant">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="The fastest way to build modern admin site for any platform, browser, or device">
+        <meta property="og:description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+        <meta property="og:image" content="../../elephant/img/ae165ef33d137d3f18b7707466aa774d.jpg">
+        <meta name="twitter:card" content="summary_large_image">
+
+        <meta name="twitter:title" content="The fastest way to build modern admin site for any platform, browser, or device">
+        <meta name="twitter:description" content="Elephant is a front-end template created to help you build modern web applications, fast and in a professional manner.">
+        <meta name="twitter:image" content="../../elephant/img/ae165ef33d137d3f18b7707466aa774d.jpg">
+        <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+        <link rel="icon" type="image/png" href="~/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="~/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="manifest.json">
+        <link rel="mask-icon" href="safari-pinned-tab.svg" color="#d9230f">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="stylesheet" href="~/css/vendor-rtl.min.css">
+        <link rel="stylesheet" href="~/css/elephant-rtl.min.css">
+        <link rel="stylesheet" href="~/css/login-3-rtl.min.css">
+        <link href="~/css/Font.css" rel="stylesheet" />
+        <link href="~/js/iziToast-master/dist/css/iziToast.min.css" rel="stylesheet" />
+    </head>
+    <body style="font-family: 'sahel'">
+        <div class="login">
+            <div class="login-body">
+                <a class="login-brand" href="index.html">
+                    <img class="img-responsive" src="~/img/LogoAsli.jpg" alt="Elephant" />
+                </a>
+                <h3 class="login-heading">ورود</h3>
+                <div class="login-form">
+                    <form data-toggle="md-validator" class="form-horizontal" asp-controller="Account" asp-action="Login" method="post">
+                        <div class="md-form-group md-label-floating">
+                            <input asp-for="UserName" class="md-form-control" type="Username" name="Username" spellcheck="false" autocomplete="off" data-msg-required="Please enter your Username." required>
+                            <label class="md-control-label">Username</label>
+                        </div>
+                        <div class="md-form-group md-label-floating">
+                            <input asp-for="Password" class="md-form-control" type="password" name="password" minlength="6" data-msg-minlength="Password must be 6 characters or more." data-msg-required="Please enter your password." required>
+                            <label class="md-control-label">Password</label>
+                        </div>
+                        <div class="md-form-group md-custom-controls">
+                            <label class="custom-control custom-control-primary custom-checkbox">
+                                    <input class="custom-control-input" type="checkbox" checked="checked">
+                                    <span class="custom-control-indicator"></span>
+                                    <span class="custom-control-label">Keep me signed in</span>
+                                </label>
+                            <span aria-hidden="true"> · </span>
+                            <a href="#">رمز عبور را فراموش کرده اید؟</a>
+                        </div>
+                        <button class="btn btn-primary btn-block" type="submit">ورود</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <script src="~/js/iziToast-master/dist/js/iziToast.min.js"></script>
+        <script src="~/js/vendor.min.js"></script>
+        <script src="~/js/elephant.min.js"></script>
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '../../../www.google-analytics.com/analytics.js', 'ga');
+            ga('create', 'UA-83990101-1', 'auto');
+            ga('send', 'pageview');
+        </script>
+        @Html.Raw(TempData["Notif"])
+
+    </body>
+
+     Mirrored from demo.naksoid.com/elephant-v1.3.0/theme-1-rtl/login-3.html by HTTrack Website Copier/3.x [XR&CO'2010], Wed, 15 Nov 2017 15:02:14 GMT
+    </html>*@
+
+@{
+
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport' />
+    <title>ورود </title>
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css">
+    <link rel="stylesheet" href="~/assets/css/materialdesignicons.css.map">
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <link rel="stylesheet" href="~/assets/css/style.css">
+</head>
+<body>
+    <div id="main">
+        <a href="index.html" class="logo-account"><img src="~/assets/images/logo.png"></a>
+        <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+            <div class="account-box">
+                <span class="account-head-line">ورود  </span>
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    <div class="content-account">
+                        <label for="email-phone">ایمیل یا شماره موبایل</label>
+                        <input asp-for="UserName" type="text" id="email-phone" class="input-email-account" placeholder="ایمیل یا شماره موبایل خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+                        <a href="password-forget.html" class="account-link-password">رمز خود را فراموش کرده ام</a>
+                        <label for="password">رمز عبور</label>
+                        <input asp-for="Password" type="password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید"><i class="mdi mdi-lock" style="top: 146px;"></i>
+
+                        <div class="parent-btn">
+                            <button class="dk-btn dk-btn-info">
+                                ورود به کار بیوتیک 
+                                <i class="fa fa-sign-in sign-in"></i>
+                            </button>
+                        </div>
+                        <div class="form-auth-row">
+                            <label for="#" class="ui-checkbox">
+                                <input asp-for="RememberMe" type="checkbox" value="1" name="login" checked="" id="remember">
+                                <span class="ui-checkbox-check"></span>
+                            </label>
+                            <label for="remember" class="remember-me">مرا به خاطر داشته باش</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="account-footer">
+                    <span>کاربر جدید هستید؟</span>
+                    <a href="register.html" class="btn-link-register">ثبت‌نام در کار بیوتیک</a>
+                </div>
+            </div>
+        </div>
+        <footer class="footer-light">
+            <div class="container">
+                <ul class="footer-light-link">
+                    <li><a href="#">درباره کار بیوتیک</a></li>
+                    <li><a href="#">فرصت‌های شغلی</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                    <li><a href="#">همکاری با سازمان‌ها</a></li>
+                </ul>
+
+                <p class="title-footer">استفاده از مطالب فروشگاه اینترنتی کار بیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع بلامانع است. کلیه حقوق این سایت متعلق به شرکت نوآوران فن آوازه (فروشگاه آنلاین کار بیوتیک) می‌باشد.</p>
+
+                <p class="copy-right-footer-light">Copyright © 2006 - 2019 DigiStore.com</p>
+            </div>
+        </footer>
+
+    </div>
+    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
+    <script src="~/assets/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+﻿@model Ecommerce.Models.Slider
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+
+<form method="post" enctype="multipart/form-data">
+
+    @*header*@
+    @if (Model.Id != 0)
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش اسلایدر" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن اسلایدر" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input required="required" type="file" id="files" name="files" multiple />
+                </div>
+                @if (Model.Id != 0)
+                {
+                    <input type="hidden" name="Imgename" value="@Model.Image" />
+                }
+            </div>
+        </div>
+
+        <div class="form-group hidden">
+            <label asp-for="Id" class="col-lg-2 col-sm-2 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Id" class="form-control" />
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+    @*footer*@
+    @if (Model.Id == 0)
+    {
+
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن اسلاید" />
+        </div>
+
+    }
+    else
+    {
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="ویرایش اسلاید" />
+        </div>
+
+
+    }
+
+</form>
+
+<script>
+        $(document).on('click', '#submitdata', function (evt) {
+            evt.preventDefault();
+            var fileupload = $("#files").get(0);
+            var files = fileupload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i]);
+
+            }
+            $('input,select').each(function (x, y) {
+                data.append($(y).attr('name'), $(y), val());
+
+            });
+            $.ajax({
+                type: "post",
+                url:'@Url.Action("AddEditSlider", "Slider", new { Areas = "Admin" })',
+                contentType: false,
+                processData: false,
+                data: data
+
+            }).done(function (res) {
+                if (res.status === "success") {
+                    alert(res.message);
+                }
+                else {
+                    alert("در ثبت اطلاعات مشکلی وجود دارد");
+
+                }
+            }).fail(function (xhr, b, error) {
+
+                alert(error);
+            });
+
+        });
+
+
+
+
+</script>
+

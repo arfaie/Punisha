@@ -1,0 +1,47 @@
+﻿@model Ecommerce.Models.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+<form asp-controller="User" asp-action="Register" id="Register" method="post" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#Register" data-ajax-mode="replace">
+
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">ثبت نام در کاربیوتیک</span>
+            <div class="content-account">
+                <div class="massege-light">ثبت نام تنها با شماره تلفن همراه امکان پذیر است.</div>
+                <label for="email-phone">شماره موبایل</label>
+                <input asp-for="PhoneNumber" type="number" id="email-phone" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 150px;"></span>
+                <span asp-validation-for="PhoneNumber"></span>
+                <a href="password-forget.html" class="account-link-password">رمز خود را فراموش کرده ام</a>
+                <label for="password">رمز عبور</label>
+                <input asp-for="Password" type="password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید"><i class="mdi mdi-lock" style="top: 240px;"></i>
+                <span asp-validation-for="Password"></span>
+                <div class="parent-btn">
+                    <button class="dk-btn dk-btn-info">
+                        ثبت نام به کاربیوتیک
+                        <i class="mdi mdi-account-plus-outline sign-in"></i>
+                    </button>
+                </div>
+                <div class="form-auth-row">
+                    <label for="#" class="ui-checkbox">
+                        <input type="checkbox" value="1" name="login" checked="" id="remember">
+                        <span class="ui-checkbox-check"></span>
+                    </label>
+                    <label for="remember" class="remember-me"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین</a>استفاده از سرویس های سایت کاربیوتیک را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+                </div>
+            </div>
+
+            <div class="account-footer">
+                <span>قبلا در کاربیوتیک ثبت‌نام کرده‌اید؟</span>
+                <a href="/User/Login" class="btn-link-register">وارد شویــد</a>
+            </div>
+        </div>
+    </div>
+
+</form>
+

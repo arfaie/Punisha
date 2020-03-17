@@ -1,0 +1,116 @@
+﻿@model Ecommerce.Models.ViewModels.AddEditProductGallery
+@using Ecommerce.PublicModel
+
+@addTagHelper*,Punas
+@addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
+
+@*heder*@
+
+<form method="post" enctype="multipart/form-data">
+
+    @if (Model.Id == 0)
+    {
+        @await Html.PartialAsync("_Modalheader", new ModalHeader { Heading = "افزودن" })
+
+    }
+    else
+    {
+        @await Html.PartialAsync("_Modalheader", new ModalHeader { Heading = "ویرایش " })
+
+    }
+
+    <div class="modal-body form-horizontal">
+        <div class="row">
+
+            <div class="form-group">
+                <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Image" type="file" id="files" name="files" multiple />
+                </div>
+            </div>
+
+
+            <div class="form-group  hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    @*footer*@
+
+
+    @if (Model.Id == 0)
+    {
+
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برکشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن عکس" />
+        </div>
+
+    }
+    else
+    {
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برکشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="ویرایش عکس" />
+        </div>
+
+
+    }
+
+
+
+</form>
+@section Scripts{
+
+
+    <script>
+        $(document).on('click', '#submitdata', function (evt) {
+            evt.preventDefault();
+            var fileupload = $("#files").get(0);
+            var files = fileupload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i])
+
+            }
+            $('input').each(function (x, y) {
+                data.append($(y).attr('name'), $(y), val());
+
+            });
+            $.ajax({
+                type: "post",
+                url: '@Url.Action("AddEditProductGallery", "ProductGallery", new { Areas = "Admin" })',
+                contentType: false,
+                processData: false,
+                data: data
+
+            }).done(function (res) {
+                if (res.status === "success") {
+                    alert(res.message);
+                }
+                else {
+                    alert("در ثبت اطلاعات مشکلی وجود دارد")
+
+                }
+            }).fail(function (xhr, b, error) {
+
+                alert(error)
+            });
+
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+}

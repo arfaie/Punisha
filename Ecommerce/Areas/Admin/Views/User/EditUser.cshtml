@@ -1,0 +1,97 @@
+﻿@model Ecommerce.Models.ViewModels.EditUserViewModel
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<form asp-controller="User" asp-action="EditUser" id="edituser" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#edituser" data-ajax-mode="replace">
+
+    @*header*@
+
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش " })
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="FirstName" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LastName" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="ApplicationRoleId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" class="col-lg-3 col-sm-3 control-label"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CarId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="CarId" asp-items="@Model.CarListItems" style="text-align: right;" class="col-lg-6 col-sm-6 control-label"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="UserGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="UserGroupId" asp-items="@Model.UserGroupListItems" style="text-align: right;" class="col-lg-6 col-sm-6 control-label"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Username" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <input type="hidden" name="redirecturl" value="@Url.Action("index","User")" />
+
+    @Html.Raw(TempData["Password"])
+
+    @*footer*@
+
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش " })
+
+</form>
+
+

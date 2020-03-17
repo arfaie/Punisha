@@ -1,0 +1,129 @@
+﻿@model Ecommerce.Models.ViewModels.UserViewModel
+
+@{
+    ViewData["Title"] = "UserProfile";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+@{
+    string Name = Model.FirstName == "" ? "-" : Model.FirstName;
+    string LName = Model.LastName == "" ? "-" : Model.LastName;
+    string Email = Model.Email == "" ? "-" : Model.Email;
+    long Nat = Model.Natcode == 0 ? 0 : Model.Natcode;
+    string Mobile = Model.PhoneNumber == "" ? "-" : Model.PhoneNumber;
+
+}
+<div class="col-lg-3 col-md-4 col-xs-12">
+    <div class="sidebar-wrapper">
+
+
+        @if (Name != "-")
+        {
+            <div class="box-sidebar">
+
+                <div class="profile-box">
+                    <div class="profile-box-avator">
+                        <img src="~/Html/assets/images/svg/user-profile.svg">
+                    </div>
+
+                    <div class="profile-box-content">
+                        <span class="profile-box-nameuser">@Name @LName</span>
+                        <span class="profile-box-phone">@Mobile</span>
+                    </div>
+                    <div class="profile-box-tabs">
+                        <a href="password-change.html" class="profile-box-tab"><span class="mdi mdi-lock"></span>تغییر رمز</a>
+                        <a href="index.html" class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
+                    </div>
+                </div>
+
+            </div>
+        }
+
+
+
+
+        @*<a href="#" class="profile-box-row-arrow">
+            <div class="profile-box-title">کیف پول</div>
+            <div class="profile-box-price">
+                <div class="wallet-amount">0</div>
+                <div class="profile-box-currency">تومان</div>
+                <i class="fa fa-angle-left"></i>
+            </div>
+            <p class="profile-box-wallet-link">افزایش موجودی</p>
+        </a>*@
+
+
+
+
+        @*<div class="box-sidebar">
+            <div class="profile-box">
+                <img src="~/Html/assets/images/profile/1.jpg" class="profile-box-img-banner">
+            </div>
+        </div>*@
+
+        <div class="box-sidebar">
+            <span class="box-header-sidebar">حساب کاربری شما</span>
+            <ul class="profile-menu-items">
+                <li><a href="profile.html" class="profile-menu-url active-profile"><span class="mdi mdi-account-outline"></span>پروفایل</a></li>
+                <li><a href="profile-order.html" class="profile-menu-url"><span class="fa fa-shopping-basket"></span>همه سفارش ها</a></li>
+                <li><a href="profile-order-return.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>در خواست مرجوعی</a></li>
+                <li><a href="profile-favorites.html" class="profile-menu-url"><span class="fa fa-star-o"></span>لیست علاقه مندی ها</a></li>
+                <li><a href="profile-comments.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>نقد و نظرات</a></li>
+                <li><a href="profile-addresses.html" class="profile-menu-url"><span class="mdi mdi-map"></span>آدرس ها</a></li>
+                <li><a href="#" class="profile-menu-url"><span class="fa fa-clock-o"></span>بازدید های اخیر</a></li>
+                <li><a href="profile-personal-info.html" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>اطلاعات شخصی</a></li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="col-lg-9 col-md-8 col-xs-12 pull-right">
+    <div class="col-lg-12 col-xs-12 pull-right">
+        <div class="headline-profile">
+            <span>اطلاعات شخصی</span>
+        </div>
+        <div class="profile-stats">
+            <div class="profile-stats-row">
+                <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                    <div class="profile-stats-col">
+                        @{
+                            if (Name == "-")
+                            {
+                                <p><span> نام و نام خانوادگی :</span>@Name</p>
+                            }
+                            else
+                            {
+                                <p><span> نام و نام خانوادگی :</span>@Name @LName</p>
+
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                    <div class="profile-stats-col">
+                        @if (Email == null)
+                        {
+                            Email = "-";
+                        }
+                        <p><span>پست الکترونیک :</span>@Email</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                    <div class="profile-stats-col">
+                        <p><span>شماره تلفن همراه :</span>@Mobile</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                    <div class="profile-stats-col">
+                        <p><span>کد ملی :</span>@Nat</p>
+                    </div>
+                </div>
+
+
+
+                <div class="profile-stats-action">
+                    <a href="/User/EditProfile" class="link-spoiler-edit"><i class="fa fa-pencil"></i>ویرایش اطلاعات شخصی</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

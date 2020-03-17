@@ -1,0 +1,492 @@
+﻿@model Ecommerce.Models.ViewModels.MultiModelSearchProduct
+
+@{
+    ViewData["Title"] = "جستجو";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+<!--responsive-sidebar----------------------->
+<div class="col-12">
+    <div class="header-filters">
+        <button class="btn-filter btn-filter-advanced" onclick="document.getElementById('modal-search').style.display='block'">جستجوی پیشرفته</button>
+        <button class="btn-filter btn-filter-direction" data-toggle="modal" data-target="#exampleModalCenter">پربازدیدترین</button>
+        <div class="remodal-search-advanced" id="modal-search">
+            <nav class="remodal-page-layout">
+                <button class="search-filter-remodal-close" onclick="document.getElementById('modal-search').style.display='none'">
+                    <i class="fa fa-close"></i>
+                </button>
+                <div class="remodal-page-header">لوازم جانبی گوشی موبایل</div>
+                <div class="remodal-page-main">
+                    <div class="filter-bar">
+                        <button class="js-listing-options-clear">پاک کردن همه</button>
+                        <div class="js-box-content-items">
+                            <a href="#">
+                                <label for="switch3">
+                                    <input type="checkbox" id="switch3" /><span class="switch"><h1 class="switch-title">کالاهای موجود </h1></span>
+                                    <span class="toggle"></span>
+                                </label>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="remodal-page-content">
+                        <div class="filter">
+                            <label for="#" class="profile-edit-label">
+                                <span>جستجو در نتایج</span>
+                                <input type="text" value="" name="searchInput" placeholder="نام محصول مورد نظر را بنویسید ...">
+                            </label>
+                        </div>
+
+                        <div class="filter">
+                            <a href="#">
+                                <label for="switch4">
+                                    <input type="checkbox" id="switch4" /><span class="switch"></span><h1 class="switch-title">فقط کالاهای اصل </h1>
+                                    <span class="toggle"></span>
+                                </label>
+                            </a>
+                        </div>
+
+                        <div class="filter">
+                            <a href="#">
+                                <label for="switch5">
+                                    <input type="checkbox" id="switch5" /><span class="switch"></span><h1 class="switch-title">فقط کالاهای آماده ارسال</h1>
+                                    <span class="toggle"></span>
+                                </label>
+                            </a>
+                        </div>
+
+                        <div class="filter">
+                            <div class="toggle-box">
+                                <div class="toggle-box-active">
+                                    <ul>
+                                        <li class="has-sub">
+                                            <a href="#">دسته‌بندی نتایج</a>
+                                            <ul class="catalog-list">
+                                                <li>
+                                                    <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
+                                                    <div class="show-more">
+                                                        <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
+                                                        <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
+                                                        <ul class="catalog-list">
+                                                            <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
+                                                            <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
+                                                            <li><a href="#" class="catalog-link">هندزفری</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter">
+                            <div class="toggle-box">
+                                <div class="toggle-box-active">
+                                    <ul>
+                                        <li class="has-sub">
+                                            <a href="#">برند</a>
+                                            <ul>
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">سامسونگ</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">نوکیا</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">اپل</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">شیائومی</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">آنر</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">ماهوت</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">سونی</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">هوآوی</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter">
+                            <div class="toggle-box">
+                                <div class="toggle-box-active">
+                                    <ul>
+                                        <li class="has-sub">
+                                            <a href="#">فروشنده</a>
+                                            <ul>
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">دیجی‌استور</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">دیجی‌استور</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" class="filter-label">
+                                                        <div class="form-auth-row">
+                                                            <label for="#" class="ui-checkbox">
+                                                                <input type="checkbox" value="1" name="login" id="remember">
+                                                                <span class="ui-checkbox-check"></span>
+                                                            </label>
+                                                            <label for="remember" class="remember-me">دیجی‌استور</label>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 305px; margin:20px auto;">
+        <div class="modal-content">
+            @*<div class="modal-header">
+                    <div class="remodal-header">مرتب‌سازی بر اساس</div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>*@
+            @*<div class="remodal-list-sort">
+
+                    <ul class="listing-sort">
+                        <li class="listing-active"><a href="#">پربازدید ترین</a></li>
+                        <li><a href="#">پرفروش ترین</a></li>
+                        <li><a href="#">محبوب ترین</a></li>
+                        <li><a href="#">جدید ترین</a></li>
+                        <li><a href="#">ارزان ترین</a></li>
+                        <li><a href="#">گران ترین</a></li>
+                    </ul>
+                </div>*@
+        </div>
+    </div>
+</div>
+<!--        responsive-sidebar----------------------->
+<div class="col-lg-3 col-md-4 col-xs-12">
+    <div class="sidebar-wrapper search-sidebar">
+        <div class="box-sidebar">
+            <span class="box-header-sidebar">دسته‌بندی نتایج</span>
+            <div class="catalog">
+                <ul class="catalog-list">
+                    <li>
+                        <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
+                        <div class="show-more">
+                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
+                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
+                            <ul class="catalog-list">
+                                <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
+                                <li><a href="#" class="catalog-link">هندزفری</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="box-sidebar">
+            <span class="box-header-sidebar"> جستجو در نتایج:</span>
+            <form action="#">
+                <input type="text" class="input-sidebar" placeholder="نام محصول یا برند مورد نظر را بنویسید…">
+
+                <a href="#"><button class="btn-search-sidebar"><img src="~/assets/images/search.png"></button></a>
+            </form>
+        </div>
+
+        <div class="box-sidebar">
+            <span class="box-header-sidebar"><i class="fa fa-chevron-down arrow"></i>دسته بندی ها</span>
+            <div class="catalog" style="display:none;">
+                <form action="#">
+                    <input type="text" class="input-sidebar" placeholder="نام محصول یا برند مورد نظر را بنویسید…">
+
+                    <a href="#"><button class="btn-search-sidebar"><img src="~/assets/images/search.png"></button></a>
+                </form>
+                <ul>
+                    @{
+                        int i = 0;
+                    }
+                    @foreach (var item in Model.Categories)
+                    {
+
+                        <li>
+                            <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@item.Id" class="filter-label">
+                                <div class="form-auth-row">
+                                    <label class="ui-checkbox">
+                                        <input type="checkbox" value="@item.Id" name="categorysearch" id="@i">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">@item.Title</label>
+                                </div>
+                            </a>
+                        </li>
+                        i++;
+                    }
+
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="box-sidebar">
+            <span class="box-header-sidebar"><i class="fa fa-chevron-down arrow"></i>لیست ماشین ها</span>
+            <div class="catalog">
+                <ul>
+                    @foreach (var item in Model.Cars)
+                    {
+                        <li>
+                            <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-carsearch="@item.Id" class="filter-label">
+                                <div class="form-auth-row">
+                                    <label for="#" class="ui-checkbox">
+                                        <input type="checkbox" value="@item.Id" name="carsearch" id="carsearch">
+                                        <span class="ui-checkbox-check"></span>
+                                    </label>
+                                    <label for="remember" class="remember-me">@item.Name</label>
+                                </div>
+                            </a>
+                        </li>
+                    }
+
+
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="box-sidebar">
+            <div class="filter-switch">
+                <div class="switch-box">
+                    <div class="centered hidden-xs">
+                        <div class="card">
+                            <a href="#">
+                                <label for="switch1">
+                                    <input type="checkbox" id="switch1" /><span class="switch"><h1 class="switch-title">فقط کالای موجود</h1></span>
+                                    <span class="toggle"></span>
+                                </label>
+                            </a>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box-sidebar">
+            <div class="filter-switch">
+                <div class="switch-box">
+                    <div class="centered hidden-xs">
+                        <div class="card">
+                            <a href="#">
+                                <label for="switch2">
+                                    <input type="checkbox" id="switch2" /><span class="switch"><h1 class="switch-title">فقط کالای آماده ارسال</h1></span>
+                                    <span class="toggle"></span>
+                                </label>
+                            </a>
+                        </div>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--   adplacement -------------------->
+        <div class="adplacement">
+            <div class="col-12 col-lg-12 pull-right" style="padding:0;">
+                <a href="#" class="item-adplacement">
+                    <img src="~/assets/images/post-adplacement/1000012860.jpg" title="صوتی و تصویری">
+                </a>
+            </div>
+        </div>
+        <!--   adplacement -------------------->
+
+    </div>
+</div>
+<div class="col-lg-9 col-md-8 col-xs-12 pull-left">
+    <div class="js-products">
+        <div class="breadcrumb-container">
+            <ul class="js-breadcrumb">
+                <li><a href="#">فروشگاه اینترنتی دیجی استور</a></li>
+                <li><a href="#">کالای دیجیتال</a></li>
+                <li><a href="#">لوازم جانبی کالای دیجیتال</a></li>
+            </ul>
+        </div>
+
+        <div class="listing-listing">
+            <div class="listing-counter">۱۹۲,۷۳۲ کالا</div>
+            <div class="listing-header">
+                <span class="mdi mdi-sort-variant"></span>
+                <ul class="listing-sort">
+                    مرتب‌سازی بر اساس :
+                    <li class="listing-active"><a href="#">پربازدید ترین</a></li>
+                    <li><a href="#">پرفروش ترین</a></li>
+                    <li><a href="#">محبوب ترین</a></li>
+                    <li><a href="#">جدید ترین</a></li>
+                    <li><a href="#">ارزان ترین</a></li>
+                    <li><a href="#">گران ترین</a></li>
+                </ul>
+            </div>
+
+            <ul class="listing-item">
+                <li style="display: block">
+                    @foreach (var item in Model.ProductViewModels)
+                    {
+                        <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="padding: 0;">
+                            <div class="promotion-box">
+                                <div class="product-seller-details">
+                                    <span class="product-main-seller">فروشنده : ای جی</span>
+                                </div>
+
+                                <a href="#" class="promotion-box-image">
+                                    <img src="@ViewBag.imagepath@item.ImageName">
+                                </a>
+
+                                <div class="product-box-content">
+                                    <a href="#" class="product-box-title">@item.Name</a>
+                                </div>
+
+                                <div class="product-box-rate">
+                                    <span>۲,۶۵۰ نفر</span>
+
+                                    <div class="stars">
+                                        <span><img src="~/assets/images/search/star-1.svg"></span>
+                                        <span><img src="~/assets/images/search/star-1.svg"></span>
+                                        <span><img src="~/assets/images/search/star-1.svg"></span>
+                                        <span><img src="~/assets/images/search/star-1.svg"></span>
+                                        <span><img src="~/assets/images/search/star-1.svg"></span>
+                                    </div>
+                                </div>
+
+                                <div class="product-box-row">
+                                    <span class="price-value-wrapper">@item.Price</span>
+                                    <span class="price-currency">تومان </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+
+                </li>
+
+            </ul>
+            <div class="pager">
+                <ul class="page-item">
+                    <li class="pagination-item"><a href="#" class="pager-item-active">1</a></li>
+                    <li class="pagination-item"><a href="#">2</a></li>
+                    <li class="pagination-item"><a href="#">3</a></li>
+                    <li class="pagination-item"><a href="#">4</a></li>
+                    <li class="pagination-item"><a href="#">5</a></li>
+                    <div class="pager-items-partition"></div>
+                    <li class="pagination-item"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!--search-category------------------------->

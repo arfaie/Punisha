@@ -1,0 +1,10 @@
+﻿@model Ecommerce.PublicModel.ModalFooter
+
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" data-dismiss="modal" id="@Model.CancelButtonId"> @Model.CancelButtonText</button>
+
+    @if (!Model.OnlyCancelButton)
+    {
+        <button class="btn btn-success" type="submit" id="@Model.SubmitButtonId"> @Model.SubmitButtonText   </button>
+    }
+</div>

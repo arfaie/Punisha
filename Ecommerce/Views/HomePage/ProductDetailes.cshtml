@@ -1,0 +1,712 @@
+﻿@model Ecommerce.Models.ViewModels.MultiModelsProductDetailes
+
+@{
+    ViewData["Title"] = "جزئیات محصول";
+    Layout = "~/Views/Shared/_UserLayout.cshtml";
+}
+
+
+<!--single-product------------------------->
+<div class="col-12">
+    @{
+
+        <div class="product-page">
+            <div class="product-nav-container">
+                <ul class="js-breadcrumb">
+                    <li><a href="#">فروشگاه اینترنتی دیجی استور</a></li>
+                    <li><a href="#">کالای دیجیتال</a></li>
+                    <li><a href="#">موبایل</a></li>
+                    <li><a href="#">گوشی موبایل</a></li>
+                </ul>
+            </div>
+            @{
+                string productname = "";
+            }
+            @foreach (var item in Model.ProductViewModels)
+            {
+                productname = item.Name;
+                <article class="js-product">
+                    <div class="col-lg-4 col-md-12 col-xs-12 pull-right">
+                        <div class="product-gallery">
+                            <img class="zoom-img" id="img-product-zoom" src="~/assets/images/product-slider-2/111460776%20(2).jpg"
+                                 data-zoom-image="~/assets/images/product-slider-2/111460776%20(2).jpg" width="411" />
+
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">اشتراک گذاری در شبکه های اجتماعی</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="form-share-row">
+                                    <div class="form-share-col">
+                                        <ul class="btn-group-share">
+                                            <li>
+                                                <a href="#" class="btn-share btn-share-twitter">
+                                                    <i class="fa fa-twitter"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="btn-share btn-share-facebook">
+                                                    <i class="fa fa-facebook"></i>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="btn-share btn-share-whatsapp">
+                                                    <i class="fa fa-whatsapp"></i>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-share-title">ارسال به ایمیل</div>
+                                <div class="form-share-row">
+                                    <div class="form-share-col">
+                                        <form for="#" class="send-to-email">
+                                            <input name="" class="input-send-to-email" type="email" placeholder="آدرس ایمیل را وارد نمایید.">
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="form-share-row">
+                                    <div class="form-share-col">
+                                        <div class="btn-send-email">ارسال</div>
+                                    </div>
+                                </div>
+                                <div class="form-share-row">
+                                    <div class="form-share-col">
+                                        <input class="ui-url-field" type="url" value="https://www.digikala.com/product/dkp-1672478" readonly="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+
+
+
+                    <div class="col-lg-8 col-md-12 col-xs-12 pull-left">
+                        <section class="product-info">
+                            <div class="product-headline">
+                                <h1 class="product-title">
+                                    @item.Name
+                                </h1>
+                            </div>
+                            <div class="product-attributes">
+                                <div class="col-lg-7 col-md-7 col-xs-12 pull-right" style="padding: 0">
+                                    <div class="product-config">
+                                        <div class="product-config-wrapper">
+                                            <div class="product-directory">
+                                                <ul>
+                                                    <li>
+                                                        <span>برند</span>
+                                                        :
+                                                        <a href="#" class="link-border">سامسونگ</a>
+                                                    </li>
+                                                    <li>
+                                                        <span>دسته‌بندی</span>
+                                                        :
+                                                        <a href="#" class="link-border">@item.CategoryName</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12 pull-left" style="padding: 0">
+                                    <div class="product-seller-info">
+                                        <div class="js-seller-info-changable">
+
+                                            <div class="product-seller-row product-seller-row-guarantee">
+                                                <div class="js-guarantee-text">
+                                                    گارانتی ۱۸ ماهه دیجی
+
+                                                    استور
+                                                    <i class="fa fa-check"></i>
+                                                </div>
+
+                                            </div>
+                                            <div class="product-seller-row">
+                                                <div class="product-seller-row js-seller-info-shipment">
+                                                    <div class="product-delivery-warehouse">آماده ارسال</div>
+
+                                                </div>
+                                                <div class="product-seller-row-price">
+                                                    <div class="product-seller-price-prev">@item.Price</div>
+                                                    تومان
+                                                </div>
+
+                                                <a id="btnproductborrow" class="btn-add-to-cart"><span class="btn-add-to-cart-txt">افزودن به سبد خرید</span></a>
+                                                <span class="hidden" id="pid">@item.Id</span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                </article>
+            }
+            <div class="product-feature-body">
+                <div class="product-feature">
+                    <div class="row">
+                        <div class="product-feature-col">
+                            <a href="#" class="product-feature-item">
+                                <img src="~/assets/images/footer-svg/delivery.svg">
+                                <span>
+                                    امکان تحویل
+                                    <br>
+                                    اکسپرس
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="product-feature-col">
+                            <a href="#" class="product-feature-item">
+                                <img src="~/assets/images/footer-svg/contact-us.svg" style="width: 35px;">
+                                <span>
+                                    ۷ روز هفته
+                                    <br>
+                                    ۲۴ ساعته
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="product-feature-col">
+                            <a href="#" class="product-feature-item">
+                                <img src="~/assets/images/footer-svg/payment-terms.svg" style="width: 35px;">
+                                <span>
+                                    امکان
+                                    <br>
+                                    پرداخت در محل
+                                </span>
+                            </a>
+                        </div>
+
+                        <div class="product-feature-col">
+                            <a href="#" class="product-feature-item">
+                                <img src="~/assets/images/footer-svg/origin-guarantee.svg" style="width: 35px;">
+                                <span>
+                                    ضمانت
+                                    <br>
+                                    اصل بودن کالا
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div class="p-tabs">
+                <div class="box-tabs-main">
+                    <ul class="box-tabs">
+                        <li class="box-tabs-tab active-tabs">
+                            <a href="#"><span class="fa fa-file-text-o"></span> نقد و بررسی</a>
+                        </li>
+                        <li class="box-tabs-tab">
+                            <a href="#"><span class="fa fa-file-text-o"></span> مشخصات</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tabs-content">
+                    <div class="tab-active-content">
+                        <div class="tab content-expert" style="display: block;">
+                            <article>
+                                <h2 class="params-headline">
+                                    نقد و بررسی اجمالی
+                                    <span>Samsung Galaxy A50 SM-A505F/DS Dual SIM 128GB Mobile Phone</span>
+                                </h2>
+                                <section class="content-expert-summary">
+                                    <div class="is-masked">
+                                        <div class="mask-text-product-summary">
+                                            <p>
+                                                سامسونگ سال 2019 را با متنوع کردن هرچند بیشتر سری گوشی‌های A خود آغاز کرد. این سری از تولیدات سامسونگ به داشتن صفحه‌نمایش بسیار با کیفیت AMOLED و دوربین‌هایی با امکانات بالا شهرت دارند. در این میان به نظر می‌رسد گوشی «Galaxy A50» حرف‌های زیادی در هر دوی این زمینه‌ها داشته باشد. گوشی موبایل Galaxy A50 با صفحه‌نمایش سوپر آمولد طراحی &nbsp;شده است و ظاهر زیبایی دارد. سامسونگ تلاش کرده است حاشیه را در این تولید جدید خود تا حد امکان کم کند. این گوشی قاب پشتی از جنس پلاستیک دارد و قاب جلویی آن را شیشه پوشانده که البته جلوه‌ی زیبایی به گوشی داده است. این محصول سامسونگ با جدیدترین نسخه از سیستم‌عامل اندروید (Pie) روانه بازار شده است تا از هر نظر گوشی مدرن به‌حساب بیاید. صفحه‌نمایش استفاده‌شده در این گوشی 6.4&nbsp;اینچ با رزولوشن FullHD+ &nbsp;است که با استفاده از فناوری Super AMOLED و پنل OLED تصاویر
+                                                شفاف و بی‌نظیری را به نمایش می‌گذارد. این صفحه‌نمایش در هر اینچ 403 پیکسل را نشان می‌دهد که این یعنی جزئیات و وضوح تصویر عالی است. همچنین روکش این نمایشگر لایه‌ی محافظ Corning Gorilla Glass است که از خط‌وخش و ضربه جلوگیری می‌کند. تراشه‌ی این محصول، Exynos 9610 &nbsp;از تراشه‌های 10 نانومتری سامسونگ است که به همراه&nbsp; 4 گیگابایت رم عرضه می‌شود. این تراشه یکی از قوی‌ترین تراشه‌های موجود در حال حاضر است و برای انجام بازی‌های سنگین و بازکردن چندین برنامه به صورت هم‌زمان و تماشای ویدئو کاملا مناسب است و کم نمی‌آورد. تراشه‌ی گرافیکی Mali-G72 MP3 هم برای پخش ویدئو و بازی مناسب است. این گوشی در دو ظرفیت 64 و 128 گیگابایتی عرضه شده است و با استفاده از یک کارت حافظه‌ی جانبی قادر خواهید بود حافظه داخلی را تا یک ترابایت دیگر هم افزایش دهید. دوربین اصلی &nbsp;A50 سنسور 25مگاپیکسلی دارد و از نوع عریض (Wide) است. دو سنسور 8 &nbsp;و 5 مگاپیکسلی دیگر هم در کنار این دوربین اصلی مجموعه دوربین‌های قاب پشتی A50 را تشکیل داده‌اند. دوربین سلفی 25مگاپیکسلی هم در قاب جلویی این گوشی به کار گرفته شده است. باتری 4000 میلی‌آمپرساعتی، پشتیبانی از فناوری شارژ سریع 15 واتی، درگاه USB Type-C و حسگر اثرانگشت در زیر قاب اصلی هم از دیگر ویژگی‌های این تازه‌وارد است. سامسونگ در ساخت این گوشی از جدیدترین فناوری‌های ساخت گوشی استفاده کرده است تا میان‌رده‌ای با قابلیت‌های نزدیک به یک بالارده خوش‌ساخت را روانه بازار کند.
+                                            </p>
+                                        </div>
+                                        <a href="#" class="mask-handler">
+                                            <span class="show-more">ادامه مطلب</span>
+                                            <span class="show-less">بستن</span>
+                                        </a>
+                                        <div class="shadow-box"></div>
+                                    </div>
+                                </section>
+                            </article>
+                            <section class="content-expert-stats">
+                                <div class="col-8 pull-right">
+                                    <div class="content-expert-stats-left">
+                                        <div class="content-expert-evaluation">
+                                            <div class="col-lg-5 col-md-5 col-xs-12 pull-right" style="padding: 0;">
+                                                <div class="content-expert-evaluation-positive">
+                                                    <span>نقاط قوت</span>
+                                                    <ul>
+                                                        <li>صفحه نمایش AMOLED </li>
+                                                        <li>طراحی چشم‎نواز قاب پشتی</li>
+                                                        <li>عملکرد مطلوب تراشه Exynos 9610 </li>
+                                                        <li>طول عمر بالای باتری</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-5 col-md-5 col-xs-12 pull-right" style="padding: 0;">
+                                                <div class="content-expert-evaluation-negative">
+                                                    <span>نقاط ضعف</span>
+                                                    <ul>
+                                                        <li>مقاوم نبودن در برابر آب</li>
+                                                        <li>عملکرد نه چندان خوب دوربین در شب</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <div class="content-short-review">
+                                <h2 class="params-headline">نقد و بررسی تخصصی</h2>
+                                <p>گوشی‎های سامسونگ سری Galaxy A &nbsp;امسال به صورت متنوع‎تری وارد بازار شدند. شرکت سامسونگ، تا به امروز گوشی‏های گلکسی A10، A20، A30، A40، A50، A70 و A80 را معرفی کرده است که روی صفحه‎های AMOLED جدید و قابلیت‎های دوربین تمرکز داشته است.&nbsp; گلکسی A50 در هر دو زمینه چیزهای زیادی را برای نمایش دارد.</p>
+                            </div>
+
+                            <div class="content-expert-article">
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">Samsung Galaxy A</h3>
+                                    <div class="content-expert-text">
+                                        <p>گوشی‎های سری A شرکت سامسونگ از گوشی‎های میان‎رده این شرکت هستند. اولین گوشی تولید شده این سری گوشی‎های موبایل سامسونگ، Galaxy Alpha بود که در سال 2014 روانه بازار شد. پس از آن اولین نسل گوشی‎های موبایل A3 و A5 در دسامبر سال 2014 معرفی شدند. گوشی‌های موبایل سری A سامسونگ، ویژگی‌های خاص و تجملاتی گوشی‌های سری S را ندارند. این سری از گوشی‌های سامسونگ را می‌توان رقبای اصلی برای محصولات مقرون‌به‌صرفه شرکت‌هایی مانند هوآوی و شیائومی دانست. شرکت سامسونگ با ساخت گوشی موبایل مدل A50 بار دیگر سعی کرده است تا سهم بازار خود را در گوشی‎های میان رده حفظ کند.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/113345486(1).jpg">
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">طراحی</h3>
+                                    <div class="content-expert-text">
+                                        <p>گوشی‎های سری A به داشتن قاب‎های فلزی، ضد آب بودن و صفحه نمایش‎های با کیفیت معروف هستنند. البته در گوشی A50 از ویژگی ضد آب بودن صرف نظر شده است. گلکسی A50 با صفحه نمایش 6.4 اینچی، بریدگی‎های منحنی شکل و حاشیه بسیار کم از لبه‎ها، چیزی از طراحی پرچمداران سامسونگ کم ندارد. لبه‎های گلکسی A50 به صورت کاملا گرد طراحی شده است و به دلیل U شکل بودن بالای نمایشگر، نام Infinty-U برای آن انتخاب شده است. ضخامت گلکسی A50 تنها 7.7 میلی‎متر است . در قسمت پایین گوشی وروددی هدفون 3.5 میلی‎متری و درگاه پورت USB-C قرار گرفته است. این گوشی قاب پشتی از جنس پلاستیک دارد و قاب جلویی آن را شیشه پوشانده که البته جلوه‌ی زیبایی به گوشی داده است. بافت زیبای پشت گوشی، بازتابی رنگین‌کمان شکلی ایجاد می‌کند؛ البته در مقایسه با قاب S10، اثر انگشت بیشتری را به خود جذب می‎کند.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464522.jpg">
+                                        </div>
+                                        <div class="content-expert-blockquote">
+                                            <p>ساختار پلاستیکی قاب پشتی Galaxy A50 باعث نازک‎تر شدن بدنه و همچنین سبک‎تر شدن این محصول نسبت به پرچمدارانی مانند S10 شده است.</p>
+                                        </div>
+
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464524.jpg">
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">صفحه نمایش</h3>
+                                    <div class="content-expert-text">
+                                        <p>صفحه نمایش 6.4 اینچی سوپر آمولد در گلکسی A50 بسیار زیبا و بلند به نظر می‎رسد. این پنل در کمتر گوشی در این گستره قیمتی دیده می‎شود. فاصله صفحه نمایش تا لبه‎های گوشی بسیار کم است به طوری که نسبت صفحه نمایش به بدنه برای گلکسی A50 چیزی در حدود 91.6 درصد است. علاوه‎بر این سامسونگ از فناوری‌های جدید هم در نمایشگر A50 استفاده کرده است تا حتی اگر شده، این نمایشگر بزرگ و جذاب در اولین نگاه خریداران را جذب کند.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464525.jpg">
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">دوربین</h3>
+                                    <div class="content-expert-text">
+                                        <p>در قاب پشتی این گوشی سه لنز دوربین قرار گرفته است. دوربین Galaxy A50 در نور کافی عملکرد بسیار مطلوبی دارند و رنگ های طبیعی با جزئیات فراوان را برای کاربر به همراه دارند اما در نور کم عملکرد آن پایین‎تر از حد انتظار است. استفاده از سنسور عمق برای عکاسی‎های پرتره کاربرد دارد که باعث می‎شود تصویر پشت سوژه محو (Bukeh)به نظر برسد؛ چیزی که سامسونگ آن را Live Focus می‎نامد. همچنین دوربین این گوشی می‎تواند مناظر مختلف را تشخیص دهد و تصاویر را متناسب با آن‏ها بهبود دهد.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464526.jpg">
+                                        </div>
+                                        <div class="content-expert-blockquote">
+                                            <p>دوربین Galaxy A50 فاقد لرزشگیر است ؛ به این ترتیب برای عکاسی بهتر است در حالتی کاملا ثابت قرار داشت باشید.</p>
+                                        </div>
+
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464527.jpg">
+                                        </div>
+
+                                        <div class="content-expert-blockquote">
+                                            <p>سامسونگ قابلیت AR Emoji را به دوربین A50 اضافه کرده است؛ با استفاده از این قابلیت می‎توانید یک ایموجی دلخواه را انتخاب نمایید و از تغییرات چهره خود، یک انیمیشن دیجیتالی بسازید.</p>
+                                        </div>
+
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464531.jpg">
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">تشخیص چهره</h3>
+                                    <div class="content-expert-text">
+                                        <p>سامسونگ پا را کمی فراتر گذاشته و علاوه بر حسگر اثرانگشت برای گوشی جدید میان‌رده‌اش، فناوری تشخیص چهره هم درنظر گرفته است. با استفاده از قابلیت تشخیص چهره اکنون می‌توانید صرفاً با نگه داشتن تلفن مقابل صورتتان، به‌سرعت قفل آن را باز کنید. با استفاده از این فناوری می‎توانید مطمئن شوید داده‌های شخصی‌تان در دست افراد دیگر قرار نمی‌گیرد.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464528.jpg">
+                                        </div>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">سخت افزار</h3>
+                                    <div class="content-expert-text">
+                                        <p>تراشه Exynos 9610 به کار گرفته شده در گلکسی A50 چیزی نییست که در دستگاه‎های زیادی دیده شود و در بیشتر دستگاه‎های سامسونگ ازQualcomm Snapdragon استفاده می‎شود. اکسینوس 9610 در حقیقت از سیستم‎های میان‎رده‎ای است که آنرا با پردازنده Snapdragon 670 گوشی پیسکل 3a مقایسه می‎کنند. این تراشه‌ی میان‌رده برای نخستین بار در گلکسی A50 به کار گرفته و در ساخت آن فرایند ساخت ۱۰ نانومتری استفاده شده است.</p>
+                                        <div class="content-expert-img">
+                                            <img src="~/assets/images/single-product/101464529.jpg">
+                                        </div>
+                                        <p>پردازنده‌ی مرکزی هشت‌هسته‌ای همراه 4 گیگابایت رم، همه‌ی برنامه‌ها و بازی‌های موجود در فروشگاه را به‌راحتی اجرا می‌کند. از دیگر مشخصات سخت‌افزاری این گوشی بهره‎گیری از 128 گیگابایت حافظه داخلی و پشتیبانی از کارت‌حافظه‌ی جانبی تا حجم 1 ترابایت، امکان اتصال به شبکه‌های 4G، رادیو، NFC، امکان استفاده Wi-Fi 802.11 b/g/n و همچنین بلوتوث نسخه‌ی 5 که به لطف تراشه‌ی جدید سامسونگ فراهم شده است؛ اشاره کرد. از سایر مواردی که می‌توان به آن به‌عنوان نقطه‌ی عطف در این گوشی اشاره کرد، استفاده از USB Type-C در A50 است که به این گوشی قابلیت شارژ و انتقال داده سریع‌تر را می‌دهد.</p>
+                                    </div>
+                                </section>
+
+                                <section class="js-expert-article">
+                                    <button class="expert-article-button">
+                                        <span class="show-more"><i class="fa fa-minus"></i></span>
+                                        <span class="show-less"><i class="fa fa-plus"></i></span>
+                                    </button>
+                                    <h3 class="content-expert-title">نگاه کلی</h3>
+                                    <div class="content-expert-text">
+                                        <p>این روزها گوشی‌های میان‌رده آن‌قدر پیشرفته شده‌اند که با پرچم‌داران فاصله زیادی ندارند؛ نمایشگری که تمام قاب جلویی گوشی را پر کرده، سخت‌افزاری مطلوب و استفاده از باتری با ظرفیت بالا از ویژگی‎های قابل توجه A50 است. از جمله ایراداتی که بر این گوشی وارد است، عملکرد این گوشی در عکاسی در شب است. ضمن اینکه ویژگی ضد آب بودن از این گوشی حذف شده است. به طور کلی موبایل گلکسی A50 سامسونگ، محصولی مقرون‌به‌صرفه به‌حساب می‌آید که خرید آن برای آن دسته از کاربران توجیه بیشتری دارد که می‌خواهند یکی از گوشی‌های بالا رده برند سامسونگ را داشته باشند اما نمی‌خواهند برای آن هزینه‌ای گزاف بپردازند.</p>
+                                    </div>
+                                </section>
+
+                            </div>
+                        </div>
+
+                        <div class="tab params" style="display: none;">
+                            <article>
+                                <h2 class="params-headline">
+                                    مشخصات محصول
+                                    <span>@productname</span>
+                                </h2>
+                                @foreach (var item in Model.ProductFieldViewModels.FirstOrDefault().lsFieldGroup)
+                                {
+                                    <section>
+                                        @{
+                                            string Group = "";
+                                            try
+                                            {
+                                                var selectGroup = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item).FirstOrDefault();
+                                                if (selectGroup != null)
+                                                {
+                                                    Group = selectGroup.fieldGroup;
+                                                }
+                                            }
+                                            catch (Exception e)
+                                            {
+                                                string dd = e.Message;
+                                                throw;
+                                            }
+
+                                            <h3 class="params-title">@Group</h3>
+
+
+
+                                            var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
+                                            select = select.Where(x => x.IdProduct == Model.ProductFieldViewModels.FirstOrDefault().IdProduct);
+                                            foreach (var selectItem in select)
+                                            {
+                                                <ul class="params-list">
+
+                                                    @{
+                                                        if (selectItem.Type == 1)
+                                                        {
+                                                            <li>
+                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                    <div class="params-list-key">
+                                                                        <span class="block">@selectItem.Title</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                    <div class="params-list-value">
+                                                                        <span class="block">@selectItem.Value</span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+
+
+                                                        }
+                                                        if (selectItem.Type == 2)
+                                                        {
+                                                            <li>
+
+                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                    <div class="params-list-key">
+                                                                        <span class="block">@selectItem.Title</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                    <div class="params-list-value">
+                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                        {
+                                                                            <span class="block">بله</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="block">بله</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+
+                                                        }
+                                                        if (selectItem.Type == 3)
+                                                        {
+                                                            <li>
+
+                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                    <div class="params-list-key">
+                                                                        <span class="block">@selectItem.Title</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                    <div class="params-list-value">
+                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                        {
+                                                                            <span class="block">دارد</span>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <span class="block">ندارد</span>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                        }
+                                                        if (selectItem.Type == 4)
+                                                        {
+                                                            <li>
+                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                    <div class="params-list-key">
+                                                                        <span class="block">@selectItem.Title</span>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                    <div class="params-list-value">
+                                                                        <span class="block">@selectItem.CarNames</span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+
+                                                        }
+                                                    }
+                                                </ul>
+
+                                            }
+
+
+
+                                        }
+                                    </section>
+                                }
+                            </article>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-xs-12 pull-right" style="padding: 0;">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="widget widget-product card">
+                            <header class="card-header">
+                                <span class="title-one">خریداران این محصول، محصولات زیر را هم خریده‌اند</span>
+                                <h3 class="card-title"></h3>
+                            </header>
+                            <div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                                <div class="owl-stage-outer">
+                                    <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2242px;">
+                                        <div class="owl-item active" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/111460776.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو ...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item active" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/111474228.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Galaxy A10 SM-A105F/DS دو ...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item active" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/112145268.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Galaxy A70 SM-A705FN/DS دو...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item active" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/111475300.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Galaxy A30 SM-A305F/DS دو ...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/113542184.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل اپل مدل iPhone 11 Pro Max A2218 دو سیم...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/111469793.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Galaxy A20 SM-A205F/DS دو ...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="owl-item" style="width: 310.25px; margin-left: 10px;">
+                                            <div class="item">
+                                                <a href="#">
+                                                    <img src="~/assets/images/product-slider-2/111472656.jpg" class="img-fluid" alt="">
+                                                </a>
+                                                <h2 class="post-title">
+                                                    <a href="#">
+                                                        گوشی موبایل سامسونگ مدل Samsung Galaxy S10 Plus SM...
+                                                    </a>
+                                                </h2>
+                                                <div class="price">
+                                                    <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                                                    <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i class="fa fa-angle-right"></i></button><button type="button" role="presentation" class="owl-next"><i class="fa fa-angle-left"></i></button></div>
+                                <div class="owl-dots disabled"></div>
+                                <div class="owl-nav"><button type="button" role="presentation" class="owl-prev disabled"><i class="fa fa-angle-right"></i></button><button type="button" role="presentation" class="owl-next"><i class="fa fa-angle-left"></i></button></div>
+                                <div class="owl-dots disabled"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-product-id">
+                <span>شناسه کالا :</span>
+                <span>DKP - ۱۶۷۲۴۷۸</span>
+            </div>
+        </div>
+
+    }
+</div>
+
+<!--single-product------------------------->
+@section Scripts{
+    <script>
+        $('#btnproductborrow').on("click",
+            function() {
+                var post_data = $('#pid').text();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("Borrow","HomePage")',
+                    data: { 'productid': post_data },
+
+                    success: function(msg) {
+                        if (msg.status === 'success') {
+                            alert(msg.message);
+                            $("#requestcount").text(msg.sabadcount);
+                        } else {
+                            alert(msg.message);
+                        }
+                    }
+                })
+            })
+    </script>
+
+
+}

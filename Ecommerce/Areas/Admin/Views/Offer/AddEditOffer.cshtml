@@ -1,0 +1,81 @@
+﻿@model Ecommerce.Models.Offer
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+
+<form asp-controller="Offer" asp-action="AddEditOffer" id="addeditoffer" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditoffer" data-ajax-mode="replace">
+
+    @*header*@
+    @if (Model.Id != 0)
+    {
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش تخفیف" })
+    }
+    else
+    {
+    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن تخفیف" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="StartDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="EndDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="EndDate" class="form-control" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IsActiv" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="IsActiv" class="form-control" />
+                    <span asp-validation-for="IsActiv" class="text-danger"></span>
+                </div>
+            </div>
+
+           
+
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirecturl" value="@Url.Action("Index","Offer")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (Model.Id != 0)
+    {
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش تخفیف" })
+    }
+    else
+    {
+    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن تخفیف" })
+    }
+
+</form>

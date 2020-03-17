@@ -1,0 +1,64 @@
+﻿@model Ecommerce.Models.ViewModels.AddEditSelectItemViewModel
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+
+<form asp-controller="SelectItem" asp-action="AddEditSelectItem" id="addeditSelectItem" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditSelectItem" data-ajax-mode="replace">
+
+    @*header*@
+    @if (Model.Id != 0)
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش " })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن " })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdSelectGroup" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="IdSelectGroup" asp-items="@Model.SelectGroupListItems" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب استان</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","SelectItem")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (Model.Id != 0)
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن" })
+    }
+
+</form>

@@ -1,0 +1,86 @@
+﻿@model Ecommerce.Models.ViewModels.AddressesViewModel
+@using Ecommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Ecommerce
+
+@*<form asp-controller="User" asp-action="UserAddress" enctype="multipart/form-data">*@
+
+@*body*@
+<div class="modal-body form-horizontal">
+    <div class="row">
+
+        <div class="form-group">
+            <label asp-for="UserFullName" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="UserFullName" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Name" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="StateName" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="StateName" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Name" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CityName" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="CityName" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Code" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Address" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <textarea asp-for="Address" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Inventory" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Plaque" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Plaque" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Issenoble" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="PostalCode" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="PostalCode" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="OrderPoint" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Tell" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Tell" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Price" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Lat" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Lat" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Price" class="text-danger"></span>*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Lan" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6">
+                <input asp-for="Lan" class="form-control" readonly="readonly" />
+                @*<span asp-validation-for="Price" class="text-danger"></span>*@
+            </div>
+        </div>
+    </div>
+</div>
+@*</form>*@

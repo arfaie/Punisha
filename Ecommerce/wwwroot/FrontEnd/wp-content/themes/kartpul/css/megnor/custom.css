@@ -1,0 +1,91 @@
+.tmpmela-hide {
+    opacity: 0;
+    cursor: pointer;
+	filter: opacity(0%);
+	-webkit-filter:opacity(0%);
+	-o-filter: opacity(0%);
+	position:absolute;
+	left:0;
+	top:0;
+}
+.tmpmela-checkbox {
+    background: transparent url("../../images/megnor/check-box.png") -2px -37px no-repeat;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+	position:relative;
+	vertical-align: -3px;
+}
+.tmpmela-radio {
+    background: transparent url("../../images/megnor/check-box.png") -2px -0px no-repeat;
+   	display: inline-block;
+    height: 15px;
+    padding: 0;
+    vertical-align: -2px;
+    width: 15px;
+	position:relative;
+}
+.tmpmela-checked {
+    background-position: -74px -37px;
+    cursor: pointer;
+}
+.tmpmela-selected {
+    background-position:-75px 0px;
+    cursor: pointer;
+}
+.ie7 .tmpmela-checkbox-green,.ie8 .tmpmela-checkbox-green,.ie9 .tmpmela-checkbox-green	,
+.ie7 .tmpmela-checkbox, .ie8 .tmpmela-checkbox,.ie9 .tmpmela-checkbox,
+.ie7 .tmpmela-radio,.ie8 .tmpmela-radio,.ie9 .tmpmela-radio {
+    display: inline;
+    zoom: 1;
+}
+.tmpmela-checked-green {
+    background-position: 0 -18px;
+}
+.ie7 .tmpmela-checkbox, .ie8 .tmpmela-checkbox,.ie9 .tmpmela-checkbox,
+.ie7 .tmpmela-radio,.ie8 .tmpmela-radio,.ie9 .tmpmela-radio {
+    height: 18px;
+    float: left;
+}
+/* Custom Select*/
+select.hasCustomSelect {
+    z-index: 9;
+    cursor: pointer;
+    display: inline-block !important;
+}
+span.customSelect {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 3px 10px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.woocommerce-ordering span.customSelect { padding: 5px 10px;}
+.chzn-container {
+    display: none !important;
+    opacity: 0 !important;
+}
+#customer_details span.country_select.country_select {
+    width: 100%;
+}
+.jigoshop-checkout #billing-country {
+    margin-bottom: 35px;
+}
+.shipping_calculator .customSelect.country_to_state {
+    margin-bottom: 0;
+}
+span.customSelect.changed {
+    background-color: #f0dea4;
+}
+.customSelectOpen {
+ 
+}
+.customSelectInner {
+    background: url('../../images/megnor/down_arrow.png') no-repeat center right;
+	padding-right: 20px;
+}
+.customSelectOpen .customSelectInner {
+    background: url('../../images/megnor/up_arrow.png') no-repeat center right;
+}

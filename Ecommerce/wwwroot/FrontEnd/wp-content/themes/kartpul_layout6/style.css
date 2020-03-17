@@ -1,0 +1,305 @@
+/*
+Theme Name: Kartpul Layout6
+Theme URI: http://wordpress.templatemela.com/woo/WCM05/WCM050116/WP6
+Author: Templatemela
+Version: 1.1
+Description: Our default theme lets you create a responsive magazine website with a sleek, modern design.
+License: GNU General Public License v2
+Tags: one-column, two-columns, right-sidebar, custom-header, custom-menu, editor-style, featured-images, post-formats, rtl-language-support, sticky-post, translation-ready
+Text Domain: kartpul_layout6
+Template: kartpul
+*/
+.site-header .header-search .woocommerce-product-search button[type="submit"],
+.header-search input[type="submit"], .header-search input[type="submit"]:hover {
+    background-color: #638c28;
+    color: #ffffff;
+}
+.topbar-outer {
+    border-bottom: 1px solid #dedede;
+    padding: 8px 0
+}
+.quantity input.plus:hover, .quantity input.plus:focus, .quantity input.minus:hover, .quantity input.minus:focus {
+    background-color: #76A72E;
+    border-color: #76A72E;
+    color: #fff;
+}
+.woocommerce-tabs ul.tabs li.active a {
+    border-bottom: 1px solid #76A72E;
+}
+.box-category, .sticky-menu .box-category, .sidebar-category,
+.sidebar-category-inner .cat-parent .children.toggle-block.sub,
+.sidebar-category-inner li .sub-menu.sub {
+    border-color: #638c28;
+}
+.box-category, .sticky-menu .box-category {
+    padding: 21px 60px 21px 50px;   
+}
+.sidebar-category-inner .cat-parent .children.toggle-block.sub,
+.sidebar-category-inner li .sub-menu.sub {
+    border-left-color: transparent;
+}
+.box-category {    
+    padding: 21px 60px 21px 50px;
+}
+.box-category-heading {
+    background: #638c28;
+}
+.box-category::before { 
+    background: url("images/megnor/menu.png") no-repeat left center;
+    top: 22px;
+}
+.header-search {
+    margin: 10px 10px 10px 25px;
+}
+.header-right-service-cms .service-text.text { 
+    padding: 18px 0 17px 58px;
+}
+.home .sidebar-category {
+    display: none;
+}
+.header-right-service-cms .service-text.text::before { 
+    background: transparent url("images/megnor/offer.svg") no-repeat scroll center;
+    top: 15px;
+    background-size: 27px;
+}
+.header-top-center {    
+    padding-left: 0;
+}
+.header-top-left {
+    padding: 0 66px 0 0;
+}
+.header-bottom {
+    border-bottom: none;
+}
+.sticky-menu .header-top {
+    display: inline-block;
+}
+.sticky-menu .header-bottom {
+    display: none;
+}
+.sticky-menu .header-top-left {
+    height: 71px;
+}
+.sticky-menu .header-right {
+    padding: 10px 0;
+}
+.wishlist-counter .count, .header-cart .cart-contents span.cart-qty {
+    background: #000;
+    color: #fff;
+}
+.woocommerce .list a.compare.button:hover, .woocommerce .list .yith-wcwl-add-to-wishlist a.add_to_wishlist:hover {
+    color: #ffffff;
+}
+.woocommerce ul.products li.product .image-block, .woocommerce-page ul.products li.product .image-block {
+    border: 1px solid #e5e5e5;
+}
+.banner-text {
+    margin-top: 25px;
+}
+.cms-banner-item .text1 {
+    font-weight: 300;
+}
+.cms-banner-item .text2 {
+    font-weight: 600;
+}
+.categorytab .resp-tabs-list li.product-button a, #categorytab .resp-tabs-list li.product-button a {
+    color: #000000;
+}
+.normal-title::before, .upsells.products > h2::before,
+.related.products h2::before, .cross-sells > h2::before {
+    border-color: #76a72e;
+}
+#secondary .widget-title::before {
+    border-color: #76A72E;
+}
+.owl-theme .owl-buttons div:hover {
+    background-color: #76a72e;
+    color: #ffffff;
+}
+.owl-theme .owl-buttons div {
+    border-color: #76a72e;
+}
+.countbox.hastime {
+    border-color: #eaece7; 
+}
+.count-down {
+    background: #eaece7;
+}
+.mobile-navigation, .menu-toggle {
+   font-size: 0; 
+}
+.menu-toggle::before {
+    background-image: url("images/megnor/menu.svg");
+    background-position: 0 0px;
+    background-size: 25px;
+    margin-top: 4px;
+}
+.woocommerce ul.products li.product .button.product_type_simple.add_to_cart_button.ajax_add_to_cart,
+.woocommerce ul.products li.product .product_type_external,
+.woocommerce-page ul.products li.product .product_type_external,
+.woocommerce ul.products li.product .product_type_grouped.button,
+.woocommerce .widget_price_filter .price_slider_amount .button,
+.woocommerce-page .widget_price_filter .price_slider_amount .button,
+.post-info .read-more a,
+.widget button, .widget input[type="button"], .widget input[type="reset"],
+.widget input[type="submit"], a.button, button, .contributor-posts-link,
+input[type="button"], input[type="reset"], input[type="submit"],
+.button_content_inner a, .woocommerce #content input.button,
+.woocommerce #respond input#submit, .woocommerce a.button, .woocommerce button.button,
+.woocommerce input.button, .woocommerce-page #content input.button,
+.woocommerce-page #respond input#submit, .woocommerce-page a.button,
+.woocommerce-page button.button, .woocommerce-page input.button,
+.woocommerce .wishlist_table td.product-add-to-cart a,
+.woocommerce #content input.button.disabled, .woocommerce #content input.button:disabled,
+.woocommerce #respond input#submit.disabled, .woocommerce #respond input#submit:disabled,
+.woocommerce a.button.disabled, .woocommerce a.button:disabled, .woocommerce button.button.disabled,
+.woocommerce button.button:disabled, .woocommerce input.button.disabled, .woocommerce input.button:disabled, .woocommerce-page #content input.button.disabled, .woocommerce-page #content input.button:disabled, .woocommerce-page #respond input#submit.disabled, .woocommerce-page #respond input#submit:disabled, .woocommerce-page a.button.disabled, .woocommerce-page a.button:disabled, .woocommerce-page button.button.disabled, .woocommerce-page button.button:disabled, .woocommerce-page input.button.disabled,
+.woocommerce-page input.button:disabled, .loadgridlist-wrapper .woocount{
+    border-color: #f2f2f2;
+}
+.woocommerce ul.products li.product .price, .woocommerce-page ul.products li.product .price {
+    color: #000000;
+}
+.woocommerce ul.products li.product-category a img {
+    border: 1px solid #e4e4e4;
+}
+.summary .price {    
+    color: #000000;
+}
+.site-footer .widget .widget-title {
+    border-color: #e5e5e5;
+}
+.site-footer .widget-title::before {
+    background: #76A72E;
+}
+.post-info .read-more a{
+    background-color: #f2f2f2;
+}
+.blog-page article.post{
+    background: transparent;
+}
+.post-info .read-more a:hover, .post-info:hover .read-more a {
+    background: #273647;
+    color: #fff;
+    border-color: #273647;
+}
+.widget .tnp-email {
+    background-image: url("images/megnor/mail.png");
+}
+#categorytab .resp-tabs-container, .categorytab .resp-tabs-container {
+    border-color: #f5f5f5;
+}
+.categorytab {
+    border: 2px solid #f5f5f5;
+    box-sizing: border-box;
+}
+.menu-footer-navigation-container, .footer-bottom {
+    border-color: #2a2a2a;
+}
+.paging-navigation a:hover,
+.paging-navigation .page-numbers.current,
+.woocommerce-pagination span.current,
+.woocommerce-pagination a:hover {
+    background: #76a72e;
+    color: #ffffff;
+}
+#secondary .widget-title {
+    border-color: #e5e5e5;
+}
+.site-content .entry-meta span:hover .fa, .site-content .entry-meta a:hover {
+    color: #76a72e;
+}
+.sticky-post {
+    background: #76a72e;
+    color: #fff;
+}
+.links .icon, .gallery-zoom .icon, .gallery-redirect .icon, .blog-posts-content .block_hover .icon{
+    background-color: #76a72e;
+}
+.links a.icon .fa, .gallery-zoom .icon .fa, .gallery-redirect .icon .fa, .blog-posts-content .block_hover .icon .fa {
+    color: #ffffff;
+}
+.vc_btn3-style-custom.vc_general.vc_btn3:focus, .vc_btn3-style-custom.vc_general.vc_btn3:hover {
+    background-color: #76a72e!important;
+}
+.widget .tnp .tnp-submit, .tnp .tnp-submit, .widget .tnp input[type="submit"]:hover {
+    background: #638c28;
+    color: #ffffff;
+}
+.follow-us a i {
+    color: #fff;
+}
+.pricing_wrapper:hover .pricing_heading, .pricing_wrapper .selected .pricing_heading, .pricing_wrapper:hover .pricing_top, .pricing_wrapper .selected .pricing_top, .pricing_wrapper:hover .pricing_button a#pricing-btn, .pricing_wrapper .selected .pricing_button a#pricing-btn {
+    background: #76a72e;
+    color: #ffffff;
+}
+.pricing_wrapper:hover .pricing_wrapper_inner, .pricing_wrapper:hover .pricing_button a#pricing-btn, .pricing_wrapper .selected .pricing_button a#pricing-btn {
+    border-color: #76a72e;
+}
+.style1 #tab ul li a.current, .style1 #tab ul li a:hover {
+    background: #76a72e;
+    color: #fff;
+}
+.vertical_tab.style2 #tab ul li a.current, .vertical_tab.style2 #tab ul li a:hover {    
+    border-left: 3px solid #76a72e;
+}
+.horizontal_tab.style2 #tab ul li a.current, .horizontal_tab.style2 #tab ul li a:hover {    
+    border-top: 3px solid #76a72e;
+}
+.product-category:hover h2, .product-category:hover mark,
+.staff-page .staff-position span,
+.custom-testimonial .testimonial-title a {
+    color: #76a72e;
+}
+.single-team:hover .staff-position span, .single-team:hover .staff-name a, .single-team:hover .staff-social .icon .fa {
+    color: #76a72e;
+}
+#to_top{
+    background-color: #76a72e;
+}
+#to_top::before {
+    color: #fff; 
+}
+.woocount.loadgridlist {
+    border-color: #f2f2f2 !important;
+}
+.woocount.loadgridlist:hover {
+    border-color: #273647 !important;
+}
+.woocommerce .cart .button, .woocommerce .cart input.button, .woocommerce-page .cart .button, .woocommerce-page .cart input.button {
+    border-color: #f2f2f2;
+}
+.woocommerce .wc-proceed-to-checkout .checkout-button, .woocommerce-page .wc-proceed-to-checkout .checkout-button {
+    background-color: #273647 !important;
+    color: #fff !important;
+    border-color: #273647;
+}
+.woocommerce #payment #place_order, .woocommerce-page #payment #place_order {
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -o-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-color: #273647;
+    background-color: #273647;
+    color: #fff;
+}
+.checkout_coupon button{
+    border-color: #f2f2f2 !important;
+}
+.checkout_coupon button:hover{
+    border-color: #273647 !important;
+}
+.post-content-outer .read-more{
+    border-color: #f2f2f2;
+    background: #f2f2f2;
+}
+.post-info .read-more a:hover, .post-info:hover .read-more a, .post-content-outer .read-more:hover {
+    background: #76a72e;
+    border-color: #76a72e;
+}
+.post-content-outer .read-more:hover a{
+    color: #ffffff;
+}
+.sk-fading-circle .sk-circle:before {
+    background-color: #76a72e;
+}
