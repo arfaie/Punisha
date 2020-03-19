@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200318073640_V1.5.cs" />
+    <Compile Remove="Migrations\20200318073640_V1.5.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\fonts\fontawesome-webfont5b62-2.html" />
+    <Content Remove="wwwroot\fonts\fontawesome-webfont5b62.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="Views\User\EditProfile.cshtml" />
     <None Include="Views\User\GetNumber.cshtml" />
     <None Include="Views\User\Login.cshtml" />

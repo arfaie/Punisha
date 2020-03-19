@@ -1,353 +1,338 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Ecommerce.Helpers.OptionEnums;
-using Ecommerce.Models;
+﻿using Ecommerce.Models;
+using Ecommerce.Models.Helpers;
+using Ecommerce.Models.Helpers.OptionEnums;
 using Ecommerce.Models.ViewModels;
-using Ecommerce.Net;
-using Ecommerce.Net.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class UserController : Controller
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly ApplicationDbContext _context;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
+	public class UserController : Controller
+	{
+		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly RoleManager<ApplicationRole> _roleManager;
+		private readonly ApplicationDbContext _context;
+		private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _context = context;
-            _signInManager = signInManager;
-        }
+		public UserController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager, ApplicationDbContext context, SignInManager<ApplicationUser> signInManager)
+		{
+			_userManager = userManager;
+			_roleManager = roleManager;
+			_context = context;
+			_signInManager = signInManager;
+		}
 
-        public async Task<IActionResult> Index()
-        {
+		public async Task<IActionResult> Index()
+		{
+			var query = (from u in _context.Users
+						 join ug in _context.UserGroups on u.IdUserGroup equals ug.Id
+						 select new UserListViewModel
+						 {
+							 Id = u.Id,
+							 FullName = u.Firstname + " " + u.Lastname,
+							 Email = u.Email,
+							 UserGroupId = u.IdUserGroup,
+							 UserGroupName = ug.Title
+						 }).ToList();
+			return View(query);
 
-            var query = (from u in _context.Users
-                         join ug in _context.UserGroups on u.IdUserGroup equals ug.Id
-                         select new UserListViewModel
-                         {
-                             Id = u.Id,
-                             FullName = u.Firstname + " " + u.Lastname,
-                             Email = u.Email,
-                             UserGroupId = u.IdUserGroup,
-                             UserGroupName = ug.Title
-                         }).ToList();
-            return View(query);
+			//List<UserListViewModel> model = new List<UserListViewModel>();
+			//model = await _userManager.Users.Select(u => new UserListViewModel
+			//{
+			//    Id = u.Id,
+			//    FullName = u.Firstname + " " + u.Lastname,
+			//    Email = u.Email
 
-            //List<UserListViewModel> model = new List<UserListViewModel>();
-            //model = await _userManager.Users.Select(u => new UserListViewModel
-            //{
-            //    Id = u.Id,
-            //    FullName = u.Firstname + " " + u.Lastname,
-            //    Email = u.Email
+			//}).ToListAsync();
+			//return View(model);
+		}
 
-            //}).ToListAsync();
-            //return View(model);
-        }
+		[HttpGet]
+		public async Task<IActionResult> AddUser()
+		{
+			UserViewModel model = new UserViewModel();
+			model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
+			{
+				Text = r.Name,
+				Value = r.Id
+			}).ToListAsync();
 
-        [HttpGet]
-        public async Task<IActionResult> AddUser()
-        {
-            UserViewModel model = new UserViewModel();
-            model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
-            {
-                Text = r.Name,
-                Value = r.Id
+			model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
+			{
+				Text = us.Title,
+				Value = us.Id.ToString()
+			}).ToListAsync();
 
-            }).ToListAsync();
+			model.CarListItems = await _context.Cars.Select(c => new SelectListItem
+			{
+				Text = c.Name,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-            model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-            {
-                Text = us.Title,
-                Value = us.Id.ToString()
-            }).ToListAsync();
+			return PartialView("AddUser", model);
+		}
 
-            model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddUser(UserViewModel model, string redirecturl)
+		{
+			if (ModelState.IsValid)
+			{
+				ApplicationUser user = new ApplicationUser()
+				{
+					Firstname = model.FirstName,
+					Lastname = model.LastName,
+					PhoneNumber = model.PhoneNumber,
+					UserName = model.Username,
+					Email = model.Email,
+					IdCar = model.CarId,
+					IdUserGroup = model.UserGroupId
+				};
 
-            return PartialView("AddUser", model);
-        }
+				IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+				if (result.Succeeded)
+				{
+					ApplicationRole approle = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
+					if (approle != null)
+					{
+						IdentityResult Roleresult = await _userManager.AddToRoleAsync(user, approle.Name);
+						if (Roleresult.Succeeded)
+						{
+							TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
 
+							return PartialView("_Succefullyresponse", redirecturl);
+						}
+					}
+				}
+			}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddUser(UserViewModel model, string redirecturl)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = new ApplicationUser()
-                {
-                    Firstname = model.FirstName,
-                    Lastname = model.LastName,
-                    PhoneNumber = model.PhoneNumber,
-                    UserName = model.Username,
-                    Email = model.Email,
-                    IdCar = model.CarId,
-                    IdUserGroup = model.UserGroupId
+			model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+			{
+				Text = r.Name,
+				Value = r.Id
+			}).ToList();
 
-                };
+			model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
+			{
+				Text = us.Title,
+				Value = us.Id.ToString()
+			}).ToListAsync();
 
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    ApplicationRole approle = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
-                    if (approle != null)
-                    {
-                        IdentityResult Roleresult = await _userManager.AddToRoleAsync(user, approle.Name);
-                        if (Roleresult.Succeeded)
-                        {
-                            TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
+			model.CarListItems = await _context.Cars.Select(c => new SelectListItem
+			{
+				Text = c.Name,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-                            return PartialView("_Succefullyresponse", redirecturl);
-                        }
-                    }
-                }
-            }
+			return PartialView("AddUser", model);
+		}
 
-            model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
-            {
-                Text = r.Name,
-                Value = r.Id
+		[HttpGet]
+		public async Task<IActionResult> EditUser(string Id)
+		{
+			EditUserViewModel model = new EditUserViewModel();
+			model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
+			{
+				Text = r.Name,
+				Value = r.Id
+			}).ToListAsync();
 
-            }).ToList();
+			/////////////////////////////////////////////////////////
+			if (!string.IsNullOrEmpty(Id))
+			{
+				ApplicationUser user = await _userManager.FindByIdAsync(Id);
+				if (user != null)
+				{
+					model.Id = user.Id;
+					model.FirstName = user.Firstname;
+					model.LastName = user.Lastname;
+					model.Email = user.Email;
+					model.Username = user.UserName;
+					model.ApplicationRoleId = _roleManager.Roles.Single(r => r.Name == _userManager.GetRolesAsync(user).Result.Single()).Id;
+					model.CarId = user.IdCar;
+					model.UserGroupId = user.IdUserGroup;
+					model.PhoneNumber = user.PhoneNumber;
+				}
+			}
 
-            model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-            {
-                Text = us.Title,
-                Value = us.Id.ToString()
-            }).ToListAsync();
+			model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
+			{
+				Text = us.Title,
+				Value = us.Id.ToString()
+			}).ToListAsync();
 
-            model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+			model.CarListItems = await _context.Cars.Select(c => new SelectListItem
+			{
+				Text = c.Name,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-            return PartialView("AddUser", model);
+			return PartialView("EditUser", model);
+		}
 
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> EditUser(string id, EditUserViewModel model, string redirecturl)
+		{
+			if (ModelState.IsValid)
+			{
+				ApplicationUser user = await _userManager.FindByIdAsync(id);
+				if (user != null)
+				{
+					user.Firstname = model.FirstName;
+					user.Lastname = model.LastName;
+					user.Email = model.Email;
+					user.UserName = model.Username;
+					user.IdCar = model.CarId;
+					user.IdUserGroup = model.UserGroupId;
+					user.PhoneNumber = model.PhoneNumber;
 
-        [HttpGet]
-        public async Task<IActionResult> EditUser(string Id)
-        {
-            EditUserViewModel model = new EditUserViewModel();
-            model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
-            {
-                Text = r.Name,
-                Value = r.Id
-            }).ToListAsync();
+					string existingRole = _userManager.GetRolesAsync(user).Result.Single();
+					string exiistingRoleId = _roleManager.Roles.Single(r => r.Name == existingRole).Id;
+					IdentityResult result = await _userManager.UpdateAsync(user);
+					if (result.Succeeded)
+					{
+						if (exiistingRoleId != model.ApplicationRoleId)
+						{
+							IdentityResult roleresult = await _userManager.RemoveFromRoleAsync(user, existingRole);
+							if (roleresult.Succeeded)
+							{
+								ApplicationRole applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
+								if (applicationRole != null)
+								{
+									IdentityResult newrole = await _userManager.AddToRoleAsync(user, applicationRole.Name);
+									if (newrole.Succeeded)
+									{
+										TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
 
-            /////////////////////////////////////////////////////////
-            if (!string.IsNullOrEmpty(Id))
-            {
-                ApplicationUser user = await _userManager.FindByIdAsync(Id);
-                if (user != null)
-                {
-                    model.Id = user.Id;
-                    model.FirstName = user.Firstname;
-                    model.LastName = user.Lastname;
-                    model.Email = user.Email;
-                    model.Username = user.UserName;
-                    model.ApplicationRoleId = _roleManager.Roles.Single(r => r.Name == _userManager.GetRolesAsync(user).Result.Single()).Id;
-                    model.CarId = user.IdCar;
-                    model.UserGroupId = user.IdUserGroup;
-                    model.PhoneNumber = user.PhoneNumber;
-                }
-            }
+										return PartialView("_Succefullyresponse", redirecturl);
+									}
+								}
+							}
+						}
 
-            model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-            {
-                Text = us.Title,
-                Value = us.Id.ToString()
-            }).ToListAsync();
+						TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
 
-            model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+						return PartialView("_Succefullyresponse", redirecturl);
+					}
+				}
+			}
 
-            return PartialView("EditUser", model);
-        }
+			model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
+			{
+				Text = r.Name,
+				Value = r.Id
+			}).ToList();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditUser(string id, EditUserViewModel model, string redirecturl)
-        {
-            if (ModelState.IsValid)
-            {
-                ApplicationUser user = await _userManager.FindByIdAsync(id);
-                if (user != null)
-                {
-                    user.Firstname = model.FirstName;
-                    user.Lastname = model.LastName;
-                    user.Email = model.Email;
-                    user.UserName = model.Username;
-                    user.IdCar = model.CarId;
-                    user.IdUserGroup = model.UserGroupId;
-                    user.PhoneNumber = model.PhoneNumber;
+			model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
+			{
+				Text = us.Title,
+				Value = us.Id.ToString()
+			}).ToListAsync();
 
-                    string existingRole = _userManager.GetRolesAsync(user).Result.Single();
-                    string exiistingRoleId = _roleManager.Roles.Single(r => r.Name == existingRole).Id;
-                    IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded)
-                    {
-                        if (exiistingRoleId != model.ApplicationRoleId)
-                        {
-                            IdentityResult roleresult = await _userManager.RemoveFromRoleAsync(user, existingRole);
-                            if (roleresult.Succeeded)
-                            {
-                                ApplicationRole applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
-                                if (applicationRole != null)
-                                {
-                                    IdentityResult newrole = await _userManager.AddToRoleAsync(user, applicationRole.Name);
-                                    if (newrole.Succeeded)
-                                    {
-                                        TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
+			model.CarListItems = await _context.Cars.Select(c => new SelectListItem
+			{
+				Text = c.Name,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-                                        return PartialView("_Succefullyresponse", redirecturl);
-                                    }
-                                }
-                            }
-                        }
+			return PartialView("EditUser", model);
+		}
 
-                        TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
+		[HttpGet]
+		public IActionResult ChangeUserPass()
+		{
+			return View();
+		}
 
-                        return PartialView("_Succefullyresponse", redirecturl);
-                    }
-                }
-            }
+		//[HttpPost]
+		//public async Task<IActionResult> ChangeUserPass(string id, ChangePassViewModel model)
+		//{
+		//    if (ModelState.IsValid)
+		//    {
+		//        //ApplicationUser user = new ApplicationUser();
+		//        var user = await _userManager.FindByIdAsync(id);
 
-            model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
-            {
-                Text = r.Name,
-                Value = r.Id
+		//        if (await _userManager.CheckPasswordAsync(user, model.OldPassword))
+		//        {
+		//            await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+		//            ViewBag.changepass = "رمز عبور شما با موفقیت تغییر کرد";
+		//            return View(model);
+		//        }
+		//        else
+		//        {
+		//            ModelState.AddModelError("OldPassword", "رمز عبور فعلی صحیح نمی باشد.");
+		//            return View(model);
+		//        }
 
-            }).ToList();
+		//    }
+		//    return View(model);
+		//}
 
-            model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-            {
-                Text = us.Title,
-                Value = us.Id.ToString()
-            }).ToListAsync();
+		[HttpPost]
+		public async Task<IActionResult> ChangeUserPass(string id, ChangePassViewModel model, string redirecturl)
+		{
+			if (ModelState.IsValid)
+			{
+				var user = await _userManager.FindByIdAsync(id);
+				if (user == null)
+				{
+					return RedirectToAction("Index");
+				}
 
-            model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+				var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
-            return PartialView("EditUser", model);
+				if (!result.Succeeded)
+				{
+					foreach (var error in result.Errors)
+					{
+						ModelState.AddModelError(string.Empty, error.Description);
+					}
 
-        }
+					TempData["Notif"] = Notification.ShowNotif("خطایی رخ داد.", ToastType.red);
+					return View();
+				}
 
-        [HttpGet]
-        public IActionResult ChangeUserPass()
-        {
-            return View();
-        }
+				//await _signInManager.RefreshSignInAsync(user);
+				TempData["Notif"] = Notification.ShowNotif("رمز عبور شما با موفقیت ویرایش شد.", ToastType.green);
+				return PartialView("_Succefullyresponse", redirecturl);
+			}
+			return View();
+		}
 
-        //[HttpPost]
-        //public async Task<IActionResult> ChangeUserPass(string id, ChangePassViewModel model)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        //ApplicationUser user = new ApplicationUser();
-        //        var user = await _userManager.FindByIdAsync(id);
+		public async Task<IActionResult> UserAddress(string Id)
+		{
+			var model = await (from addres in _context.Addresses
+							   join u in _context.Users on addres.IdUser equals u.Id
 
-        //        if (await _userManager.CheckPasswordAsync(user, model.OldPassword))
-        //        {
-        //            await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-        //            ViewBag.changepass = "رمز عبور شما با موفقیت تغییر کرد";
-        //            return View(model);
-        //        }
-        //        else
-        //        {
-        //            ModelState.AddModelError("OldPassword", "رمز عبور فعلی صحیح نمی باشد.");
-        //            return View(model);
-        //        }
+							   join c in _context.Cities on addres.IdCity equals c.Id
+							   where u.Id == Id
+							   select new AddressesViewModel()
+							   {
+								   Id = addres.Id,
 
-        //    }
-        //    return View(model);
-        //}
+								   IdCity = addres.IdCity,
+								   CityName = c.Name,
+								   Address = addres.Address,
+								   Plaque = addres.Plaque,
+								   PostalCode = addres.PostalCode,
+								   Mobile = addres.Mobile,
+								   Tell = addres.Tell,
+								   Lan = addres.Lan,
+								   Lat = addres.Lat,
+								   IdUser = u.Id,
+								   UserFullName = u.Firstname + " " + u.Lastname
+							   }).SingleOrDefaultAsync();
 
-        [HttpPost]
-        public async Task<IActionResult> ChangeUserPass(string id, ChangePassViewModel model, string redirecturl)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByIdAsync(id);
-                if (user == null)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-
-                if (!result.Succeeded)
-                {
-
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
-                    TempData["Notif"] = Notification.ShowNotif("خطایی رخ داد.", ToastType.red);
-                    return View();
-                }
-
-                //await _signInManager.RefreshSignInAsync(user);
-                TempData["Notif"] = Notification.ShowNotif("رمز عبور شما با موفقیت ویرایش شد.", ToastType.green);
-                return PartialView("_Succefullyresponse", redirecturl);
-
-            }
-            return View();
-        }
-
-        public async Task<IActionResult> UserAddress(string Id)
-        {
-            var model = await (from addres in _context.Addresses
-                join u in _context.Users on addres.IdUser equals u.Id
-               
-                join c in _context.Cities on addres.IdCity equals c.Id
-                where u.Id == Id
-                select new AddressesViewModel()
-                {
-                    Id = addres.Id,
-                    
-                    IdCity = addres.IdCity,
-                    CityName = c.Name,
-                    Address = addres.Address,
-                    Plaque = addres.Plaque,
-                    PostalCode = addres.PostalCode,
-                    Mobile = addres.Mobile,
-                    Tell = addres.Tell,
-                    Lan = addres.Lan,
-                    Lat = addres.Lat,
-                    IdUser = u.Id,
-                    UserFullName = u.Firstname + " " + u.Lastname
-                }).SingleOrDefaultAsync();
-
-
-
-            return View(model);
-        }
-    }
+			return View(model);
+		}
+	}
 }

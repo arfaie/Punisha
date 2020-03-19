@@ -1,168 +1,163 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ecommerce.Helpers.OptionEnums;
-using Ecommerce.Models;
+﻿using Ecommerce.Models;
+using Ecommerce.Models.Helpers;
+using Ecommerce.Models.Helpers.OptionEnums;
 using Ecommerce.Models.ViewModels;
-using Ecommerce.Net;
-using Ecommerce.Net.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class SelectItemController : Controller
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _serviceProvider;
+	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
+	public class SelectItemController : Controller
+	{
+		private readonly ApplicationDbContext _context;
+		private readonly IServiceProvider _serviceProvider;
 
-        public SelectItemController(ApplicationDbContext context, IServiceProvider serviceProvider)
-        {
-            _context = context;
-            _serviceProvider = serviceProvider;
-        }
+		public SelectItemController(ApplicationDbContext context, IServiceProvider serviceProvider)
+		{
+			_context = context;
+			_serviceProvider = serviceProvider;
+		}
 
-        public async Task<IActionResult> Index()
-        {
-            var query = await (from si in _context.SelectItems
-                join Sg in _context.SelectGroups on si.IdSelectGroup equals Sg.Id
-                select new SelectItemViewModel
-                {
-                    Id = si.Id,
-                    IdSelectGroup = si.IdSelectGroup,
-                    SelectGroupTitle = Sg.Title,
-                    Title = si.Title
-                }).ToListAsync();
+		public async Task<IActionResult> Index()
+		{
+			var query = await (from si in _context.SelectItems
+							   join Sg in _context.SelectGroups on si.IdSelectGroup equals Sg.Id
+							   select new SelectItemViewModel
+							   {
+								   Id = si.Id,
+								   IdSelectGroup = si.IdSelectGroup,
+								   SelectGroupTitle = Sg.Title,
+								   Title = si.Title
+							   }).ToListAsync();
 
-            return View(query);
-        }
+			return View(query);
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> AddEditSelectItem(int id)
-        {
+		[HttpGet]
+		public async Task<IActionResult> AddEditSelectItem(int id)
+		{
+			AddEditSelectItemViewModel model = new AddEditSelectItemViewModel();
+			model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem()
+			{
+				Text = c.Title,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-            AddEditSelectItemViewModel model = new AddEditSelectItemViewModel();
-            model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem()
-            {
-                Text = c.Title,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+			if (id != 0)
+			{
+				using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
+				{
+					SelectItem SelectItem = await _context.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
+					if (SelectItem != null)
+					{
+						model.Id = SelectItem.Id;
+						model.Title = SelectItem.Title;
+						model.IdSelectGroup = SelectItem.IdSelectGroup;
+					}
+				}
+			}
 
-            if (id != 0)
-            {
-                using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
-                {
-                    SelectItem SelectItem = await _context.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
-                    if (SelectItem != null)
-                    {
-                        model.Id = SelectItem.Id;
-                        model.Title = SelectItem.Title;
-                        model.IdSelectGroup = SelectItem.IdSelectGroup;
-                    }
+			return PartialView("AddEditSelectItem", model);
+		}
 
-                }
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddEditSelectItem(int Id, AddEditSelectItemViewModel model, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				if (Id == 0)
+				{
+					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+					{
+						SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
+						db.SelectItems.Add(SelectItemModel);
+						await db.SaveChangesAsync();
+					}
 
-            return PartialView("AddEditSelectItem", model);
+					TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
 
-        }
+					return PartialView("_Succefullyresponse", redirectUrl);
+				}
+				else
+				{
+					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+					{
+						SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
+						db.SelectItems.Update(SelectItemModel);
+						await db.SaveChangesAsync();
+					}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEditSelectItem(int Id, AddEditSelectItemViewModel model, string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (Id == 0)
-                {
-                    using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                    {
-                        SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
-                        db.SelectItems.Add(SelectItemModel);
-                        await db.SaveChangesAsync();
-                    }
+					TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
 
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
+					return PartialView("_Succefullyresponse", redirectUrl);
+				}
+			}
 
-                    return PartialView("_Succefullyresponse", redirectUrl);
-                }
-                else
-                {
-                    using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                    {
-                        SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
-                        db.SelectItems.Update(SelectItemModel);
-                        await db.SaveChangesAsync();
-                    }
+			if (Id == 0)
+			{
+				TempData["Notif"] = Notification.ShowNotif(MessageType.addError, type: ToastType.yellow);
+			}
+			else
+			{
+				TempData["Notif"] = Notification.ShowNotif(MessageType.editError, type: ToastType.yellow);
+			}
 
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
+			model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem()
+			{
+				Text = c.Title,
+				Value = c.Id.ToString()
+			}).ToListAsync();
 
-                    return PartialView("_Succefullyresponse", redirectUrl);
-                }
-            }
+			return PartialView("AddEditSelectItem", model);
+		}
 
-            if (Id == 0)
-            {
-                TempData["Notif"] = Notification.ShowNotif(MessageType.addError, type: ToastType.yellow);
-            }
-            else
-            {
-                TempData["Notif"] = Notification.ShowNotif(MessageType.editError, type: ToastType.yellow);
-            }
+		[HttpGet]
+		public async Task<IActionResult> DeleteSelectItem(int Id)
+		{
+			var SelectItem = new SelectItem();
+			using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+			{
+				SelectItem = await db.SelectItems.Where(a => a.Id == Id).SingleOrDefaultAsync();
+				if (SelectItem == null)
+				{
+					return RedirectToAction("Index");
+				}
+			}
 
-            model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem()
-            {
-                Text = c.Title,
-                Value = c.Id.ToString()
-            }).ToListAsync();
+			return PartialView("DeleteSelectItem", SelectItem.Title);
+		}
 
-            return PartialView("AddEditSelectItem", model);
-        }
+		[HttpPost]
+		public async Task<IActionResult> DeleteSelectItem(int id, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+				{
+					var SelectItem = await db.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteSelectItem(int Id)
-        {
-            var SelectItem = new SelectItem();
-            using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-            {
-                SelectItem = await db.SelectItems.Where(a => a.Id == Id).SingleOrDefaultAsync();
-                if (SelectItem == null)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
+					db.SelectItems.Remove(SelectItem);
+					await db.SaveChangesAsync();
 
-            return PartialView("DeleteSelectItem", SelectItem.Title);
-        }
+					TempData["Notif"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.red);
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteSelectItem(int id, string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                {
-                    var SelectItem = await db.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
+					return PartialView("_Succefullyresponse", redirectUrl);
+				}
+			}
 
-                    db.SelectItems.Remove(SelectItem);
-                    await db.SaveChangesAsync();
+			TempData["Notif"] = Notification.ShowNotif(MessageType.deleteError, type: ToastType.yellow);
 
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.red);
-
-                    return PartialView("_Succefullyresponse", redirectUrl);
-                }
-            }
-
-            TempData["Notif"] = Notification.ShowNotif(MessageType.deleteError, type: ToastType.yellow);
-
-            return RedirectToAction("Index");
-
-        }
-    }
+			return RedirectToAction("Index");
+		}
+	}
 }

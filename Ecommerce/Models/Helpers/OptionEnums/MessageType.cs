@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace Ecommerce.Helpers.OptionEnums
+﻿namespace Ecommerce.Models.Helpers.OptionEnums
 {
     public class MessageType
     {

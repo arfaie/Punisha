@@ -1,12 +1,9 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_RegisterLayout.cshtml";
 }
 
 @model Ecommerce.Models.ViewModels.UserViewModel
-@using Ecommerce.PublicModel
-
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, Ecommerce
 <form asp-controller="User" asp-action="Login" method="post">
@@ -25,7 +22,6 @@
                 <a href="/User/Getnumber" class="account-link-password">رمز خود را فراموش کرده ام</a>
                 <label for="password">رمز عبور</label>
                 <input asp-for="Password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" />
-
 
                 <div class="parent-btn">
                     <button class="dk-btn dk-btn-info">
@@ -49,3 +45,8 @@
         </div>
     </div>
 </form>
+
+@if (TempData["Notif"] != null)
+{
+    @Html.Raw(TempData["Notif"])
+}

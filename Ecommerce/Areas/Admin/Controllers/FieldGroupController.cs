@@ -1,143 +1,141 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Ecommerce.Helpers.OptionEnums;
-using Ecommerce.Models;
-using Ecommerce.Net;
-using Ecommerce.Net.OptionEnums;
+﻿using Ecommerce.Models;
+using Ecommerce.Models.Helpers;
+using Ecommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class FieldGroupController : Controller
-    {
-        private readonly ApplicationDbContext _context;
-        private readonly IServiceProvider _serviceProvider;
+	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
+	public class FieldGroupController : Controller
+	{
+		private readonly ApplicationDbContext _context;
+		private readonly IServiceProvider _serviceProvider;
 
-        public FieldGroupController(ApplicationDbContext context, IServiceProvider serviceProvider)
-        {
-            _context = context;
-            _serviceProvider = serviceProvider;
-        }
-        
-        public async Task<IActionResult> Index()
-        {
-            var model = await _context.FieldGroups.ToListAsync();
-            return View(model);
-        }
+		public FieldGroupController(ApplicationDbContext context, IServiceProvider serviceProvider)
+		{
+			_context = context;
+			_serviceProvider = serviceProvider;
+		}
 
-        [HttpGet]
-        public async Task<IActionResult> AddEditFieldGroup(int id)
-        {
-            var fieldGroup = new FieldGroup();
-            if (id != 0)
-            {
-                using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
-                {
-                    fieldGroup = await _context.FieldGroups.Where(fg => fg.Id == id).SingleOrDefaultAsync();
-                    if (fieldGroup == null)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                }
-            }
+		public async Task<IActionResult> Index()
+		{
+			var model = await _context.FieldGroups.ToListAsync();
+			return View(model);
+		}
 
-            return PartialView("AddEditFieldGroup", fieldGroup);
-        }
+		[HttpGet]
+		public async Task<IActionResult> AddEditFieldGroup(int id)
+		{
+			var fieldGroup = new FieldGroup();
+			if (id != 0)
+			{
+				using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
+				{
+					fieldGroup = await _context.FieldGroups.Where(fg => fg.Id == id).SingleOrDefaultAsync();
+					if (fieldGroup == null)
+					{
+						return RedirectToAction("Index");
+					}
+				}
+			}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEditFieldGroup(int id,FieldGroup model,string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (id == 0)
-                {
-                    using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                    {
-                        db.FieldGroups.Add(model);
-                        await db.SaveChangesAsync();
-                    }
+			return PartialView("AddEditFieldGroup", fieldGroup);
+		}
 
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddEditFieldGroup(int id, FieldGroup model, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				if (id == 0)
+				{
+					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+					{
+						db.FieldGroups.Add(model);
+						await db.SaveChangesAsync();
+					}
 
-                    return PartialView("_Succefullyresponse", redirectUrl);
-                }
-                else
-                {
-                    using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                    {
-                        db.FieldGroups.Update(model);
-                        await db.SaveChangesAsync();
-                    }
+					TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
 
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
+					return PartialView("_Succefullyresponse", redirectUrl);
+				}
+				else
+				{
+					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+					{
+						db.FieldGroups.Update(model);
+						await db.SaveChangesAsync();
+					}
 
-                    return PartialView("_Succefullyresponse", redirectUrl);
-                }
-            }
-            else
-            {
-                if (id == 0)
-                {
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.addError, type: ToastType.yellow);
-                }
-                else
-                {
-                    TempData["Notif"] = Notification.ShowNotif(MessageType.editError, type: ToastType.yellow);
-                }
+					TempData["Notif"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.blue);
 
-                return PartialView("AddEditFieldGroup", model);
-            }
-        }
+					return PartialView("_Succefullyresponse", redirectUrl);
+				}
+			}
+			else
+			{
+				if (id == 0)
+				{
+					TempData["Notif"] = Notification.ShowNotif(MessageType.addError, type: ToastType.yellow);
+				}
+				else
+				{
+					TempData["Notif"] = Notification.ShowNotif(MessageType.editError, type: ToastType.yellow);
+				}
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteFieldGroup(int id)
-        {
-            var model = new FieldGroup();
-            if (id != 0)
-            {
-                using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
-                {
-                    model = await _context.FieldGroups.Where(fg => fg.Id == id).SingleOrDefaultAsync();
-                    if (model == null)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                }
-            }
+				return PartialView("AddEditFieldGroup", model);
+			}
+		}
 
-            return PartialView("DeleteFieldGroup", model.Title);
-        }
+		[HttpGet]
+		public async Task<IActionResult> DeleteFieldGroup(int id)
+		{
+			var model = new FieldGroup();
+			if (id != 0)
+			{
+				using (_serviceProvider.GetRequiredService<ApplicationDbContext>())
+				{
+					model = await _context.FieldGroups.Where(fg => fg.Id == id).SingleOrDefaultAsync();
+					if (model == null)
+					{
+						return RedirectToAction("Index");
+					}
+				}
+			}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteFieldGroup(int id, string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-                {
-                    var model = await _context.FieldGroups.Where(f => f.Id == id).SingleOrDefaultAsync();
-                    db.FieldGroups.Remove(model);
-                }
+			return PartialView("DeleteFieldGroup", model.Title);
+		}
 
-                TempData["Notif"] = Notification.ShowNotif(MessageType.Delete, ToastType.red);
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteFieldGroup(int id, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+				{
+					var model = await _context.FieldGroups.Where(f => f.Id == id).SingleOrDefaultAsync();
+					db.FieldGroups.Remove(model);
+				}
 
-                return PartialView("_Succefullyresponse", redirectUrl);
-            }
-            else
-            {
-                TempData["Notif"] = Notification.ShowNotif(MessageType.deleteError, type: ToastType.yellow);
+				TempData["Notif"] = Notification.ShowNotif(MessageType.Delete, ToastType.red);
 
-                return RedirectToAction("Index");
-            }
-        }
-    }
+				return PartialView("_Succefullyresponse", redirectUrl);
+			}
+			else
+			{
+				TempData["Notif"] = Notification.ShowNotif(MessageType.deleteError, type: ToastType.yellow);
+
+				return RedirectToAction("Index");
+			}
+		}
+	}
 }

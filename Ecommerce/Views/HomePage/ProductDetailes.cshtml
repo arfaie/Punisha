@@ -5,7 +5,6 @@
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
-
 <!--single-product------------------------->
 <div class="col-12">
     @{
@@ -28,8 +27,8 @@
                 <article class="js-product">
                     <div class="col-lg-4 col-md-12 col-xs-12 pull-right">
                         <div class="product-gallery">
-                            <img class="zoom-img" id="img-product-zoom" src="~/assets/images/product-slider-2/111460776%20(2).jpg"
-                                 data-zoom-image="~/assets/images/product-slider-2/111460776%20(2).jpg" width="411" />
+                            <img class="zoom-img" id="img-product-zoom" src="~/assets/images/product-slider-2/111460776.jpg"
+                                 data-zoom-image="~/assets/images/product-slider-2/111460776.jpg" width="411" />
 
                         </div>
                     </div>
@@ -88,8 +87,6 @@
                     </div>
                     <!-- Modal -->
 
-
-
                     <div class="col-lg-8 col-md-12 col-xs-12 pull-left">
                         <section class="product-info">
                             <div class="product-headline">
@@ -115,7 +112,6 @@
                                                     </li>
                                                 </ul>
                                             </div>
-
 
                                         </div>
                                     </div>
@@ -205,9 +201,6 @@
                     </div>
                 </div>
             </div>
-
-
-
 
             <div class="p-tabs">
                 <div class="box-tabs-main">
@@ -405,135 +398,141 @@
                                     مشخصات محصول
                                     <span>@productname</span>
                                 </h2>
-                                @foreach (var item in Model.ProductFieldViewModels.FirstOrDefault().lsFieldGroup)
-                                {
-                                    <section>
-                                        @{
-                                            string Group = "";
-                                            try
-                                            {
-                                                var selectGroup = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item).FirstOrDefault();
-                                                if (selectGroup != null)
-                                                {
-                                                    Group = selectGroup.fieldGroup;
-                                                }
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                string dd = e.Message;
-                                                throw;
-                                            }
 
-                                            <h3 class="params-title">@Group</h3>
+                                @{
+                                    var productFieldViewModel = Model.ProductFieldViewModels.FirstOrDefault();
 
+                                    if (productFieldViewModel != null)
+                                    {
 
+                                        foreach (var item in productFieldViewModel.lsFieldGroup)
+                                        {
+                                            <section>
+                                                @{
+                                                    string Group = "";
 
-                                            var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
-                                            select = select.Where(x => x.IdProduct == Model.ProductFieldViewModels.FirstOrDefault().IdProduct);
-                                            foreach (var selectItem in select)
-                                            {
-                                                <ul class="params-list">
-
-                                                    @{
-                                                        if (selectItem.Type == 1)
+                                                    try
+                                                    {
+                                                        var selectGroup = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item).FirstOrDefault();
+                                                        if (selectGroup != null)
                                                         {
-                                                            <li>
-                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                    <div class="params-list-key">
-                                                                        <span class="block">@selectItem.Title</span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                    <div class="params-list-value">
-                                                                        <span class="block">@selectItem.Value</span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </li>
-
-
-                                                        }
-                                                        if (selectItem.Type == 2)
-                                                        {
-                                                            <li>
-
-                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                    <div class="params-list-key">
-                                                                        <span class="block">@selectItem.Title</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                    <div class="params-list-value">
-                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
-                                                                        {
-                                                                            <span class="block">بله</span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <span class="block">بله</span>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-
-                                                            </li>
-
-                                                        }
-                                                        if (selectItem.Type == 3)
-                                                        {
-                                                            <li>
-
-                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                    <div class="params-list-key">
-                                                                        <span class="block">@selectItem.Title</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                    <div class="params-list-value">
-                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
-                                                                        {
-                                                                            <span class="block">دارد</span>
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <span class="block">ندارد</span>
-                                                                        }
-                                                                    </div>
-                                                                </div>
-
-                                                            </li>
-                                                        }
-                                                        if (selectItem.Type == 4)
-                                                        {
-                                                            <li>
-                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                    <div class="params-list-key">
-                                                                        <span class="block">@selectItem.Title</span>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                    <div class="params-list-value">
-                                                                        <span class="block">@selectItem.CarNames</span>
-                                                                    </div>
-                                                                </div>
-
-                                                            </li>
-
+                                                            Group = selectGroup.fieldGroup;
                                                         }
                                                     }
-                                                </ul>
+                                                    catch (Exception e)
+                                                    {
+                                                        string dd = e.Message;
+                                                        throw;
+                                                    }
 
-                                            }
+                                                    <h3 class="params-title">@Group</h3>
 
+                                                    var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
+                                                    select = select.Where(x => x.IdProduct == Model.ProductFieldViewModels.FirstOrDefault().IdProduct);
+                                                    foreach (var selectItem in select)
+                                                    {
+                                                        <ul class="params-list">
 
+                                                            @{
+                                                                if (selectItem.Type == 1)
+                                                                {
+                                                                    <li>
+                                                                        <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                            <div class="params-list-key">
+                                                                                <span class="block">@selectItem.Title</span>
+                                                                            </div>
+                                                                        </div>
 
+                                                                        <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                            <div class="params-list-value">
+                                                                                <span class="block">@selectItem.Value</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+
+                                                                }
+                                                                if (selectItem.Type == 2)
+                                                                {
+                                                                    <li>
+
+                                                                        <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                            <div class="params-list-key">
+                                                                                <span class="block">@selectItem.Title</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                            <div class="params-list-value">
+                                                                                @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                                {
+                                                                                    <span class="block">بله</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span class="block">بله</span>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+
+                                                                }
+                                                                if (selectItem.Type == 3)
+                                                                {
+                                                                    <li>
+
+                                                                        <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                            <div class="params-list-key">
+                                                                                <span class="block">@selectItem.Title</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                            <div class="params-list-value">
+                                                                                @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                                {
+                                                                                    <span class="block">دارد</span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <span class="block">ندارد</span>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+                                                                }
+                                                                if (selectItem.Type == 4)
+                                                                {
+                                                                    <li>
+                                                                        <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                            <div class="params-list-key">
+                                                                                <span class="block">@selectItem.Title</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                            <div class="params-list-value">
+                                                                                <span class="block">@selectItem.CarNames</span>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </li>
+
+                                                                }
+                                                            }
+                                                        </ul>
+
+                                                    }
+
+                                                }
+                                            </section>
                                         }
-                                    </section>
+                                    }
+
                                 }
+
                             </article>
                         </div>
-
 
                     </div>
 
@@ -683,6 +682,9 @@
 
     }
 </div>
+<div id="notificationDiv">
+
+</div>
 
 <!--single-product------------------------->
 @section Scripts{
@@ -698,15 +700,23 @@
 
                     success: function(msg) {
                         if (msg.status === 'success') {
-                            alert(msg.message);
+                            //alert(msg.message);
                             $("#requestcount").text(msg.sabadcount);
                         } else {
-                            alert(msg.message);
+                            //alert(msg.message);
                         }
+
+                        $("#cartIcon").empty();
+                        if (msg.sabadcount > 0) {
+                            $("#cartIcon").html('<span class="badge badge-pill badge-danger">' + msg.sabadcount + '</span>');
+                        }
+
+                        var scriptOption = "<script> iziToast.show({message:'" + msg.message + "'" + ",theme: 'light', color: '2',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
+
+                            $("#notificationDiv").append(scriptOption);
                     }
-                })
+                });
             })
     </script>
-
 
 }

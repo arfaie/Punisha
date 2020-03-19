@@ -90,7 +90,6 @@
                     var TotalPrice = Model.Sum(a => a.Price);
                     TempData["Total"] = TotalPrice;
                     TempData["IdPoducts"] = IdProducts;
-
                 }
                 <div class="checkout-to-shipping-sticky">
                     <form asp-area="" asp-controller="Factor" asp-action="Factor" method="post">
@@ -136,7 +135,7 @@
                                 <span class="checkout-digiclub-row">
                                     <img src="~/assets/images/digiclub.png">
                                     <span class="checkout-digiclub-points">
-                                        امتیاز کار بیوتیک
+                                        امتیاز کاربیوتیک
                                     </span>
                                 </span>
                                 @*<span class="checkout-digiclub-row">
@@ -187,6 +186,7 @@
 
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/jquery.ez-plus.js"></script>
     <script src="~/assets/js/main.js"></script>
 
 }
@@ -524,8 +524,7 @@ else if (HttpCooki.HttpContext.Request.Cookies["S#$51%^Lm*A!2@m"] == null)
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
     <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/jquery.ez-plus.js"></script>
     <script src="~/assets/js/main.js"></script>
 
 }
-
-

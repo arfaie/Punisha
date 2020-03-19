@@ -1,59 +1,59 @@
-$(document).ready(function(){
-       //    resposive-megamenu-mobile------------------
-        $('.dropdown-toggle').on('click', function(e) {
-            e.stopPropagation();
-            e.preventDefault();
+$(document).ready(function () {
+    //    resposive-megamenu-mobile------------------
+    $('.dropdown-toggle').on('click', function (e) {
+        e.stopPropagation();
+        e.preventDefault();
 
-            var self = $(this);
-            if (self.is('.disabled, :disabled')) {
-              return false;
-            }
-            self.parent().toggleClass("open");
-          });
+        var self = $(this);
+        if (self.is('.disabled, :disabled')) {
+            return false;
+        }
+        self.parent().toggleClass("open");
+    });
 
-          $(document).on('click', function(e) {
-            if ($('.dropdown').hasClass('open')) {
-              $('.dropdown').removeClass('open');
-            }
-          });
+    $(document).on('click', function (e) {
+        if ($('.dropdown').hasClass('open')) {
+            $('.dropdown').removeClass('open');
+        }
+    });
 
-          $('.nav-btn.nav-slider').on('click', function() {
-            $('.overlay').show();
-            $('nav').toggleClass("open");
-          });
+    $('.nav-btn.nav-slider').on('click', function () {
+        $('.overlay').show();
+        $('nav').toggleClass("open");
+    });
 
-          $('.overlay').on('click', function() {
-            if ($('nav').hasClass('open')) {
-              $('nav').removeClass('open');
-            }
-            $(this).hide();
-          });
-    
-    
-            $('li.active').addClass('open').children('ul').show();
-            $("li.has-sub > a").on('click', function () {
-                $(this).removeAttr('href');
-                var e = $(this).parent('li');
-                if (e.hasClass('open')) {
-                    e.removeClass('open');
-                    e.find('li').removeClass('opne');
-                    e.find('ul').slideUp(200);
-                }
-                else {
-                    e.addClass('open');
-                    e.children('ul').slideDown(200);
-                    e.siblings('li').children('ul').slideUp(200);
-                    e.siblings('li').removeClass('open');
-                    e.siblings('li').find('li').removeClass('open');
-                    e.siblings('li').find('ul').slideUp(200);
-                }
-            });
-//    resposive-megamenu-mobile------------------
-    
-//    countdown----------------------------
+    $('.overlay').on('click', function () {
+        if ($('nav').hasClass('open')) {
+            $('nav').removeClass('open');
+        }
+        $(this).hide();
+    });
+
+    $('li.active').addClass('open').children('ul').show();
+    $("li.has-sub > a").on('click', function () {
+        $(this).removeAttr('href');
+        var e = $(this).parent('li');
+        if (e.hasClass('open')) {
+            e.removeClass('open');
+            e.find('li').removeClass('opne');
+            e.find('ul').slideUp(200);
+        }
+        else {
+            e.addClass('open');
+            e.children('ul').slideDown(200);
+            e.siblings('li').children('ul').slideUp(200);
+            e.siblings('li').removeClass('open');
+            e.siblings('li').find('li').removeClass('open');
+            e.siblings('li').find('ul').slideUp(200);
+        }
+    });
+    //    resposive-megamenu-mobile------------------
+
+    //    countdown----------------------------
     ! function (l) {
-    var t = {
-            init: function () { t.countDown()
+        var t = {
+            init: function () {
+                t.countDown()
             },
             countDown: function (t, i) {
                 l(".countdown").each(function () {
@@ -66,82 +66,77 @@ $(document).ready(function(){
                 })
             },
         };
-    l(function () {
-        t.init()
-    })
-}(jQuery);
-//    countdown----------------------------
-    
-//    tab---------------------------------
-    $(".checkout-tab-pill").click(function(){
-    var index = $(this).index();
-    $(".checkout-tab-pill").removeClass("listing-active-cart");
-    $(this).addClass("listing-active-cart");
-    $(".cart-tab-main").slideUp(0);
-    $(".cart-tab-main").eq(index).slideDown(0);
-    
-});
-    
-    $("ul.listing-sort li").click(function(){
-    var index = $(this).index();
-    $("ul.listing-sort li").removeClass("listing-active");
-    $(this).addClass("listing-active");
-    $("ul.listing-item li").slideUp(0);
-    $("ul.listing-item li").eq(index).slideDown(0);
-    
-});
-    
-    $(".box-header-sidebar").on('click',function(e){
-    e.preventDefault();
-    $(".box-header-sidebar").removeClass("activeacc");
-    $(this).addClass("activeacc");
-    $(this).next().slideToggle(200);
-});   
-    $(".checkout-order-summary-header").on('click',function(){
-    $(this).next().slideToggle(200);
-});  
-    
-    $("li.box-tabs-tab").click(function(e){
-    e.preventDefault();
-    var index = $(this).index();
-    $("li.box-tabs-tab").removeClass("active-tabs");
-    $(this).addClass("active-tabs");
-    $(".tab-active-content .tab").slideUp(0);
-    $(".tab-active-content .tab").eq(index).slideDown(0);
-    
-}); 
-    
-    $("ul.filter-items > li").click(function(e){
-    e.preventDefault();
-    var index = $(this).index();
-    $("ul.filter-items > li").removeClass("filter-items-active");
-    $(this).addClass("filter-items-active");
-    $("ul.comments-list > li").slideUp(0);
-    $("ul.comments-list > li").eq(index).slideDown(0);
-    
-});
-    
-    $("ul.faq-filter-items li").click(function(e){
-    e.preventDefault();
-    var index = $(this).index();
-    $("ul.faq-filter-items li").removeClass("filter-items-active");
-    $(this).addClass("filter-items-active");
-    $("ul.faq-list > li").slideUp(0);
-    $("ul.faq-list > li").eq(index).slideDown(0);
-    
-});
+        l(function () {
+            t.init()
+        })
+    }(jQuery);
+    //    countdown----------------------------
+
     //    tab---------------------------------
-    
-//    modal-------------------------
-        var modal = document.getElementById("modal");
-        window.onclick = (function(event){
-        if(event.target == modal){
+    $(".checkout-tab-pill").click(function () {
+        var index = $(this).index();
+        $(".checkout-tab-pill").removeClass("listing-active-cart");
+        $(this).addClass("listing-active-cart");
+        $(".cart-tab-main").slideUp(0);
+        $(".cart-tab-main").eq(index).slideDown(0);
+    });
+
+    $("ul.listing-sort li").click(function () {
+        var index = $(this).index();
+        $("ul.listing-sort li").removeClass("listing-active");
+        $(this).addClass("listing-active");
+        $("ul.listing-item li").slideUp(0);
+        $("ul.listing-item li").eq(index).slideDown(0);
+    });
+
+    $(".box-header-sidebar").on('click', function (e) {
+        e.preventDefault();
+        $(".box-header-sidebar").removeClass("activeacc");
+        $(this).addClass("activeacc");
+        $(this).next().slideToggle(200);
+    });
+    $(".checkout-order-summary-header").on('click', function () {
+        $(this).next().slideToggle(200);
+    });
+
+    $("li.box-tabs-tab").click(function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+        $("li.box-tabs-tab").removeClass("active-tabs");
+        $(this).addClass("active-tabs");
+        $(".tab-active-content .tab").slideUp(0);
+        $(".tab-active-content .tab").eq(index).slideDown(0);
+    });
+
+    $("ul.filter-items > li").click(function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+        $("ul.filter-items > li").removeClass("filter-items-active");
+        $(this).addClass("filter-items-active");
+        $("ul.comments-list > li").slideUp(0);
+        $("ul.comments-list > li").eq(index).slideDown(0);
+    });
+
+    $("ul.faq-filter-items li").click(function (e) {
+        e.preventDefault();
+        var index = $(this).index();
+        $("ul.faq-filter-items li").removeClass("filter-items-active");
+        $(this).addClass("filter-items-active");
+        $("ul.faq-list > li").slideUp(0);
+        $("ul.faq-list > li").eq(index).slideDown(0);
+    });
+    //    tab---------------------------------
+
+    //    modal-------------------------
+    var modal = document.getElementById("modal");
+    window.onclick = (function (event) {
+        if (event.target == modal) {
             modal.style.display = 'none';
         }
-        }); 
-    
-//    modal-------------------------
-    
+    });
+
+    //    modal-------------------------
+
     //    Scroll---------------------------
     $(document).on("scroll", function () {
         var st = $(this).scrollTop();
@@ -153,7 +148,7 @@ $(document).ready(function(){
         }
     });
     $(".footer-jump-angle").on("click", function () {
-        $("html,body").animate({scrollTop: "0px"}, 3000, "swing");
+        $("html,body").animate({ scrollTop: "0px" }, 3000, "swing");
     });
     $(document).scroll(function () {
         var scroll = $(document).scrollTop();
@@ -164,82 +159,82 @@ $(document).ready(function(){
             $(".main-menu").removeClass("NavFix");
         }
     });
-    
-//    Scroll--------------------------- 
-    
-//    quantity-selector---------------------------
+
+    //    Scroll---------------------------
+
+    //    quantity-selector---------------------------
     jQuery('<div class="quantity-nav"><div class="quantity-button quantity-up">+</div><div class="quantity-button quantity-down">-</div></div>').insertAfter('.quantity input');
-    jQuery('.quantity').each(function() {
-      var spinner = jQuery(this),
-        input = spinner.find('input[type="number"]'),
-        btnUp = spinner.find('.quantity-up'),
-        btnDown = spinner.find('.quantity-down'),
-        min = input.attr('min'),
-        max = input.attr('max');
 
-      btnUp.click(function() {
-        var oldValue = parseFloat(input.val());
-        if (oldValue >= max) {
-          var newVal = oldValue;
-        } else {
-          var newVal = oldValue + 1;
-        }
-        spinner.find("input").val(newVal);
-        spinner.find("input").trigger("change");
-      });
+    jQuery('.quantity').each(function () {
+        var spinner = jQuery(this),
+            input = spinner.find('input[type="number"]'),
+            btnUp = spinner.find('.quantity-up'),
+            btnDown = spinner.find('.quantity-down'),
+            min = input.attr('min'),
+            max = input.attr('max');
 
-      btnDown.click(function() {
-        var oldValue = parseFloat(input.val());
-        if (oldValue <= min) {
-          var newVal = oldValue;
-        } else {
-          var newVal = oldValue - 1;
-        }
-        spinner.find("input").val(newVal);
-        spinner.find("input").trigger("change");
-      });
+        btnUp.click(function () {
+            var oldValue = parseFloat(input.val());
+            var newVal;
+            if (oldValue >= max) {
+                newVal = oldValue;
+            } else {
+                newVal = oldValue + 1;
+            }
+            spinner.find("input").val(newVal);
+            spinner.find("input").trigger("change");
+        });
 
+        btnDown.click(function () {
+            var oldValue = parseFloat(input.val());
+            var newVal;
+            if (oldValue <= min) {
+                newVal = oldValue;
+            } else {
+                newVal = oldValue - 1;
+            }
+            spinner.find("input").val(newVal);
+            spinner.find("input").trigger("change");
+        });
     });
-//    quantity-selector---------------------------
-    
-//    checkbox--------------------------
-        $(".remember-checkbox").click(function(){
-        if($(this).is(':checked')){
-             $(this).parents('.checkbox-primary').find('.checkbox-check').addClass("checkbox-custom-pic");
-            
-        }else{
-             $(this).parents('.checkbox-primary').find('.checkbox-check').removeClass("checkbox-custom-pic");
-            
+    //    quantity-selector---------------------------
+
+    //    checkbox--------------------------
+    $(".remember-checkbox").click(function () {
+        if ($(this).is(':checked')) {
+            $(this).parents('.checkbox-primary').find('.checkbox-check').addClass("checkbox-custom-pic");
+        } else {
+            $(this).parents('.checkbox-primary').find('.checkbox-check').removeClass("checkbox-custom-pic");
         }
     });
-//    checkbox--------------------------
-    
-//    verify-phone-number--------------------
-        if($("#countdown-verify-end").length) {
+    //    checkbox--------------------------
+
+    //    verify-phone-number--------------------
+    if ($("#countdown-verify-end").length) {
         var $countdownOptionEnd = $("#countdown-verify-end");
 
         $countdownOptionEnd.countdown({
-        date: (new Date()).getTime() + 180 * 1000, // 1 minute later
-        text: '<span class="day">%s</span><span class="hour">%s</span><span>: %s</span><span>%s</span>',
-        end: function() {
-            $countdownOptionEnd.html("<a href='' class='link-border-verify form-account-link'>ارسال مجدد</a>");
-        }
+            date: (new Date()).getTime() + 180 * 1000, // 1 minute later
+            text: '<span class="day">%s</span><span class="hour">%s</span><span>: %s</span><span>%s</span>',
+            end: function () {
+                $countdownOptionEnd.html("<a href='' class='link-border-verify form-account-link'>ارسال مجدد</a>");
+            }
         });
-        }
-    $(".line-number-account").keyup(function(){
-            $(this).next().focus();
-        });
+    }
+    $(".line-number-account").keyup(function () {
+        $(this).next().focus();
+    });
     //    verify-phone-number--------------------
-    
+
     // favorites product----------------------
-    
-    $("ul.gallery-options button.btn-option-wishes").on("click",function () {
+
+    $("ul.gallery-options button.btn-option-wishes").on("click", function () {
         $(this).toggleClass("btn-option-favorites");
     });
-    
+
     // favorites product-----------------------
-    
-//single-product------------------
+
+    //single-product------------------
     $("#gallery-slider").owlCarousel({
         rtl: true,
         margin: 10,
@@ -273,21 +268,21 @@ $(document).ready(function(){
             zoomWindowFadeOut: 500
         });
     }
-//single-product------------------
-    $(".product-params-more-handler a").on('click',function(e){
+    //single-product------------------
+    $(".product-params-more-handler a").on('click', function (e) {
         e.preventDefault();
         $(".product-params-more").slideToggle(200);
         $(this).find('.show-more').fadeToggle(0);
         $(this).find('.show-less').fadeToggle(0);
     });
-    
-    $(".table-suppliers-more a").on('click',function(e){
+
+    $(".table-suppliers-more a").on('click', function (e) {
         e.preventDefault();
         $(".in-list").slideToggle(200);
         $(this).find('.show-more').fadeToggle(0);
         $(this).find('.show-less').fadeToggle(0);
     });
-    
+
     $(".mask-handler").click(function (e) {
         e.preventDefault();
         var sumaryBox = $(this).parents('.content-expert-summary');
@@ -296,8 +291,8 @@ $(document).ready(function(){
         $(this).find('.show-more').fadeToggle(0);
         $(this).find('.show-less').fadeToggle(0);
     });
-    
-        $(".expert-article-button").click(function (e) {
+
+    $(".expert-article-button").click(function (e) {
         e.preventDefault();
         var sumaryBox = $(this).parents('.js-expert-article');
         sumaryBox.find('.js-expert-article').toggleClass('active');
@@ -317,22 +312,22 @@ $(document).ready(function(){
         onTranslate: resetProgressBar,
         onTranslated: startProgressBar
     });
-    
+
     function startProgressBar() {
-      $(".slide-progress").css({
-        width: "100%",
-        transition: "width 5000ms"
-      });
+        $(".slide-progress").css({
+            width: "100%",
+            transition: "width 5000ms"
+        });
     }
 
     function resetProgressBar() {
-      $(".slide-progress").css({
-        width: 0,
-        transition: "width 0s"
-      });
+        $(".slide-progress").css({
+            width: 0,
+            transition: "width 0s"
+        });
     }
     //start slider sidebar-----------------------------
-    
+
     //    slider-product-------------------
     $(".product-carousel").owlCarousel({
         rtl: true,
@@ -364,10 +359,5 @@ $(document).ready(function(){
             }
         }
     });
-    //    slider-product------------------- 
+    //    slider-product-------------------
 });
-    
-
-
-
-

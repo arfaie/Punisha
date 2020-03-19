@@ -20,7 +20,6 @@
 
     <link href="~/Scripts/TimePicker/wickedpicker.min.css" rel="stylesheet" />
 
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -66,7 +65,6 @@
                         <div>پنل مدیریت</div>
                     </span>
 
-
                     <button class="navbar-toggler visible-xs-block collapsed" type="button" data-toggle="collapse" data-target="#sidenav">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="bars">
@@ -102,8 +100,6 @@
                         </button>
                         <ul class="nav navbar-nav navbar-right">
 
-
-
                             <li class="dropdown">
                                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true">
                                     <span class="icon-with-child hidden-xs">
@@ -122,31 +118,31 @@
                                     </div>
                                     <div class="dropdown-body">
                                         @*<div class="list-group list-group-divided custom-scrollbar">
-                                            @{
-                                                Random rnd = new Random();
-                                            }
-                                            @foreach (var item in Model.CommentListNavbar)
-                                            {
-                                                <span class="list-group-item">
-                                                    <div class="notification">
-                                                        <div class="notification-media">
-                                                            @{
-                                                                int number = rnd.Next(1, 7);
-                                                                string src = "/images/Avatar/" + number + ".png";
-                                                            }
-                                                            <img class="rounded" width="40" height="40" src="@src" />
+                                                @{
+                                                    Random rnd = new Random();
+                                                }
+                                                @foreach (var item in Model.CommentListNavbar)
+                                                {
+                                                    <span class="list-group-item">
+                                                        <div class="notification">
+                                                            <div class="notification-media">
+                                                                @{
+                                                                    int number = rnd.Next(1, 7);
+                                                                    string src = "/images/Avatar/" + number + ".png";
+                                                                }
+                                                                <img class="rounded" width="40" height="40" src="@src" />
+                                                            </div>
+                                                            <div class="notification-content">
+                                                                <small class="notification-timestamp">@item.ComDate @item.ComTime</small>
+                                                                <h5 class="notification-heading">@item.BimeType</h5>
+                                                                <p class="notification-text">
+                                                                    <small class="truncate">@item.StateName</small>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <div class="notification-content">
-                                                            <small class="notification-timestamp">@item.ComDate @item.ComTime</small>
-                                                            <h5 class="notification-heading">@item.BimeType</h5>
-                                                            <p class="notification-text">
-                                                                <small class="truncate">@item.StateName</small>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                            }
-                                        </div>*@
+                                                    </span>
+                                                }
+                                            </div>*@
                                     </div>
                                     <div class="dropdown-footer">
                                         <a class="dropdown-btn" href="/Admin/Comment">مشاهده همه</a>
@@ -172,43 +168,38 @@
                                     </div>
                                     <div class="dropdown-body">
                                         @*<div class="list-group list-group-divided custom-scrollbar">
-                                            @{
-                                                Random rnd2 = new Random();
-                                            }
-                                            @foreach (var item in Model.ComplaintsListNavbar)
-                                            {
+                                                @{
+                                                    Random rnd2 = new Random();
+                                                }
+                                                @foreach (var item in Model.ComplaintsListNavbar)
+                                                {
 
-                                                <span class="list-group-item">
-                                                    <div class="notification">
-                                                        <div class="notification-media">
-                                                            @{
-                                                                int number = rnd.Next(1, 7);
-                                                                string src = "/images/Avatar/" + number + ".png";
-                                                            }
-                                                            <img class="rounded" width="40" height="40" src="@src" />
+                                                    <span class="list-group-item">
+                                                        <div class="notification">
+                                                            <div class="notification-media">
+                                                                @{
+                                                                    int number = rnd.Next(1, 7);
+                                                                    string src = "/images/Avatar/" + number + ".png";
+                                                                }
+                                                                <img class="rounded" width="40" height="40" src="@src" />
+                                                            </div>
+                                                            <div class="notification-content">
+                                                                <small class="notification-timestamp">@item.dateSend @item.timeSend</small>
+                                                                <h5 class="notification-heading">@item.lName</h5>
+                                                                <p class="notification-text">
+                                                                    <small class="truncate">@item.CityName</small>
+                                                                </p>
+                                                            </div>
                                                         </div>
-                                                        <div class="notification-content">
-                                                            <small class="notification-timestamp">@item.dateSend @item.timeSend</small>
-                                                            <h5 class="notification-heading">@item.lName</h5>
-                                                            <p class="notification-text">
-                                                                <small class="truncate">@item.CityName</small>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                            }
-                                        </div>*@
+                                                    </span>
+                                                }
+                                            </div>*@
                                     </div>
                                     <div class="dropdown-footer">
                                         <a class="dropdown-btn" href="/Admin/Complaint">مشاهده همه</a>
                                     </div>
                                 </div>
                             </li>
-
-
-
-                           
-
 
                         </ul>
 
@@ -224,7 +215,7 @@
                         <nav id="sidenav" class="sidenav-collapse collapse">
                             <ul class="sidenav">
                                 <li class="sidenav-heading sideMenueHeaderColor">مدیریت</li>
-                                
+
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Product" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
@@ -233,11 +224,11 @@
                                 </li>
 
                                 @*<li class="sidenav-item">
-                                    <a asp-area="Admin" asp-controller="Addresses" asp-action="Index">
-                                        <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label">آدرس ها</span>
-                                    </a>
-                                </li>*@
+                                        <a asp-area="Admin" asp-controller="Addresses" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">آدرس ها</span>
+                                        </a>
+                                    </li>*@
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
@@ -258,7 +249,7 @@
                                 </li>
                                 @*<hr style="border: 1px solid gray;" />
 
-        <li class="sidenav-heading sideMenueHeaderColor">دفاتر و ادارات</li>*@
+                                    <li class="sidenav-heading sideMenueHeaderColor">دفاتر و ادارات</li>*@
 
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Car" asp-action="Index">
@@ -281,11 +272,11 @@
                                 @*<hr style="border: 1px solid gray;" />*@
 
                                 @*<li class="sidenav-item">
-            <a asp-area="Admin" asp-controller="CommentOrgan" asp-action="Index">
-                <span class="sidenav-icon icon icon-th"></span>
-                <span class="sidenav-label">ارگان</span>
-            </a>
-        </li>*@
+                                        <a asp-area="Admin" asp-controller="CommentOrgan" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">ارگان</span>
+                                        </a>
+                                    </li>*@
 
                                 @*<li class="sidenav-heading sideMenueHeaderColor">اطلاعیه ها</li>*@
 
@@ -311,15 +302,12 @@
                                 </li>
                                 @*<hr style="border: 1px solid gray;" />*@
 
-
                                 @*<li class="sidenav-item">
-            <a asp-area="Admin" asp-controller="NazarSanji2" asp-action="Index">
-                <span class="sidenav-icon icon icon-th"></span>
-                <span class="sidenav-label">بستری شدگان</span>
-            </a>
-        </li>*@
-
-
+                                        <a asp-area="Admin" asp-controller="NazarSanji2" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">بستری شدگان</span>
+                                        </a>
+                                    </li>*@
 
                                 @*<li class="sidenav-heading sideMenueHeaderColor">پیام ها</li>*@
 
@@ -391,13 +379,9 @@
         </div>
     }
 
-
-
     <script src="~/js/Scripts/jquery-1.8.0.js"></script>
 
-
     <script src="~/js/Scripts/jquery-1.8.0.js"></script>
-
 
     <script>
         $(document).ready(function () {
@@ -450,10 +434,10 @@
         ga('send', 'pageview');
     </script>
 
-
-
-    @Html.Raw(TempData["Notif"])
-
+    @if (TempData["Notif"] != null)
+    {
+        @Html.Raw(TempData["Notif"])
+    }
 
 </body>
 </html>

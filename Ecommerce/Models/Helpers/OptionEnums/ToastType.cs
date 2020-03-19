@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Ecommerce.Net.OptionEnums
+namespace Ecommerce.Models.Helpers.OptionEnums
 {
     public enum ToastType
     {

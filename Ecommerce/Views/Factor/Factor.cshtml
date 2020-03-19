@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Ecommerce.Models.Product>
-@using Ecommerce.Models
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<ApplicationUser> SignInManager
@@ -16,7 +15,6 @@
 
 @if (HttpCooki.HttpContext.Request.Cookies["S#$51%^Lm*A!2@m"] != null)
 {
-
     <!--  cart------------------>
     <div class="col-12">
         <div class="page-content">
@@ -51,37 +49,36 @@
                     {
                         IdProducts.Add(item.Id);
                         @*<form asp-controller="Payment" asp-action="Payment" method="post">*@
-                            <div class="checkout-body">
-                               
+                        <div class="checkout-body">
 
-                                <div class="checkout-col-desc">
-                                    <a href="#">
-                                        <h3>@item.Name</h3>
-                                    </a>
-                                    <div class="checkout-variant-color">
-                                        <span class="checkout-variant-title">سفید</span>
-                                        <div class="checkout-variant-shape"></div>
-                                        <div class="checkout-guarantee"><i class="fa fa-check"></i>گارانتی ۱۸ ماهه انفورماتیک گستر</div>
-                                        <div class="checkout-dealer"><i class="fa fa-check"></i>کالا پلاس</div>
-                                    </div>
-
-                                    <div class="quantity">
-                                        <input type="number" min="1" max="10" step="1" value="1">
-                                    </div>
-                                    <a href="#" class="add-to-sfl">
-                                        ذخیره در لیست خرید بعدی
-                                        <div class="cart-item-product-price">
-                                            @item.Price
-                                            <span>
-                                                تومان
-                                            </span>
-                                        </div>
-
-                                    </a>
-
+                            <div class="checkout-col-desc">
+                                <a href="#">
+                                    <h3>@item.Name</h3>
+                                </a>
+                                <div class="checkout-variant-color">
+                                    <span class="checkout-variant-title">سفید</span>
+                                    <div class="checkout-variant-shape"></div>
+                                    <div class="checkout-guarantee"><i class="fa fa-check"></i>گارانتی ۱۸ ماهه انفورماتیک گستر</div>
+                                    <div class="checkout-dealer"><i class="fa fa-check"></i>کالا پلاس</div>
                                 </div>
+
+                                <div class="quantity">
+                                    <input type="number" min="1" max="10" step="1" value="1">
+                                </div>
+                                <a href="#" class="add-to-sfl">
+                                    ذخیره در لیست خرید بعدی
+                                    <div class="cart-item-product-price">
+                                        @item.Price
+                                        <span>
+                                            تومان
+                                        </span>
+                                    </div>
+
+                                </a>
+
                             </div>
-                            <hr />
+                        </div>
+                        <hr />
                         @*</form>*@
                     }
                 </div>
@@ -185,6 +182,7 @@
 
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
+    <script src="~/assets/js/jquery.ez-plus.js"></script>
     <script src="~/assets/js/main.js"></script>
 
 }
@@ -522,8 +520,7 @@ else if (HttpCooki.HttpContext.Request.Cookies["S#$51%^Lm*A!2@m"] == null)
     <script src="~/assets/js/jquery-3.2.1.min.js"></script>
     <script src="~/assets/js/bootstrap.js"></script>
     <script src="~/assets/js/owl.carousel.min.js"></script>
+    <script src="~/assets/js/jquery.ez-plus.js"></script>
     <script src="~/assets/js/main.js"></script>
 
 }
-
-
