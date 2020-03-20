@@ -57,31 +57,31 @@
                             </a>
                         </div>
 
-                        <div class="filter">
-                            <div class="toggle-box">
-                                <div class="toggle-box-active">
-                                    <ul>
-                                        <li class="has-sub">
-                                            <a href="#">دسته‌بندی نتایج</a>
-                                            <ul class="catalog-list">
-                                                <li>
-                                                    <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
-                                                    <div class="show-more">
-                                                        <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
-                                                        <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
-                                                        <ul class="catalog-list">
-                                                            <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
-                                                            <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
-                                                            <li><a href="#" class="catalog-link">هندزفری</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                        @*<div class="filter">
+                                <div class="toggle-box">
+                                    <div class="toggle-box-active">
+                                        <ul>
+                                            <li class="has-sub">
+                                                <a href="#">دسته‌بندی نتایج</a>
+                                                <ul class="catalog-list">
+                                                    <li>
+                                                        <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
+                                                        <div class="show-more">
+                                                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
+                                                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
+                                                            <ul class="catalog-list">
+                                                                <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
+                                                                <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
+                                                                <li><a href="#" class="catalog-link">هندزفری</a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div>*@
 
                         <div class="filter">
                             <div class="toggle-box">
@@ -277,14 +277,31 @@
             <div class="catalog">
                 <ul class="catalog-list">
                     <li>
-                        <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
                         <div class="show-more">
-                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
-                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
-                            <ul class="catalog-list">
-                                <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
-                                <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
-                                <li><a href="#" class="catalog-link">هندزفری</a></li>
+
+                            <ul>
+                                @{
+                                    int i = 0;
+                                }
+                                @foreach (var item in Model.Categories)
+                                {
+
+                                    <li>
+                                        <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@item.Id" class="filter-label">
+                                            <div class="form-auth-row">
+                                                <label class="ui-checkbox">
+                                                    <input type="checkbox" value="@item.Id" name="categorysearch" id="@i">
+                                                    <span class="ui-checkbox-check"></span>
+                                                </label>
+                                                <label for="remember" class="remember-me">@item.Title</label>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    i++;
+                                }
+
+
+
                             </ul>
                         </div>
                     </li>
@@ -292,49 +309,16 @@
             </div>
         </div>
 
-        <div class="box-sidebar">
-            <span class="box-header-sidebar"> جستجو در نتایج:</span>
-            <form action="#">
-                <input type="text" class="input-sidebar" placeholder="نام محصول یا برند مورد نظر را بنویسید…">
-
-                <a href="#"><button class="btn-search-sidebar"><img src="~/assets/images/search.png"></button></a>
-            </form>
-        </div>
-
-        <div class="box-sidebar">
-            <span class="box-header-sidebar"><i class="fa fa-chevron-down arrow"></i>دسته بندی ها</span>
-            <div class="catalog" style="display:none;">
+        @*<div class="box-sidebar">
+                <span class="box-header-sidebar"> جستجو در نتایج:</span>
                 <form action="#">
                     <input type="text" class="input-sidebar" placeholder="نام محصول یا برند مورد نظر را بنویسید…">
 
                     <a href="#"><button class="btn-search-sidebar"><img src="~/assets/images/search.png"></button></a>
                 </form>
-                <ul>
-                    @{
-                        int i = 0;
-                    }
-                    @foreach (var item in Model.Categories)
-                    {
-
-                        <li>
-                            <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@item.Id" class="filter-label">
-                                <div class="form-auth-row">
-                                    <label class="ui-checkbox">
-                                        <input type="checkbox" value="@item.Id" name="categorysearch" id="@i">
-                                        <span class="ui-checkbox-check"></span>
-                                    </label>
-                                    <label for="remember" class="remember-me">@item.Title</label>
-                                </div>
-                            </a>
-                        </li>
-                        i++;
-                    }
+            </div>*@
 
 
-
-                </ul>
-            </div>
-        </div>
         <div class="box-sidebar">
             <span class="box-header-sidebar"><i class="fa fa-chevron-down arrow"></i>لیست ماشین ها</span>
             <div class="catalog">
@@ -360,63 +344,53 @@
             </div>
         </div>
 
-        <div class="box-sidebar">
-            <div class="filter-switch">
-                <div class="switch-box">
-                    <div class="centered hidden-xs">
-                        <div class="card">
-                            <a href="#">
-                                <label for="switch1">
-                                    <input type="checkbox" id="switch1" /><span class="switch"><h1 class="switch-title">فقط کالای موجود</h1></span>
-                                    <span class="toggle"></span>
-                                </label>
-                            </a>
+        @*<div class="box-sidebar">
+                <div class="filter-switch">
+                    <div class="switch-box">
+                        <div class="centered hidden-xs">
+                            <div class="card">
+                                <a href="#">
+                                    <label for="switch1">
+                                        <input type="checkbox" id="switch1" /><span class="switch"><h1 class="switch-title">فقط کالای موجود</h1></span>
+                                        <span class="toggle"></span>
+                                    </label>
+                                </a>
+                            </div>
+                            <br />
                         </div>
-                        <br />
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>*@
 
-        <div class="box-sidebar">
-            <div class="filter-switch">
-                <div class="switch-box">
-                    <div class="centered hidden-xs">
-                        <div class="card">
-                            <a href="#">
-                                <label for="switch2">
-                                    <input type="checkbox" id="switch2" /><span class="switch"><h1 class="switch-title">فقط کالای آماده ارسال</h1></span>
-                                    <span class="toggle"></span>
-                                </label>
-                            </a>
+        @*<div class="box-sidebar">
+                <div class="filter-switch">
+                    <div class="switch-box">
+                        <div class="centered hidden-xs">
+                            <div class="card">
+                                <a href="#">
+                                    <label for="switch2">
+                                        <input type="checkbox" id="switch2" /><span class="switch"><h1 class="switch-title">فقط کالای آماده ارسال</h1></span>
+                                        <span class="toggle"></span>
+                                    </label>
+                                </a>
+                            </div>
+                            <br />
                         </div>
-                        <br />
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!--   adplacement -------------------->
-        <div class="adplacement">
-            <div class="col-12 col-lg-12 pull-right" style="padding:0;">
-                <a href="#" class="item-adplacement">
-                    <img src="~/assets/images/post-adplacement/1000012860.jpg" title="صوتی و تصویری">
-                </a>
-            </div>
-        </div>
-        <!--   adplacement -------------------->
+            </div>*@
 
     </div>
 </div>
 <div class="col-lg-9 col-md-8 col-xs-12 pull-left">
     <div class="js-products">
-        <div class="breadcrumb-container">
-            <ul class="js-breadcrumb">
-                <li><a href="#">فروشگاه اینترنتی دیجی استور</a></li>
-                <li><a href="#">کالای دیجیتال</a></li>
-                <li><a href="#">لوازم جانبی کالای دیجیتال</a></li>
-            </ul>
-        </div>
+        @*<div class="breadcrumb-container">
+                <ul class="js-breadcrumb">
+                    <li><a href="#">فروشگاه اینترنتی دیجی استور</a></li>
+                    <li><a href="#">کالای دیجیتال</a></li>
+                    <li><a href="#">لوازم جانبی کالای دیجیتال</a></li>
+                </ul>
+            </div>*@
 
         <div class="listing-listing">
             <div class="listing-counter">۱۹۲,۷۳۲ کالا</div>
@@ -439,16 +413,14 @@
                     {
                         <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="padding: 0;">
                             <div class="promotion-box">
-                                <div class="product-seller-details">
-                                    <span class="product-main-seller">فروشنده : ای جی</span>
-                                </div>
 
-                                <a href="#" class="promotion-box-image">
+
+                                <a href="/HomePage/ProductDetailes/@item.Id" class="promotion-box-image">
                                     <img src="@ViewBag.imagepath@item.ImageName">
                                 </a>
 
                                 <div class="product-box-content">
-                                    <a href="#" class="product-box-title">@item.Name</a>
+                                    <a href="/HomePage/ProductDetailes/@item.Id" class="product-box-title">@item.Name</a>
                                 </div>
 
                                 <div class="product-box-rate">
@@ -469,10 +441,9 @@
                                 </div>
                             </div>
                         </div>
-
                     }
 
-                </li>
+                    </li>
 
             </ul>
             <div class="pager">

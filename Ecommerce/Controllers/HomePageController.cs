@@ -15,10 +15,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 namespace Ecommerce.Controllers
 {
-   
+
     public class HomePageController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -34,6 +35,10 @@ namespace Ecommerce.Controllers
 
         public async Task<IActionResult> Home()
         {
+            var selectCategories = _context.Categories.ToList();
+            string Categories = JsonConvert.SerializeObject(selectCategories);
+            HttpContext.Session.SetString("Categories", Categories);
+
             MultiModelsHome modelsHome = new MultiModelsHome();
             var model = await _context.Sliders.ToListAsync();
 
@@ -190,6 +195,10 @@ namespace Ecommerce.Controllers
 
         public async Task<IActionResult> ProductDetailes(int id)
         {
+            var selectCategories = _context.Categories.ToList();
+            string Categories = JsonConvert.SerializeObject(selectCategories);
+            HttpContext.Session.SetString("Categories", Categories);
+
             MultiModelsProductDetailes multiModelsProductDetailes = new MultiModelsProductDetailes();
 
             var modelProduct = await (from p in _context.Products
@@ -293,11 +302,11 @@ namespace Ecommerce.Controllers
             //return null;
         }
 
-       
 
-       
 
-       
+
+
+
 
         public async Task<IActionResult> SearchProduct(int carsearch, int categorysearch)
         {
@@ -465,13 +474,63 @@ namespace Ecommerce.Controllers
                 return RedirectToAction("Home");
             }
 
-            
+
 
         }
 
-       
+        [HttpPost]
+        public async Task<IActionResult> HeaderSearch(string Product)
+        {
+            var Select = _context.Products.Where(x => x.Name.Contains(Product));
+            List<ProductViewModel> productViewModels = new List<ProductViewModel>();
+            MultiModelSearchProduct multiModelSearchProduct = new MultiModelSearchProduct();
 
-       
+            if (Select.Count() != 0)
+            {
+                foreach (var item in Select)
+                {
+                    ProductViewModel obModel = new ProductViewModel();
+                    obModel.Id = item.Id;
+                    obModel.Name = item.Name;
+                    obModel.ImageName = item.ImageName;
+                    obModel.OldPrice = (int)item.OldPrice;
+                    obModel.Price = (int)item.Price;
+
+                    productViewModels.Add(obModel);
+                }
+                multiModelSearchProduct.ProductViewModels = productViewModels;
+
+                var selectcategories = _context.Categories.ToList();
+
+                multiModelSearchProduct.Categories = selectcategories;
+
+                var selectcars = _context.Cars.ToList();
+
+                multiModelSearchProduct.Cars = selectcars;
+
+                ViewBag.imagepath = "/upload/normalimage/";
+
+                var selec2t = _context.Cars.ToList();
+
+                ViewBag.Cars = selec2t;
+
+                var select22 = _context.Categories.ToList();
+
+                ViewBag.Categories = select22;
+
+                return View("SearchProduct", multiModelSearchProduct);
+
+            }
+            else
+            {
+                return View("SearchProduct", null);
+            }
+
+            
+        }
+
+
+
 
 
     }
