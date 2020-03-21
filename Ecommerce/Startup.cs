@@ -74,7 +74,7 @@ namespace Ecommerce
 			app.UseStaticFiles();
 			app.UseSession();
 
-			app.UseIdentity();
+			app.UseAuthentication();
 
 			app.UseMvc(routes =>
 			{
