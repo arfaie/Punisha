@@ -6,19 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace Ecommerce.Controllers
 {
-	public class FactorController : Controller
-	{
-		private readonly ApplicationDbContext _context;
-		private readonly IServiceProvider _serviceProvider;
-		private readonly UserManager<ApplicationUser> _userManager;
+    //FactorController
+    public class FactorController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 		public FactorController(ApplicationDbContext context, IServiceProvider serviceProvider, UserManager<ApplicationUser> userManager)
 		{

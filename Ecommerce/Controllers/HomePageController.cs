@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,14 @@ namespace Ecommerce.Controllers
 			_userManager = userManager;
 		}
 
-		public async Task<IActionResult> Home()
-		{
-			MultiModelsHome modelsHome = new MultiModelsHome();
-			var model = await _context.Sliders.ToListAsync();
+        public async Task<IActionResult> Home()
+        {
+            var selectCategories = _context.Categories.ToList();
+            string Categories = JsonConvert.SerializeObject(selectCategories);
+            HttpContext.Session.SetString("Categories", Categories);
+
+            MultiModelsHome modelsHome = new MultiModelsHome();
+            var model = await _context.Sliders.ToListAsync();
 
 			var modelProduct = await (from p in _context.Products
 									  join c in _context.Categories on p.IdCategory equals c.Id
@@ -191,9 +196,13 @@ namespace Ecommerce.Controllers
 			return String.Join("،", cars);
 		}
 
-		public async Task<IActionResult> ProductDetailes(int id)
-		{
-			MultiModelsProductDetailes multiModelsProductDetailes = new MultiModelsProductDetailes();
+        public async Task<IActionResult> ProductDetailes(int id)
+        {
+            var selectCategories = _context.Categories.ToList();
+            string Categories = JsonConvert.SerializeObject(selectCategories);
+            HttpContext.Session.SetString("Categories", Categories);
+
+            MultiModelsProductDetailes multiModelsProductDetailes = new MultiModelsProductDetailes();
 
 			var modelProduct = await (from p in _context.Products
 									  join c in _context.Categories on p.IdCategory equals c.Id
@@ -460,8 +469,56 @@ namespace Ecommerce.Controllers
 
 				ViewBag.Categories = select22;
 
-				return RedirectToAction("Home");
-			}
-		}
-	}
+                return RedirectToAction("Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HeaderSearch(string Product)
+        {
+            var Select = _context.Products.Where(x => x.Name.Contains(Product));
+            List<ProductViewModel> productViewModels = new List<ProductViewModel>();
+            MultiModelSearchProduct multiModelSearchProduct = new MultiModelSearchProduct();
+
+            if (Select.Count() != 0)
+            {
+                foreach (var item in Select)
+                {
+                    ProductViewModel obModel = new ProductViewModel();
+                    obModel.Id = item.Id;
+                    obModel.Name = item.Name;
+                    obModel.ImageName = item.ImageName;
+                    obModel.OldPrice = (int)item.OldPrice;
+                    obModel.Price = (int)item.Price;
+
+                    productViewModels.Add(obModel);
+                }
+                multiModelSearchProduct.ProductViewModels = productViewModels;
+
+                var selectcategories = _context.Categories.ToList();
+
+                multiModelSearchProduct.Categories = selectcategories;
+
+                var selectcars = _context.Cars.ToList();
+
+                multiModelSearchProduct.Cars = selectcars;
+
+                ViewBag.imagepath = "/upload/normalimage/";
+
+                var selec2t = _context.Cars.ToList();
+
+                ViewBag.Cars = selec2t;
+
+                var select22 = _context.Categories.ToList();
+
+                ViewBag.Categories = select22;
+
+                return View("SearchProduct", multiModelSearchProduct);
+            }
+            else
+            {
+                return View("SearchProduct", null);
+            }
+        }
+    }
 }
