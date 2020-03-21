@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity
 @using Newtonsoft.Json;
-@using Microsoft.AspNetCore.Http
+
 @inject IHttpContextAccessor HttpContextAccessor
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -31,9 +31,8 @@
 </head>
 <body>
     <header>
-        <div class="col-12">
+        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
                     <div class="header-right">
 
                         <div class="logo">
@@ -51,113 +50,24 @@
                                 </div>
                             </div>
                         </div>
-                                    <select name="carsearch" id="carsearch" style="width: 200px;">
-                                        <option value="date-desc" selected="selected" disabled="disabled">ماشین</option>
-                                        @if (ViewBag.Cars != null)
-                                        {
-                                            foreach (var VARIABLE in ViewBag.Cars)
-                                            {
-                                                <option name="carsearch" id="carsearch" value="@VARIABLE.Id">@VARIABLE.Name</option>
-                                            }
-                                        }
-
-                                    </select>
-
-                                    <select name="categorysearch" id="categorysearch" style="width: 200px;">
-                                        <option value="date-desc" selected="selected" disabled="disabled">دسته بندی</option>
-                                        @if (ViewBag.Categories != null)
-                                        {
-                                            foreach (var VARIABLE in ViewBag.Categories)
-                                            {
-                                                <option name="categorysearch" id="categorysearch" value="@VARIABLE.Id">@VARIABLE.Title</option>
-                                            }
-                                        }
-
-                                    </select>
-
-                                    <button type="submit" class="btn-search" style="margin-right: 420px; margin-bottom: 10px; text-align: center; font-size: 16px;"><img src="~/assets/images/search.png"></button>
-
-                                </form>
-                            </div>
-                        </div>
+                        
 
                     </div>
-                </div>
+                
 
-                <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
-                    <div class="header-left">
+            </div>
+        </div>
 
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <div class="mini-cart-header">
-                                        <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
-                                            @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
-                                            {
-                                                var count = Context.Session.GetInt32("CartItemsCount");
-                                                if (count > 0)
-                                                {
-                                                    <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
-                                                }
-                                                else
-                                                {
-                                                    <span id="cartIcon" class="mdi mdi-cart"></span>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <span id="cartIcon" class="mdi mdi-cart"></span>
-                                            }
-                                        </a>
-                                    </div>
-                                    @*<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="mdi mdi-account-outline"></span>Welcom @UserManager.GetUserName(User)</a>*@
-                                    <div class="mini-cart-exit">
-                                        <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
-                                    </div>
+        <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
+            <div class="header-left">
 
-                                    <div class="mini-cart-exit">
-                                        <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
-                                    </div>
-                                }
-                                @if (User.IsInRole("User"))
-                                {
-                                    <div class="mini-cart-header">
-                                        <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
-                                            @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
-                                            {
-                                                var count = Context.Session.GetInt32("CartItemsCount");
-                                                if (count > 0)
-                                                {
-                                                    <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
-                                                }
-                                                else
-                                                {
-                                                    <span id="cartIcon" class="mdi mdi-cart"></span>
-                                                }
-                                            }
-                                            else
-                                            {
-                                                <span id="cartIcon" class="mdi mdi-cart"></span>
-                                            }
-                                        </a>
-                                    </div>
-                                    @*<a href="#"><button class="btn-login" style="width: 40px; text-align: center;">خروج</button><span>Welcom @UserManager.GetUserName(User)</span></a>*@
-                                    <div class="mini-cart-exit">
-                                        <a asp-controller="User" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
-                                    </div>
-
-                                    <div class="mini-cart-exit">
-                                        <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
-                                    </div>
-                                }
-                            </form>
-                        }
-                        else
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                        @if (User.IsInRole("Admin"))
                         {
                             <div class="mini-cart-header">
-                                <a asp-area="" asp-controller="User" asp-action="Login" style="color: #4a5f73;">
+                                <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
                                     @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
                                     {
                                         var count = Context.Session.GetInt32("CartItemsCount");
@@ -176,80 +86,143 @@
                                     }
                                 </a>
                             </div>
-                            <a asp-area="" asp-controller="User" asp-action="Login"><button class="btn-login"><span class="mdi mdi-account-outline"></span>ورود به حساب کاربری</button></a>
+                            @*<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="mdi mdi-account-outline"></span>Welcom @UserManager.GetUserName(User)</a>*@
+                            <div class="mini-cart-exit">
+                                <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                            </div>
 
+                            <div class="mini-cart-exit">
+                                <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                            </div>
                         }
-
-                        <!--responsive header------------------->
-                        <div class="responsive-header-left">
-                            @if (SignInManager.IsSignedIn(User))
-                            {
-                                @if (User.IsInRole("Admin"))
-                                {
-                                    <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
-                                }
-                                @if (User.IsInRole("User"))
-                                {
-                                    <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
-                                }
-                            }
-                            else
-                            {
-                                <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
-                            }
-
-                            <div class="mini-cart-header-responsive">
-                                @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
-                                {
-                                    var count = Context.Session.GetInt32("CartItemsCount");
-                                    if (count > 0)
+                        @if (User.IsInRole("User"))
+                        {
+                            <div class="mini-cart-header">
+                                <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
+                                    @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
                                     {
-                                        <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span><span class="badge badge-pill badge-danger">@count</span></span>
+                                        var count = Context.Session.GetInt32("CartItemsCount");
+                                        if (count > 0)
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                        }
+                                        else
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"></span>
+                                        }
                                     }
                                     else
                                     {
                                         <span id="cartIcon" class="mdi mdi-cart"></span>
                                     }
+                                </a>
+                            </div>
+                            @*<a href="#"><button class="btn-login" style="width: 40px; text-align: center;">خروج</button><span>Welcom @UserManager.GetUserName(User)</span></a>*@
+                            <div class="mini-cart-exit">
+                                <a asp-controller="User" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                            </div>
+
+                            <div class="mini-cart-exit">
+                                <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                            </div>
+                        }
+                    </form>
+                }
+                else
+                {
+                    <div class="mini-cart-header">
+                        <a asp-area="" asp-controller="User" asp-action="Login" style="color: #4a5f73;">
+                            @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                            {
+                                var count = Context.Session.GetInt32("CartItemsCount");
+                                if (count > 0)
+                                {
+                                    <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
                                 }
                                 else
                                 {
                                     <span id="cartIcon" class="mdi mdi-cart"></span>
                                 }
-                            </div>
-
-                            <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
-                        </div>
-                        <!--responsive header------------------->
-                    </div>
-                </div>
-            </div>
-
-            <!--Start megamenu----------------->
-            <nav class="main-menu">
-                <ul class="new-list-menu">
-                    <li class="item-list-menu megamenu-1 category">
-                        <a href="#" class="list-category first after" style="font-weight: bold;"><i class="fa fa-navicon"></i> دسته بندی کالاها</a>
-
-                        <ul class="list-menu-level-2">
-                            @if (ViewBag.Categories != null)
-                            {
-                                foreach (var VARIABLE in ViewBag.Categories)
-                                {
-                                    <li class="item-menu-2">
-                                        <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@VARIABLE.Id" class="list-category-menu-2"><i class="fa fa-car"></i>@VARIABLE.Title</a>
-                                    </li>
-                                }
                             }
+                            else
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"></span>
+                            }
+                        </a>
+                    </div>
+                    <a asp-area="" asp-controller="User" asp-action="Login"><button class="btn-login"><span class="mdi mdi-account-outline"></span>ورود به حساب کاربری</button></a>
 
-                        </ul>
+                }
 
-                    </li>
+                <!--responsive header------------------->
+                <div class="responsive-header-left">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                    }
 
-                    <li class="item-list-menu megamenu-1"><a href="/ContactUs/" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
-                    <li class="item-list-menu megamenu-1"><a href="/About/" class="list-category first after">درباره ما</a></li>
-                </ul>
+                    <div class="mini-cart-header-responsive">
+                        @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                        {
+                            var count = Context.Session.GetInt32("CartItemsCount");
+                            if (count > 0)
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span><span class="badge badge-pill badge-danger">@count</span></span>
+                            }
+                            else
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span id="cartIcon" class="mdi mdi-cart"></span>
+                        }
+                    </div>
 
-            </nav>
+                    <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
+                </div>
+                <!--responsive header------------------->
+            </div>
+        </div>
+
+        <!--Start megamenu----------------->
+        <nav class="main-menu">
+            <ul class="new-list-menu">
+                <li class="item-list-menu megamenu-1 category">
+                    <a href="#" class="list-category first after" style="font-weight: bold;"><i class="fa fa-navicon"></i> دسته بندی کالاها</a>
+
+                    <ul class="list-menu-level-2">
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var VARIABLE in ViewBag.Categories)
+                            {
+                                <li class="item-menu-2">
+                                    <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@VARIABLE.Id" class="list-category-menu-2"><i class="fa fa-car"></i>@VARIABLE.Title</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+
+                </li>
+
+                <li class="item-list-menu megamenu-1"><a href="/ContactUs/Index" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
+                <li class="item-list-menu megamenu-1"><a href="/About/Index" class="list-category first after">درباره ما</a></li>
+            </ul>
+
+        </nav>
         </div>
         <!--End megamenu------------------->
         <!--responsive-megamenu-mobile----------------->
@@ -643,13 +616,13 @@
                         </span>
 
                         <form action="#">
-                             تهران ، خیابان ستارخان ، خیابان پاتریس لومومبا ، بین خیابان 23 و 25 ، پلاک 190 ، واحد 2
+                            تهران ، خیابان ستارخان ، خیابان پاتریس لومومبا ، بین خیابان 23 و 25 ، پلاک 190 ، واحد 2
 
                         </form>
                     </div>
                 </div>
-                </div>
             </div>
+        </div>
 
         <div class="more-info">
             <div class="col-12">
