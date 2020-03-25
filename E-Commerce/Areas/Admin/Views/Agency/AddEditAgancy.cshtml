@@ -1,0 +1,108 @@
+﻿@model ECommerce.Models.Agency
+@using ECommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+<form asp-controller="Agency" asp-action="AddEditAgancy" id="addeditagency" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditagency" data-ajax-mode="replace">
+
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش آژانس" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن آژانس" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FullName" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="FullName" class="form-control" />
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    <label asp-for="LastName" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StateId" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="StateId" asp-items="@Model.StatesList" class="form-control"></select>
+                    </div>
+                </div>*@
+
+            @*<div class="form-group">
+                    <label asp-for="CityId" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="CityId" asp-items="@Model.CitiesList" class="form-control"></select>
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                <label asp-for="Address" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PostalCode" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="PostalCode" class="form-control" />
+                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Phone" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","Agency")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش آژانس" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن آژانس" })
+    }
+
+</form>

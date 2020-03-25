@@ -1,0 +1,19 @@
+﻿@{
+    ViewBag.Title = "عدم وجود دسترسی";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
+<div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+    <div class="account-box">
+        <span class="account-head-line">@ViewBag.Title</span>
+        <div class="content-account">
+            <label class="text-danger">شما به این صفحه دسترسی ندارید.</label>
+        </div>
+
+        <div class="account-footer">
+            <span>کاربر جدید هستید؟</span>
+            <a asp-controller="Account" asp-action="Register" class="btn-link-register">ثبت نام در کاربیوتیک</a>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
-﻿using Ecommerce.Models;
-using Ecommerce.Models.Helpers;
-using Ecommerce.Models.Helpers.OptionEnums;
+﻿using Ecommerce.Helpers;
+using Ecommerce.Helpers.OptionEnums;
+using Ecommerce.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MessageType = Ecommerce.Models.Helpers.OptionEnums.MessageType;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
@@ -63,8 +62,6 @@ namespace Ecommerce.Areas.Admin.Controllers
 						db.Categories.Add(model);
 						await db.SaveChangesAsync();
 					}
-
-					TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
 
 					return PartialView("_Succefullyresponse", redirectUrl);
 				}

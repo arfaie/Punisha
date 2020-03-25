@@ -1,0 +1,32 @@
+﻿<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
+<div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+    <div class="account-box">
+        <span class="account-head-line">ورود به کاربیوتیک</span>
+        <div class="content-account">
+            <label for="email-phone">ایمیل یا شماره موبایل</label>
+            <input type="text" id="email-phone" class="input-email-account" placeholder="ایمیل یا شماره موبایل خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+            <a href="password-forget.html" class="account-link-password">رمز خود را فراموش کرده ام</a>
+            <label for="password">رمز عبور</label>
+            <input type="password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید"><i class="mdi mdi-lock" style="top: 146px;"></i>
+
+            <div class="parent-btn">
+                <button class="dk-btn dk-btn-info">
+                    ورود به کاربیوتیک
+                    <i class="fa fa-sign-in sign-in"></i>
+                </button>
+            </div>
+            <div class="form-auth-row">
+                <label for="#" class="ui-checkbox">
+                    <input type="checkbox" value="1" name="login" checked="" id="remember">
+                    <span class="ui-checkbox-check"></span>
+                </label>
+                <label for="remember" class="remember-me">مرا به خاطر داشته باش</label>
+            </div>
+        </div>
+
+        <div class="account-footer">
+            <span>کاربر جدید هستید؟</span>
+            <a asp-controller="Account" asp-action="Register" class="btn-link-register">ثبت نام در کاربیوتیک</a>
+        </div>
+    </div>
+</div>

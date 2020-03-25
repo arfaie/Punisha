@@ -1,16 +1,17 @@
-﻿using System;
+﻿using Ecommerce.Helpers.OptionEnums;
+using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Ecommerce.Models.Helpers.OptionEnums;
-using Newtonsoft.Json;
 using static Ecommerce.Models.ViewModels.SMSViewModel;
 
 namespace Ecommerce.Helpers
 {
 	public class SendSMS
 	{
-		string Baseurl = "https://api.kavenegar.com/";
+		private string Baseurl = "https://api.kavenegar.com/";
+
 		public async Task<bool> SendAsync(short Type, string Mobile, string token, string token2 = null)
 		{
 			using (var client = new HttpClient())

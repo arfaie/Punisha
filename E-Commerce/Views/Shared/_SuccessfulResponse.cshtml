@@ -1,0 +1,12 @@
+﻿@model string
+
+@if (TempData["Notification"] != null)
+{
+    @Html.Raw(TempData["Notification"])
+}
+
+<script>
+
+    window.location.href = '@Model';
+
+</script>

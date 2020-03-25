@@ -1,0 +1,87 @@
+﻿@model LoginViewModel
+
+@{
+    ViewBag.Title = "ورود به کاربیوتیک";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
+<div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+    <div class="account-box">
+        <span class="account-head-line">@ViewBag.Title</span>
+        <form asp-controller="Account" asp-action="Login">
+            <div class="content-account">
+                <label asp-for="Mobile"></label>
+                <input asp-for="Mobile" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید" /><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" /><i class="mdi mdi-lock" style="top: 146px;"></i>
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="parent-btn">
+                    <button type="submit" class="dk-btn dk-btn-info" style="margin-top: 40px;">
+                        ورود به کاربیوتیک
+                        <i class="fa fa-sign-in sign-in"></i>
+                    </button>
+                </div>
+
+                <a asp-action="ForgotPassword" class="account-link-password">رمز عبور خود را فراموش کرده ام</a>
+
+                @*<div class="form-auth-row">
+                        <label class="ui-checkbox">
+                            <input type="checkbox" value="1" name="login" checked="">
+                            <span class="ui-checkbox-check"></span>
+                        </label>
+                        <label class="remember-me">مرا به خاطر داشته باش</label>
+                    </div>*@
+            </div>
+        </form>
+
+        <div class="account-footer">
+            <span>کاربر جدید هستید؟</span>
+            <a asp-controller="Account" asp-action="Register" class="btn-link-register">ثبت نام در کاربیوتیک</a>
+        </div>
+    </div>
+</div>
+
+@*<div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">@ViewBag.Title</span>
+            <form asp-controller="Account" asp-action="Login" asp-route-returnurl="@ViewBag.ReturnUrl" class="form-horizontal">
+                @if (ViewBag.StatusMessage != null)
+                {
+                    @(await Html.PartialAsync("_StatusMessage", (string)ViewBag.StatusMessage))
+                }
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <label asp-for="Mobile" class="control-label">شماره موبایل</label>
+                <input asp-for="Mobile" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید" /><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+                <span asp-validation-for="Mobile" class="text-danger"></span>
+
+                <label asp-for="Password" class="control-label">رمز عبور</label>
+                <input asp-for="Password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" /><i class="mdi mdi-lock" style="top: 146px;"></i>
+                <span asp-validation-for="Password" class="text-danger"></span>
+
+                <div class="parent-btn">
+                    <button type="submit" class="dk-btn dk-btn-info">
+                        ورود به کاربیوتیک
+                        <i class="fa fa-sign-in sign-in"></i>
+                    </button>
+                </div>
+
+                <div class="form-auth-row">
+                    <label class="ui-checkbox">
+                        <input type="checkbox" value="1" name="login" checked="">
+                        <span class="ui-checkbox-check"></span>
+                    </label>
+                    <label class="remember-me">مرا به خاطر داشته باش</label>
+                </div>
+                <a asp-action="ForgotPassword" class="account-link-password">رمز عبور خود را فراموش کرده ام</a>
+            </form>
+        </div>
+
+    </div>*@
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+}

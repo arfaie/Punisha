@@ -1,6 +1,6 @@
-﻿using Ecommerce.Models;
-using Ecommerce.Models.Helpers;
-using Ecommerce.Models.Helpers.OptionEnums;
+﻿using Ecommerce.Helpers;
+using Ecommerce.Helpers.OptionEnums;
+using Ecommerce.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

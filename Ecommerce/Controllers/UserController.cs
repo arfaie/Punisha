@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Helpers;
+using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
-using Ecommerce.Models.Helpers;
-using Ecommerce.Models.Helpers.OptionEnums;
 using Ecommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

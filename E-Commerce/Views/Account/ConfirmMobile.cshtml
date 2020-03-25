@@ -1,0 +1,87 @@
+﻿@model ECommerce.ViewModels.ConfirmationCodeViewModel
+
+@{
+    ViewBag.Title = "تایید شماره موبایل";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
+<div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+    <div class="account-box">
+        <span class="account-head-line">@ViewBag.Title</span>
+        @if (Model.IsConfirmed)
+        {
+            <div class="content-account">
+                شماره موبایل شما تایید شد. لطفا <a asp-controller="Account" asp-action="Login">وارد کاربیوتیک شوید</a>
+            </div>
+        }
+        else
+        {
+            <form asp-controller="Account" asp-action="ConfirmMobile">
+                <div class="message-light">
+                    <div class="massege-light">
+                        برای شماره همراه @Model.Mobile کد تایید ارسال گردید
+                        <br>
+                        @*<a href="#" class="form-edit-number">
+                                ویرایش شماره
+                            </a>*@
+                    </div>
+                    <div class="form-account">
+                        <div class="form-account-title">کد تایید را وارد کنید</div>
+                        <div class="form-account-row">
+                            <div class="lines-number-input">
+                                <input type="text" class="line-number-account" maxlength="1">
+                                <input type="text" class="line-number-account" maxlength="1">
+                                <input type="text" class="line-number-account" maxlength="1">
+                                <input type="text" class="line-number-account" maxlength="1">
+                                <input type="text" class="line-number-account" maxlength="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" asp-for="IsResetPassword" />
+                    <input type="hidden" asp-for="Mobile" />
+                    <input type="hidden" asp-for="ShortenCode" />
+                    <span asp-validation-for="ShortenCode" class="text-danger"></span>
+                    <div class="parent-btn">
+                        <button type="submit" class="dk-btn dk-btn-info">
+                            تایید
+                            <i class="mdi mdi-lock sign-in"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="form-account-row">
+                دریافت مجدد کد تایید(
+                <p id="countdown-verify-end"><span class="day">0</span><span class="hour">0</span><span>: 2</span><span>58</span></p>
+                )
+            </div>
+        }
+        <div class="account-footer">
+            <span>کاربر جدید هستید؟</span>
+            <a asp-controller="Account" asp-action="Register" class="btn-link-register">ثبت نام در کاربیوتیک</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        $(document).ready(function () {
+
+            $(".line-number-account").keyup(function () {
+
+                var code = "";
+
+                $(".line-number-account").each(function () {
+                    code += $(this).val();
+                });
+                //alert(code);
+                $("#ShortenCode").val(code);
+            });
+        });
+
+    </script>
+}

@@ -1,7 +1,7 @@
 ﻿@model Ecommerce.Models.ViewModels.MultiModelsProductDetailes
 
 @{
-    ViewData["Title"] = "جزئیات محصول";
+    ViewBag.Title = "جزئیات محصول";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
@@ -163,133 +163,143 @@
                                 @{
                                     try
                                     {
-                                        var ls = Model.ProductFieldViewModels.FirstOrDefault().lsFieldGroup;
-
-                                        if (ls != null)
+                                        if (Model.ProductFieldViewModels.Any())
                                         {
+                                            var ls = Model.ProductFieldViewModels.FirstOrDefault()?.lsFieldGroup;
 
-                                            @foreach (var item in ls)
+                                            if (ls != null)
                                             {
-                                                <section>
-                                                    @{
-                                                        string Group = "";
-                                                        try
-                                                        {
-                                                            var selectGroup = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item).FirstOrDefault();
-                                                            if (selectGroup != null)
+                                                foreach (var item in ls)
+                                                {
+                                                    <section>
+                                                        @{
+                                                            string Group = "";
+                                                            try
                                                             {
-                                                                Group = selectGroup.fieldGroup;
-                                                            }
-                                                        }
-                                                        catch (Exception e)
-                                                        {
-                                                            string dd = e.Message;
-                                                            throw;
-                                                        }
-
-                                                        <h3 class="params-title">@Group</h3>
-
-                                                        var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
-                                                        select = select.Where(x => x.IdProduct == Model.ProductFieldViewModels.FirstOrDefault().IdProduct);
-                                                        foreach (var selectItem in select)
-                                                        {
-                                                            <ul class="params-list">
-
-                                                                @{
-                                                                    if (selectItem.Type == 1)
-                                                                    {
-                                                                        <li>
-                                                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                                <div class="params-list-key">
-                                                                                    <span class="block">@selectItem.Title</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                                <div class="params-list-value">
-                                                                                    <span class="block">@selectItem.Value</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </li>
-
-                                                                    }
-                                                                    if (selectItem.Type == 2)
-                                                                    {
-                                                                        <li>
-
-                                                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                                <div class="params-list-key">
-                                                                                    <span class="block">@selectItem.Title</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                                <div class="params-list-value">
-                                                                                    @if (selectItem.Value == "1" || selectItem.Value == "true")
-                                                                                    {
-                                                                                        <span class="block">بله</span>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="block">بله</span>
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </li>
-
-                                                                    }
-                                                                    if (selectItem.Type == 3)
-                                                                    {
-                                                                        <li>
-
-                                                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                                <div class="params-list-key">
-                                                                                    <span class="block">@selectItem.Title</span>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                                <div class="params-list-value">
-                                                                                    @if (selectItem.Value == "1" || selectItem.Value == "true")
-                                                                                    {
-                                                                                        <span class="block">دارد</span>
-                                                                                    }
-                                                                                    else
-                                                                                    {
-                                                                                        <span class="block">ندارد</span>
-                                                                                    }
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </li>
-                                                                    }
-                                                                    if (selectItem.Type == 4)
-                                                                    {
-                                                                        <li>
-                                                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                                                <div class="params-list-key">
-                                                                                    <span class="block">@selectItem.Title</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                                                <div class="params-list-value">
-                                                                                    <span class="block">@selectItem.CarNames</span>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </li>
-
-                                                                    }
+                                                                var selectGroup = Model.ProductFieldViewModels.FirstOrDefault(x => x.IdFieldGroup == item);
+                                                                if (selectGroup != null)
+                                                                {
+                                                                    Group = selectGroup.fieldGroup;
                                                                 }
-                                                            </ul>
+                                                            }
+                                                            catch (Exception e)
+                                                            {
+                                                                string dd = e.Message;
+                                                                throw;
+                                                            }
+
+                                                            <h3 class="params-title">@Group</h3>
+
+                                                            var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
+                                                            Ecommerce.Models.ViewModels.ProductFieldViewModel first = null;
+                                                            foreach (var model in Model.ProductFieldViewModels)
+                                                            {
+                                                                first = model;
+                                                                select = select.Where(x => x.IdProduct == first.IdProduct);
+                                                                break;
+                                                            }
+                                                            foreach (var selectItem in select)
+                                                            {
+                                                                <ul class="params-list">
+
+                                                                    @{
+                                                                        if (selectItem.Type == 1)
+                                                                        {
+                                                                            <li>
+                                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                                    <div class="params-list-key">
+                                                                                        <span class="block">@selectItem.Title</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                                    <div class="params-list-value">
+                                                                                        <span class="block">@selectItem.Value</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </li>
+
+                                                                        }
+                                                                        if (selectItem.Type == 2)
+                                                                        {
+                                                                            <li>
+
+                                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                                    <div class="params-list-key">
+                                                                                        <span class="block">@selectItem.Title</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                                    <div class="params-list-value">
+                                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                                        {
+                                                                                            <span class="block">بله</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span class="block">بله</span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </li>
+
+                                                                        }
+                                                                        if (selectItem.Type == 3)
+                                                                        {
+                                                                            <li>
+
+                                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                                    <div class="params-list-key">
+                                                                                        <span class="block">@selectItem.Title</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                                    <div class="params-list-value">
+                                                                                        @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                                                        {
+                                                                                            <span class="block">دارد</span>
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            <span class="block">ندارد</span>
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </li>
+                                                                        }
+                                                                        if (selectItem.Type == 4)
+                                                                        {
+                                                                            <li>
+                                                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                                                    <div class="params-list-key">
+                                                                                        <span class="block">@selectItem.Title</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                                                    <div class="params-list-value">
+                                                                                        <span class="block">@selectItem.CarNames</span>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </li>
+
+                                                                        }
+                                                                    }
+                                                                </ul>
+
+                                                            }
 
                                                         }
-
-                                                    }
-                                                </section>
+                                                    </section>
+                                                }
                                             }
+
                                         }
+
                                     }
                                     catch (Exception)
                                     {

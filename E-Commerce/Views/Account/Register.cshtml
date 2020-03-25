@@ -1,0 +1,58 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewBag.Title = "ثبت نام در کاربیوتیک";
+    Layout = "~/Views/Shared/_AccountLayout.cshtml";
+}
+
+<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
+<form asp-controller="Account" asp-action="Register">
+    <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
+        <div class="account-box">
+            <span class="account-head-line">@ViewBag.Title</span>
+            <div class="content-account">
+                <div class="massege-light">ثبت نام تنها با شماره تلفن همراه امکان پذیر است.</div>
+                <label for="email-phone">شماره موبایل</label>
+                <input asp-for="Mobile" type="text" id="email-phone" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید"><span class="mdi mdi-account-outline" style="top: 150px;"></span>
+
+                <label for="password">رمز عبور</label>
+                <input asp-for="Password" type="password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید"><i class="mdi mdi-lock" style="top: 240px;"></i>
+
+                <label for="password2">تکرار رمز عبور</label>
+                <input asp-for="ConfirmPassword" type="password" id="password2" class="input-password" placeholder="باید با رمز عبور یکسان باشد"><i class="mdi mdi-lock" style="top: 330px;"></i>
+                <div class="form-auth-row">
+                    <label for="#" class="ui-checkbox" style="top: 380px">
+                        <input asp-for="IsTermsAccepted" type="checkbox" value="1" name="login" id="remember" checked="">
+                        <span class="ui-checkbox-check"></span>
+                    </label>
+                    <label for="remember" class="remember-me"><a asp-controller="Home" asp-action="Privacy" target="_blank"><br />حریم خصوصی</a> و <a asp-controller="Home" asp-action="Terms" target="_blank">شرایط قوانین</a>استفاده از سرویس های سایت کاربیوتیک را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+                </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <span asp-validation-for="IsTermsAccepted" class="text-danger"></span>
+                <div class="parent-btn">
+                    <button type="submit" class="dk-btn dk-btn-info">
+                        ثبت نام به کاربیوتیک
+                        <i class="mdi mdi-account-plus-outline sign-in"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="account-footer">
+                <span>قبلا در کاربیوتیک ثبت نام کرده‌اید؟</span>
+                <a asp-action="Login" class="btn-link-register">وارد شویــد</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        $(document).ready(function () {
+
+        });
+
+    </script>
+}

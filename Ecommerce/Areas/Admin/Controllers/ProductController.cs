@@ -1,7 +1,6 @@
 ﻿using Ecommerce.Helpers;
+using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
-using Ecommerce.Models.Helpers;
-using Ecommerce.Models.Helpers.OptionEnums;
 using Ecommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -121,8 +120,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 							model.ImageName = filename;
 						}
 						ImageResizer img = new ImageResizer();
-						img.Resize(uploads + filename,
-							_appEnvironment.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						img.Resize(uploads + filename, _appEnvironment.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
 				}
 
@@ -376,7 +374,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				}
 				i++;
 			}
-			TempData["loopCnt"] = lsFieldGroup;
+			TempData["lsFieldGroup"] = lsFieldGroup;
 
 			TempData["CarListItems"] = await _context.Cars.Select(c => new SelectListItem
 			{

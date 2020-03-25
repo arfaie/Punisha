@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Login";
+    ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_RegisterLayout.cshtml";
 }
 
@@ -19,7 +19,6 @@
                 }
                 <label for="email-phone">نام کاربری|شماره موبایل</label>
                 <input name="Username" class="input-email-account" placeholder="شماره موبایل یا نام کاربری خود را وارد نمایید" /><span class="mdi mdi-account-outline" style="top: 150px;"></span>
-                <a href="/User/Getnumber" class="account-link-password">رمز خود را فراموش کرده ام</a>
                 <label for="password">رمز عبور</label>
                 <input asp-for="Password" id="password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" />
 
@@ -29,13 +28,14 @@
                         <i class="mdi mdi-account-plus-outline sign-in"></i>
                     </button>
                 </div>
+                <a href="/User/Getnumber" class="account-link-password">رمز خود را فراموش کرده ام</a>
                 @*<div class="form-auth-row">
-                        <label for="#" class="ui-checkbox">
-                            <input type="checkbox" value="1" name="login" checked="" id="remember">
-                            <span class="ui-checkbox-check"></span>
-                        </label>
-                        <label for="remember" class="remember-me"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین</a>استفاده از سرویس های سایت دیجی&zwnj;استور را مطالعه نموده و با کلیه موارد آن موافقم.</label>
-                    </div>*@
+            <label for="#" class="ui-checkbox">
+                <input type="checkbox" value="1" name="login" checked="" id="remember">
+                <span class="ui-checkbox-check"></span>
+            </label>
+            <label for="remember" class="remember-me"><a href="#">حریم خصوصی</a> و <a href="#">شرایط قوانین</a>استفاده از سرویس های سایت دیجی&zwnj;استور را مطالعه نموده و با کلیه موارد آن موافقم.</label>
+        </div>*@
             </div>
 
             <div class="account-footer">

@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport' />
+    <title>@ViewBag.Title</title>
+    <!-- font--------------------------------------------->
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/materialdesignicons.css">
+    <link rel="stylesheet" href="~/css/materialdesignicons.css.map">
+    <!-- font--------------------------------------------->
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/style.css">
+</head>
+<body>
+    <div id="main">
+        @RenderBody()
+        <footer class="footer-light">
+            <div class="container">
+                <ul class="footer-light-link">
+                    <li><a href="#">درباره کاربیوتیک</a></li>
+                    <li><a href="#">فرصت‌های شغلی</a></li>
+                    <li><a href="#">تماس با ما</a></li>
+                    <li><a href="#">همکاری با سازمان‌ها</a></li>
+                </ul>
+
+                <p class="title-footer">استفاده از مطالب فروشگاه اینترنتی کاربیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع بلامانع است. کلیه حقوق این سایت متعلق به شرکت نوآوران فن آوازه (فروشگاه آنلاین کاربیوتیک) می‌باشد.</p>
+
+                <p class="copy-right-footer-light">Copyright © @DateTime.UtcNow Carbiotic.com</p>
+            </div>
+        </footer>
+
+    </div>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    @*<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>*@
+    <script src="~/js/countdown.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

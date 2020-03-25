@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Ecommerce.Models.Product>
+@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity
 
 @inject SignInManager<ApplicationUser> SignInManager
@@ -6,7 +7,7 @@
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpCooki
 
 @{
-    ViewData["Title"] = "سبد خرید";
+    ViewBag.Title = "سبد خرید";
     Layout = "~/Views/Shared/_UserLayout.cshtml";
 }
 
@@ -84,7 +85,7 @@
                 </div>
                 @{
                     var TotalPrice = Model.Sum(a => a.Price);
-                    TempData["Total"] = TotalPrice;
+                    Context.Session.SetInt32("Total", (int)TotalPrice);
                 }
                 <div class="checkout-to-shipping-sticky">
                     <form asp-controller="Payment" asp-action="Payment" method="post">
@@ -179,11 +180,6 @@
         </div>
     </div>
     <!--  cart------------------>
-
-    <script src="~/assets/js/jquery-3.2.1.min.js"></script>
-    <script src="~/assets/js/bootstrap.js"></script>
-    <script src="~/assets/js/jquery.ez-plus.js"></script>
-    <script src="~/assets/js/main.js"></script>
 
 }
 else if (HttpCooki.HttpContext.Request.Cookies["S#$51%^Lm*A!2@m"] == null)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -24,32 +25,41 @@ namespace Ecommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Payment()
 		{
-			int finalPrice = Convert.ToInt32(TempData["Total"]);
-			if (finalPrice == 0)
+			if (HttpContext.Session != null && HttpContext.Session.Keys.Contains("Total"))
 			{
-				ModelState.AddModelError("AmountError", "مبلغ نمی تواند خالی باشد.لطفا مبلغی را بیشتر از 100 تومان وارد نمایید.");
-				return View();
-			}
+				int? finalPrice = HttpContext.Session.GetInt32("Total");
+				if (finalPrice == null)
+				{
+					ModelState.AddModelError(String.Empty, $"خطا محاسبه مبلغ فاکتور");
+					return View();
+				}
 
-			if (!ModelState.IsValid)
-			{
-				return RedirectToAction("Factor", "Factor");
-			}
+				if (finalPrice.Value == 0)
+				{
+					ModelState.AddModelError("AmountError", "مبلغ نمی تواند خالی باشد.لطفا مبلغی را بیشتر از 100 تومان وارد نمایید.");
+					return View();
+				}
 
-			var callbackUrl = $"http://{Request.Host}/Payment/{nameof(PaymentVerify)}";
+				if (!ModelState.IsValid)
+				{
+					return RedirectToAction("Factor", "Factor");
+				}
 
-			var description = "پرداخت در سایت کاربیوتیک";
+				var callbackUrl = $"http://{Request.Host}/Payment/{nameof(PaymentVerify)}";
 
-			var response = ZarinPalPayment.Request(finalPrice, description, callbackUrl);
+				var description = "پرداخت در سایت کاربیوتیک";
 
-			// if there is an error show this page again
-			if (response.Status == 100)
-			{
-				Response.Redirect(ZarinPalPayment.GetPaymentGatewayUrl(response.Authority));
-			}
-			else
-			{
-				ModelState.AddModelError(String.Empty, $"خطا در پرداخت. کد خطا: {response.Status} ");
+				var response = ZarinPalPayment.Request(finalPrice.Value, description, callbackUrl);
+
+				// if there is an error show this page again
+				if (response.Status == 100)
+				{
+					Response.Redirect(ZarinPalPayment.GetPaymentGatewayUrl(response.Authority));
+				}
+				else
+				{
+					ModelState.AddModelError(String.Empty, $"خطا در پرداخت. کد خطا: {response.Status} ");
+				}
 			}
 
 			return View();
@@ -80,14 +90,15 @@ namespace Ecommerce.Controllers
 
 			var authority = collection["Authority"];
 
-			int finalPrice = Convert.ToInt32(TempData["Total"]);
-			if (finalPrice == 0)
+			var finalPrice = HttpContext.Session.GetInt32("Total");
+
+			if (!finalPrice.HasValue || finalPrice.Value == 0)
 			{
 				ModelState.AddModelError(String.Empty, "خطا در مبلغ درست پرداختی");
 				return View("FailedPay");
 			}
 
-			var verificationResponse = ZarinPalPayment.Verify(finalPrice, authority);
+			var verificationResponse = ZarinPalPayment.Verify(finalPrice.Value, authority);
 
 			if (verificationResponse.Status != 100)
 			{

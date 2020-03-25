@@ -1,6 +1,4 @@
 ﻿using Ecommerce.Models;
-using Ecommerce.Models.Helpers;
-using Ecommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Ecommerce.Helpers;
+using Ecommerce.Helpers.OptionEnums;
 
 namespace Ecommerce.Areas.Admin.Controllers
 {
