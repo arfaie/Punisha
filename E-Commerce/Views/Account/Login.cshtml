@@ -5,14 +5,13 @@
     Layout = "~/Views/Shared/_AccountLayout.cshtml";
 }
 
-<a asp-controller="Home" asp-action="Index" class="logo-account"><img src="~/images/logo.png"></a>
 <div class="col-lg-4 col-md-6 col-xs-12 mx-auto">
     <div class="account-box">
         <span class="account-head-line">@ViewBag.Title</span>
         <form asp-controller="Account" asp-action="Login">
             <div class="content-account">
                 <label asp-for="Mobile"></label>
-                <input asp-for="Mobile" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید" /><span class="mdi mdi-account-outline" style="top: 55px;"></span>
+                <input asp-for="Mobile" class="input-email-account" placeholder="شماره موبایل خود را وارد نمایید" /><i class="mdi mdi-account-outline" style="top: 55px;"></i>
 
                 <label asp-for="Password"></label>
                 <input asp-for="Password" class="input-password" placeholder="رمز عبور خود را وارد نمایید" /><i class="mdi mdi-lock" style="top: 146px;"></i>
