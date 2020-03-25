@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using Microsoft.AspNetCore.Identity
 @using Newtonsoft.Json;
+
 @inject IHttpContextAccessor HttpContextAccessor
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -29,9 +30,8 @@
 </head>
 <body>
     <header>
-        <div class="col-12">
+        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
             <div class="row">
-                <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
                     <div class="header-right">
 
                         <div class="logo">
@@ -49,34 +49,8 @@
                                 </div>
                             </div>
                         </div>
-                        <select name="carsearch" id="carsearch" style="width: 200px;">
-                            <option value="date-desc" selected="selected" disabled="disabled">ماشین</option>
-                            @if (ViewBag.Cars != null)
-                            {
-                                foreach (var VARIABLE in ViewBag.Cars)
-                                {
-                                    <option name="carsearch" id="carsearch" value="@VARIABLE.Id">@VARIABLE.Name</option>
-                                }
-                            }
-
-                        </select>
-
-                        <select name="categorysearch" id="categorysearch" style="width: 200px;">
-                            <option value="date-desc" selected="selected" disabled="disabled">دسته بندی</option>
-                            @if (ViewBag.Categories != null)
-                            {
-                                foreach (var VARIABLE in ViewBag.Categories)
-                                {
-                                    <option name="categorysearch" id="categorysearch" value="@VARIABLE.Id">@VARIABLE.Title</option>
-                                }
-                            }
-
-                        </select>
-
-                        <button type="submit" class="btn-search" style="margin-right: 420px; margin-bottom: 10px; text-align: center; font-size: 16px;"><img src="~/assets/images/search.png"></button>
 
                     </div>
-                </div>
 
             </div>
         </div>
@@ -241,12 +215,12 @@
 
                 </li>
 
-                <li class="item-list-menu megamenu-1"><a href="/ContactUs/" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
-                <li class="item-list-menu megamenu-1"><a href="/About/" class="list-category first after">درباره ما</a></li>
+                <li class="item-list-menu megamenu-1"><a href="/ContactUs/Index" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
+                <li class="item-list-menu megamenu-1"><a href="/About/Index" class="list-category first after">درباره ما</a></li>
             </ul>
 
         </nav>
-
+        </div>
         <!--End megamenu------------------->
         <!--responsive-megamenu-mobile----------------->
         <nav class="sidebar">
