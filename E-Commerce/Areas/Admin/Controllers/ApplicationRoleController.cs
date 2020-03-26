@@ -1,61 +1,40 @@
 ﻿using ECommerce.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
+	//[Authorize(Roles = "Admin")]
 	public class ApplicationRoleController : Controller
 	{
-		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly RoleManager<ApplicationRole> _roleManager;
 
-		public ApplicationRoleController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
+		public ApplicationRoleController(RoleManager<ApplicationRole> roleManager)
 		{
-			_userManager = userManager;
 			_roleManager = roleManager;
 		}
 
 		public IActionResult Index()
 		{
-			List<ApplicationRole> model = new List<ApplicationRole>();
-			model = _roleManager.Roles.Select(r => new ApplicationRole
-			{
-				Id = r.Id,
-				Name = r.Name,
-				Description = r.Description
-			}).ToList();
-			return View(model);
+			return View(_roleManager.Roles.ToList());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditApplicationRole(string id)
 		{
-			ApplicationRole model = new ApplicationRole();
-			if (!string.IsNullOrEmpty(id))
-			{
-				ApplicationRole applicationRole = await _roleManager.FindByIdAsync(id);
+			var applicationRole = await _roleManager.FindByIdAsync(id);
 
-				if (applicationRole != null)
-				{
-					model.Id = applicationRole.Id;
-					model.Name = applicationRole.Name;
-					model.Description = applicationRole.Description;
-				}
-				else
-				{
-					return RedirectToAction("Index");
-				}
+			if (applicationRole != null)
+			{
+				return PartialView("AddEditApplicationRole", applicationRole);
 			}
 
-			return PartialView("AddEditApplicationRole", model);
+			return PartialView("AddEditApplicationRole", new ApplicationRole { Id = String.Empty });
 		}
 
 		[HttpPost]
@@ -64,19 +43,15 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				bool isExist = !String.IsNullOrEmpty(id);
-				ApplicationRole applicationRole = isExist ? await _roleManager.FindByIdAsync(id) :
-					new ApplicationRole //insert
-					{
-					};
+				var applicationRole = await _roleManager.FindByIdAsync(id) ?? new ApplicationRole();
 
 				applicationRole.Name = model.Name;
 				applicationRole.Description = model.Description;
 
-				IdentityResult roleresult = isExist ? await _roleManager.UpdateAsync(applicationRole) :
+				var role = !String.IsNullOrWhiteSpace(id) ? await _roleManager.UpdateAsync(applicationRole) :
 					await _roleManager.CreateAsync(applicationRole);
 
-				if (roleresult.Succeeded)
+				if (role.Succeeded)
 				{
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -87,33 +62,24 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteRole(string id)
 		{
-			string name = string.Empty;
-			if (!String.IsNullOrEmpty(id))
+			var role = await _roleManager.FindByIdAsync(id);
+			if (role != null)
 			{
-				ApplicationRole ar = await _roleManager.FindByIdAsync(id);
-				if (ar != null)
-				{
-					name = ar.Name;
-				}
+				return PartialView("DeleteRole", role.Name);
 			}
-			return PartialView("DeleteRole", name);
+
+			return PartialView("DeleteRole", String.Empty);
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> DeleteRole(string id, IFormCollection form)
 		{
-			if (!string.IsNullOrEmpty(id))
+			var role = await _roleManager.FindByIdAsync(id);
+			if (role != null)
 			{
-				ApplicationRole ar = await _roleManager.FindByIdAsync(id);
-				if (ar != null)
-				{
-					IdentityResult roleresult = _roleManager.DeleteAsync(ar).Result;
-					if (roleresult.Succeeded)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				await _roleManager.DeleteAsync(role);
 			}
+
 			return View("Index");
 		}
 	}

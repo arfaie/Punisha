@@ -10,7 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="Views\Shared\_AdminLayout.cshtml" />
+    <Content Remove="Areas\Admin\Views\_AdminLayout.cshtml" />
+    <Content Remove="wwwroot\js\iziToast-master\types\index.d.ts" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,7 +47,7 @@
 
   <ItemGroup>
     <None Include="Areas\Admin\Views\Address\Index.cshtml" />
-    <None Include="Areas\Admin\Views\Agency\AddEditAgancy.cshtml" />
+    <None Include="Areas\Admin\Views\Agency\AddEditAgency.cshtml" />
     <None Include="Areas\Admin\Views\Agency\DeleteAgency.cshtml" />
     <None Include="Areas\Admin\Views\Agency\Index.cshtml" />
     <None Include="Areas\Admin\Views\ApplicationRole\AddEditApplicationRole.cshtml" />
@@ -81,7 +82,7 @@
     <None Include="Areas\Admin\Views\Product\Index.cshtml" />
     <None Include="Areas\Admin\Views\Product\ProductField.cshtml" />
     <None Include="Areas\Admin\Views\SelectGroup\AddEditSelectGroup.cshtml" />
-    <None Include="Areas\Admin\Views\SelectGroup\DeleteselectGroup.cshtml" />
+    <None Include="Areas\Admin\Views\SelectGroup\DeleteSelectGroup.cshtml" />
     <None Include="Areas\Admin\Views\SelectGroup\Index.cshtml" />
     <None Include="Areas\Admin\Views\SelectItem\AddEditSelectItem.cshtml" />
     <None Include="Areas\Admin\Views\SelectItem\DeleteSelectItem.cshtml" />
@@ -103,7 +104,12 @@
     <None Include="Areas\Admin\Views\User\EditUser.cshtml" />
     <None Include="Areas\Admin\Views\User\Index.cshtml" />
     <None Include="Areas\Admin\Views\User\UserAddress.cshtml" />
-    <None Include="Views\Shared\_AdminLayout.cshtml" />
+    <None Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
+    <None Include="wwwroot\lib\TimePicker\wickedpicker.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="wwwroot\js\iziToast-master\types\index.d.ts" />
   </ItemGroup>
 
 </Project>

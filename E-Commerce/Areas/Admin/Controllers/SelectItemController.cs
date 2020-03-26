@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -32,7 +31,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditSelectItem(string id)
 		{
-			SelectItem model = new SelectItem();
+			var model = new SelectItem();
 			//model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem
 			//{
 			//	Text = c.Title,
@@ -41,9 +40,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					SelectItem selectItem = await _context.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
 					if (selectItem != null)
 					{
 						model.Id = selectItem.Id;
@@ -64,7 +62,6 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						_context.SelectItems.Add(model);
 						await _context.SaveChangesAsync();
@@ -74,18 +71,15 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
+
 				{
-					await using (_context)
-					{
-						_context.SelectItems.Update(model);
-						await _context.SaveChangesAsync();
-					}
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					_context.SelectItems.Update(model);
+					await _context.SaveChangesAsync();
 				}
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
 			if (!String.IsNullOrWhiteSpace(id))
@@ -110,9 +104,9 @@ namespace ECommerce.Areas.Admin.Controllers
 		public async Task<IActionResult> DeleteSelectItem(string id)
 		{
 			var selectItem = new SelectItem();
-			await using (_context)
+
 			{
-				selectItem = await _context.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
+				selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
 				if (selectItem == null)
 				{
 					return RedirectToAction("Index");
@@ -127,9 +121,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var selectItem = await _context.SelectItems.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
 
 					_context.SelectItems.Remove(selectItem);
 					await _context.SaveChangesAsync();

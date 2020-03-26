@@ -29,15 +29,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditUserGroup(string id)
 		{
-			await using (_context)
+			var userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
+			if (userGroup != null)
 			{
-				var userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
-				if (userGroup != null)
-				{
-					return PartialView("AddEditUserGroup", userGroup);
-				}
+				return PartialView("AddEditUserGroup", userGroup);
 			}
-			return RedirectToAction("Index");
+
+			return PartialView("AddEditUserGroup", new UserGroup());
 		}
 
 		[HttpPost]
@@ -46,59 +44,34 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
-					{
-						_context.UserGroups.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.UserGroups.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
-				{
-					await using (_context)
-					{
-						_context.UserGroups.Update(model);
-					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				_context.UserGroups.Update(model);
+				await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
 
-				return PartialView("AddEditUserGroup", model);
-			}
+			return PartialView("AddEditUserGroup", model);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteUserGroup(string id)
 		{
-			var userGroup = new UserGroup();
-			if (!String.IsNullOrWhiteSpace(id))
+			var userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
+			if (userGroup == null)
 			{
-				await using (_context)
-				{
-					userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (userGroup == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteUserGroup", userGroup.Title);
@@ -110,22 +83,18 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
-				{
-					var model = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					_context.UserGroups.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				var model = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
+				_context.UserGroups.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

@@ -62,12 +62,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public string ProductCtgNamesAsync(string FieldId)
 		{
-			List<string> titels = new List<string>();
+			var titels = new List<string>();
 
 			var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
 			foreach (var item in select.ToList())
 			{
-				string title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
+				var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
 				titels.Add(title);
 			}
 
@@ -77,7 +77,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditField(string id)
 		{
-			Field model = new Field();
+			var model = new Field();
 			//model.SelectGroupList = await _context.SelectGroups.ToListAsync();
 
 			//model.ICategories = await _context.Categories.Select(s => new SelectListItem
@@ -90,9 +90,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					Field field = await _context.Fields.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 					//var select = _context.CategoryFields.Where(a => a.FieldId == id);
 					//int[] b = new int[999];
 					//int i = 0;
@@ -134,7 +133,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				//			 join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
 				//if (!String.IsNullOrWhiteSpace(id))
 				//{
-				//	await using (_context)
+				//
 				//	{
 				//		//model.Type = (short)model.SelecteFieldTypeId;
 				//		int[] aa = model.CategoryId;
@@ -180,7 +179,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				//	}
 
 				//{
-				//	await using (_context)
+				//
 				//	{
 				//		_context.CategoryFields.RemoveRange(_context.CategoryFields.Where(x => x.FieldId == id));
 
@@ -254,7 +253,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public bool CheckDuplicateDrp(int[] idCat)
 		{
-			bool exist = true;
+			var exist = true;
 			//var query = (from f in _context.Fields
 			//	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
 			//foreach (var item in idCat)
@@ -272,9 +271,9 @@ namespace ECommerce.Areas.Admin.Controllers
 		public async Task<IActionResult> DeleteField(string id)
 		{
 			var field = new Field();
-			await using (_context)
+
 			{
-				field = await _context.Fields.Where(a => a.Id == id).SingleOrDefaultAsync();
+				field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 				if (field == null)
 				{
 					return RedirectToAction("Index");
@@ -289,9 +288,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var field = await _context.Fields.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 
 					_context.Fields.Remove(field);
 					await _context.SaveChangesAsync();

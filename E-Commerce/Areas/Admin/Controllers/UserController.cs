@@ -37,7 +37,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddUser()
 		{
-			ApplicationUser model = new ApplicationUser();
+			var model = new ApplicationUser();
 			//model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
 			//{
 			//	Text = r.Name,
@@ -65,7 +65,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				ApplicationUser user = new ApplicationUser
+				var user = new ApplicationUser
 				{
 					FullName = model.FullName,
 					PhoneNumber = model.PhoneNumber,
@@ -73,7 +73,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					Email = model.Email
 				};
 
-				IdentityResult result = await _userManager.CreateAsync(user, "asd123");
+				var result = await _userManager.CreateAsync(user, "asd123");
 				if (result.Succeeded)
 				{
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
@@ -114,9 +114,9 @@ namespace ECommerce.Areas.Admin.Controllers
 			//}).ToListAsync();
 
 			/////////////////////////////////////////////////////////
-			if (!string.IsNullOrEmpty(id))
+			if (!string.IsNullOrWhiteSpace(id))
 			{
-				ApplicationUser user = await _userManager.FindByIdAsync(id);
+				var user = await _userManager.FindByIdAsync(id);
 				if (user != null)
 				{
 					model.Id = user.Id;
@@ -151,7 +151,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				ApplicationUser user = await _userManager.FindByIdAsync(id);
+				var user = await _userManager.FindByIdAsync(id);
 				if (user != null)
 				{
 					user.FullName = model.FullName;
@@ -161,9 +161,9 @@ namespace ECommerce.Areas.Admin.Controllers
 					user.UserGroupId = model.UserGroupId;
 					user.PhoneNumber = model.PhoneNumber;
 
-					string existingRole = _userManager.GetRolesAsync(user).Result.Single();
-					string exiistingRoleId = _roleManager.Roles.Single(r => r.Name == existingRole).Id;
-					IdentityResult result = await _userManager.UpdateAsync(user);
+					var existingRole = _userManager.GetRolesAsync(user).Result.Single();
+					var exiistingRoleId = _roleManager.Roles.Single(r => r.Name == existingRole).Id;
+					var result = await _userManager.UpdateAsync(user);
 					if (result.Succeeded)
 					{
 						//if (exiistingRoleId != model.ApplicationRoleId)

@@ -46,7 +46,7 @@ namespace ECommerce.Services
 
 				try
 				{
-					SmsViewModel.RootObject datalist = JsonConvert.DeserializeObject<SmsViewModel.RootObject>(result);
+					var datalist = JsonConvert.DeserializeObject<SmsViewModel.RootObject>(result);
 				}
 				catch (Exception e)
 				{
@@ -54,10 +54,8 @@ namespace ECommerce.Services
 				}
 				return true;
 			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 	}
 }

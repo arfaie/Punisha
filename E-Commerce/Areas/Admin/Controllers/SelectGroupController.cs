@@ -30,20 +30,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditSelectGroup(string id)
 		{
-			var selectGroup = new SelectGroup();
-			if (!String.IsNullOrWhiteSpace(id))
+			var selectGroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
+			if (selectGroup != null)
 			{
-				await using (_context)
-				{
-					selectGroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (selectGroup == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return PartialView("AddEditSelectGroup", selectGroup);
 			}
 
-			return PartialView("AddEditSelectGroup", selectGroup);
+			return PartialView("AddEditSelectGroup", new SelectGroup());
 		}
 
 		[HttpPost]
@@ -52,87 +45,61 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
-					{
-						_context.SelectGroups.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.SelectGroups.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
-				{
-					await using (_context)
-					{
-						_context.SelectGroups.Update(model);
-						await _context.SaveChangesAsync();
-					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				_context.SelectGroups.Update(model);
+				await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
 
-				return PartialView("AddEditSelectGroup", model);
-			}
+			return PartialView("AddEditSelectGroup", model);
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> DeleteselectGroup(string id)
+		public async Task<IActionResult> DeleteSelectGroup(string id)
 		{
-			var selectgroup = new SelectGroup();
+			var selectGroup = new SelectGroup();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
+				selectGroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
+				if (selectGroup == null)
 				{
-					selectgroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (selectgroup == null)
-					{
-						return RedirectToAction("Index");
-					}
+					return RedirectToAction("Index");
 				}
 			}
 
-			return PartialView("DeleteselectGroup", selectgroup.Title);
+			return PartialView("DeleteSelectGroup", selectGroup.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteselectGroup(string id, string redirectUrl)
+		public async Task<IActionResult> DeleteSelectGroup(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
-				{
-					var model = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					_context.SelectGroups.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				var model = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
+				_context.SelectGroups.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

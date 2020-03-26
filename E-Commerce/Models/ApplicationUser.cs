@@ -28,14 +28,14 @@ namespace ECommerce.Models
 		[Display(Name = "گروه کاربری")]
 		public virtual UserGroup UserGroup { get; set; }
 
+		[Display(Name = "زمان ثبت نام")]
+		public DateTime RegistrationDateAndTime { get; set; }
+
+		[Display(Name = "مسدود")]
+		public bool IsBlocked { get; set; }
+
 		public ICollection<Address> Addresses { get; set; }
 
 		public ICollection<Factor> Factors { get; set; }
-
-		public virtual ICollection<ApplicationRole> ApplicationRoles { get; set; }
-
-		public DateTime RegistrationDateAndTime { get; set; }
-
-		public bool IsBlocked { get; set; }
 	}
 }

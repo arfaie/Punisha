@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<ECommerce.Models.UserGroup>
-@using ECommerce.PublicModel
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
 @{
     ViewBag.Title = "گروه های کاربران";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div style="color:white;text-align:center" class=@TempData["css"]>
@@ -57,14 +56,13 @@
                         </thead>
                         <tbody>
                             @{
-                                int i = 1;
+                                var i = 1;
                                 foreach (var item in Model)
                                 {
 
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>@item.Title</td>
-
 
                                         <td>
                                             <a class="btn btn-info" id="editusergroup" data-toggle="modal" asp-action="AddEditUserGroup"
@@ -93,7 +91,7 @@
 </div>
 <div id="progress" class="addModal">
     <div class="addCenter">
-        <img src="~/Content/loading.gif" />
+        <img src="~/images/loading.gif" />
     </div>
 </div>
 <div id="infoModalAlertColored" tabindex="-1" role="dialog" class="modal fade">

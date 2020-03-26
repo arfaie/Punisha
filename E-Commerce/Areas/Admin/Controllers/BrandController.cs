@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -34,9 +33,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var brand = new Brand();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					brand = await _context.Brands.Where(b => b.Id == id).SingleOrDefaultAsync();
+					brand = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
 					if (brand == null)
 					{
 						return RedirectToAction("Index");
@@ -55,7 +53,6 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						_context.Brands.Add(model);
 						await _context.SaveChangesAsync();
@@ -63,27 +60,22 @@ namespace ECommerce.Areas.Admin.Controllers
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
+
 				{
-					await using (_context)
-					{
-						_context.Brands.Update(model);
-						await _context.SaveChangesAsync();
-					}
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					_context.Brands.Update(model);
+					await _context.SaveChangesAsync();
 				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				return PartialView("_SuccessfulResponse", redirectUrl);
+			}
+
+			if (!String.IsNullOrWhiteSpace(id))
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
 			}
 			else
 			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
 			}
 
 			return PartialView("AddEditBrand", model);
@@ -95,9 +87,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var brand = new Brand();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					brand = await _context.Brands.Where(b => b.Id == id).SingleOrDefaultAsync();
+					brand = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
 					if (brand == null)
 					{
 						return RedirectToAction("Index");
@@ -113,20 +104,17 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var model = await _context.Brands.Where(b => b.Id == id).SingleOrDefaultAsync();
+					var model = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
 					_context.Brands.Remove(model);
 					await _context.SaveChangesAsync();
 				}
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
-				return RedirectToAction("Index");
-			}
+
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			return RedirectToAction("Index");
 		}
 	}
 }

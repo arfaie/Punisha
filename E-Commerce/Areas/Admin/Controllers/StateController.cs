@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -31,14 +30,12 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditState(string id)
 		{
-			await using (_context)
+			var state = await _context.States.FirstOrDefaultAsync(s => s.Id == id);
+			if (state != null)
 			{
-				var state = await _context.States.FirstOrDefaultAsync(s => s.Id.ToString() == id);
-				if (state != null)
-				{
-					return PartialView("AddEditState", state);
-				}
+				return PartialView("AddEditState", state);
 			}
+
 			return RedirectToAction("Index");
 		}
 
@@ -48,88 +45,58 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
-					{
-						_context.States.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.States.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
-				{
-					await using (_context)
-					{
-						_context.States.Update(model);
-						await _context.SaveChangesAsync();
-					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				_context.States.Update(model);
+				await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
 
-				return PartialView("AddEditState", model);
-			}
+			return PartialView("AddEditState", model);
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Deletestate(string id)
+		public async Task<IActionResult> DeleteState(string id)
 		{
-			var state = new State();
-			if (!String.IsNullOrWhiteSpace(id))
+			var state = await _context.States.SingleOrDefaultAsync(s => s.Id == id);
+			if (state == null)
 			{
-				await using (_context)
-				{
-					state = await _context.States.Where(s => s.Id == id).SingleOrDefaultAsync();
-					if (state == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
-			return PartialView("Deletestate", state.Name);
+			return PartialView("DeleteState", state.Name);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Deletestate(string id, string redirectUrl)
+		public async Task<IActionResult> DeleteState(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
-				{
-					var model = await _context.States.Where(s => s.Id == id).SingleOrDefaultAsync();
+				var model = await _context.States.SingleOrDefaultAsync(s => s.Id == id);
 
-					_context.States.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.States.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

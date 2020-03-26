@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<ECommerce.Models.City>
-@using ECommerce.PublicModel
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
 @{
     ViewBag.Title = "شهر ها";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div style="color:white;text-align:center" class=@TempData["css"]>
@@ -58,8 +57,8 @@
                         </thead>
                         <tbody>
                             @{
-                                string sss = "";
-                                int i = 1;
+                                var sss = "";
+                                var i = 1;
                                 foreach (var item in Model)
                                 {
 
@@ -95,7 +94,7 @@
 </div>
 <div id="progress" class="addModal">
     <div class="addCenter">
-        <img src="~/Content/loading.gif" />
+        <img src="~/images/loading.gif" />
     </div>
 </div>
 <div id="infoModalAlertColored" tabindex="-1" role="dialog" class="modal fade">

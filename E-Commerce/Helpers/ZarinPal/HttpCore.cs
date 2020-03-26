@@ -46,7 +46,7 @@ namespace ECommerce.Helpers.ZarinPal
 			if (responseStream == null) return null;
 
 			string result;
-			using (StreamReader streamReader = new StreamReader(responseStream))
+			using (var streamReader = new StreamReader(responseStream))
 			{
 				result = streamReader.ReadToEnd();
 				streamReader.Close();

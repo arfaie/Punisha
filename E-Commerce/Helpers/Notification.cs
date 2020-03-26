@@ -1,7 +1,6 @@
 ﻿using ECommerce.Models.Helpers.OptionEnums;
 using System;
 using System.ComponentModel;
-using System.Reflection;
 
 namespace ECommerce.Models.Helpers
 {
@@ -11,16 +10,14 @@ namespace ECommerce.Models.Helpers
 
 		private static string StringValueOf(Enum value)
 		{
-			FieldInfo fi = value.GetType().GetField(value.ToString());
-			DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+			var fi = value.GetType().GetField(value.ToString());
+			var attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
 			if (attributes.Length > 0)
 			{
 				return attributes[0].Description;
 			}
-			else
-			{
-				return value.ToString();
-			}
+
+			return value.ToString();
 		}
 
 		private static string BooToLowerString(this bool value)
@@ -34,7 +31,7 @@ namespace ECommerce.Models.Helpers
 			ToastType type)
 		{
 			string color;
-			string iconColor = "'#ABEBC6'";
+			var iconColor = "'#ABEBC6'";
 			if (type == ToastType.Green)
 			{
 				color = "'#1ABC9C'";

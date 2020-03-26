@@ -6,8 +6,8 @@ namespace ECommerce.Helpers
 	{
 		public int Random(int start, int end)
 		{
-			Random rnd = new Random();
-			int random = rnd.Next(start, end);
+			var rnd = new Random();
+			var random = rnd.Next(start, end);
 			return random;
 		}
 	}

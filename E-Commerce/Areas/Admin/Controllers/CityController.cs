@@ -49,9 +49,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					City city = await _context.Cities.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					var city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
 					if (city != null)
 					{
 						model.Id = city.Id;
@@ -72,7 +71,6 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						_context.Cities.Add(city);
 						await _context.SaveChangesAsync();
@@ -82,38 +80,33 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
+
 				{
-					await using (_context)
-					{
-						_context.Cities.Update(city);
-						await _context.SaveChangesAsync();
-					}
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					_context.Cities.Update(city);
+					await _context.SaveChangesAsync();
 				}
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
+			}
+
+			if (!String.IsNullOrWhiteSpace(id))
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
 			}
 			else
 			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
-
-				//city.StaSelectListItems = await _context.States.Select(s => new SelectListItem
-				//{
-				//	Text = s.Name,
-				//	Value = s.Id.ToString()
-				//}).ToListAsync();
-
-				return PartialView("AddEditCity", city);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
 			}
+
+			//city.StaSelectListItems = await _context.States.Select(s => new SelectListItem
+			//{
+			//	Text = s.Name,
+			//	Value = s.Id.ToString()
+			//}).ToListAsync();
+
+			return PartialView("AddEditCity", city);
 		}
 
 		[HttpGet]
@@ -122,9 +115,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var city = new City();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					city = await _context.Cities.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
 					if (city == null)
 					{
 						return RedirectToAction("Index");
@@ -141,9 +133,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
 					_context.Cities.Remove(model);
 					await _context.SaveChangesAsync();
 				}
@@ -151,12 +142,10 @@ namespace ECommerce.Areas.Admin.Controllers
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

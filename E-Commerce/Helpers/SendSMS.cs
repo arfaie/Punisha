@@ -1,10 +1,10 @@
 ﻿using ECommerce.Models.Helpers.OptionEnums;
+using ECommerce.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using ECommerce.ViewModels;
 
 namespace ECommerce.Helpers
 {
@@ -36,7 +36,7 @@ namespace ECommerce.Helpers
 
 					try
 					{
-						SmsViewModel.RootObject datalist = JsonConvert.DeserializeObject<SmsViewModel.RootObject>(result);
+						var datalist = JsonConvert.DeserializeObject<SmsViewModel.RootObject>(result);
 					}
 					catch (Exception e)
 					{
@@ -44,10 +44,8 @@ namespace ECommerce.Helpers
 					}
 					return true;
 				}
-				else
-				{
-					return false;
-				}
+
+				return false;
 			}
 		}
 	}

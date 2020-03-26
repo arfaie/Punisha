@@ -49,7 +49,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> ProductGallery(string id)
 		{
-			ProductGallery model = new ProductGallery();
+			var model = new ProductGallery();
 
 			//model.ProductListItems = _context.Products.Select(a => new SelectListItem
 			//{
@@ -59,9 +59,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					ProductGallery image = _context.ProductGalleries.Where(n => n.Id == id).SingleOrDefault();
+					var image = _context.ProductGalleries.Where(n => n.Id == id).SingleOrDefault();
 
 					if (image != null)
 					{
@@ -79,7 +78,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				List<string> stList = new List<string>();
+				var stList = new List<string>();
 
 				var upload = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 				foreach (var faile in files)
@@ -95,7 +94,7 @@ namespace ECommerce.Areas.Admin.Controllers
 							//model.Image = filename;
 						}
 
-						ImageResizer img = new ImageResizer();
+						var img = new ImageResizer();
 						img.Resize(upload + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
 				}
@@ -105,7 +104,6 @@ namespace ECommerce.Areas.Admin.Controllers
 				}
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						foreach (var variable in stList)
 						{
@@ -117,21 +115,18 @@ namespace ECommerce.Areas.Admin.Controllers
 					}
 					return Json(new { Status = "success", Message = "عکس با موفقیت ثبت شد" });
 				}
-				else
+
 				{
-					await using (_context)
+					foreach (var variable in stList)
 					{
-						foreach (var variable in stList)
-						{
-							model.Image = variable;
-							//model.ProductId = (int)HttpContext.Session.GetInt32("ImageProductKey");
-							//ProductGallery imagemodel = AutoMapper.Mapper.Map<ProductGallery, ProductGallery>(model);
-							_context.ProductGalleries.Update(model);
-							_context.SaveChanges();
-						}
+						model.Image = variable;
+						//model.ProductId = (int)HttpContext.Session.GetInt32("ImageProductKey");
+						//ProductGallery imagemodel = AutoMapper.Mapper.Map<ProductGallery, ProductGallery>(model);
+						_context.ProductGalleries.Update(model);
+						_context.SaveChanges();
 					}
-					return Json(new { Status = "success", Message = "عکس با موفقیت ویرایش شد" });
 				}
+				return Json(new { Status = "success", Message = "عکس با موفقیت ویرایش شد" });
 			}
 			//model.ProductListItems = _context.Products.Select(a => new SelectListItem
 			//{
@@ -154,9 +149,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var productGallery = new ProductGallery();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					productGallery = await _context.ProductGalleries.Where(b => b.Id == id).SingleOrDefaultAsync();
+					productGallery = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
 					if (productGallery == null)
 					{
 						return RedirectToAction("Index");
@@ -173,17 +167,16 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var model = await _context.ProductGalleries.Where(b => b.Id == id).SingleOrDefaultAsync();
+					var model = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
 
-					string sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
+					var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
 					if (System.IO.File.Exists(sourcePath))
 					{
 						System.IO.File.Delete(sourcePath);
 					}
 
-					string sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
+					var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
 					if (System.IO.File.Exists(sourcePath2))
 					{
 						System.IO.File.Delete(sourcePath2);
@@ -195,11 +188,9 @@ namespace ECommerce.Areas.Admin.Controllers
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
-				return RedirectToAction("Index");
-			}
+
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			return RedirectToAction("Index");
 		}
 	}
 }

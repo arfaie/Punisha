@@ -41,12 +41,11 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditSlider(string id)
 		{
-			Slider model = new Slider();
+			var model = new Slider();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					Slider slid = _context.Sliders.Where(n => n.Id == id).SingleOrDefault();
+					var slid = _context.Sliders.Where(n => n.Id == id).SingleOrDefault();
 					if (slid != null)
 					{
 						model.Id = slid.Id;
@@ -74,7 +73,7 @@ namespace ECommerce.Areas.Admin.Controllers
 							await file.CopyToAsync(fs);
 							model.Image = filename;
 						}
-						ImageResizer image = new ImageResizer();
+						var image = new ImageResizer();
 						image.Resize(uploud + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
 				}
@@ -85,7 +84,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						model.Image = "defaultpic.png";
 					}
-					await using (_context)
+
 					{
 						_context.Sliders.Add(model);
 						await _context.SaveChangesAsync();
@@ -93,20 +92,18 @@ namespace ECommerce.Areas.Admin.Controllers
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 					return Json(new { Status = "success" });
 				}
-				else
+
+				if (model.Image == null)
 				{
-					if (model.Image == null)
-					{
-						model.Image = imgename;
-					}
-					await using (_context)
-					{
-						_context.Sliders.Update(model);
-						await _context.SaveChangesAsync();
-					}
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-					return Json(new { Status = "success" });
+					model.Image = imgename;
 				}
+
+				{
+					_context.Sliders.Update(model);
+					await _context.SaveChangesAsync();
+				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				return Json(new { Status = "success" });
 			}
 			var list = new List<string>();
 			foreach (var validation in ViewData.ModelState.Values)
@@ -122,9 +119,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var slider = new Slider();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					slider = await _context.Sliders.Where(b => b.Id == id).SingleOrDefaultAsync();
+					slider = await _context.Sliders.SingleOrDefaultAsync(b => b.Id == id);
 					if (slider == null)
 					{
 						return RedirectToAction("Index");
@@ -141,17 +137,16 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var model = await _context.Sliders.Where(b => b.Id == id).SingleOrDefaultAsync();
+					var model = await _context.Sliders.SingleOrDefaultAsync(b => b.Id == id);
 
-					string sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
+					var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
 					if (System.IO.File.Exists(sourcePath))
 					{
 						System.IO.File.Delete(sourcePath);
 					}
 
-					string sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
+					var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
 					if (System.IO.File.Exists(sourcePath2))
 					{
 						System.IO.File.Delete(sourcePath2);
@@ -163,11 +158,9 @@ namespace ECommerce.Areas.Admin.Controllers
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
-				return RedirectToAction("Index");
-			}
+
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			return RedirectToAction("Index");
 		}
 	}
 }

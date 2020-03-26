@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -16,6 +15,12 @@ namespace ECommerce.Models
 
 		[Display(Name = "دسته یندی")]
 		public virtual Category Category { get; set; }
+
+		[Display(Name = "برند")]
+		public string BrandId { get; set; }
+
+		[Display(Name = "برند")]
+		public virtual Brand Brand { get; set; }
 
 		[Display(Name = "دسته یندی")]
 		public string Name { get; set; }

@@ -1,12 +1,11 @@
 ﻿@model IEnumerable<ECommerce.Models.Slider>
-@using ECommerce.PublicModel
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
 @{
     ViewBag.Title = "اسلاید ها";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div style="color:white;text-align:center" class=@TempData["css"]>
@@ -57,17 +56,15 @@
                         </thead>
                         <tbody>
                             @{
-                                int i = 1;
+                                var i = 1;
                                 foreach (var item in Model)
                                 {
 
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>
-                                            <img  src="@ViewBag.rootpath@item.Image"style=" width:80px; height:80px"  class="thumbnail text-center"/>
+                                            <img src="@ViewBag.rootpath@item.Image" style=" width:80px; height:80px" class="thumbnail text-center" />
                                         </td>
-
-
 
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEditSlider"
@@ -96,7 +93,7 @@
 </div>
 <div id="progress" class="addModal">
     <div class="addCenter">
-        <img src="~/Content/loading.gif" />
+        <img src="~/images/loading.gif" />
     </div>
 </div>
 <div id="infoModalAlertColored" tabindex="-1" role="dialog" class="modal fade">
@@ -110,8 +107,6 @@
 
 @section Scripts{
     <script src="~/js/modal-js/Slider-index.js"></script>
-
-
 
     <script>
         $(document).on('click', '#submitdata', function (evt) {
@@ -152,14 +147,6 @@
 
         });
 
-
-
-
     </script>
 
-
-
-
 }
-
-

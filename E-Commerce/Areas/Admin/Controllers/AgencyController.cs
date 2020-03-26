@@ -4,9 +4,9 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -24,28 +24,13 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var query = await (from a in _context.Agencies
-							   join c in _context.Cities on a.CityId equals c.Id
+			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync());
 
-							   select new Agency
-							   {
-								   Id = a.Id,
-								   Title = a.Title,
-								   FullName = a.FullName,
-
-								   CityId = a.CityId,
-								   //CityName = c.Name,
-								   Address = a.Address,
-								   //Plaque = a.Plaque,
-								   PostalCode = a.PostalCode,
-								   Phone = a.Phone
-							   }).ToListAsync();
-
-			return View(query);
+			return View(await _context.Agencies.ToListAsync());
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> AddEditAgancy(string id)
+		public async Task<IActionResult> AddEditAgency(string id)
 		{
 			var model = new Agency();
 			//model.CitiesList = await _context.Cities.Select(c => new SelectListItem
@@ -62,10 +47,9 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					Agency agency = await _context.Agencies.Where(a => a.Id == id).SingleOrDefaultAsync();
-					City city = await _context.Cities.Where(c => c.Id == agency.CityId).SingleOrDefaultAsync();
+					var agency = await _context.Agencies.SingleOrDefaultAsync(a => a.Id == id);
+					var city = await _context.Cities.SingleOrDefaultAsync(c => c.Id == agency.CityId);
 					if (agency != null)
 					{
 						model.Id = agency.Id;
@@ -79,18 +63,17 @@ namespace ECommerce.Areas.Admin.Controllers
 				}
 			}
 
-			return PartialView("AddEditAgancy", model);
+			return PartialView("AddEditAgency", model);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditAgancy(string id, Agency model, string redirectUrl)
+		public async Task<IActionResult> AddEditAgency(string id, Agency model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						_context.Agencies.Add(model);
 						await _context.SaveChangesAsync();
@@ -100,18 +83,15 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
+
 				{
-					await using (_context)
-					{
-						_context.Agencies.Update(model);
-						await _context.SaveChangesAsync();
-					}
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					_context.Agencies.Update(model);
+					await _context.SaveChangesAsync();
 				}
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
 			if (!String.IsNullOrWhiteSpace(id))
@@ -135,16 +115,16 @@ namespace ECommerce.Areas.Admin.Controllers
 			//	Value = s.Id.ToString()
 			//}).ToListAsync();
 
-			return PartialView("AddEditAgancy", model);
+			return PartialView("AddEditAgency", model);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteAgency(string id)
 		{
 			var agency = new Agency();
-			await using (_context)
+
 			{
-				agency = await _context.Agencies.Where(a => a.Id == id).SingleOrDefaultAsync();
+				agency = await _context.Agencies.SingleOrDefaultAsync(a => a.Id == id);
 				if (agency == null)
 				{
 					return RedirectToAction("Index");
@@ -159,9 +139,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var agency = await _context.Agencies.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var agency = await _context.Agencies.SingleOrDefaultAsync(a => a.Id == id);
 
 					_context.Agencies.Remove(agency);
 					await _context.SaveChangesAsync();

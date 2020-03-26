@@ -1,0 +1,8 @@
+﻿
+@font-face {
+    font-family: sahel;
+    src: url('../fonts/Sahel-SemiBold-FD-WOL.ttf') format('truetype'), url('../fonts/Sahel-SemiBold-FD-WOL.eot');
+}
+div {
+    font-family: sahel;
+}

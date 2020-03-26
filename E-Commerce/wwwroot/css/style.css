@@ -1408,8 +1408,9 @@ nav.main-menu {
 			width: 100%;
 		}
 
-.sidebar color: #979898;
-font-size: 13px;
+.sidebar {
+	color: #979898;
+	font-size: 13px;
 }
 
 .list-group {

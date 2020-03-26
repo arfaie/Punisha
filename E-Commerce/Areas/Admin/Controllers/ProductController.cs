@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,7 +62,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditProduct(string id)
 		{
-			Product model = new Product();
+			var model = new Product();
 			//model.CategoryList = await _context.Categories.Select(c => new SelectListItem
 			//{
 			//	Text = c.Title,
@@ -78,9 +77,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					Product product = await _context.Products.Where(p => p.Id == id).SingleOrDefaultAsync();
+					var product = await _context.Products.SingleOrDefaultAsync(p => p.Id == id);
 					if (product != null)
 					{
 						model.Id = product.Id;
@@ -120,7 +118,7 @@ namespace ECommerce.Areas.Admin.Controllers
 							await file.CopyToAsync(fs);
 							model.ImageName = filename;
 						}
-						ImageResizer img = new ImageResizer();
+						var img = new ImageResizer();
 						img.Resize(uploads + filename,
 							_envt.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
@@ -134,7 +132,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						model.ImageName = "defaultpic.png";
 					}
-					await using (_context)
+
 					{
 						_context.Products.Add(model);
 						await _context.SaveChangesAsync();
@@ -144,22 +142,20 @@ namespace ECommerce.Areas.Admin.Controllers
 					//return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
 					return RedirectToAction("Index");
 				}
-				else
+
+				if (model.ImageName == null)
 				{
-					if (model.ImageName == null)
-					{
-						model.ImageName = imgName;
-					}
-					await using (_context)
-					{
-						_context.Products.Update(model);
-						await _context.SaveChangesAsync();
-					}
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-					//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
-					//return PartialView("_SuccessfulResponse", redirectUrl);
-					return RedirectToAction("Index");
+					model.ImageName = imgName;
 				}
+
+				{
+					_context.Products.Update(model);
+					await _context.SaveChangesAsync();
+				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
+				//return PartialView("_SuccessfulResponse", redirectUrl);
+				return RedirectToAction("Index");
 			}
 			if (!String.IsNullOrWhiteSpace(id))
 			{
@@ -189,9 +185,9 @@ namespace ECommerce.Areas.Admin.Controllers
 		public async Task<IActionResult> DeleteProduct(string id)
 		{
 			var product = new Product();
-			await using (_context)
+
 			{
-				product = await _context.Products.Where(p => p.Id == id).SingleOrDefaultAsync();
+				product = await _context.Products.SingleOrDefaultAsync(p => p.Id == id);
 				if (product == null)
 				{
 					return RedirectToAction("Index");
@@ -206,17 +202,16 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var product = await _context.Products.Where(a => a.Id == id).SingleOrDefaultAsync();
+					var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
 
-					string sourcePath = Path.Combine(_envt.WebRootPath, "upload\\normalimage\\" + product.ImageName);
+					var sourcePath = Path.Combine(_envt.WebRootPath, "upload\\normalimage\\" + product.ImageName);
 					if (System.IO.File.Exists(sourcePath))
 					{
 						System.IO.File.Delete(sourcePath);
 					}
 
-					string sourcePath2 = Path.Combine(_envt.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
+					var sourcePath2 = Path.Combine(_envt.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
 					if (System.IO.File.Exists(sourcePath2))
 					{
 						System.IO.File.Delete(sourcePath2);
@@ -238,8 +233,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetProductField(string id)
 		{
-			var product = await _context.Products.Where(a => a.Id == id).SingleOrDefaultAsync();
-			string categoryId = product.CategoryId;
+			var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
+			var categoryId = product.CategoryId;
 
 			//دسته بندی کالای ما شامل کدام گروه فیلد هاست؟انتخاب همه گروه فیلدها
 			var selectGroupField = _context.CategoryFields.Where(a => a.CategoryId == categoryId);
@@ -341,11 +336,11 @@ namespace ECommerce.Areas.Admin.Controllers
 			if (!String.IsNullOrWhiteSpace(id))
 			{
 				var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == id);
-				List<string> cars = new List<string>();
-				int i = 0;
+				var cars = new List<string>();
+				var i = 0;
 				foreach (var item in select)
 				{
-					string name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
+					var name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
 					cars.Add(name);
 				}
 				return String.Join("،", cars);
@@ -359,7 +354,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
 				var ds = new string[select.Count()];
-				int i = 0;
+				var i = 0;
 				foreach (var item in select)
 				{
 					try
@@ -381,7 +376,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[ValidateAntiForgeryToken]
 		public IActionResult AddEditProductField(Field model)
 		{
-			int[] lsFieldId = (int[])TempData["lsFieldId"];
+			var lsFieldId = (int[])TempData["lsFieldId"];
 			//string productId = (int)TempData["ProductId"];
 			//string productFieldId = (int)TempData["ProductFieldId"];
 			//var tp = model.FieldType;

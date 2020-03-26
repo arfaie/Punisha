@@ -23,27 +23,19 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.Units.ToListAsync();
-			return View(model);
+			return View(await _context.Units.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditUnit(string id)
 		{
-			var unit = new Unit(); ;
-			if (!String.IsNullOrWhiteSpace(id))
+			var unit = await _context.Units.FirstOrDefaultAsync(c => c.Id == id);
+			if (unit != null)
 			{
-				await using (_context)
-				{
-					unit = await _context.Units.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (unit == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return PartialView("AddEditUnit", unit);
 			}
 
-			return PartialView("AddEditUnit", unit);
+			return PartialView("AddEditUnit", new Unit());
 		}
 
 		[HttpPost]
@@ -52,60 +44,34 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
-					{
-						_context.Units.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Units.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
-				{
-					await using (_context)
-					{
-						_context.Units.Update(model);
-						await _context.SaveChangesAsync();
-					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				_context.Units.Update(model);
+				await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
 
-				return PartialView("AddEditUnit", model);
-			}
+			return PartialView("AddEditUnit", model);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteUnit(string id)
 		{
-			var unit = new Unit();
-			if (!String.IsNullOrWhiteSpace(id))
+			var unit = await _context.Units.FirstOrDefaultAsync(c => c.Id == id);
+			if (unit == null)
 			{
-				await using (_context)
-				{
-					unit = await _context.Units.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (unit == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteUnit", unit.Title);
@@ -117,22 +83,17 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
-				{
-					var model = await _context.Units.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					_context.Units.Remove(model);
-					_context.SaveChanges();
-				}
+				var model = await _context.Units.FirstOrDefaultAsync(c => c.Id == id);
+				_context.Units.Remove(model);
+				_context.SaveChanges();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

@@ -23,27 +23,19 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.Cars.ToListAsync();
-			return View(model);
+			return View(await _context.Cars.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditCar(string id)
 		{
-			var car = new Car();
-			if (!String.IsNullOrWhiteSpace(id))
+			var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+			if (car != null)
 			{
-				await using (_context)
-				{
-					car = await _context.Cars.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (car == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return PartialView("AddEditCar", car);
 			}
 
-			return PartialView("AddEditCar", car);
+			return PartialView("AddEditCar", new Car());
 		}
 
 		[HttpPost]
@@ -52,60 +44,34 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
-					{
-						_context.Cars.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Cars.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
-				{
-					await using (_context)
-					{
-						_context.Cars.Update(model);
-						await _context.SaveChangesAsync();
-					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				_context.Cars.Update(model);
+				await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
 
-				return PartialView("AddEditCar", model);
-			}
+			return PartialView("AddEditCar", model);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> DeleteCar(string id)
 		{
-			var car = new Car();
-			if (!String.IsNullOrWhiteSpace(id))
+			var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+			if (car == null)
 			{
-				await using (_context)
-				{
-					car = await _context.Cars.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					if (car == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteCar", car.Name);
@@ -117,22 +83,18 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
-				{
-					var model = await _context.Cars.FirstOrDefaultAsync(c => c.Id.ToString() == id);
-					_context.Cars.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				var model = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+				_context.Cars.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

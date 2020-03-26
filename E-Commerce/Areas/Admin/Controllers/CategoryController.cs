@@ -34,9 +34,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var category = new Category();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 					if (category == null)
 					{
 						return RedirectToAction("Index");
@@ -55,7 +54,6 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					await using (_context)
 					{
 						_context.Categories.Add(model);
 						await _context.SaveChangesAsync();
@@ -65,32 +63,27 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
-				else
+
 				{
-					await using (_context)
-					{
-						_context.Categories.Update(model);
-						await _context.SaveChangesAsync();
-					}
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
-
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					_context.Categories.Update(model);
+					await _context.SaveChangesAsync();
 				}
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
+			}
+
+			if (!String.IsNullOrWhiteSpace(id))
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
 			}
 			else
 			{
-				if (!String.IsNullOrWhiteSpace(id))
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-				}
-				else
-				{
-					TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-				}
-
-				return PartialView("AddEditCategory", model);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
 			}
+
+			return PartialView("AddEditCategory", model);
 		}
 
 		[HttpGet]
@@ -99,9 +92,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			var category = new Category();
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				await using (_context)
 				{
-					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 					if (category == null)
 					{
 						return RedirectToAction("Index");
@@ -118,9 +110,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await using (_context)
 				{
-					var model = await _context.Categories.FirstOrDefaultAsync(c => c.Id.ToString() == id);
+					var model = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 					_context.Categories.Remove(model);
 					_context.SaveChanges();
 				}
@@ -128,12 +119,10 @@ namespace ECommerce.Areas.Admin.Controllers
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
-				return RedirectToAction("Index");
-			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+
+			return RedirectToAction("Index");
 		}
 	}
 }

@@ -102,9 +102,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
@@ -121,8 +118,6 @@ namespace ECommerce.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -610,6 +605,9 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<string>("BrandId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
 
@@ -641,6 +639,8 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("CategoryId");
 
@@ -959,13 +959,6 @@ namespace ECommerce.Migrations
                         .HasForeignKey("CityId");
                 });
 
-            modelBuilder.Entity("ECommerce.Models.ApplicationRole", b =>
-                {
-                    b.HasOne("ECommerce.Models.ApplicationUser", null)
-                        .WithMany("ApplicationRoles")
-                        .HasForeignKey("ApplicationUserId");
-                });
-
             modelBuilder.Entity("ECommerce.Models.ApplicationUser", b =>
                 {
                     b.HasOne("ECommerce.Models.Car", "Car")
@@ -1073,6 +1066,10 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.Product", b =>
                 {
+                    b.HasOne("ECommerce.Models.Brand", "Brand")
+                        .WithMany("Products")
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("ECommerce.Models.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
