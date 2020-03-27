@@ -96,83 +96,60 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> EditUser(string id)
 		{
-			var model = new ApplicationUser();
-			//model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
-			//{
-			//	Text = r.Name,
-			//	Value = r.Id
-			//}).ToListAsync();
-
-			/////////////////////////////////////////////////////////
 			if (!string.IsNullOrWhiteSpace(id))
 			{
 				var user = await _userManager.FindByIdAsync(id);
 				if (user != null)
 				{
-					model.Id = user.Id;
-					model.FullName = user.FullName;
-					model.Email = user.Email;
-					model.UserName = user.UserName;
-					//model.ApplicationRoleId = _roleManager.Roles.Single(r => r.Name == _userManager.GetRolesAsync(user).Result.Single()).Id;
-					model.CarId = user.CarId;
-					model.UserGroupId = user.UserGroupId;
-					model.PhoneNumber = user.PhoneNumber;
+					var userRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+					if (!String.IsNullOrWhiteSpace(userRole))
+					{
+						var role = await _roleManager.FindByNameAsync(userRole);
+
+						if (role != null)
+						{
+							user.ApplicationRoleId = role.Id;
+						}
+					}
+
+					ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name", user.ApplicationRoleId);
+
+					ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title", user.UserGroupId);
+
+					ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name", user.CarId);
+
+					return PartialView("EditUser", user);
 				}
 			}
 
-			//model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-			//{
-			//	Text = us.Title,
-			//	Value = us.Id.ToString()
-			//}).ToListAsync();
-
-			//model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-			//{
-			//	Text = c.Name,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
-
-			return PartialView("EditUser", model);
+			return PartialView("EditUser");
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EditUser(string id, ApplicationUser model, string redirectUrl)
+		public async Task<IActionResult> EditUser(ApplicationUser model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				var user = await _userManager.FindByIdAsync(id);
-				if (user != null)
+				model.Email = model.PhoneNumber + Helper.EmailAddress;
+
+				var result = await _userManager.UpdateAsync(model);
+				if (result.Succeeded)
 				{
-					user.FullName = model.FullName;
-					user.Email = model.Email;
-					user.UserName = model.UserName;
-					user.CarId = model.CarId;
-					user.UserGroupId = model.UserGroupId;
-					user.PhoneNumber = model.PhoneNumber;
-
-					var existingRole = _userManager.GetRolesAsync(user).Result.Single();
-					var exiistingRoleId = _roleManager.Roles.Single(r => r.Name == existingRole).Id;
-					var result = await _userManager.UpdateAsync(user);
-					if (result.Succeeded)
+					var applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
+					if (applicationRole != null)
 					{
-						//if (exiistingRoleId != model.ApplicationRoleId)
-						//{
-						//IdentityResult roleresult = await _userManager.RemoveFromRoleAsync(user, existingRole);
-						//if (roleresult.Succeeded)
-						//{
-						//	ApplicationRole applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
-						//	if (applicationRole != null)
-						//	{
-						//		IdentityResult newrole = await _userManager.AddToRoleAsync(user, applicationRole.Name);
-						//		if (newrole.Succeeded)
-						//		{
-						TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+						var allRoles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
+						await _userManager.RemoveFromRolesAsync(model, allRoles);
 
-						return PartialView("_SuccessfulResponse", redirectUrl);
-						//}
-						//}
-						//}
+						var newRole = await _userManager.AddToRoleAsync(model, applicationRole.Name);
+						if (!newRole.Succeeded)
+						{
+							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", type: ToastType.Red);
+
+							return PartialView("_SuccessfulResponse", redirectUrl);
+						}
 					}
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
@@ -181,23 +158,23 @@ namespace ECommerce.Areas.Admin.Controllers
 				}
 			}
 
-			//model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
-			//{
-			//	Text = r.Name,
-			//	Value = r.Id
-			//}).ToList();
+			var userRole = (await _userManager.GetRolesAsync(model)).FirstOrDefault();
 
-			//model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-			//{
-			//	Text = us.Title,
-			//	Value = us.Id.ToString()
-			//}).ToListAsync();
+			if (!String.IsNullOrWhiteSpace(userRole))
+			{
+				var role = await _roleManager.FindByNameAsync(userRole);
 
-			//model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-			//{
-			//	Text = c.Name,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+				if (role != null)
+				{
+					model.ApplicationRoleId = role.Id;
+				}
+			}
+
+			ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name", model.ApplicationRoleId);
+
+			ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title", model.UserGroupId);
+
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name", model.CarId);
 
 			return PartialView("EditUser", model);
 		}

@@ -6,17 +6,17 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ECommerce
 {
 	public class Startup
 	{
-		public Startup(IWebHostEnvironment env)
+		public Startup(IHostingEnvironment env)
 		{
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
@@ -62,6 +62,8 @@ namespace ECommerce
 				options.Password.RequireUppercase = false;
 			});
 
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 			services.AddDistributedMemoryCache();
 
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -71,7 +73,7 @@ namespace ECommerce
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
-			services.AddMvc();
+			//services.AddMvc();
 
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -79,7 +81,7 @@ namespace ECommerce
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
 		{
 			//loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			//loggerFactory.AddDebug();
@@ -96,25 +98,47 @@ namespace ECommerce
 			}
 
 			//app.UseHttpsRedirection();
-			app.UseStaticFiles();
-			app.UseCookiePolicy();
+			//app.UseStaticFiles();
+			//app.UseCookiePolicy();
 
+			//app.UseSession();
+
+			//app.UseRouting();
+
+			//app.UseAuthentication();
+			//app.UseAuthorization();
+
+			//// Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
+
+			//app.UseEndpoints(endpoints =>
+			//{
+			//	endpoints.MapControllerRoute("User", "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
+
+			//	endpoints.MapControllerRoute("Admin", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+
+			//	endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+			//});
+
+			app.UseStaticFiles();
 			app.UseSession();
 
-			app.UseRouting();
-
 			app.UseAuthentication();
-			app.UseAuthorization();
 
-			// Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
+			app.UseCookiePolicy();
 
-			app.UseEndpoints(endpoints =>
+			app.UseMvc(routes =>
 			{
-				endpoints.MapControllerRoute("User", "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
+				//routes.MapRoute(
+				//	name: "User",
+				//	template: "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
 
-				endpoints.MapControllerRoute("Admin", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+				//routes.MapRoute(
+				//	name: "Admin",
+				//	template: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
 
-				endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=HomePage}/{action=Home}/{id?}");
 			});
 		}
 	}

@@ -23,9 +23,9 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IWebHostEnvironment _envt;
+		private readonly IHostingEnvironment _envt;
 
-		public ProductController(ApplicationDbContext context, IWebHostEnvironment envt)
+		public ProductController(ApplicationDbContext context, IHostingEnvironment envt)
 		{
 			_context = context;
 

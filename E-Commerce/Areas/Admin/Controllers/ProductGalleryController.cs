@@ -22,9 +22,9 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IHostingEnvironment _env;
 
-		public ProductGalleryController(ApplicationDbContext context, IWebHostEnvironment env)
+		public ProductGalleryController(ApplicationDbContext context, IHostingEnvironment env)
 		{
 			_context = context;
 

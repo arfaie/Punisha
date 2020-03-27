@@ -22,9 +22,9 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IHostingEnvironment _env;
 
-		public SliderController(ApplicationDbContext context, IWebHostEnvironment env)
+		public SliderController(ApplicationDbContext context, IHostingEnvironment env)
 		{
 			_context = context;
 

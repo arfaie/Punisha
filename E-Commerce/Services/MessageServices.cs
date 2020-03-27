@@ -23,7 +23,7 @@ namespace ECommerce.Services
 
 		public async Task<bool> SendSmsAsync(string mobile, SmsTypes type, string token, string token2 = null)
 		{
-			using var client = new HttpClient
+			var client = new HttpClient
 			{
 				BaseAddress = new Uri(BaseUrl)
 			};
