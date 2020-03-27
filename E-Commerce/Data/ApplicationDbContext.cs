@@ -19,11 +19,13 @@ namespace ECommerce.Data
 		public DbSet<CategoryGroup> CategoryGroups { get; set; }
 		public DbSet<CategoryField> CategoryFields { get; set; }
 		public DbSet<City> Cities { get; set; }
+		public DbSet<CommentAndStar> CommentAndStars { get; set; }
 		public DbSet<Factor> Factors { get; set; }
 		public DbSet<FactorItem> FactorItems { get; set; }
 		public DbSet<Field> Fields { get; set; }
 		public DbSet<FieldGroup> FieldGroups { get; set; }
 		public DbSet<FieldType> FieldTypes { get; set; }
+		public DbSet<History> Histories { get; set; }
 		public DbSet<InventoryChange> InventoryChanges { get; set; }
 		public DbSet<Offer> Offers { get; set; }
 		public DbSet<OfferItem> OfferItems { get; set; }
@@ -56,10 +58,12 @@ namespace ECommerce.Data
 			builder.Entity<CategoryGroup>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<CategoryField>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<City>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+			builder.Entity<CommentAndStar>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Factor>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<FactorItem>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<FieldGroup>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<FieldType>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+			builder.Entity<History>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<InventoryChange>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Offer>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<OfferItem>().Property(x => x.Id).HasDefaultValueSql("NEWID()");

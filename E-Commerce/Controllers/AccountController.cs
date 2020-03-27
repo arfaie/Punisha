@@ -20,17 +20,19 @@ namespace ECommerce.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly SignInManager<ApplicationUser> _signInManager;
+		private readonly RoleManager<ApplicationRole> _roleManager;
 
 		//private readonly IEmailSender _emailSender;
 		private readonly ISmsSender _smsSender;
 
 		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager,
-			ISmsSender smsSender)
+			ISmsSender smsSender, RoleManager<ApplicationRole> roleManager)
 		{
 			_userManager = userManager;
 			_signInManager = signInManager;
 			//_emailSender = emailSender;
 			_smsSender = smsSender;
+			_roleManager = roleManager;
 		}
 
 		// GET: /Account/Register
@@ -140,6 +142,13 @@ namespace ECommerce.Controllers
 				var result = await _signInManager.PasswordSignInAsync(login.Mobile, login.Password, false, true);
 				if (result.Succeeded)
 				{
+					var userRole = await _userManager.GetRolesAsync(user);
+
+					if (userRole.Contains("Admin"))
+					{
+						return RedirectToAction("Index", "Admin", new { Area = "Admin" });
+					}
+
 					return RedirectToAction("Index", "Home");
 				}
 

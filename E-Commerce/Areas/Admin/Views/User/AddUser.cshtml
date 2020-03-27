@@ -24,44 +24,18 @@
                 </div>
 
                 <div class="form-group">
-                    <label asp-for="Email" class="col-lg-5 col-sm-5 control-label"></label>
+                    <label asp-for="NationalCode" class="col-lg-5 col-sm-5 control-label"></label>
                     <div class="col-lg-6">
-                        <input asp-for="Email" class="form-control" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
+                        <input asp-for="NationalCode" class="form-control" />
+                        <span asp-validation-for="NationalCode" class="text-danger"></span>
                     </div>
                 </div>
 
-                @*<div class="form-group">
-                        <label asp-for="ApplicationRoleId" class="col-lg-5 col-sm-5 control-label"></label>
-                        <div class="col-lg-6">
-                            <select asp-for="ApplicationRoleId" asp-items="@Model.ApplicationRoles" class="form-control">
-                                <option value="" disabled="disabled" selected="selected">انتخاب نقش</option>
-                            </select>
-                        </div>
-                    </div>*@
-
-                @*<div class="form-group">
-                        <label asp-for="CarId" class="col-lg-5 col-sm-5 control-label"></label>
-                        <div class="col-lg-6">
-                            <select asp-for="CarId" asp-items="@Model.CarListItems" class="form-control"></select>
-                        </div>
-                    </div>*@
-            </div>
-
-            <div class="col-lg-6">
-
-                @*<div class="form-group">
-                        <label asp-for="UserGroupId" class="col-lg-5 col-sm-5 control-label"></label>
-                        <div class="col-lg-6">
-                            <select asp-for="UserGroupId" asp-items="@Model.UserGroupListItems" class="form-control"></select>
-                        </div>
-                    </div>*@
-
                 <div class="form-group">
-                    <label asp-for="UserName" class="col-lg-5 col-sm-5 control-label"></label>
+                    <label asp-for="TaxiCode" class="col-lg-5 col-sm-5 control-label"></label>
                     <div class="col-lg-6">
-                        <input asp-for="UserName" class="form-control" />
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <input asp-for="TaxiCode" class="form-control" />
+                        <span asp-validation-for="TaxiCode" class="text-danger"></span>
                     </div>
                 </div>
 
@@ -73,21 +47,45 @@
                     </div>
                 </div>
 
-                @*<div class="form-group">
-                        <label asp-for="Password" class="col-lg-5 col-sm-5 control-label"></label>
-                        <div class="col-lg-6">
-                            <input asp-for="Password" class="form-control" />
-                            <span asp-validation-for="Password" class="text-danger"></span>
-                        </div>
-                    </div>
+            </div>
 
-                    <div class="form-group">
-                        <label asp-for="ConfirmPassword" class="col-lg-5 col-sm-5 control-label"></label>
-                        <div class="col-lg-6">
-                            <input asp-for="ConfirmPassword" class="form-control" />
-                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                        </div>
-                    </div>*@
+            <div class="col-lg-6">
+
+                <div class="form-group">
+                    <label asp-for="Password" class="col-lg-5 col-sm-5 control-label"></label>
+                    <div class="col-lg-6">
+                        <input type="text" asp-for="Password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="CarId" class="col-lg-5 col-sm-5 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="CarId" asp-items="@ViewBag.Cars" class="form-control">
+                            <option value="" disabled="disabled" selected="selected">انتخاب خودرو</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ApplicationRoleId" class="col-lg-5 col-sm-5 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="ApplicationRoleId" asp-items="@ViewBag.ApplicationRoles" class="form-control">
+                            <option value="" disabled="disabled" selected="selected">انتخاب نقش</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="UserGroupId" class="col-lg-5 col-sm-5 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="UserGroupId" asp-items="@ViewBag.UserGroups" class="form-control">
+                            <option value="" disabled="disabled" selected="selected">انتخاب گروه کاربران</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

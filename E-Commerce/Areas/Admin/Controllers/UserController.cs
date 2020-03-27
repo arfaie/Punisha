@@ -1,4 +1,5 @@
 ﻿using ECommerce.Data;
+using ECommerce.Helpers;
 using ECommerce.Models;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
@@ -6,7 +7,9 @@ using ECommerce.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,26 +40,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddUser()
 		{
-			var model = new ApplicationUser();
-			//model.ApplicationRoles = await _roleManager.Roles.Select(r => new SelectListItem
-			//{
-			//	Text = r.Name,
-			//	Value = r.Id
-			//}).ToListAsync();
+			ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name");
 
-			//model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-			//{
-			//	Text = us.Title,
-			//	Value = us.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title");
 
-			//model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-			//{
-			//	Text = c.Name,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddUser", model);
+			return PartialView("AddUser", new ApplicationUser());
 		}
 
 		[HttpPost]
@@ -65,40 +55,42 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser
-				{
-					FullName = model.FullName,
-					PhoneNumber = model.PhoneNumber,
-					UserName = model.UserName,
-					Email = model.Email
-				};
+				model.RegistrationDateAndTime = DateTime.UtcNow;
+				model.UserName = model.PhoneNumber;
+				model.Email = model.PhoneNumber + Helper.EmailAddress;
+				model.EmailConfirmed = true;
+				model.PhoneNumberConfirmed = true;
 
-				var result = await _userManager.CreateAsync(user, "asd123");
+				var result = await _userManager.CreateAsync(model, model.Password);
 				if (result.Succeeded)
 				{
+					var applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
+					if (applicationRole != null)
+					{
+						var newRole = await _userManager.AddToRoleAsync(model, applicationRole.Name);
+						if (!newRole.Succeeded)
+						{
+							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", type: ToastType.Red);
+
+							return PartialView("_SuccessfulResponse", redirectUrl);
+						}
+					}
+
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
+
+				TempData["Notification"] = Notification.ShowNotif("خطا در ثبت کاربر جدید", type: ToastType.Red);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			//model.ApplicationRoles = _roleManager.Roles.Select(r => new SelectListItem
-			//{
-			//	Text = r.Name,
-			//	Value = r.Id
-			//}).ToList();
+			ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name");
 
-			//model.UserGroupListItems = await _context.UserGroups.Select(us => new SelectListItem
-			//{
-			//	Text = us.Title,
-			//	Value = us.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title");
 
-			//model.CarListItems = await _context.Cars.Select(c => new SelectListItem
-			//{
-			//	Text = c.Name,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
 
 			return PartialView("AddUser", model);
 		}

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
@@ -33,6 +34,14 @@ namespace ECommerce.Models
 
 		[Display(Name = "مسدود")]
 		public bool IsBlocked { get; set; }
+
+		[NotMapped]
+		[Display(Name = "نقش")]
+		public string ApplicationRoleId { get; set; }
+
+		[NotMapped]
+		[Display(Name = "رمز عبور")]
+		public string Password { get; set; }
 
 		public ICollection<Address> Addresses { get; set; }
 

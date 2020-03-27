@@ -110,7 +110,7 @@ namespace ECommerce
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllerRoute("UserProfile", "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
+				endpoints.MapControllerRoute("User", "{area:exists}/{controller=UserProfile}/{action=Index}/{id?}");
 
 				endpoints.MapControllerRoute("Admin", "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
 
