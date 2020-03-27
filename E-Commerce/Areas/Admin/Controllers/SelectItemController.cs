@@ -4,6 +4,7 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -23,35 +24,21 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var query = await _context.SelectItems.ToListAsync();
-
-			return View(query);
+			return View(await _context.SelectItems.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditSelectItem(string id)
 		{
-			var model = new SelectItem();
-			//model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem
-			//{
-			//	Text = c.Title,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
 
-			if (!String.IsNullOrWhiteSpace(id))
+			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
+			if (selectItem != null)
 			{
-				{
-					var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
-					if (selectItem != null)
-					{
-						model.Id = selectItem.Id;
-						model.Title = selectItem.Title;
-						model.SelectGroupId = selectItem.SelectGroupId;
-					}
-				}
+				return PartialView("AddEditSelectItem", selectItem);
 			}
 
-			return PartialView("AddEditSelectItem", model);
+			return PartialView("AddEditSelectItem", new SelectItem());
 		}
 
 		[HttpPost]
@@ -60,42 +47,25 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					{
-						_context.SelectItems.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.SelectItems.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				{
-					_context.SelectItems.Update(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.SelectItems.Update(model);
+				await _context.SaveChangesAsync();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			if (!String.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-			}
-
-			//model.SelectGroupListItems = await _context.SelectGroups.Select(c => new SelectListItem
-			//{
-			//	Text = c.Title,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
 
 			return PartialView("AddEditSelectItem", model);
 		}
@@ -103,14 +73,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteSelectItem(string id)
 		{
-			var selectItem = new SelectItem();
-
+			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
+			if (selectItem == null)
 			{
-				selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
-				if (selectItem == null)
-				{
-					return RedirectToAction("Index");
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteSelectItem", selectItem.Title);
@@ -121,16 +87,14 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				{
-					var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
+				var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
 
-					_context.SelectItems.Remove(selectItem);
-					await _context.SaveChangesAsync();
+				_context.SelectItems.Remove(selectItem);
+				await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
 			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);

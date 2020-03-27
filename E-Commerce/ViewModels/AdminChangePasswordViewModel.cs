@@ -2,7 +2,7 @@
 
 namespace ECommerce.ViewModels
 {
-	public class ChangePasswordViewModel
+	public class AdminChangePasswordViewModel
 	{
 		public string Id { get; set; }
 
@@ -15,10 +15,5 @@ namespace ECommerce.ViewModels
 		[DataType(DataType.Password)]
 		[Display(Name = "رمز عبور جدید")]
 		public string NewPassword { get; set; }
-
-		[DataType(DataType.Password)]
-		[Display(Name = "تکرار رمز عبور")]
-		[Compare(nameof(NewPassword), ErrorMessage = "رمز عبور و تکرار آن باید یکسان باشد.")]
-		public string ConfirmPassword { get; set; }
 	}
 }

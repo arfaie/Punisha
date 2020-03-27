@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -24,12 +25,14 @@ namespace Ecommerce.Areas.Admin.Controllers
 		private readonly ApplicationDbContext _Context;
 		private readonly IServiceProvider _ServiceProvider;
 		private readonly IHostingEnvironment _appEnvironmen;
+		private readonly IMapper _mapper;
 
-		public ProductGalleryController(ApplicationDbContext context, IServiceProvider serviceProvider, IHostingEnvironment appEnvironmen)
+		public ProductGalleryController(ApplicationDbContext context, IServiceProvider serviceProvider, IHostingEnvironment appEnvironmen, IMapper mapper)
 		{
 			_Context = context;
 			_ServiceProvider = serviceProvider;
 			_appEnvironmen = appEnvironmen;
+			_mapper = mapper;
 		}
 
 		public IActionResult Index(int id)
@@ -111,7 +114,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 						{
 							model.Image = VARIABLE;
 							model.IdProduct = (int)HttpContext.Session.GetInt32("ImageProductKey");
-							ProductGallery imagemodel = AutoMapper.Mapper.Map<AddEditProductGallery, ProductGallery>(model);
+							ProductGallery imagemodel = _mapper.Map<AddEditProductGallery, ProductGallery>(model);
 							db.ProductGalleries.Add(imagemodel);
 							db.SaveChanges();
 						}
@@ -126,7 +129,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 						{
 							model.Image = VARIABLE;
 							model.IdProduct = (int)HttpContext.Session.GetInt32("ImageProductKey");
-							ProductGallery imagemodel = AutoMapper.Mapper.Map<AddEditProductGallery, ProductGallery>(model);
+							ProductGallery imagemodel = _mapper.Map<AddEditProductGallery, ProductGallery>(model);
 							db.ProductGalleries.Update(imagemodel);
 							db.SaveChanges();
 						}

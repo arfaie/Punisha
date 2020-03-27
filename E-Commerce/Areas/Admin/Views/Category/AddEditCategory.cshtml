@@ -28,6 +28,13 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label asp-for="CategoryGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="CategoryGroupId" asp-items="@ViewBag.CategoryGroups" class="form-control"></select>
+                </div>
+            </div>
+
             <div class="form-group hidden">
                 <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">

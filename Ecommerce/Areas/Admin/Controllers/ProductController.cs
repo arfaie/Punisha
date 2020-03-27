@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -24,12 +25,14 @@ namespace Ecommerce.Areas.Admin.Controllers
 		private readonly ApplicationDbContext _context;
 		private readonly IServiceProvider _serviceProvider;
 		private readonly IHostingEnvironment _appEnvironment;
+		private readonly IMapper _mapper;
 
-		public ProductController(ApplicationDbContext context, IServiceProvider serviceProvider, IHostingEnvironment appEnvironment)
+		public ProductController(ApplicationDbContext context, IServiceProvider serviceProvider, IHostingEnvironment appEnvironment, IMapper mapper)
 		{
 			_context = context;
 			_serviceProvider = serviceProvider;
 			_appEnvironment = appEnvironment;
+			_mapper = mapper;
 		}
 
 		[HttpGet]
@@ -134,7 +137,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 					}
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						Product productModel = AutoMapper.Mapper.Map<AddEditProductViewModel, Product>(model);
+						Product productModel = _mapper.Map<AddEditProductViewModel, Product>(model);
 						db.Products.Add(productModel);
 						await db.SaveChangesAsync();
 					}
@@ -151,7 +154,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 					}
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						Product productModel = AutoMapper.Mapper.Map<AddEditProductViewModel, Product>(model);
+						Product productModel = _mapper.Map<AddEditProductViewModel, Product>(model);
 						db.Products.Update(productModel);
 						await db.SaveChangesAsync();
 					}

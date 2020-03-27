@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+// TODO product
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
@@ -23,79 +24,39 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IHostingEnvironment _envt;
+		private readonly IWebHostEnvironment _env;
 
-		public ProductController(ApplicationDbContext context, IHostingEnvironment envt)
+		public ProductController(ApplicationDbContext context, IWebHostEnvironment env)
 		{
 			_context = context;
 
-			_envt = envt;
+			_env = env;
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> Index()
 		{
-			var model = await (from p in _context.Products
-							   join c in _context.Categories on p.CategoryId equals c.Id
-							   join u in _context.Units on p.UnitId equals u.Id
-							   select new Product
-							   {
-								   Id = p.Id,
-								   Name = p.Name,
-								   UnitId = p.UnitId,
-								   //UnitName = u.Title,
-								   CategoryId = p.CategoryId,
-								   //Category = c.c,
-								   Code = p.Code,
-								   ImageName = p.ImageName,
-								   Inventory = p.Inventory,
-								   IsSellable = p.IsSellable,
-								   OrderPoint = p.OrderPoint,
-								   //Price = p.Price
-								   Price = (int)p.Price
-							   }).ToListAsync();
-
 			ViewBag.rootpath = "/upload/thumbnailimage/";
-			return View(model);
+
+			return View(await _context.Products.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditProduct(string id)
 		{
-			var model = new Product();
-			//model.CategoryList = await _context.Categories.Select(c => new SelectListItem
-			//{
-			//	Text = c.Title,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
-			//model.UnitList = await _context.Units.Select(u => new SelectListItem
-			//{
-			//	Text = u.Title,
-			//	Value = u.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
-			if (!String.IsNullOrWhiteSpace(id))
+			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
+
+			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+			if (product != null)
 			{
-				{
-					var product = await _context.Products.SingleOrDefaultAsync(p => p.Id == id);
-					if (product != null)
-					{
-						model.Id = product.Id;
-						model.Name = product.Name;
-						model.OrderPoint = product.OrderPoint;
-						model.Price = product.Price;
-						model.Code = product.Code;
-						model.Inventory = product.Inventory;
-						model.IsSellable = product.IsSellable;
-						model.UnitId = product.UnitId;
-						model.CategoryId = product.CategoryId;
-						model.ImageName = product.ImageName;
-					}
-				}
+				return PartialView("AddEditProduct", product);
 			}
 
-			return PartialView("AddEditProduct", model);
+			return PartialView("AddEditProduct", new Product());
 		}
 
 		[HttpPost]
@@ -105,7 +66,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				//upload audio
-				var uploads = Path.Combine(_envt.WebRootPath, "upload\\normalimage\\");
+				var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 
 				foreach (var file in files)
 				{
@@ -113,14 +74,13 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-						using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+						await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
 						{
 							await file.CopyToAsync(fs);
 							model.ImageName = filename;
 						}
 						var img = new ImageResizer();
-						img.Resize(uploads + filename,
-							_envt.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						img.Resize(uploads + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
 				}
 
@@ -133,10 +93,9 @@ namespace ECommerce.Areas.Admin.Controllers
 						model.ImageName = "defaultpic.png";
 					}
 
-					{
-						_context.Products.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Products.Add(model);
+					await _context.SaveChangesAsync();
+
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 					//return PartialView("_SuccessfulResponse", redirectUrl);
 					//return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
@@ -148,10 +107,8 @@ namespace ECommerce.Areas.Admin.Controllers
 					model.ImageName = imgName;
 				}
 
-				{
-					_context.Products.Update(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.Products.Update(model);
+				await _context.SaveChangesAsync();
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 				//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
 				//return PartialView("_SuccessfulResponse", redirectUrl);
@@ -166,17 +123,11 @@ namespace ECommerce.Areas.Admin.Controllers
 				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
 			}
 
-			//model.CategoryList = await _context.Categories.Select(c => new SelectListItem
-			//{
-			//	Text = c.Title,
-			//	Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
-			//model.UnitList = await _context.Units.Select(u => new SelectListItem
-			//{
-			//	Text = u.Title,
-			//	Value = u.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
+
+			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
 			return PartialView("AddEditProduct", model);
 		}
@@ -184,14 +135,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteProduct(string id)
 		{
-			var product = new Product();
-
+			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+			if (product == null)
 			{
-				product = await _context.Products.SingleOrDefaultAsync(p => p.Id == id);
-				if (product == null)
-				{
-					return RedirectToAction("Index");
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteProduct", product.Name);
@@ -202,28 +149,26 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
+
+				var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + product.ImageName);
+				if (System.IO.File.Exists(sourcePath))
 				{
-					var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
-
-					var sourcePath = Path.Combine(_envt.WebRootPath, "upload\\normalimage\\" + product.ImageName);
-					if (System.IO.File.Exists(sourcePath))
-					{
-						System.IO.File.Delete(sourcePath);
-					}
-
-					var sourcePath2 = Path.Combine(_envt.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
-					if (System.IO.File.Exists(sourcePath2))
-					{
-						System.IO.File.Delete(sourcePath2);
-					}
-
-					_context.Products.Remove(product);
-					await _context.SaveChangesAsync();
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
-
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					System.IO.File.Delete(sourcePath);
 				}
+
+				var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
+				if (System.IO.File.Exists(sourcePath2))
+				{
+					System.IO.File.Delete(sourcePath2);
+				}
+
+				_context.Products.Remove(product);
+				await _context.SaveChangesAsync();
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+
+				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
 
@@ -320,7 +265,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			//		  join c in _context.Cars on dept.ItemId equals c.Id into dep1
 			//		  from dept1 in dep1.DefaultIfEmpty()
 			//		  ).ToList()).ToList();
-			var selectProduct = _context.Products.Where(x => x.Id == id).FirstOrDefault();
+
+			var selectProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
 			//TempData["lsFieldGroup"] = lsFieldGroup;
 
 			TempData["CarListItems"] = await _context.Cars.Select(c => new SelectListItem
@@ -383,7 +329,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			////check is Update
 			//var carIds = Request.Form["bb"];
 			//var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-			//SelectItem selectedItems;
+			//Product selectedItems;
 
 			//if (model.CarIds != null)
 			//{
@@ -392,7 +338,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			//		_context.ProductSelectedItems.RemoveRange(select);
 			//		foreach (var item in model.CarIds)
 			//		{
-			//			selectedItems = new SelectItem();
+			//			selectedItems = new Product();
 			//			selectedItems.ItemId = Convert.ToInt16(item);
 			//			selectedItems.ProductFieldId = productFieldId;
 			//			_context.ProductSelectedItems.Add(selectedItems);

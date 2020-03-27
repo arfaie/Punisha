@@ -4,9 +4,9 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -24,43 +24,21 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			//var model = await _context.Cities.ToListAsync();
-			var model = await (from c in _context.Cities
-							   join s in _context.States on c.StateId equals s.Id
-							   select new City
-							   {
-								   Id = c.Id,
-								   Name = c.Name,
-								   StateId = c.StateId,
-								   State = s
-							   }).ToListAsync();
-			return View(model);
+			return View(await _context.Cities.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditCity(string id)
 		{
-			var model = new City();
-			//model.StaSelectListItems = await _context.States.Select(s => new SelectListItem
-			//{
-			//	Text = s.Name,
-			//	Value = s.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
 
-			if (!String.IsNullOrWhiteSpace(id))
+			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
+			if (city != null)
 			{
-				{
-					var city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
-					if (city != null)
-					{
-						model.Id = city.Id;
-						model.Name = city.Name;
-						model.StateId = city.StateId;
-					}
-				}
+				return PartialView("AddEditCity", city);
 			}
 
-			return PartialView("AddEditCity", model);
+			return PartialView("AddEditCity", new City());
 		}
 
 		[HttpPost]
@@ -69,42 +47,25 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					{
-						_context.Cities.Add(city);
-						await _context.SaveChangesAsync();
-					}
+					_context.Cities.Add(city);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				{
-					_context.Cities.Update(city);
-					await _context.SaveChangesAsync();
-				}
+				_context.Cities.Update(city);
+				await _context.SaveChangesAsync();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			if (!String.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-			}
-
-			//city.StaSelectListItems = await _context.States.Select(s => new SelectListItem
-			//{
-			//	Text = s.Name,
-			//	Value = s.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
 
 			return PartialView("AddEditCity", city);
 		}
@@ -112,16 +73,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteCity(string id)
 		{
-			var city = new City();
-			if (!String.IsNullOrWhiteSpace(id))
+			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
+			if (city == null)
 			{
-				{
-					city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
-					if (city == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteCity", city.Name);
@@ -133,11 +88,11 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				{
-					var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
-					_context.Cities.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
+
+				_context.Cities.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);

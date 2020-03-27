@@ -23,26 +23,19 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.Brands.ToListAsync();
-			return View(model);
+			return View(await _context.Brands.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditBrand(string id)
 		{
-			var brand = new Brand();
-			if (!String.IsNullOrWhiteSpace(id))
+			var brand = await _context.Brands.FirstOrDefaultAsync(c => c.Id == id);
+			if (brand != null)
 			{
-				{
-					brand = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
-					if (brand == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return PartialView("AddEditBrand", brand);
 			}
 
-			return PartialView("AddEditBrand", brand);
+			return PartialView("AddEditBrand", new Brand());
 		}
 
 		[HttpPost]
@@ -51,31 +44,20 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					{
-						_context.Brands.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Brands.Add(model);
+					await _context.SaveChangesAsync();
+
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				{
-					_context.Brands.Update(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.Brands.Update(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
-
-			if (!String.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
 			}
 
 			return PartialView("AddEditBrand", model);
@@ -84,17 +66,12 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteBrand(string id)
 		{
-			var brand = new Brand();
-			if (!String.IsNullOrWhiteSpace(id))
+			var brand = await _context.Brands.FirstOrDefaultAsync(c => c.Id == id);
+			if (brand == null)
 			{
-				{
-					brand = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
-					if (brand == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
+
 			return PartialView("DeleteBrand", brand.Title);
 		}
 
@@ -104,11 +81,11 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				{
-					var model = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
-					_context.Brands.Remove(model);
-					await _context.SaveChangesAsync();
-				}
+				var model = await _context.Brands.SingleOrDefaultAsync(b => b.Id == id);
+
+				_context.Brands.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}

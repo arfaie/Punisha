@@ -4,12 +4,11 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
+// TODO field
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
@@ -23,7 +22,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
 			//var ff = _context.Fields.Where(pr).ToList();
 			//var query = (from field in _context.Fields
@@ -51,76 +50,43 @@ namespace ECommerce.Areas.Admin.Controllers
 			//	lsFieldViewModel.Add(ob);
 			//}
 
-			return View();
+			return View(await _context.Fields.ToListAsync());
 		}
 
-		public string FieldType(string id)
-		{
-			var select = _context.FieldTypes.Where(x => x.Id == id).First().Title;
-			return select;
-		}
+		//public string FieldType(string id)
+		//{
+		//	var select = _context.FieldTypes.Where(x => x.Id == id).First().Title;
+		//	return select;
+		//}
 
-		public string ProductCtgNamesAsync(string FieldId)
-		{
-			var titels = new List<string>();
+		//public string ProductCtgNamesAsync(string FieldId)
+		//{
+		//	var titels = new List<string>();
 
-			var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
-			foreach (var item in select.ToList())
-			{
-				var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
-				titels.Add(title);
-			}
+		//	var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
+		//	foreach (var item in select.ToList())
+		//	{
+		//		var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
+		//		titels.Add(title);
+		//	}
 
-			return String.Join("،", titels);
-		}
+		//	return String.Join("،", titels);
+		//}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditField(string id)
 		{
-			var model = new Field();
-			//model.SelectGroupList = await _context.SelectGroups.ToListAsync();
+			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Title");
+			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-			//model.ICategories = await _context.Categories.Select(s => new SelectListItem
-			//{
-			//	Text = s.Title,
-			//	Value = s.Id.ToString()
-			//}).ToListAsync();
-			//model.SelectFiledGroupList = await _context.FieldGroups.ToListAsync();
-			//model.FildTypeModels = await _context.FieldTypes.Where(x => x.Id < 5).ToListAsync();
-
-			if (!String.IsNullOrWhiteSpace(id))
+			var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
+			if (field != null)
 			{
-				{
-					var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
-					//var select = _context.CategoryFields.Where(a => a.FieldId == id);
-					//int[] b = new int[999];
-					//int i = 0;
-					//foreach (var item in select)
-					//{
-					//	try
-					//	{
-					//		b[i] = item.CategoryId;
-					//	}
-					//	catch (Exception e)
-					//	{
-					//		throw;
-					//	}
-
-					//	i++;
-					//}
-					//if (field != null)
-					//{
-					//	model.Id = field.Id;
-					//	model.Title = field.Title;
-					//	model.Type = field.Type;
-					//	model.SelectGroupId = field.SelectGroupId;
-					//	model.FieldGroupId = field.FieldGroupId;
-					//	model.CategoryId = b;
-					//}
-				}
+				return PartialView("AddEditField", field);
 			}
 
-			return PartialView("AddEditField", model);
+			return PartialView("AddEditField", new Field());
 		}
 
 		[HttpPost]
@@ -232,21 +198,9 @@ namespace ECommerce.Areas.Admin.Controllers
 				//}
 			}
 
-			if (!String.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-			}
-
-			//model.SelectGroupList = await _context.SelectGroups.ToListAsync();
-			//model.SelectGroupList = await _context.SelectGroups.Select(c => new SelectListItem()
-			//{
-			//    Text = c.Title,
-			//    Value = c.Id.ToString()
-			//}).ToListAsync();
+			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Title");
+			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
 			return PartialView("AddEditField", model);
 		}

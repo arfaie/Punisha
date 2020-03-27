@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -21,12 +22,14 @@ namespace Ecommerce.Areas.Admin.Controllers
 		private readonly ApplicationDbContext _context;
 		private readonly ApplicationDbContext __context;
 		private readonly IServiceProvider _serviceProvider;
+		private readonly IMapper _mapper;
 
-		public FieldController(ApplicationDbContext context_, ApplicationDbContext context, IServiceProvider serviceProvider)
+		public FieldController(ApplicationDbContext context_, ApplicationDbContext context, IServiceProvider serviceProvider, IMapper mapper)
 		{
 			_context = context;
 			__context = context_;
 			_serviceProvider = serviceProvider;
+			_mapper = mapper;
 		}
 
 		public IActionResult Index()
@@ -168,7 +171,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 						int[] aa = model.IdCategory;
 						if (model.IdSelectGroup == 0)
 							model.IdSelectGroup = -1;
-						Field fieldModel = AutoMapper.Mapper.Map<AddEditFieldViewModel, Field>(model);
+						Field fieldModel = _mapper.Map<AddEditFieldViewModel, Field>(model);
 
 						if (!CheckDuplicateDrp(model.IdCategory) || model.Type != 4)
 						{
@@ -235,7 +238,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 							if (model.IdSelectGroup == 0)
 								model.IdSelectGroup = -1;
 							int[] aa = model.IdCategory;
-							Field fieldModel = AutoMapper.Mapper.Map<AddEditFieldViewModel, Field>(model);
+							Field fieldModel = _mapper.Map<AddEditFieldViewModel, Field>(model);
 							try
 							{
 								db.Fields.Update(fieldModel);

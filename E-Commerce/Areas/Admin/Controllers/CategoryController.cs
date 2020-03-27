@@ -4,6 +4,7 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -24,26 +25,21 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.Categories.ToListAsync();
-			return View(model);
+			return View(await _context.Categories.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditCategory(string id)
 		{
-			var category = new Category();
-			if (!String.IsNullOrWhiteSpace(id))
+			ViewBag.CategoryGroups = new SelectList(await _context.CategoryGroups.ToListAsync(), "Id", "Title");
+
+			var category = await _context.Categories.SingleOrDefaultAsync(b => b.Id == id);
+			if (category != null)
 			{
-				{
-					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-					if (category == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return PartialView("AddEditCategory", category);
 			}
 
-			return PartialView("AddEditCategory", category);
+			return PartialView("AddEditCategory", new Category());
 		}
 
 		[HttpPost]
@@ -52,36 +48,25 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				if (!String.IsNullOrWhiteSpace(id))
+				if (String.IsNullOrWhiteSpace(id))
 				{
-					{
-						_context.Categories.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Categories.Add(model);
+					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				{
-					_context.Categories.Update(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.Categories.Update(model);
+				await _context.SaveChangesAsync();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			if (!String.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
-			}
+			ViewBag.CategoryGroups = new SelectList(await _context.CategoryGroups.ToListAsync(), "Id", "Title");
 
 			return PartialView("AddEditCategory", model);
 		}
@@ -89,16 +74,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteCategory(string id)
 		{
-			var category = new Category();
-			if (!String.IsNullOrWhiteSpace(id))
+			var category = await _context.Categories.SingleOrDefaultAsync(b => b.Id == id);
+			if (category == null)
 			{
-				{
-					category = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-					if (category == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteCategory", category.Title);
@@ -110,11 +89,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				{
-					var model = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
-					_context.Categories.Remove(model);
-					_context.SaveChanges();
-				}
+				var model = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
+
+				_context.Categories.Remove(model);
+				_context.SaveChanges();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);

@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -20,11 +21,13 @@ namespace Ecommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IServiceProvider _serviceProvider;
+		private readonly IMapper _mapper;
 
-		public SelectItemController(ApplicationDbContext context, IServiceProvider serviceProvider)
+		public SelectItemController(ApplicationDbContext context, IServiceProvider serviceProvider, IMapper mapper)
 		{
 			_context = context;
 			_serviceProvider = serviceProvider;
+			_mapper = mapper;
 		}
 
 		public async Task<IActionResult> Index()
@@ -79,7 +82,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
+						SelectItem SelectItemModel = _mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
 						db.SelectItems.Add(SelectItemModel);
 						await db.SaveChangesAsync();
 					}
@@ -92,7 +95,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						SelectItem SelectItemModel = AutoMapper.Mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
+						SelectItem SelectItemModel = _mapper.Map<AddEditSelectItemViewModel, SelectItem>(model);
 						db.SelectItems.Update(SelectItemModel);
 						await db.SaveChangesAsync();
 					}

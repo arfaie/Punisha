@@ -45,6 +45,8 @@ namespace Ecommerce
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
+			services.AddAutoMapper(typeof(Startup));
+
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 			//services.AddDistributedMemoryCache();
 
@@ -54,7 +56,6 @@ namespace Ecommerce
 			});
 
 			services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-			services.AddAutoMapper();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

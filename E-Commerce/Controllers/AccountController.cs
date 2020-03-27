@@ -146,7 +146,7 @@ namespace ECommerce.Controllers
 
 					if (userRole.Contains("Admin"))
 					{
-						return RedirectToAction("Index", "Admin", new { Area = "Admin" });
+						return RedirectToAction("Index", "User", new { Area = "Admin" });
 					}
 
 					return RedirectToAction("Index", "Home");

@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -20,11 +21,13 @@ namespace Ecommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IServiceProvider _iServiceProvider;
+		private readonly IMapper _mapper;
 
-		public AgencyController(ApplicationDbContext context, IServiceProvider iServiceProvider)
+		public AgencyController(ApplicationDbContext context, IServiceProvider iServiceProvider, IMapper mapper)
 		{
 			_context = context;
 			_iServiceProvider = iServiceProvider;
+			_mapper = mapper;
 		}
 
 		public async Task<IActionResult> Index()
@@ -101,7 +104,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						Agency agencymodel = AutoMapper.Mapper.Map<AddEditAgencyViewModel, Agency>(model);
+						Agency agencymodel = _mapper.Map<AddEditAgencyViewModel, Agency>(model);
 						db.Agencies.Add(agencymodel);
 						await db.SaveChangesAsync();
 					}
@@ -114,7 +117,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _iServiceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						Agency agencymodel = AutoMapper.Mapper.Map<AddEditAgencyViewModel, Agency>(model);
+						Agency agencymodel = _mapper.Map<AddEditAgencyViewModel, Agency>(model);
 						db.Agencies.Update(agencymodel);
 						await db.SaveChangesAsync();
 					}

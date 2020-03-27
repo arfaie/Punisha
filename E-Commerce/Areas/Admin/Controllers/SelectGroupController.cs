@@ -23,8 +23,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.SelectGroups.ToListAsync();
-			return View(model);
+			return View(await _context.SelectGroups.ToListAsync());
 		}
 
 		[HttpGet]
@@ -69,14 +68,10 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteSelectGroup(string id)
 		{
-			var selectGroup = new SelectGroup();
-			if (!String.IsNullOrWhiteSpace(id))
+			var selectGroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
+			if (selectGroup == null)
 			{
-				selectGroup = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
-				if (selectGroup == null)
-				{
-					return RedirectToAction("Index");
-				}
+				return RedirectToAction("Index");
 			}
 
 			return PartialView("DeleteSelectGroup", selectGroup.Title);
@@ -89,6 +84,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				var model = await _context.SelectGroups.FirstOrDefaultAsync(c => c.Id == id);
+
 				_context.SelectGroups.Remove(model);
 				await _context.SaveChangesAsync();
 

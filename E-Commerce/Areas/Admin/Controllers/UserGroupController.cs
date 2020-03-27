@@ -84,6 +84,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				var model = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
+
 				_context.UserGroups.Remove(model);
 				await _context.SaveChangesAsync();
 

@@ -35,9 +35,15 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.FullName</td>
-                        <td>@item.UserName</td>
-                        @*<td>@item.UserGroupName</td>*@
+                        <td>
+                            @item.FullName
+                        </td>
+                        <td>
+                            @item.UserName
+                        </td>
+                        <td>
+                            @item.UserGroup
+                        </td>
                         <td>
                             <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="EditUser"
                                data-target="#modal-action-user" asp-route-Id="@item.Id">

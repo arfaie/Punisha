@@ -132,7 +132,28 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				model.Email = model.PhoneNumber + Helper.EmailAddress;
+				var user = await _userManager.FindByIdAsync(model.Id);
+				if (user == null)
+				{
+					TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", type: ToastType.Red);
+
+					return PartialView("_SuccessfulResponse", redirectUrl);
+				}
+
+				user.FullName = model.FullName;
+				user.NationalCode = model.NationalCode;
+				user.TaxiCode = model.TaxiCode;
+				user.CarId = model.CarId;
+				user.UserGroupId = model.UserGroupId;
+
+				if (user.PhoneNumber != model.PhoneNumber)
+				{
+					await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+					user.UserName = model.Password;
+					user.Email = model.PhoneNumber + Helper.EmailAddress;
+					user.PhoneNumberConfirmed = true;
+					user.EmailConfirmed = true;
+				}
 
 				var result = await _userManager.UpdateAsync(model);
 				if (result.Succeeded)
@@ -180,37 +201,36 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
-		public IActionResult ChangeUserPass()
+		public IActionResult ChangeUserPass(string id)
 		{
-			return View();
+			return PartialView("ChangeUserPass", new AdminChangePasswordViewModel { Id = id });
 		}
 
 		//[HttpPost]
 		//public async Task<IActionResult> ChangeUserPass(string id, ChangePasswordViewModel model)
 		//{
-		//    if (ModelState.IsValid)
-		//    {
-		//        //ApplicationUser user = new ApplicationUser();
-		//        var user = await _userManager.FindByIdAsync(id);
+		//	if (ModelState.IsValid)
+		//	{
+		//		//ApplicationUser user = new ApplicationUser();
+		//		var user = await _userManager.FindByIdAsync(id);
 
-		//        if (await _userManager.CheckPasswordAsync(user, model.OldPassword))
-		//        {
-		//            await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-		//            ViewBag.changepass = "رمز عبور شما با موفقیت تغییر کرد";
-		//            return View(model);
-		//        }
-		//        else
-		//        {
-		//            ModelState.AddModelError("OldPassword", "رمز عبور فعلی صحیح نمی باشد.");
-		//            return View(model);
-		//        }
-
-		//    }
-		//    return View(model);
+		//		if (await _userManager.CheckPasswordAsync(user, model.OldPassword))
+		//		{
+		//			await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+		//			ViewBag.changepass = "رمز عبور شما با موفقیت تغییر کرد";
+		//			return PartialView("_SuccessfulResponse", redirectUrl);
+		//		}
+		//		else
+		//		{
+		//			ModelState.AddModelError("OldPassword", "رمز عبور فعلی صحیح نمی باشد.");
+		//			return View(model);
+		//		}
+		//	}
+		//	return View(model);
 		//}
 
 		[HttpPost]
-		public async Task<IActionResult> ChangeUserPass(string id, ChangePasswordViewModel model, string redirectUrl)
+		public async Task<IActionResult> ChangeUserPass(string id, AdminChangePasswordViewModel model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -230,14 +250,15 @@ namespace ECommerce.Areas.Admin.Controllers
 					}
 
 					TempData["Notification"] = Notification.ShowNotif("خطایی رخ داد.", ToastType.Red);
-					return View();
+					return PartialView("ChangeUserPass", model);
 				}
 
 				//await _signInManager.RefreshSignInAsync(user);
 				TempData["Notification"] = Notification.ShowNotif("رمز عبور شما با موفقیت ویرایش شد.", ToastType.Green);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			return View();
+
+			return PartialView("ChangeUserPass", model);
 		}
 
 		public async Task<IActionResult> UserAddress(string id)

@@ -368,9 +368,10 @@
         </div>
     }
 
-    <script src="~/js/jquery-1.8.0.min.js"></script>
-    <script src="~/js/iziToast-master/dist/js/iziToast.js">
-    </script>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/js/iziToast-master/dist/js/iziToast.js"></script>
+    @*<script src="~/js/jquery-cropper.js"></script>*@
+    <script src="~/js/jquery.slimscroll.min.js"></script>
     <script src="~/js/elephant.min.js"></script>
     <script src="~/DataTable/datatables.js"></script>
     <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
@@ -414,9 +415,9 @@
 
     </script>
 
-    @if (TempData["Notif"] != null)
+    @if (TempData["Notification"] != null)
     {
-        @Html.Raw(TempData["Notif"])
+        @Html.Raw(TempData["Notification"])
     }
 
 </body>

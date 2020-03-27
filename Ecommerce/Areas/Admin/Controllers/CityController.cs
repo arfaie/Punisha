@@ -1,4 +1,5 @@
-﻿using Ecommerce.Helpers;
+﻿using AutoMapper;
+using Ecommerce.Helpers;
 using Ecommerce.Helpers.OptionEnums;
 using Ecommerce.Models;
 using Ecommerce.Models.ViewModels;
@@ -19,11 +20,13 @@ namespace Ecommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IServiceProvider _serviceProvider;
+		private readonly IMapper _mapper;
 
-		public CityController(ApplicationDbContext context, IServiceProvider serviceProvider)
+		public CityController(ApplicationDbContext context, IServiceProvider serviceProvider, IMapper mapper)
 		{
 			_context = context;
 			_serviceProvider = serviceProvider;
+			_mapper = mapper;
 		}
 
 		public async Task<IActionResult> Index()
@@ -78,7 +81,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						City city = AutoMapper.Mapper.Map<AddEditCityViewModel, City>(model);
+						City city = _mapper.Map<AddEditCityViewModel, City>(model);
 						db.Cities.Add(city);
 						await db.SaveChangesAsync();
 					}
@@ -91,7 +94,7 @@ namespace Ecommerce.Areas.Admin.Controllers
 				{
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
 					{
-						City city = AutoMapper.Mapper.Map<AddEditCityViewModel, City>(model);
+						City city = _mapper.Map<AddEditCityViewModel, City>(model);
 						db.Cities.Update(city);
 						await db.SaveChangesAsync();
 					}

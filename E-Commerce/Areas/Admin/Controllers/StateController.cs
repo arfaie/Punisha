@@ -23,20 +23,19 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		public async Task<IActionResult> Index()
 		{
-			var model = await _context.States.ToListAsync();
-			return View(model);
+			return View(await _context.States.ToListAsync());
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> AddEditState(string id)
 		{
-			var state = await _context.States.FirstOrDefaultAsync(s => s.Id == id);
+			var state = await _context.States.FirstOrDefaultAsync(c => c.Id == id);
 			if (state != null)
 			{
 				return PartialView("AddEditState", state);
 			}
 
-			return RedirectToAction("Index");
+			return PartialView("AddEditState", new State());
 		}
 
 		[HttpPost]

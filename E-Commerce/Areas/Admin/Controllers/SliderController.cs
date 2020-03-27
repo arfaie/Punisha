@@ -22,12 +22,11 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IHostingEnvironment _env;
+		private readonly IWebHostEnvironment _env;
 
-		public SliderController(ApplicationDbContext context, IHostingEnvironment env)
+		public SliderController(ApplicationDbContext context, IWebHostEnvironment env)
 		{
 			_context = context;
-
 			_env = env;
 		}
 
@@ -41,40 +40,33 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> AddEditSlider(string id)
 		{
-			var model = new Slider();
-			if (!String.IsNullOrWhiteSpace(id))
+			var slider = await _context.Sliders.FirstOrDefaultAsync(c => c.Id == id);
+			if (slider != null)
 			{
-				{
-					var slid = _context.Sliders.Where(n => n.Id == id).SingleOrDefault();
-					if (slid != null)
-					{
-						model.Id = slid.Id;
-						model.Image = slid.Image;
-					}
-				}
+				return PartialView("AddEditSlider", slider);
 			}
 
-			return PartialView("AddEditSlider", model);
+			return PartialView("AddEditSlider", new Slider());
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddEditSlider(string id, Slider model, IEnumerable<IFormFile> files, string imgename)
+		public async Task<IActionResult> AddEditSlider(string id, Slider model, IEnumerable<IFormFile> files, string imageName)
 		{
 			if (ModelState.IsValid)
 			{
-				var uploud = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+				var upload = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 				foreach (var file in files)
 				{
 					if (file != null && file.Length > 0)
 					{
 						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
-						using (var fs = new FileStream(Path.Combine(uploud, filename), FileMode.Create))
+						await using (var fs = new FileStream(Path.Combine(upload, filename), FileMode.Create))
 						{
 							await file.CopyToAsync(fs);
 							model.Image = filename;
 						}
 						var image = new ImageResizer();
-						image.Resize(uploud + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						image.Resize(upload + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
 					}
 				}
 
@@ -85,23 +77,20 @@ namespace ECommerce.Areas.Admin.Controllers
 						model.Image = "defaultpic.png";
 					}
 
-					{
-						_context.Sliders.Add(model);
-						await _context.SaveChangesAsync();
-					}
+					_context.Sliders.Add(model);
+					await _context.SaveChangesAsync();
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
 					return Json(new { Status = "success" });
 				}
 
 				if (model.Image == null)
 				{
-					model.Image = imgename;
+					model.Image = imageName;
 				}
 
-				{
-					_context.Sliders.Update(model);
-					await _context.SaveChangesAsync();
-				}
+				_context.Sliders.Update(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 				return Json(new { Status = "success" });
 			}
@@ -116,19 +105,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteSlider(string id)
 		{
-			var slider = new Slider();
-			if (!String.IsNullOrWhiteSpace(id))
+			var slider = await _context.Sliders.SingleOrDefaultAsync(s => s.Id == id);
+			if (slider == null)
 			{
-				{
-					slider = await _context.Sliders.SingleOrDefaultAsync(b => b.Id == id);
-					if (slider == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteSlider");
+			return PartialView("DeleteSlider", slider.Image);
 		}
 
 		[HttpPost]
@@ -155,6 +138,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Sliders.Remove(model);
 					await _context.SaveChangesAsync();
 				}
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,74 +23,58 @@ namespace ECommerce.Areas.Admin.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 
-		private readonly IHostingEnvironment _env;
+		private readonly IWebHostEnvironment _env;
 
-		public ProductGalleryController(ApplicationDbContext context, IHostingEnvironment env)
+		public ProductGalleryController(ApplicationDbContext context, IWebHostEnvironment env)
 		{
 			_context = context;
 
 			_env = env;
 		}
 
-		public IActionResult Index(string id)
+		public async Task<IActionResult> Index(string id)
 		{
 			if (!String.IsNullOrWhiteSpace(id))
 			{
 				return RedirectToAction("Index", "Product");
 			}
 
-			var model = _context.ProductGalleries.Where(g => g.ProductId == id).ToList();
-
 			ViewBag.rootpath = "/upload/thumbnailimage/";
-			//HttpContext.Session.SetInt32("ImageProductKey", id);
 
-			return View(model);
+			return View(await _context.ProductGalleries.Where(g => g.ProductId == id).ToListAsync());
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> ProductGallery(string id)
+		public async Task<IActionResult> AddEditProductGallery(string id)
 		{
-			var model = new ProductGallery();
+			ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
 
-			//model.ProductListItems = _context.Products.Select(a => new SelectListItem
-			//{
-			//	Text = a.Name,
-			//	Value = a.Id.ToString()
-			//}).ToList();
-
-			if (!String.IsNullOrWhiteSpace(id))
+			var productGallery = await _context.ProductGalleries.FirstOrDefaultAsync(c => c.Id == id);
+			if (productGallery != null)
 			{
-				{
-					var image = _context.ProductGalleries.Where(n => n.Id == id).SingleOrDefault();
-
-					if (image != null)
-					{
-						model.Id = image.Id;
-						model.ProductId = image.ProductId;
-						model.Image = image.Image;
-					}
-				}
+				return PartialView("AddEditProductGallery", productGallery);
 			}
-			return PartialView("ProductGallery", model);
+
+			return PartialView("AddEditProductGallery", new ProductGallery());
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> ProductGallery(ProductGallery model, string id, IEnumerable<IFormFile> files)
+		public async Task<IActionResult> AddEditProductGallery(ProductGallery model, string id, IEnumerable<IFormFile> files)
 		{
 			if (ModelState.IsValid)
 			{
 				var stList = new List<string>();
 
 				var upload = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
-				foreach (var faile in files)
+				foreach (var file in files)
 				{
-					if (faile != null && faile.Length > 0)
+					if (file != null && file.Length > 0)
 					{
-						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(faile.FileName);
+						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-						using (var fs = new FileStream(Path.Combine(upload, filename), FileMode.Create))
+						await using (var fs = new FileStream(Path.Combine(upload, filename), FileMode.Create))
 						{
-							await faile.CopyToAsync(fs);
+							await file.CopyToAsync(fs);
 							stList.Add(filename);
 							//model.Image = filename;
 						}
@@ -104,35 +89,29 @@ namespace ECommerce.Areas.Admin.Controllers
 				}
 				if (!String.IsNullOrWhiteSpace(id))
 				{
-					{
-						foreach (var variable in stList)
-						{
-							model.Image = variable;
-							//model.ProductId = (int)HttpContext.Session.GetInt32("ImageProductKey");
-							_context.ProductGalleries.Add(model);
-							_context.SaveChanges();
-						}
-					}
-					return Json(new { Status = "success", Message = "عکس با موفقیت ثبت شد" });
-				}
-
-				{
 					foreach (var variable in stList)
 					{
 						model.Image = variable;
 						//model.ProductId = (int)HttpContext.Session.GetInt32("ImageProductKey");
-						//ProductGallery imagemodel = AutoMapper.Mapper.Map<ProductGallery, ProductGallery>(model);
-						_context.ProductGalleries.Update(model);
+						_context.ProductGalleries.Add(model);
 						_context.SaveChanges();
 					}
+
+					return Json(new { Status = "success", Message = "عکس با موفقیت ثبت شد" });
 				}
+
+				foreach (var variable in stList)
+				{
+					model.Image = variable;
+
+					_context.ProductGalleries.Update(model);
+					_context.SaveChanges();
+				}
+
 				return Json(new { Status = "success", Message = "عکس با موفقیت ویرایش شد" });
 			}
-			//model.ProductListItems = _context.Products.Select(a => new SelectListItem
-			//{
-			//	Text = a.Name,
-			//	Value = a.Id.ToString()
-			//}).ToList();
+
+			ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
 
 			var list = new List<string>();
 			foreach (var validation in ViewData.ModelState.Values)
@@ -146,19 +125,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		[HttpGet]
 		public async Task<IActionResult> DeleteProductGallery(string id)
 		{
-			var productGallery = new ProductGallery();
-			if (!String.IsNullOrWhiteSpace(id))
+			var productGallery = await _context.ProductGalleries.FirstOrDefaultAsync(c => c.Id == id);
+			if (productGallery == null)
 			{
-				{
-					productGallery = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
-					if (productGallery == null)
-					{
-						return RedirectToAction("Index");
-					}
-				}
+				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteProductGallery");
+			return PartialView("DeleteProductGallery", productGallery.Image);
 		}
 
 		[HttpPost]
@@ -167,24 +140,23 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				var model = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
+
+				var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
+				if (System.IO.File.Exists(sourcePath))
 				{
-					var model = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
-
-					var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
-					if (System.IO.File.Exists(sourcePath))
-					{
-						System.IO.File.Delete(sourcePath);
-					}
-
-					var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
-					if (System.IO.File.Exists(sourcePath2))
-					{
-						System.IO.File.Delete(sourcePath2);
-					}
-
-					_context.ProductGalleries.Remove(model);
-					await _context.SaveChangesAsync();
+					System.IO.File.Delete(sourcePath);
 				}
+
+				var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
+				if (System.IO.File.Exists(sourcePath2))
+				{
+					System.IO.File.Delete(sourcePath2);
+				}
+
+				_context.ProductGalleries.Remove(model);
+				await _context.SaveChangesAsync();
+
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
