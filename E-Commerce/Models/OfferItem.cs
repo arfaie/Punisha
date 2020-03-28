@@ -22,9 +22,9 @@ namespace ECommerce.Models
 		public virtual Product Product { get; set; }
 
 		[Display(Name = "مقدار تخفیف")]
-		public decimal DiscountAmount { get; set; }
+		public float DiscountAmount { get; set; }
 
 		[Display(Name = "درصد تخفیف")]
-		public decimal DiscountPercent { get; set; }
+		public float DiscountPercent { get; set; }
 	}
 }

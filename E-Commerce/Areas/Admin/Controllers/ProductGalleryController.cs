@@ -32,6 +32,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			_env = env;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index(string id)
 		{
 			if (!String.IsNullOrWhiteSpace(id))
@@ -45,6 +46,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditProductGallery(string id)
 		{
 			ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
@@ -59,6 +61,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddEditProductGallery(ProductGallery model, string id, IEnumerable<IFormFile> files)
 		{
 			if (ModelState.IsValid)
@@ -123,6 +126,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteProductGallery(string id)
 		{
 			var productGallery = await _context.ProductGalleries.FirstOrDefaultAsync(c => c.Id == id);
@@ -157,11 +161,11 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.ProductGalleries.Remove(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
 			return RedirectToAction("Index");
 		}
 	}

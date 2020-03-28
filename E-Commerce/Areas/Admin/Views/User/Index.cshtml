@@ -42,7 +42,7 @@
                             @item.UserName
                         </td>
                         <td>
-                            @item.UserGroup
+                            @item.UserGroup?.Title
                         </td>
                         <td>
                             <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="EditUser"
@@ -57,17 +57,17 @@
                                 ویرایش پسورد
                             </a>
 
-                            <a class="btn btn-danger" id="showedituser" data-toggle="modal" asp-action="UserAddress"
-                               data-target="#modal-action-user" asp-route-id="@item.Id">
-                                <i class="glyphicon glyphicon-pencil"></i>
-                                آدرس
-                            </a>
-
-                            @*<a class="btn btn-info" id="showedituser" asp-action="ChangeUserPass"
-                                   data-target="#modal-action-user" asp-route-Id="@item.Id">
+                            @*<a class="btn btn-danger" id="showedituser" data-toggle="modal" asp-action="UserAddress"
+                                   data-target="#modal-action-user" asp-route-id="@item.Id">
                                     <i class="glyphicon glyphicon-pencil"></i>
-                                    ویرایش پسورد
-                                </a>*@
+                                    آدرس
+                                </a>
+
+                                <a class="btn btn-info" id="showedituser" asp-action="ChangeUserPass"
+                                       data-target="#modal-action-user" asp-route-Id="@item.Id">
+                                        <i class="glyphicon glyphicon-pencil"></i>
+                                        ویرایش پسورد
+                                    </a>*@
 
                         </td>
                     </tr>

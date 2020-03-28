@@ -30,6 +30,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			_env = env;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			var model = await _context.Sliders.ToListAsync();
@@ -38,6 +39,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditSlider(string id)
 		{
 			var slider = await _context.Sliders.FirstOrDefaultAsync(c => c.Id == id);
@@ -50,6 +52,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> AddEditSlider(string id, Slider model, IEnumerable<IFormFile> files, string imageName)
 		{
 			if (ModelState.IsValid)
@@ -79,7 +82,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					_context.Sliders.Add(model);
 					await _context.SaveChangesAsync();
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 					return Json(new { Status = "success" });
 				}
 
@@ -91,7 +94,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Sliders.Update(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 				return Json(new { Status = "success" });
 			}
 			var list = new List<string>();
@@ -103,6 +106,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteSlider(string id)
 		{
 			var slider = await _context.Sliders.SingleOrDefaultAsync(s => s.Id == id);
@@ -139,11 +143,11 @@ namespace ECommerce.Areas.Admin.Controllers
 					await _context.SaveChangesAsync();
 				}
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
 			return RedirectToAction("Index");
 		}
 	}

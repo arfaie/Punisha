@@ -221,7 +221,7 @@
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label">آزانس ها</span>
+                                        <span class="sidenav-label">آژانس ها</span>
                                     </a>
                                 </li>
                                 <li class="sidenav-item">
@@ -236,20 +236,29 @@
                                         <span class="sidenav-label">برند</span>
                                     </a>
                                 </li>
-                                @*<hr style="border: 1px solid gray;" />
 
-                                    <li class="sidenav-heading sideMenueHeaderColor">دفاتر و ادارات</li>*@
-
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Maker" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label"> نوع خودروها</span>
+                                    </a>
+                                </li>
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Car" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label"> ماشین ها</span>
+                                        <span class="sidenav-label"> مدل خودروها</span>
                                     </a>
                                 </li>
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Category" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
                                         <span class="sidenav-label"> دسته بندی</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="CategoryGroup" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label"> دگروه دسته بندی</span>
                                     </a>
                                 </li>
                                 <li class="sidenav-item">
@@ -385,7 +394,7 @@
     <script src="~/DataTable/js/responsive.jqueryui.js"></script>
     <script src="~/DataTable/js/responsive.semanticui.js"></script>
 
-    @RenderSection("Scripts", required: false)
+    @RenderSection("Scripts", false)
 
     <script>
         $(document).ready(function () {

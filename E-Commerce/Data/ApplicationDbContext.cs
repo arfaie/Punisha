@@ -27,6 +27,7 @@ namespace ECommerce.Data
 		public DbSet<FieldType> FieldTypes { get; set; }
 		public DbSet<History> Histories { get; set; }
 		public DbSet<InventoryChange> InventoryChanges { get; set; }
+		public DbSet<Maker> Makers { get; set; }
 		public DbSet<Offer> Offers { get; set; }
 		public DbSet<OfferItem> OfferItems { get; set; }
 		public DbSet<Order> Orders { get; set; }
@@ -65,6 +66,7 @@ namespace ECommerce.Data
 			builder.Entity<FieldType>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<History>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<InventoryChange>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+			builder.Entity<Maker>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Offer>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<OfferItem>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Order>().Property(x => x.Id).HasDefaultValueSql("NEWID()");

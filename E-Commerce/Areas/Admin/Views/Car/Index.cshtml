@@ -4,7 +4,7 @@
 @addTagHelper *, ECommerce
 
 @{
-    ViewBag.Title = "ماشین ها";
+    ViewBag.Title = "مدل خودروها";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -24,7 +24,7 @@
                         <button type="button" class="card-action card-reload" title="Reload"></button>
                         <button type="button" class="card-action card-remove" title="Remove"></button>
                     </div>
-                    <strong>شهر ها</strong>
+                    <strong>@ViewBag.Title</strong>
                 </div>
 
                 <div class="card-body">
@@ -41,7 +41,7 @@
                                 <a class="btn btn-primary marginbutoom" id="showcar" data-toggle="modal" asp-action="AddEditcar"
                                    data-target="#modal-action-car">
                                     <i class="glyphicon glyphicon-plus"></i>
-                                    افزودن ماشین جدید
+                                    افزودن مدل خودروی جدید
                                 </a>
                             </div>
                         </div>

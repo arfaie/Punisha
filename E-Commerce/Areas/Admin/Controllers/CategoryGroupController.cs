@@ -4,20 +4,20 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using MessageType = ECommerce.Models.Helpers.OptionEnums.MessageType;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
 	[Authorize(Roles = "Admin")]
-	public class SelectItemController : Controller
+	public class CategoryGroupController : Controller
 	{
 		private readonly ApplicationDbContext _context;
 
-		public SelectItemController(ApplicationDbContext context)
+		public CategoryGroupController(ApplicationDbContext context)
 		{
 			_context = context;
 		}
@@ -25,33 +25,31 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.SelectItems.ToListAsync());
+			return View(await _context.CategoryGroups.ToListAsync());
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditSelectItem(string id)
+		public async Task<IActionResult> AddEditCategoryGroup(string id)
 		{
-			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
-
-			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
-			if (selectItem != null)
+			var categoryGroup = await _context.CategoryGroups.SingleOrDefaultAsync(b => b.Id == id);
+			if (categoryGroup != null)
 			{
-				return PartialView("AddEditSelectItem", selectItem);
+				return PartialView("AddEditCategoryGroup", categoryGroup);
 			}
 
-			return PartialView("AddEditSelectItem", new SelectItem());
+			return PartialView("AddEditCategoryGroup", new CategoryGroup());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditSelectItem(string id, SelectItem model, string redirectUrl)
+		public async Task<IActionResult> AddEditCategoryGroup(string id, CategoryGroup model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
 				if (String.IsNullOrWhiteSpace(id))
 				{
-					_context.SelectItems.Add(model);
+					_context.CategoryGroups.Add(model);
 					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
@@ -59,7 +57,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				_context.SelectItems.Update(model);
+				_context.CategoryGroups.Update(model);
 				await _context.SaveChangesAsync();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
@@ -67,37 +65,34 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
-
-			return PartialView("AddEditSelectItem", model);
+			return PartialView("AddEditCategoryGroup", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteSelectItem(string id)
+		public async Task<IActionResult> DeleteCategoryGroup(string id)
 		{
-			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
-			if (selectItem == null)
+			var categoryGroup = await _context.CategoryGroups.SingleOrDefaultAsync(b => b.Id == id);
+			if (categoryGroup == null)
 			{
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteSelectItem", selectItem.Title);
+			return PartialView("DeleteCategoryGroup", categoryGroup.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteSelectItem(string id, string redirectUrl)
+		public async Task<IActionResult> DeleteCategoryGroup(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
-				var selectItem = await _context.SelectItems.SingleOrDefaultAsync(a => a.Id == id);
+				var model = await _context.CategoryGroups.FirstOrDefaultAsync(c => c.Id == id);
 
-				_context.SelectItems.Remove(selectItem);
-				await _context.SaveChangesAsync();
+				_context.CategoryGroups.Remove(model);
+				_context.SaveChanges();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 

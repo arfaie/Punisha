@@ -7,36 +7,36 @@ namespace ECommerce.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
-                table: "AspNetRoles");
+                "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
+                "AspNetRoles");
 
             migrationBuilder.DropIndex(
-                name: "IX_AspNetRoles_ApplicationUserId",
-                table: "AspNetRoles");
+                "IX_AspNetRoles_ApplicationUserId",
+                "AspNetRoles");
 
             migrationBuilder.DropColumn(
-                name: "ApplicationUserId",
-                table: "AspNetRoles");
+                "ApplicationUserId",
+                "AspNetRoles");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "ApplicationUserId",
-                table: "AspNetRoles",
-                type: "nvarchar(450)",
+                "ApplicationUserId",
+                "AspNetRoles",
+                "nvarchar(450)",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoles_ApplicationUserId",
-                table: "AspNetRoles",
-                column: "ApplicationUserId");
+                "IX_AspNetRoles_ApplicationUserId",
+                "AspNetRoles",
+                "ApplicationUserId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
-                table: "AspNetRoles",
-                column: "ApplicationUserId",
-                principalTable: "AspNetUsers",
+                "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
+                "AspNetRoles",
+                "ApplicationUserId",
+                "AspNetUsers",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

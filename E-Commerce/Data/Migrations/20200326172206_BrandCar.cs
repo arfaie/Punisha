@@ -7,20 +7,20 @@ namespace ECommerce.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "BrandId",
-                table: "Products",
+                "BrandId",
+                "Products",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_BrandId",
-                table: "Products",
-                column: "BrandId");
+                "IX_Products_BrandId",
+                "Products",
+                "BrandId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Products_Brands_BrandId",
-                table: "Products",
-                column: "BrandId",
-                principalTable: "Brands",
+                "FK_Products_Brands_BrandId",
+                "Products",
+                "BrandId",
+                "Brands",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -28,16 +28,16 @@ namespace ECommerce.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Products_Brands_BrandId",
-                table: "Products");
+                "FK_Products_Brands_BrandId",
+                "Products");
 
             migrationBuilder.DropIndex(
-                name: "IX_Products_BrandId",
-                table: "Products");
+                "IX_Products_BrandId",
+                "Products");
 
             migrationBuilder.DropColumn(
-                name: "BrandId",
-                table: "Products");
+                "BrandId",
+                "Products");
         }
     }
 }

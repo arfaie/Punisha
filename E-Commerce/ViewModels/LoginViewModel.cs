@@ -9,7 +9,7 @@ namespace ECommerce.ViewModels
 		[Phone]
 		[StringLength(11, ErrorMessage = "شماره موبایل باید 11 عدد باشد", MinimumLength = 11)]
 		[Display(Name = "شماره موبایل")]
-		[Remote(action: "VerifyMobile", controller: "Account")]
+		[Remote("VerifyMobile", "Account")]
 		public string Mobile { get; set; }
 
 		[Required(ErrorMessage = "وارد کردن {0} الزامی است")]

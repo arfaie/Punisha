@@ -22,15 +22,17 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Agencies.ToListAsync());
+			return View(await _context.Agencies.Include(x => x.City).ToListAsync());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditAgency(string id)
 		{
-			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync());
+			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync(), "Id", "Name");
 
 			var agency = await _context.Agencies.FirstOrDefaultAsync(c => c.Id == id);
 			if (agency != null)
@@ -52,7 +54,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Agencies.Add(model);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -60,7 +62,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Agencies.Update(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
@@ -69,6 +71,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteAgency(string id)
 		{
 			var agency = await _context.Agencies.FirstOrDefaultAsync(c => c.Id == id);
@@ -81,6 +84,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteAgency(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
@@ -90,12 +94,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Agencies.Remove(agency);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
 			return RedirectToAction("Index");
 		}

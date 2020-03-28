@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ECommerce
 {
@@ -20,8 +21,8 @@ namespace ECommerce
 		{
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
-				.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+				.AddJsonFile("appsettings.json", false, true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", true);
 
 			//if (env.IsDevelopment())
 			//{
@@ -67,7 +68,18 @@ namespace ECommerce
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
-			services.AddSession();
+			services.AddSession(options =>
+			{
+				// Set a short timeout for easy testing.
+				options.IdleTimeout = TimeSpan.FromMinutes(60);
+				// You might want to only set the application cookies over a secure connection:
+				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+				options.Cookie.SameSite = SameSiteMode.Strict;
+				options.Cookie.HttpOnly = true;
+				// Make the session cookie essential
+				options.Cookie.IsEssential = true;
+				options.Cookie.Name = ".Carbiotic";
+			});
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
@@ -99,7 +111,13 @@ namespace ECommerce
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
-			app.UseSession();
+			app.UseSession(new SessionOptions
+			{
+				Cookie = new CookieBuilder
+				{
+					Name = ".Carbiotic"
+				}
+			});
 
 			app.UseRouting();
 

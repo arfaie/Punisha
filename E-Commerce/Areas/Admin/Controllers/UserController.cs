@@ -30,12 +30,14 @@ namespace ECommerce.Areas.Admin.Controllers
 			_signInManager = signInManager;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Users.ToListAsync());
+			return View(await _context.Users.Include(x => x.UserGroup).ToListAsync());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddUser()
 		{
 			ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name");
@@ -68,18 +70,18 @@ namespace ECommerce.Areas.Admin.Controllers
 						var newRole = await _userManager.AddToRoleAsync(model, applicationRole.Name);
 						if (!newRole.Succeeded)
 						{
-							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", type: ToastType.Red);
+							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", ToastType.Red);
 
 							return PartialView("_SuccessfulResponse", redirectUrl);
 						}
 					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
-				TempData["Notification"] = Notification.ShowNotif("خطا در ثبت کاربر جدید", type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif("خطا در ثبت کاربر جدید", ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
@@ -94,6 +96,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> EditUser(string id)
 		{
 			if (!string.IsNullOrWhiteSpace(id))
@@ -135,7 +138,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				var user = await _userManager.FindByIdAsync(model.Id);
 				if (user == null)
 				{
-					TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", type: ToastType.Red);
+					TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -149,31 +152,31 @@ namespace ECommerce.Areas.Admin.Controllers
 				if (user.PhoneNumber != model.PhoneNumber)
 				{
 					await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
-					user.UserName = model.Password;
+					user.UserName = model.PhoneNumber;
 					user.Email = model.PhoneNumber + Helper.EmailAddress;
 					user.PhoneNumberConfirmed = true;
 					user.EmailConfirmed = true;
 				}
 
-				var result = await _userManager.UpdateAsync(model);
+				var result = await _userManager.UpdateAsync(user);
 				if (result.Succeeded)
 				{
 					var applicationRole = await _roleManager.FindByIdAsync(model.ApplicationRoleId);
 					if (applicationRole != null)
 					{
-						var allRoles = await _roleManager.Roles.Select(x => x.Name).ToListAsync();
-						await _userManager.RemoveFromRolesAsync(model, allRoles);
+						var allRoles = await _userManager.GetRolesAsync(user);
+						await _userManager.RemoveFromRolesAsync(user, allRoles);
 
-						var newRole = await _userManager.AddToRoleAsync(model, applicationRole.Name);
+						var newRole = await _userManager.AddToRoleAsync(user, applicationRole.Name);
 						if (!newRole.Succeeded)
 						{
-							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", type: ToastType.Red);
+							TempData["Notification"] = Notification.ShowNotif("خطا در تعیین نقش کاربر", ToastType.Red);
 
 							return PartialView("_SuccessfulResponse", redirectUrl);
 						}
 					}
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -201,12 +204,13 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public IActionResult ChangeUserPass(string id)
 		{
 			return PartialView("ChangeUserPass", new AdminChangePasswordViewModel { Id = id });
 		}
 
-		//[HttpPost]
+		//[HttpPost] [ValidateAntiForgeryToken]
 		//public async Task<IActionResult> ChangeUserPass(string id, ChangePasswordViewModel model)
 		//{
 		//	if (ModelState.IsValid)
@@ -230,6 +234,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		//}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> ChangeUserPass(string id, AdminChangePasswordViewModel model, string redirectUrl)
 		{
 			if (ModelState.IsValid)

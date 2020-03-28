@@ -22,6 +22,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			//var ff = _context.Fields.Where(pr).ToList();
@@ -74,6 +75,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		//}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditField(string id)
 		{
 			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Title");
@@ -222,6 +224,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteField(string id)
 		{
 			var field = new Field();
@@ -238,6 +241,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteField(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
@@ -248,12 +252,12 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Fields.Remove(field);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
 			return RedirectToAction("Index");
 		}

@@ -116,7 +116,7 @@ namespace ECommerce.Controllers
 
 			if (TempData["StatusMessage"] != null)
 			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 			}
 
 			return View();
@@ -343,6 +343,7 @@ namespace ECommerce.Controllers
 
 		// GET: /Account/AccessDenied
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		[AllowAnonymous]
 		public IActionResult AccessDenied()
 		{

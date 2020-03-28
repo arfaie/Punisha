@@ -34,6 +34,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			ViewBag.rootpath = "/upload/thumbnailimage/";
@@ -42,6 +43,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditProduct(string id)
 		{
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
@@ -96,7 +98,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Products.Add(model);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 					//return PartialView("_SuccessfulResponse", redirectUrl);
 					//return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
 					return RedirectToAction("Index");
@@ -109,18 +111,18 @@ namespace ECommerce.Areas.Admin.Controllers
 
 				_context.Products.Update(model);
 				await _context.SaveChangesAsync();
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 				//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
 				//return PartialView("_SuccessfulResponse", redirectUrl);
 				return RedirectToAction("Index");
 			}
 			if (!String.IsNullOrWhiteSpace(id))
 			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, type: ToastType.Yellow);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Yellow);
 			}
 			else
 			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, type: ToastType.Yellow);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
 			}
 
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
@@ -133,6 +135,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteProduct(string id)
 		{
 			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
@@ -145,6 +148,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteProduct(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
@@ -166,16 +170,17 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Products.Remove(product);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
 			return RedirectToAction("Index");
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> GetProductField(string id)
 		{
 			var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
@@ -366,7 +371,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			//_context;
 			//_context.SaveChanges();
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
 			return RedirectToAction("Index");
 		}

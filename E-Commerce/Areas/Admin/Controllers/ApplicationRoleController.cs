@@ -19,12 +19,14 @@ namespace ECommerce.Areas.Admin.Controllers
 			_roleManager = roleManager;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public IActionResult Index()
 		{
 			return View(_roleManager.Roles.ToList());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditApplicationRole(string id)
 		{
 			var applicationRole = await _roleManager.FindByIdAsync(id);
@@ -60,6 +62,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteRole(string id)
 		{
 			var role = await _roleManager.FindByIdAsync(id);
@@ -72,6 +75,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> DeleteRole(string id, IFormCollection form)
 		{
 			var role = await _roleManager.FindByIdAsync(id);

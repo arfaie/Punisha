@@ -21,12 +21,14 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.Offers.ToListAsync());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditOffer(string id)
 		{
 			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
@@ -49,14 +51,14 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Offers.Add(model);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 
 				_context.Offers.Update(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
@@ -64,6 +66,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteOffer(string id)
 		{
 			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
@@ -86,11 +89,11 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Offers.Remove(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Red);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
 			return RedirectToAction("Index");
 		}
 	}

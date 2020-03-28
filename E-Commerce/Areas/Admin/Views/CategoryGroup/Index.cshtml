@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ECommerce.Models.Agency>
+﻿@model IEnumerable<ECommerce.Models.CategoryGroup>
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
 @{
-    ViewBag.Title = "آژانس ها";
+    ViewBag.Title = "دسته بندی ها";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -24,7 +24,7 @@
                         <button type="button" class="card-action card-reload" title="Reload"></button>
                         <button type="button" class="card-action card-remove" title="Remove"></button>
                     </div>
-                    <strong>آژانس ها</strong>
+                    <strong>گروه دسته بندی ها</strong>
                 </div>
 
                 <div class="card-body">
@@ -38,10 +38,10 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showagency" data-toggle="modal" asp-action="AddEditAgency"
-                                   data-target="#modal-action-agency">
+                                <a class="btn btn-primary marginbutoom" id="showCategoryGroup" data-toggle="modal" asp-action="AddEditCategoryGroup"
+                                   data-target="#modal-action-CategoryGroup">
                                     <i class="glyphicon glyphicon-plus"></i>
-                                    افزودن آژانس جدید
+                                    افزودن گروه دسته بندی جدید
                                 </a>
                             </div>
                         </div>
@@ -51,14 +51,6 @@
                             <tr>
                                 <th>کد</th>
                                 <th>@Html.DisplayNameFor(model => model.Title)</th>
-                                <th>@Html.DisplayNameFor(model => model.FullName)</th>
-                                @*<th>@Html.DisplayNameFor(model => model.LastName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.StateName)</th>*@
-                                <th>@Html.DisplayNameFor(model => model.City)</th>
-                                <th>@Html.DisplayNameFor(model => model.Address)</th>
-                                @*<th>@Html.DisplayNameFor(model => model.Plaque)</th>*@
-                                <th>@Html.DisplayNameFor(model => model.PostalCode)</th>
-                                <th>@Html.DisplayNameFor(model => model.Phone)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -71,24 +63,16 @@
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>@item.Title</td>
-                                        <td>@item.FullName</td>
-                                        @*<td>@item.LastName</td>
-                                            <td>@item.StateName</td>*@
-                                        <td>@item.City?.Name</td>
-                                        <td>@item.Address</td>
-                                        @*<td>@item.Plaque</td>*@
-                                        <td>@item.PostalCode</td>
-                                        <td>@item.Phone</td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEditAgency"
-                                               data-target="#modal-action-agency" asp-route-id="@item.Id">
+                                            <a class="btn btn-info" id="editCategoryGroup" data-toggle="modal" asp-action="AddEditCategoryGroup"
+                                               data-target="#modal-action-CategoryGroup" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="DeleteAgency"
-                                               data-target="#modal-action-agency" asp-route-id="@item.Id">
+                                            <a class="btn btn-danger" id="showCategoryGroup" data-toggle="modal" asp-action="DeleteCategoryGroup"
+                                               data-target="#modal-action-CategoryGroup" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -117,8 +101,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-agency", Size = ModalSize.Medium })
+@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-CategoryGroup", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/agency-index.js"></script>
+    <script src="~/js/modal-js/CategoryGroup-index.js"></script>
 }

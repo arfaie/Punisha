@@ -43,6 +43,7 @@ namespace ECommerce.Controllers
 		//
 		// GET: /Manage/Index
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index(ManageMessageId? message = null)
 		{
 			ViewData["StatusMessage"] =
@@ -83,7 +84,7 @@ namespace ECommerce.Controllers
 				var result = await _userManager.RemoveLoginAsync(user, account.LoginProvider, account.ProviderKey);
 				if (result.Succeeded)
 				{
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, false);
 					message = ManageMessageId.RemoveLoginSuccess;
 				}
 			}
@@ -128,7 +129,7 @@ namespace ECommerce.Controllers
 			if (user != null)
 			{
 				await _userManager.SetTwoFactorEnabledAsync(user, true);
-				await _signInManager.SignInAsync(user, isPersistent: false);
+				await _signInManager.SignInAsync(user, false);
 				_logger.LogInformation(1, "User enabled two-factor authentication.");
 			}
 			return RedirectToAction(nameof(Index), "Manage");
@@ -144,7 +145,7 @@ namespace ECommerce.Controllers
 			if (user != null)
 			{
 				await _userManager.SetTwoFactorEnabledAsync(user, false);
-				await _signInManager.SignInAsync(user, isPersistent: false);
+				await _signInManager.SignInAsync(user, false);
 				_logger.LogInformation(2, "User disabled two-factor authentication.");
 			}
 			return RedirectToAction(nameof(Index), "Manage");
@@ -153,6 +154,7 @@ namespace ECommerce.Controllers
 		//
 		// GET: /Manage/VerifyPhoneNumber
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> VerifyPhoneNumber(string phoneNumber)
 		{
 			var user = await GetCurrentUserAsync();
@@ -181,7 +183,7 @@ namespace ECommerce.Controllers
 				var result = await _userManager.ChangePhoneNumberAsync(user, model.PhoneNumber, model.Code);
 				if (result.Succeeded)
 				{
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, false);
 					return RedirectToAction(nameof(Index), new { Message = ManageMessageId.AddPhoneSuccess });
 				}
 			}
@@ -202,7 +204,7 @@ namespace ECommerce.Controllers
 				var result = await _userManager.SetPhoneNumberAsync(user, null);
 				if (result.Succeeded)
 				{
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, false);
 					return RedirectToAction(nameof(Index), new { Message = ManageMessageId.RemovePhoneSuccess });
 				}
 			}
@@ -212,6 +214,7 @@ namespace ECommerce.Controllers
 		//
 		// GET: /Manage/ChangePassword
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public IActionResult ChangePassword()
 		{
 			return View();
@@ -233,7 +236,7 @@ namespace ECommerce.Controllers
 				var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 				if (result.Succeeded)
 				{
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, false);
 					_logger.LogInformation(3, "User changed their password successfully.");
 					return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
 				}
@@ -246,6 +249,7 @@ namespace ECommerce.Controllers
 		//
 		// GET: /Manage/SetPassword
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public IActionResult SetPassword()
 		{
 			return View();
@@ -268,7 +272,7 @@ namespace ECommerce.Controllers
 				var result = await _userManager.AddPasswordAsync(user, model.NewPassword);
 				if (result.Succeeded)
 				{
-					await _signInManager.SignInAsync(user, isPersistent: false);
+					await _signInManager.SignInAsync(user, false);
 					return RedirectToAction(nameof(Index), new { Message = ManageMessageId.SetPasswordSuccess });
 				}
 				AddErrors(result);
@@ -279,6 +283,7 @@ namespace ECommerce.Controllers
 
 		//GET: /Manage/ManageLogins
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> ManageLogins(ManageMessageId? message = null)
 		{
 			ViewData["StatusMessage"] =
@@ -321,6 +326,7 @@ namespace ECommerce.Controllers
 		//
 		// GET: /Manage/LinkLoginCallback
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<ActionResult> LinkLoginCallback()
 		{
 			var user = await GetCurrentUserAsync();

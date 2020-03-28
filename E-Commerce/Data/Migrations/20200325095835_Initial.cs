@@ -8,8 +8,8 @@ namespace ECommerce.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Brands",
-                columns: table => new
+                "Brands",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -20,8 +20,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
+                "Cars",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(nullable: false)
@@ -32,8 +32,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryGroups",
-                columns: table => new
+                "CategoryGroups",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -44,8 +44,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FieldGroups",
-                columns: table => new
+                "FieldGroups",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -56,8 +56,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FieldTypes",
-                columns: table => new
+                "FieldTypes",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -68,8 +68,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Offers",
-                columns: table => new
+                "Offers",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false),
@@ -83,8 +83,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SelectGroups",
-                columns: table => new
+                "SelectGroups",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -95,8 +95,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sliders",
-                columns: table => new
+                "Sliders",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Image = table.Column<string>(nullable: true)
@@ -107,8 +107,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "States",
-                columns: table => new
+                "States",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(nullable: true)
@@ -119,8 +119,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Statuses",
-                columns: table => new
+                "Statuses",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -131,8 +131,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Units",
-                columns: table => new
+                "Units",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -143,8 +143,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserGroups",
-                columns: table => new
+                "UserGroups",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false)
@@ -155,8 +155,8 @@ namespace ECommerce.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categories",
-                columns: table => new
+                "Categories",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     CategoryGroupId = table.Column<string>(nullable: true),
@@ -166,16 +166,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Categories_CategoryGroups_CategoryGroupId",
-                        column: x => x.CategoryGroupId,
-                        principalTable: "CategoryGroups",
-                        principalColumn: "Id",
+                        "FK_Categories_CategoryGroups_CategoryGroupId",
+                        x => x.CategoryGroupId,
+                        "CategoryGroups",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Fields",
-                columns: table => new
+                "Fields",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     SelectGroupId = table.Column<string>(nullable: true),
@@ -187,28 +187,28 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Fields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Fields_FieldGroups_FieldGroupId",
-                        column: x => x.FieldGroupId,
-                        principalTable: "FieldGroups",
-                        principalColumn: "Id",
+                        "FK_Fields_FieldGroups_FieldGroupId",
+                        x => x.FieldGroupId,
+                        "FieldGroups",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Fields_FieldTypes_FieldTypeId",
-                        column: x => x.FieldTypeId,
-                        principalTable: "FieldTypes",
-                        principalColumn: "Id",
+                        "FK_Fields_FieldTypes_FieldTypeId",
+                        x => x.FieldTypeId,
+                        "FieldTypes",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Fields_SelectGroups_SelectGroupId",
-                        column: x => x.SelectGroupId,
-                        principalTable: "SelectGroups",
-                        principalColumn: "Id",
+                        "FK_Fields_SelectGroups_SelectGroupId",
+                        x => x.SelectGroupId,
+                        "SelectGroups",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "SelectItems",
-                columns: table => new
+                "SelectItems",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     SelectGroupId = table.Column<string>(nullable: true),
@@ -218,16 +218,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_SelectItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SelectItems_SelectGroups_SelectGroupId",
-                        column: x => x.SelectGroupId,
-                        principalTable: "SelectGroups",
-                        principalColumn: "Id",
+                        "FK_SelectItems_SelectGroups_SelectGroupId",
+                        x => x.SelectGroupId,
+                        "SelectGroups",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cities",
-                columns: table => new
+                "Cities",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Name = table.Column<string>(nullable: false),
@@ -237,16 +237,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Cities", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cities_States_StateId",
-                        column: x => x.StateId,
-                        principalTable: "States",
-                        principalColumn: "Id",
+                        "FK_Cities_States_StateId",
+                        x => x.StateId,
+                        "States",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
+                "AspNetUsers",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
@@ -275,22 +275,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_Cars_CarId",
-                        column: x => x.CarId,
-                        principalTable: "Cars",
-                        principalColumn: "Id",
+                        "FK_AspNetUsers_Cars_CarId",
+                        x => x.CarId,
+                        "Cars",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_AspNetUsers_UserGroups_UserGroupId",
-                        column: x => x.UserGroupId,
-                        principalTable: "UserGroups",
-                        principalColumn: "Id",
+                        "FK_AspNetUsers_UserGroups_UserGroupId",
+                        x => x.UserGroupId,
+                        "UserGroups",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
+                "Products",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     CategoryId = table.Column<string>(nullable: true),
@@ -308,22 +308,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Products_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
+                        "FK_Products_Categories_CategoryId",
+                        x => x.CategoryId,
+                        "Categories",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Products_Units_UnitId",
-                        column: x => x.UnitId,
-                        principalTable: "Units",
-                        principalColumn: "Id",
+                        "FK_Products_Units_UnitId",
+                        x => x.UnitId,
+                        "Units",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryFields",
-                columns: table => new
+                "CategoryFields",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     CategoryId = table.Column<string>(nullable: true),
@@ -333,22 +333,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_CategoryFields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_CategoryFields_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
+                        "FK_CategoryFields_Categories_CategoryId",
+                        x => x.CategoryId,
+                        "Categories",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_CategoryFields_Fields_FieldId",
-                        column: x => x.FieldId,
-                        principalTable: "Fields",
-                        principalColumn: "Id",
+                        "FK_CategoryFields_Fields_FieldId",
+                        x => x.FieldId,
+                        "Fields",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Agencies",
-                columns: table => new
+                "Agencies",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     Title = table.Column<string>(nullable: false),
@@ -362,16 +362,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Agencies", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Agencies_Cities_CityId",
-                        column: x => x.CityId,
-                        principalTable: "Cities",
-                        principalColumn: "Id",
+                        "FK_Agencies_Cities_CityId",
+                        x => x.CityId,
+                        "Cities",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
-                columns: table => new
+                "Addresses",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     UserId = table.Column<string>(nullable: true),
@@ -388,22 +388,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Cities_CityId",
-                        column: x => x.CityId,
-                        principalTable: "Cities",
-                        principalColumn: "Id",
+                        "FK_Addresses_Cities_CityId",
+                        x => x.CityId,
+                        "Cities",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Addresses_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Addresses_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
+                "AspNetRoles",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
@@ -416,16 +416,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetRoles_AspNetUsers_ApplicationUserId",
+                        x => x.ApplicationUserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
+                "AspNetUserClaims",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -437,16 +437,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
+                "AspNetUserLogins",
+                table => new
                 {
                     LoginProvider = table.Column<string>(nullable: false),
                     ProviderKey = table.Column<string>(nullable: false),
@@ -457,16 +457,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserTokens",
-                columns: table => new
+                "AspNetUserTokens",
+                table => new
                 {
                     UserId = table.Column<string>(nullable: false),
                     LoginProvider = table.Column<string>(nullable: false),
@@ -477,16 +477,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Factors",
-                columns: table => new
+                "Factors",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     UserId = table.Column<string>(nullable: true),
@@ -502,16 +502,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Factors", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Factors_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_Factors_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "InventoryChanges",
-                columns: table => new
+                "InventoryChanges",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     ProductId = table.Column<string>(nullable: true),
@@ -523,16 +523,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_InventoryChanges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InventoryChanges_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_InventoryChanges_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OfferItems",
-                columns: table => new
+                "OfferItems",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     OfferId = table.Column<string>(nullable: true),
@@ -544,22 +544,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_OfferItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OfferItems_Offers_OfferId",
-                        column: x => x.OfferId,
-                        principalTable: "Offers",
-                        principalColumn: "Id",
+                        "FK_OfferItems_Offers_OfferId",
+                        x => x.OfferId,
+                        "Offers",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_OfferItems_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_OfferItems_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "PriceChanges",
-                columns: table => new
+                "PriceChanges",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     ProductId = table.Column<string>(nullable: true),
@@ -570,16 +570,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_PriceChanges", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PriceChanges_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_PriceChanges_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductFields",
-                columns: table => new
+                "ProductFields",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     ProductId = table.Column<string>(nullable: true),
@@ -592,22 +592,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_ProductFields", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductFields_Fields_FieldId",
-                        column: x => x.FieldId,
-                        principalTable: "Fields",
-                        principalColumn: "Id",
+                        "FK_ProductFields_Fields_FieldId",
+                        x => x.FieldId,
+                        "Fields",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductFields_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_ProductFields_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductGalleries",
-                columns: table => new
+                "ProductGalleries",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     ProductId = table.Column<string>(nullable: true),
@@ -617,16 +617,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_ProductGalleries", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductGalleries_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_ProductGalleries_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetRoleClaims",
-                columns: table => new
+                "AspNetRoleClaims",
+                table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
@@ -638,16 +638,16 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUserRoles",
-                columns: table => new
+                "AspNetUserRoles",
+                table => new
                 {
                     UserId = table.Column<string>(nullable: false),
                     RoleId = table.Column<string>(nullable: false)
@@ -656,22 +656,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "AspNetRoles",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        x => x.RoleId,
+                        "AspNetRoles",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
+                        "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        x => x.UserId,
+                        "AspNetUsers",
+                        "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "FactorItems",
-                columns: table => new
+                "FactorItems",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     FactorId = table.Column<string>(nullable: true),
@@ -684,22 +684,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_FactorItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FactorItems_Factors_FactorId",
-                        column: x => x.FactorId,
-                        principalTable: "Factors",
-                        principalColumn: "Id",
+                        "FK_FactorItems_Factors_FactorId",
+                        x => x.FactorId,
+                        "Factors",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_FactorItems_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "Id",
+                        "FK_FactorItems_Products_ProductId",
+                        x => x.ProductId,
+                        "Products",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
+                "Orders",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     FactorId = table.Column<string>(nullable: true),
@@ -714,22 +714,22 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_Factors_FactorId",
-                        column: x => x.FactorId,
-                        principalTable: "Factors",
-                        principalColumn: "Id",
+                        "FK_Orders_Factors_FactorId",
+                        x => x.FactorId,
+                        "Factors",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Orders_Statuses_StatusId",
-                        column: x => x.StatusId,
-                        principalTable: "Statuses",
-                        principalColumn: "Id",
+                        "FK_Orders_Statuses_StatusId",
+                        x => x.StatusId,
+                        "Statuses",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductSelectedItems",
-                columns: table => new
+                "ProductSelectedItems",
+                table => new
                 {
                     Id = table.Column<string>(nullable: false, defaultValueSql: "NEWID()"),
                     ProductFieldId = table.Column<string>(nullable: true),
@@ -739,318 +739,318 @@ namespace ECommerce.Migrations
                 {
                     table.PrimaryKey("PK_ProductSelectedItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductSelectedItems_ProductFields_ProductFieldId",
-                        column: x => x.ProductFieldId,
-                        principalTable: "ProductFields",
-                        principalColumn: "Id",
+                        "FK_ProductSelectedItems_ProductFields_ProductFieldId",
+                        x => x.ProductFieldId,
+                        "ProductFields",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ProductSelectedItems_SelectItems_SelectItemId",
-                        column: x => x.SelectItemId,
-                        principalTable: "SelectItems",
-                        principalColumn: "Id",
+                        "FK_ProductSelectedItems_SelectItems_SelectItemId",
+                        x => x.SelectItemId,
+                        "SelectItems",
+                        "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_CityId",
-                table: "Addresses",
-                column: "CityId");
+                "IX_Addresses_CityId",
+                "Addresses",
+                "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UserId",
-                table: "Addresses",
-                column: "UserId");
+                "IX_Addresses_UserId",
+                "Addresses",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Agencies_CityId",
-                table: "Agencies",
-                column: "CityId");
+                "IX_Agencies_CityId",
+                "Agencies",
+                "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoleClaims_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId");
+                "IX_AspNetRoleClaims_RoleId",
+                "AspNetRoleClaims",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetRoles_ApplicationUserId",
-                table: "AspNetRoles",
-                column: "ApplicationUserId");
+                "IX_AspNetRoles_ApplicationUserId",
+                "AspNetRoles",
+                "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "RoleNameIndex",
-                table: "AspNetRoles",
-                column: "NormalizedName",
+                "RoleNameIndex",
+                "AspNetRoles",
+                "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserClaims_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId");
+                "IX_AspNetUserClaims_UserId",
+                "AspNetUserClaims",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserLogins_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId");
+                "IX_AspNetUserLogins_UserId",
+                "AspNetUserLogins",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUserRoles_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId");
+                "IX_AspNetUserRoles_RoleId",
+                "AspNetUserRoles",
+                "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_CarId",
-                table: "AspNetUsers",
-                column: "CarId");
+                "IX_AspNetUsers_CarId",
+                "AspNetUsers",
+                "CarId");
 
             migrationBuilder.CreateIndex(
-                name: "EmailIndex",
-                table: "AspNetUsers",
-                column: "NormalizedEmail");
+                "EmailIndex",
+                "AspNetUsers",
+                "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "UserNameIndex",
-                table: "AspNetUsers",
-                column: "NormalizedUserName",
+                "UserNameIndex",
+                "AspNetUsers",
+                "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_UserGroupId",
-                table: "AspNetUsers",
-                column: "UserGroupId");
+                "IX_AspNetUsers_UserGroupId",
+                "AspNetUsers",
+                "UserGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categories_CategoryGroupId",
-                table: "Categories",
-                column: "CategoryGroupId");
+                "IX_Categories_CategoryGroupId",
+                "Categories",
+                "CategoryGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryFields_CategoryId",
-                table: "CategoryFields",
-                column: "CategoryId");
+                "IX_CategoryFields_CategoryId",
+                "CategoryFields",
+                "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryFields_FieldId",
-                table: "CategoryFields",
-                column: "FieldId");
+                "IX_CategoryFields_FieldId",
+                "CategoryFields",
+                "FieldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cities_StateId",
-                table: "Cities",
-                column: "StateId");
+                "IX_Cities_StateId",
+                "Cities",
+                "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FactorItems_FactorId",
-                table: "FactorItems",
-                column: "FactorId");
+                "IX_FactorItems_FactorId",
+                "FactorItems",
+                "FactorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FactorItems_ProductId",
-                table: "FactorItems",
-                column: "ProductId");
+                "IX_FactorItems_ProductId",
+                "FactorItems",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Factors_UserId",
-                table: "Factors",
-                column: "UserId");
+                "IX_Factors_UserId",
+                "Factors",
+                "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fields_FieldGroupId",
-                table: "Fields",
-                column: "FieldGroupId");
+                "IX_Fields_FieldGroupId",
+                "Fields",
+                "FieldGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fields_FieldTypeId",
-                table: "Fields",
-                column: "FieldTypeId");
+                "IX_Fields_FieldTypeId",
+                "Fields",
+                "FieldTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fields_SelectGroupId",
-                table: "Fields",
-                column: "SelectGroupId");
+                "IX_Fields_SelectGroupId",
+                "Fields",
+                "SelectGroupId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InventoryChanges_ProductId",
-                table: "InventoryChanges",
-                column: "ProductId");
+                "IX_InventoryChanges_ProductId",
+                "InventoryChanges",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfferItems_OfferId",
-                table: "OfferItems",
-                column: "OfferId");
+                "IX_OfferItems_OfferId",
+                "OfferItems",
+                "OfferId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OfferItems_ProductId",
-                table: "OfferItems",
-                column: "ProductId");
+                "IX_OfferItems_ProductId",
+                "OfferItems",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_FactorId",
-                table: "Orders",
-                column: "FactorId");
+                "IX_Orders_FactorId",
+                "Orders",
+                "FactorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_StatusId",
-                table: "Orders",
-                column: "StatusId");
+                "IX_Orders_StatusId",
+                "Orders",
+                "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PriceChanges_ProductId",
-                table: "PriceChanges",
-                column: "ProductId");
+                "IX_PriceChanges_ProductId",
+                "PriceChanges",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductFields_FieldId",
-                table: "ProductFields",
-                column: "FieldId");
+                "IX_ProductFields_FieldId",
+                "ProductFields",
+                "FieldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductFields_ProductId",
-                table: "ProductFields",
-                column: "ProductId");
+                "IX_ProductFields_ProductId",
+                "ProductFields",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductGalleries_ProductId",
-                table: "ProductGalleries",
-                column: "ProductId");
+                "IX_ProductGalleries_ProductId",
+                "ProductGalleries",
+                "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CategoryId",
-                table: "Products",
-                column: "CategoryId");
+                "IX_Products_CategoryId",
+                "Products",
+                "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_UnitId",
-                table: "Products",
-                column: "UnitId");
+                "IX_Products_UnitId",
+                "Products",
+                "UnitId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSelectedItems_ProductFieldId",
-                table: "ProductSelectedItems",
-                column: "ProductFieldId");
+                "IX_ProductSelectedItems_ProductFieldId",
+                "ProductSelectedItems",
+                "ProductFieldId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductSelectedItems_SelectItemId",
-                table: "ProductSelectedItems",
-                column: "SelectItemId");
+                "IX_ProductSelectedItems_SelectItemId",
+                "ProductSelectedItems",
+                "SelectItemId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SelectItems_SelectGroupId",
-                table: "SelectItems",
-                column: "SelectGroupId");
+                "IX_SelectItems_SelectGroupId",
+                "SelectItems",
+                "SelectGroupId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Addresses");
+                "Addresses");
 
             migrationBuilder.DropTable(
-                name: "Agencies");
+                "Agencies");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoleClaims");
+                "AspNetRoleClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserClaims");
+                "AspNetUserClaims");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserLogins");
+                "AspNetUserLogins");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserRoles");
+                "AspNetUserRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUserTokens");
+                "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Brands");
+                "Brands");
 
             migrationBuilder.DropTable(
-                name: "CategoryFields");
+                "CategoryFields");
 
             migrationBuilder.DropTable(
-                name: "FactorItems");
+                "FactorItems");
 
             migrationBuilder.DropTable(
-                name: "InventoryChanges");
+                "InventoryChanges");
 
             migrationBuilder.DropTable(
-                name: "OfferItems");
+                "OfferItems");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                "Orders");
 
             migrationBuilder.DropTable(
-                name: "PriceChanges");
+                "PriceChanges");
 
             migrationBuilder.DropTable(
-                name: "ProductGalleries");
+                "ProductGalleries");
 
             migrationBuilder.DropTable(
-                name: "ProductSelectedItems");
+                "ProductSelectedItems");
 
             migrationBuilder.DropTable(
-                name: "Sliders");
+                "Sliders");
 
             migrationBuilder.DropTable(
-                name: "Cities");
+                "Cities");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Offers");
+                "Offers");
 
             migrationBuilder.DropTable(
-                name: "Factors");
+                "Factors");
 
             migrationBuilder.DropTable(
-                name: "Statuses");
+                "Statuses");
 
             migrationBuilder.DropTable(
-                name: "ProductFields");
+                "ProductFields");
 
             migrationBuilder.DropTable(
-                name: "SelectItems");
+                "SelectItems");
 
             migrationBuilder.DropTable(
-                name: "States");
+                "States");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Fields");
+                "Fields");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                "Products");
 
             migrationBuilder.DropTable(
-                name: "Cars");
+                "Cars");
 
             migrationBuilder.DropTable(
-                name: "UserGroups");
+                "UserGroups");
 
             migrationBuilder.DropTable(
-                name: "FieldGroups");
+                "FieldGroups");
 
             migrationBuilder.DropTable(
-                name: "FieldTypes");
+                "FieldTypes");
 
             migrationBuilder.DropTable(
-                name: "SelectGroups");
+                "SelectGroups");
 
             migrationBuilder.DropTable(
-                name: "Categories");
+                "Categories");
 
             migrationBuilder.DropTable(
-                name: "Units");
+                "Units");
 
             migrationBuilder.DropTable(
-                name: "CategoryGroups");
+                "CategoryGroups");
         }
     }
 }

@@ -21,12 +21,14 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.FieldGroups.ToListAsync());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditFieldGroup(string id)
 		{
 			var fieldGroup = await _context.FieldGroups.SingleOrDefaultAsync(fg => fg.Id == id);
@@ -49,7 +51,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.FieldGroups.Add(model);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -57,7 +59,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.FieldGroups.Update(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
@@ -66,6 +68,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteFieldGroup(string id)
 		{
 			var model = await _context.FieldGroups.SingleOrDefaultAsync(fg => fg.Id == id);
@@ -91,7 +94,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
 			return RedirectToAction("Index");
 		}

@@ -17,10 +17,10 @@ namespace ECommerce.Models
 		[Display(Name = "کد تاکسی")]
 		public string TaxiCode { get; set; }
 
-		[Display(Name = "خودرو")]
+		[Display(Name = "مدل خودرو")]
 		public string CarId { get; set; }
 
-		[Display(Name = "خودرو")]
+		[Display(Name = "مدل خودرو")]
 		public virtual Car Car { get; set; }
 
 		[Display(Name = "گروه کاربری")]

@@ -22,15 +22,17 @@ namespace ECommerce.Areas.Admin.Controllers
 			_context = context;
 		}
 
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
 			return View(await _context.Cities.ToListAsync());
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditCity(string id)
 		{
-			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
+			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Name");
 
 			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
 			if (city != null)
@@ -52,7 +54,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Cities.Add(city);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, type: ToastType.Green);
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
@@ -60,7 +62,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Cities.Update(city);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
@@ -71,6 +73,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		}
 
 		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> DeleteCity(string id)
 		{
 			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
@@ -93,12 +96,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				_context.Cities.Remove(model);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, type: ToastType.Red);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, type: ToastType.Yellow);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
 			return RedirectToAction("Index");
 		}
