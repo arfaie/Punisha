@@ -39,7 +39,7 @@
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
                                 <a class="btn btn-primary marginbutoom" id="showUnit" data-toggle="modal" asp-action="AddEditUnit"
-                                   data-target="#modal-action-unit">
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن واحد جدید
                                 </a>
@@ -66,13 +66,13 @@
 
                                         <td>
                                             <a class="btn btn-info" id="editUnit" data-toggle="modal" asp-action="AddEditUnit"
-                                               data-target="#modal-action-unit" asp-route-Id="@item.Id">
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
                                             <a class="btn btn-danger" id="showUnit" data-toggle="modal" asp-action="DeleteUnit"
-                                               data-target="#modal-action-unit" asp-route-Id="@item.Id">
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -101,8 +101,7 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-unit", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/unit-index.js"></script>
 }

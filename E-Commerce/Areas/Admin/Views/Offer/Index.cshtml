@@ -39,7 +39,7 @@
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
                                 <a class="btn btn-primary marginbutoom" id="showOffer" data-toggle="modal" asp-action="AddEditOffer"
-                                   data-target="#modal-action-Offer">
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن تخفیفات جدید
                                 </a>
@@ -72,13 +72,13 @@
 
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEditOffer"
-                                               data-target="#modal-action-Offer" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
                                             <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="DeleteOffer"
-                                               data-target="#modal-action-Offer" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -107,8 +107,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-Offer", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/Offer-index.js"></script>
+
 }

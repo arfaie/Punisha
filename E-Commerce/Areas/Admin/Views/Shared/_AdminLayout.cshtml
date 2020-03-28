@@ -213,11 +213,11 @@
                                 </li>
 
                                 @*<li class="sidenav-item">
-                                        <a asp-area="Admin" asp-controller="Addresses" asp-action="Index">
-                                            <span class="sidenav-icon icon icon-th"></span>
-                                            <span class="sidenav-label">آدرس ها</span>
-                                        </a>
-                                    </li>*@
+            <a asp-area="Admin" asp-controller="Addresses" asp-action="Index">
+                <span class="sidenav-icon icon icon-th"></span>
+                <span class="sidenav-label">آدرس ها</span>
+            </a>
+        </li>*@
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
@@ -258,7 +258,13 @@
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="CategoryGroup" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label"> دگروه دسته بندی</span>
+                                        <span class="sidenav-label"> گروه دسته بندی</span>
+                                    </a>
+                                </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="CategoryField" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label"> فیلد دسته بندی </span>
                                     </a>
                                 </li>
                                 <li class="sidenav-item">
@@ -270,11 +276,11 @@
                                 @*<hr style="border: 1px solid gray;" />*@
 
                                 @*<li class="sidenav-item">
-                                        <a asp-area="Admin" asp-controller="CommentOrgan" asp-action="Index">
-                                            <span class="sidenav-icon icon icon-th"></span>
-                                            <span class="sidenav-label">ارگان</span>
-                                        </a>
-                                    </li>*@
+            <a asp-area="Admin" asp-controller="CommentOrgan" asp-action="Index">
+                <span class="sidenav-icon icon icon-th"></span>
+                <span class="sidenav-label">ارگان</span>
+            </a>
+        </li>*@
 
                                 @*<li class="sidenav-heading sideMenueHeaderColor">اطلاعیه ها</li>*@
 
@@ -298,28 +304,34 @@
                                         <span class="sidenav-label">تخفیف ها</span>
                                     </a>
                                 </li>
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="OfferItem" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">آیتمهای تخفیف ها</span>
+                                    </a>
+                                </li>
                                 @*<hr style="border: 1px solid gray;" />*@
 
                                 @*<li class="sidenav-item">
-                                        <a asp-area="Admin" asp-controller="NazarSanji2" asp-action="Index">
-                                            <span class="sidenav-icon icon icon-th"></span>
-                                            <span class="sidenav-label">بستری شدگان</span>
-                                        </a>
-                                    </li>*@
+            <a asp-area="Admin" asp-controller="NazarSanji2" asp-action="Index">
+                <span class="sidenav-icon icon icon-th"></span>
+                <span class="sidenav-label">بستری شدگان</span>
+            </a>
+        </li>*@
 
                                 @*<li class="sidenav-heading sideMenueHeaderColor">پیام ها</li>*@
 
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="SelectGroup" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label">انتخاب گروه/SelectGroup</span>
+                                        <span class="sidenav-label">گروه انتخابی/SelectGroup</span>
                                     </a>
                                 </li>
 
                                 <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="SelectItem" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
-                                        <span class="sidenav-label">انتخاب آیتم/SelectItem</span>
+                                        <span class="sidenav-label">آیتم انتخابی/SelectItem</span>
                                     </a>
                                 </li>
 
@@ -352,9 +364,23 @@
                                 </li>
 
                                 <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Address" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">آدرسهای کاربران</span>
+                                    </a>
+                                </li>
+
+                                <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="UserGroup" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
                                         <span class="sidenav-label">گروه کاربران</span>
+                                    </a>
+                                </li>
+                                
+                                <li class="sidenav-item">
+                                    <a asp-area="Admin" asp-controller="Status" asp-action="Index">
+                                        <span class="sidenav-icon icon icon-th"></span>
+                                        <span class="sidenav-label">وضعیتهای سفارشها</span>
                                     </a>
                                 </li>
 
@@ -386,6 +412,7 @@
     <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
     <script src="~/js/application.min.js"></script>
     <script src="~/js/demo.min.js"></script>
+    <script src="~/js/admin-main.js"></script>
 
     <script src="~/DataTable/js/dataTables.responsive.js"></script>
     <script src="~/DataTable/js/responsive.bootstrap.js"></script>

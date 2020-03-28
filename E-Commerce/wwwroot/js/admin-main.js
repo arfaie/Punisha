@@ -1,9 +1,9 @@
 ﻿(function ($) {
-    function FieldGroup() {
+    function ShowModal() {
         var $this = this;
 
         function initilizeModel() {
-            $("#modal-action-fieldgroup").on('loaded.bs.modal', function (e) {
+            $("#modal-action").on('loaded.bs.modal', function (e) {
             }).on('hidden.bs.modal', function (e) {
                 $(this).removeData('bs.modal');
             });
@@ -14,7 +14,7 @@
     }
 
     $(function () {
-        var self = new FieldGroup();
+        var self = new ShowModal();
         self.init();
     });
 }(jQuery))

@@ -136,8 +136,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-product", Size = ModalSize.Medium })
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-productfield", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-product", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action-productfield", Size = ModalSize.Medium })
 
 @section Scripts{
 

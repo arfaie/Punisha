@@ -1,10 +1,10 @@
-﻿@model ECommerce.Models.Car
+﻿@model ECommerce.Models.CategoryField
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="Car" asp-action="AddEditCar" id="addeditcar" data-ajax="true" data-ajax-method="post"
-      data-ajax-update="#addeditcar" data-ajax-mode="replace">
+<form asp-controller="CategoryField" asp-action="AddEditCategoryField" id="addeditCategoryField" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditCategoryField" data-ajax-mode="replace">
 
     @*header*@
     @if (!String.IsNullOrWhiteSpace(Model.Id))
@@ -21,18 +21,19 @@
 
         <div class="row">
             <div class="form-group">
-                <label asp-for="Name" class="col-lg-3 col-sm-3 control-label"></label>
+                <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
+                    <select asp-for="CategoryId" asp-items="@ViewBag.Categories" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب گروه</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="MakerId" class="col-lg-3 col-sm-3 control-label"></label>
+                <label asp-for="FieldId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
-                    <select asp-for="MakerId" asp-items="@ViewBag.Makers" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب نوع خودرو</option>
+                    <select asp-for="FieldId" asp-items="@ViewBag.Fields" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب فیلد</option>
                     </select>
                 </div>
             </div>
@@ -44,7 +45,7 @@
                 </div>
             </div>
 
-            <input type="hidden" name="redirectUrl" value="@Url.Action("index","car")" />
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","CategoryField")" />
 
         </div>
     </div>

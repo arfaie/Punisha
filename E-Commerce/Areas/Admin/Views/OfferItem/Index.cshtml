@@ -1,7 +1,10 @@
-﻿@model IEnumerable<ECommerce.Models.ApplicationRole>
+﻿@model IEnumerable<ECommerce.Models.OfferItem>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
 
 @{
-    ViewBag.Title = "نقش ها";
+    ViewBag.Title = "آیتمهای تخفیف";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -21,7 +24,7 @@
                         <button type="button" class="card-action card-reload" title="Reload"></button>
                         <button type="button" class="card-action card-remove" title="Remove"></button>
                     </div>
-                    <strong>نقش ها</strong>
+                    <strong>@ViewBag.Title</strong>
                 </div>
 
                 <div class="card-body">
@@ -35,9 +38,10 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showcity" data-toggle="modal" asp-action="AddEditApplicationRole" data-target="#modal-action">
+                                <a class="btn btn-primary marginbutoom" id="showOfferItem" data-toggle="modal" asp-action="AddEditOfferItem"
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
-                                    افزودن نقش جدید
+                                    افزودن آیتم تخفیف جدید
                                 </a>
                             </div>
                         </div>
@@ -46,8 +50,8 @@
                         <thead>
                             <tr>
                                 <th>کد</th>
-                                <th>نام نقش</th>
-                                <th>توضیحات</th>
+                                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                                <th>@Html.DisplayNameFor(model => model.Offer)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -56,18 +60,20 @@
                                 var i = 1;
                                 foreach (var item in Model)
                                 {
+
                                     <tr>
                                         <td>@(i++)</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.Description</td>
+                                        <td>@item.Product?.Name</td>
+                                        <td>@item.Offer?.Title</td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editcity" data-toggle="modal" asp-action="AddEditApplicationRole" data-target="#modal-action" asp-route-id="@item.Id">
+                                            <a class="btn btn-info" id="editOfferItem" data-toggle="modal" asp-action="AddEditOfferItem"
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showcity" data-toggle="modal" asp-action="DeleteRole"
+                                            <a class="btn btn-danger" id="showOfferItem" data-toggle="modal" asp-action="DeleteOfferItem"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
@@ -100,4 +106,5 @@
 @await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
+
 }

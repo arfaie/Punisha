@@ -39,7 +39,7 @@
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
                                 <a class="btn btn-primary marginbutoom" id="showafield" data-toggle="modal" asp-action="AddEditField"
-                                   data-target="#modal-action-field">
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن فیلد جدید
                                 </a>
@@ -70,13 +70,13 @@
 
                                         <td>
                                             <a class="btn btn-info" id="editfield" data-toggle="modal" asp-action="AddEditField"
-                                               data-target="#modal-action-field" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
                                             <a class="btn btn-danger" id="showfield" data-toggle="modal" asp-action="DeleteField"
-                                               data-target="#modal-action-field" asp-route-Id="@item.Id">
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -105,8 +105,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-field", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/field-index.js"></script>
+
 }

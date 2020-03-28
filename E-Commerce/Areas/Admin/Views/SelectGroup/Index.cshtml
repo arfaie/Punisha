@@ -39,7 +39,7 @@
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
                                 <a class="btn btn-primary marginbutoom" id="showcity" data-toggle="modal" asp-action="AddEditSelectGroup"
-                                   data-target="#modal-action-selectgroup">
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن
                                 </a>
@@ -66,13 +66,13 @@
 
                                         <td>
                                             <a class="btn btn-info" id="editcity" data-toggle="modal" asp-action="AddEditSelectGroup"
-                                               data-target="#modal-action-selectgroup" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
                                             <a class="btn btn-danger" id="showcity" data-toggle="modal" asp-action="DeleteSelectGroup"
-                                               data-target="#modal-action-selectgroup" asp-route-Id="@item.Id">
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -101,8 +101,7 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-selectgroup", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/SelectGroup-index.js"></script>
 }

@@ -39,7 +39,7 @@
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
                                 <a class="btn btn-primary marginbutoom" id="showcity" data-toggle="modal" asp-action="AddEditCity"
-                                   data-target="#modal-action-city">
+                                   data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن شهر جدید
                                 </a>
@@ -69,13 +69,13 @@
 
                                         <td>
                                             <a class="btn btn-info" id="editcity" data-toggle="modal" asp-action="AddEditCity"
-                                               data-target="#modal-action-city" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
                                             <a class="btn btn-danger" id="showcity" data-toggle="modal" asp-action="DeleteCity"
-                                               data-target="#modal-action-city" asp-route-Id="@item.Id">
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
@@ -104,8 +104,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-city", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/city-index.js"></script>
+
 }

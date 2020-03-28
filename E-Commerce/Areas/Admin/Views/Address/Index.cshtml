@@ -38,11 +38,10 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                @*<a class="btn btn-primary marginbutoom" id="showaddress" data-toggle="modal" asp-action="AddEditAgency"
-                                       data-target="#modal-action-address">
-                                        <i class="glyphicon glyphicon-plus"></i>
-                                        افزودن آژانس جدید
-                                    </a>*@
+                                <a class="btn btn-primary marginbutoom" id="showaddress" data-toggle="modal" asp-action="AddEditAddress" data-target="#modal-action">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    افزودن آژانس جدید
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -50,16 +49,16 @@
                         <thead>
                             <tr>
                                 <th>کد</th>
-                                @*<th>@Html.DisplayNameFor(model => model.UserFullName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.StateName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.CityName)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Address)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Plaque)</th>*@
+                                <th>@Html.DisplayNameFor(model => model.User)</th>
+                                <th>@Html.DisplayNameFor(model => model.City)</th>
+                                <th>@Html.DisplayNameFor(model => model.Description)</th>
                                 <th>@Html.DisplayNameFor(model => model.PostalCode)</th>
                                 <th>@Html.DisplayNameFor(model => model.Phone)</th>
-                                @*<th>@Html.DisplayNameFor(model => model.Lat)</th>
-                                    <th>@Html.DisplayNameFor(model => model.Lan)</th>*@
-                                @*<th>عملیات</th>*@
+                                <th>@Html.DisplayNameFor(model => model.Recipient)</th>
+                                <th>@Html.DisplayNameFor(model => model.Mobile)</th>
+                                <th>@Html.DisplayNameFor(model => model.Longitude)</th>
+                                <th>@Html.DisplayNameFor(model => model.Latitude)</th>
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -70,30 +69,30 @@
 
                                     <tr>
                                         <td>@(i++)</td>
-                                        @*<td>@item.UserFullName</td>
-                                            <td>@item.StateName</td>
-                                            <td>@item.CityName</td>
-                                            <td>@item.Address</td>
-                                            <td>@item.Plaque</td>*@
+                                        <td>@item.User?.FullName</td>
+                                        <td>@item.City?.Name</td>
+                                        <td>@item.Description</td>
                                         <td>@item.PostalCode</td>
                                         <td>@item.Phone</td>
-                                        @*<td>@item.Lat</td>
-                                            <td>@item.Lan</td>*@
+                                        <td>@item.Recipient</td>
+                                        <td>@item.Mobile</td>
+                                        <td>@item.Longitude</td>
+                                        <td>@item.Latitude</td>
 
-                                        @*<td>
-                                                <a class="btn btn-info" id="editaddress" data-toggle="modal" asp-action="AddEditAgency"
-                                                   data-target="#modal-action-address" asp-route-Id="@item.Id">
-                                                    <i class="glyphicon glyphicon-pencil"></i>
-                                                    ویرایش
-                                                </a>
+                                        <td>
+                                            <a class="btn btn-info" id="editaddress" data-toggle="modal" asp-action="AddEditAddress"
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                                ویرایش
+                                            </a>
 
-                                                <a class="btn btn-danger" id="showaddress" data-toggle="modal" asp-action="DeleteAgency"
-                                                   data-target="#modal-action-address" asp-route-Id="@item.Id">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                    حذف
-                                                </a>
+                                            <a class="btn btn-danger" id="showaddress" data-toggle="modal" asp-action="DeleteAddress"
+                                               data-target="#modal-action" asp-route-Id="@item.Id">
+                                                <i class="glyphicon glyphicon-trash"></i>
+                                                حذف
+                                            </a>
 
-                                            </td>*@
+                                        </td>
                                     </tr>
                                 }
                             }
@@ -117,8 +116,8 @@
 
 </div>
 
-@Html.Partial("_Modal", new BootstrapModel { Id = "modal-action-address", Size = ModalSize.Medium })
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
 
 @section Scripts{
-    <script src="~/js/modal-js/address-index.js"></script>
+
 }
