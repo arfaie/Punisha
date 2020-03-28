@@ -67,6 +67,8 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
+			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync(), "Id", "Name");
+
 			return PartialView("AddEditAgency", model);
 		}
 

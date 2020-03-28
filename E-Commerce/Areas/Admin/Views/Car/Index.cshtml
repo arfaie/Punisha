@@ -51,6 +51,7 @@
                             <tr>
                                 <th>کد</th>
                                 <th>@Html.DisplayNameFor(model => model.Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.Maker)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -63,6 +64,7 @@
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>@item.Name</td>
+                                        <td>@item.Maker.Name</td>
 
                                         <td>
                                             <a class="btn btn-info" id="editcar" data-toggle="modal" asp-action="AddEditcar"

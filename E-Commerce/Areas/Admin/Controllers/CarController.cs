@@ -4,6 +4,7 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -24,13 +25,15 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
-			return View(await _context.Cars.ToListAsync());
+			return View(await _context.Cars.Include(x => x.Maker).ToListAsync());
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEditCar(string id)
 		{
+			ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
+
 			var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
 			if (car != null)
 			{
@@ -63,6 +66,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
+
+			ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
 			return PartialView("AddEditCar", model);
 		}
