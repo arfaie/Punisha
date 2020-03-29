@@ -76,7 +76,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-						await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+                        await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
 						{
 							await file.CopyToAsync(fs);
 							model.ImageName = filename;
