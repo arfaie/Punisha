@@ -27,7 +27,7 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Makers.ToListAsync());
+            return View(await _context.Makers.Include(c => c.Cars).ToListAsync());
         }
 
         [HttpGet]

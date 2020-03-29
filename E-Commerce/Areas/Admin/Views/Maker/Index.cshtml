@@ -74,12 +74,15 @@
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
-
-                                            <a class="btn btn-danger" id="showmaker" data-toggle="modal" asp-action="DeleteMaker"
-                                               data-target="#modal-action" asp-route-Id="@item.Id">
-                                                <i class="glyphicon glyphicon-trash"></i>
-                                                حذف
-                                            </a>
+                                            @if (item.Cars.Count() == 0)
+                                            {
+                                                <a class="btn btn-danger" id="showmaker" data-toggle="modal" asp-action="DeleteMaker"
+                                                   data-target="#modal-action" asp-route-Id="@item.Id">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                    حذف
+                                                </a>
+                                            }
+                                            
 
                                         </td>
                                     </tr>
