@@ -25,8 +25,6 @@ namespace ECommerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
-            City s = new City();
-
             return View(await _context.Cities.ToListAsync());
         }
 
