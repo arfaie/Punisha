@@ -11,99 +11,101 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class CityController : Controller
-	{
-		private readonly ApplicationDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class CityController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-		public CityController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public CityController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Index()
-		{
-			return View(await _context.Cities.ToListAsync());
-		}
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Index()
+        {
+            City s = new City();
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditCity(string id)
-		{
-			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Name");
+            return View(await _context.Cities.ToListAsync());
+        }
 
-			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
-			if (city != null)
-			{
-				return PartialView("AddEditCity", city);
-			}
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddEditCity(string id)
+        {
+            ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditCity", new City());
-		}
+            var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
+            if (city != null)
+            {
+                return PartialView("AddEditCity", city);
+            }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditCity(string id, City city, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				if (String.IsNullOrWhiteSpace(id))
-				{
-					_context.Cities.Add(city);
-					await _context.SaveChangesAsync();
+            return PartialView("AddEditCity", new City());
+        }
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEditCity(string id, City city, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                if (String.IsNullOrWhiteSpace(id))
+                {
+                    _context.Cities.Add(city);
+                    await _context.SaveChangesAsync();
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-				_context.Cities.Update(city);
-				await _context.SaveChangesAsync();
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                _context.Cities.Update(city);
+                await _context.SaveChangesAsync();
 
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-			ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
 
-			return PartialView("AddEditCity", city);
-		}
+            ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteCity(string id)
-		{
-			var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
-			if (city == null)
-			{
-				return RedirectToAction("Index");
-			}
+            return PartialView("AddEditCity", city);
+        }
 
-			return PartialView("DeleteCity", city.Name);
-		}
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> DeleteCity(string id)
+        {
+            var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
+            if (city == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteCity(string id, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
+            return PartialView("DeleteCity", city.Name);
+        }
 
-				_context.Cities.Remove(model);
-				await _context.SaveChangesAsync();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteCity(string id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = await _context.Cities.FirstOrDefaultAsync(c => c.Id == id);
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                _context.Cities.Remove(model);
+                await _context.SaveChangesAsync();
 
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
 
-			return RedirectToAction("Index");
-		}
-	}
+            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+
+            return RedirectToAction("Index");
+        }
+    }
 }
