@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditBrand(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var brand = await _context.Brands.FirstOrDefaultAsync(c => c.Id == id);
 			if (brand != null)
 			{
-				return PartialView("AddEditBrand", brand);
+				return PartialView("AddEdit", brand);
 			}
 
-			return PartialView("AddEditBrand", new Brand());
+			return PartialView("AddEdit", new Brand());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditBrand(string id, Brand model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Brand model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -62,12 +62,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditBrand", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteBrand(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var brand = await _context.Brands.FirstOrDefaultAsync(c => c.Id == id);
 			if (brand == null)
@@ -75,12 +75,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteBrand", brand.Title);
+			return PartialView("Delete", brand.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteBrand(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

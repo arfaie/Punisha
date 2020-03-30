@@ -30,7 +30,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditCategoryField(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.Fields = new SelectList(await _context.Fields.ToListAsync(), "Id", "Name");
@@ -38,15 +38,15 @@ namespace ECommerce.Areas.Admin.Controllers
 			var categoryField = await _context.CategoryFields.FirstOrDefaultAsync(c => c.Id == id);
 			if (categoryField != null)
 			{
-				return PartialView("AddEditCategoryField", categoryField);
+				return PartialView("AddEdit", categoryField);
 			}
 
-			return PartialView("AddEditCategoryField", new CategoryField());
+			return PartialView("AddEdit", new CategoryField());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditCategoryField(string id, CategoryField model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, CategoryField model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -71,12 +71,12 @@ namespace ECommerce.Areas.Admin.Controllers
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.Fields = new SelectList(await _context.Fields.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditCategoryField", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteCategoryField(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var categoryField = await _context.CategoryFields.Include(x => x.Category).Include(x => x.Field).FirstOrDefaultAsync(c => c.Id == id);
 			if (categoryField == null)
@@ -84,12 +84,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteCategoryField", $"{categoryField.Field?.Title} {categoryField.Category?.Title}");
+			return PartialView("Delete", $"{categoryField.Field?.Title} {categoryField.Category?.Title}");
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteCategoryField(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

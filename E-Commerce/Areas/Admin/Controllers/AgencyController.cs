@@ -30,22 +30,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditAgency(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync(), "Id", "Name");
 
 			var agency = await _context.Agencies.FirstOrDefaultAsync(c => c.Id == id);
 			if (agency != null)
 			{
-				return PartialView("AddEditAgency", agency);
+				return PartialView("AddEdit", agency);
 			}
 
-			return PartialView("AddEditAgency", new Agency());
+			return PartialView("AddEdit", new Agency());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditAgency(string id, Agency model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Agency model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -69,12 +69,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditAgency", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteAgency(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var agency = await _context.Agencies.FirstOrDefaultAsync(c => c.Id == id);
 			if (agency == null)
@@ -82,12 +82,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteAgency", agency.Title);
+			return PartialView("Delete", agency.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteAgency(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

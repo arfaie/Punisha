@@ -31,22 +31,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditCategory(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.CategoryGroups = new SelectList(await _context.CategoryGroups.ToListAsync(), "Id", "Title");
 
 			var category = await _context.Categories.SingleOrDefaultAsync(b => b.Id == id);
 			if (category != null)
 			{
-				return PartialView("AddEditCategory", category);
+				return PartialView("AddEdit", category);
 			}
 
-			return PartialView("AddEditCategory", new Category());
+			return PartialView("AddEdit", new Category());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditCategory(string id, Category model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Category model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -70,12 +70,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.CategoryGroups = new SelectList(await _context.CategoryGroups.ToListAsync(), "Id", "Title");
 
-			return PartialView("AddEditCategory", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteCategory(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var category = await _context.Categories.SingleOrDefaultAsync(b => b.Id == id);
 			if (category == null)
@@ -83,12 +83,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteCategory", category.Title);
+			return PartialView("Delete", category.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteCategory(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

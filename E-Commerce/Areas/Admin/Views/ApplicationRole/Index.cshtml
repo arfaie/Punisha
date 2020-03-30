@@ -35,7 +35,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showcity" data-toggle="modal" asp-action="AddEditApplicationRole" data-target="#modal-action">
+                                <a class="btn btn-primary marginbutoom" id="showcity" data-toggle="modal" asp-action="AddEdit" data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن نقش جدید
                                 </a>
@@ -62,12 +62,12 @@
                                         <td>@item.Description</td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editcity" data-toggle="modal" asp-action="AddEditApplicationRole" data-target="#modal-action" asp-route-id="@item.Id">
+                                            <a class="btn btn-info" id="editcity" data-toggle="modal" asp-action="AddEdit" data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showcity" data-toggle="modal" asp-action="DeleteRole"
+                                            <a class="btn btn-danger" id="showcity" data-toggle="modal" asp-action="Delete"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف

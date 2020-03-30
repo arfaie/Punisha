@@ -28,7 +28,10 @@ namespace ECommerce.Models
 		[Display(Name = "نظر")]
 		public string Comment { get; set; }
 
-		[Display(Name = "ستارخ")]
-		public int Starts { get; set; }
+		[Display(Name = "ستاره")]
+		public int Stars { get; set; }
+
+		[Display(Name = "تایید شده")]
+		public bool IsApproved { get; set; }
 	}
 }

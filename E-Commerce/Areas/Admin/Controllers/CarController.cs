@@ -30,22 +30,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditCar(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
 			var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
 			if (car != null)
 			{
-				return PartialView("AddEditCar", car);
+				return PartialView("AddEdit", car);
 			}
 
-			return PartialView("AddEditCar", new Car());
+			return PartialView("AddEdit", new Car());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditCar(string id, Car model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Car model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -69,12 +69,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditCar", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteCar(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var car = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
 			if (car == null)
@@ -82,12 +82,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteCar", car.Name);
+			return PartialView("Delete", car.Name);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteCar(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

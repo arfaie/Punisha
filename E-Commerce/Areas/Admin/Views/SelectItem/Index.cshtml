@@ -38,7 +38,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showaselectitem" data-toggle="modal" asp-action="AddEditselectitem"
+                                <a class="btn btn-primary marginbutoom" id="showaselectitem" data-toggle="modal" asp-action="AddEdit"
                                    data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن فیلد جدید
@@ -68,13 +68,13 @@
                                         @*<td>@item.SelectGroupTitle</td>*@
 
                                         <td>
-                                            <a class="btn btn-info" id="editselectitem" data-toggle="modal" asp-action="AddEditselectitem"
+                                            <a class="btn btn-info" id="editselectitem" data-toggle="modal" asp-action="AddEdit"
                                                data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showselectitem" data-toggle="modal" asp-action="Deleteselectitem"
+                                            <a class="btn btn-danger" id="showselectitem" data-toggle="modal" asp-action="Delete"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف

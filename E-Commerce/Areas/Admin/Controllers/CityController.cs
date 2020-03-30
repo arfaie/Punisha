@@ -30,22 +30,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddEditCity(string id)
+        public async Task<IActionResult> AddEdit(string id)
         {
             ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Name");
 
             var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
             if (city != null)
             {
-                return PartialView("AddEditCity", city);
+                return PartialView("AddEdit", city);
             }
 
-            return PartialView("AddEditCity", new City());
+            return PartialView("AddEdit", new City());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEditCity(string id, City city, string redirectUrl)
+        public async Task<IActionResult> AddEdit(string id, City city, string redirectUrl)
         {
             if (ModelState.IsValid)
             {
@@ -69,12 +69,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
             ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
 
-            return PartialView("AddEditCity", city);
+            return PartialView("AddEdit", city);
         }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> DeleteCity(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var city = await _context.Cities.SingleOrDefaultAsync(b => b.Id == id);
             if (city == null)
@@ -82,12 +82,12 @@ namespace ECommerce.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            return PartialView("DeleteCity", city.Name);
+            return PartialView("Delete", city.Name);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCity(string id, string redirectUrl)
+        public async Task<IActionResult> Delete(string id, string redirectUrl)
         {
             if (ModelState.IsValid)
             {

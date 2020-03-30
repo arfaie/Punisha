@@ -44,7 +44,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditProduct(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
@@ -55,15 +55,15 @@ namespace ECommerce.Areas.Admin.Controllers
 			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
 			if (product != null)
 			{
-				return PartialView("AddEditProduct", product);
+				return PartialView("AddEdit", product);
 			}
 
-			return PartialView("AddEditProduct", new Product());
+			return PartialView("AddEdit", new Product());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditProduct(Product model, string imgName, string id, IEnumerable<IFormFile> files)
+		public async Task<IActionResult> AddEdit(Product model, string imgName, string id, IEnumerable<IFormFile> files)
 		{
 			if (ModelState.IsValid)
 			{
@@ -131,12 +131,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
-			return PartialView("AddEditProduct", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteProduct(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
 			if (product == null)
@@ -144,12 +144,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteProduct", product.Name);
+			return PartialView("Delete", product.Name);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteProduct(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -325,7 +325,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult AddEditProductField(Field model)
+		public IActionResult AddEdit(Field model)
 		{
 			var lsFieldId = (int[])TempData["lsFieldId"];
 			//string productId = (int)TempData["ProductId"];

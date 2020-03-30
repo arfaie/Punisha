@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditUserGroup(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
 			if (userGroup != null)
 			{
-				return PartialView("AddEditUserGroup", userGroup);
+				return PartialView("AddEdit", userGroup);
 			}
 
-			return PartialView("AddEditUserGroup", new UserGroup());
+			return PartialView("AddEdit", new UserGroup());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditUserGroup(string id, UserGroup model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, UserGroup model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -64,12 +64,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditUserGroup", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteUserGroup(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var userGroup = await _context.UserGroups.FirstOrDefaultAsync(c => c.Id == id);
 			if (userGroup == null)
@@ -77,12 +77,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteUserGroup", userGroup.Title);
+			return PartialView("Delete", userGroup.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteUserGroup(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

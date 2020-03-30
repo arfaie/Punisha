@@ -38,7 +38,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddUser()
+		public async Task<IActionResult> Add()
 		{
 			ViewBag.ApplicationRoles = new SelectList(await _roleManager.Roles.ToListAsync(), "Id", "Name");
 
@@ -46,12 +46,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddUser", new ApplicationUser());
+			return PartialView("Add", new ApplicationUser());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddUser(ApplicationUser model, string redirectUrl)
+		public async Task<IActionResult> Add(ApplicationUser model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -92,12 +92,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddUser", model);
+			return PartialView("Add", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> EditUser(string id)
+		public async Task<IActionResult> Edit(string id)
 		{
 			if (!string.IsNullOrWhiteSpace(id))
 			{
@@ -122,16 +122,16 @@ namespace ECommerce.Areas.Admin.Controllers
 
 					ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name", user.CarId);
 
-					return PartialView("EditUser", user);
+					return PartialView("Edit", user);
 				}
 			}
 
-			return PartialView("EditUser");
+			return PartialView("Edit");
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> EditUser(ApplicationUser model, string redirectUrl)
+		public async Task<IActionResult> Edit(ApplicationUser model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -200,18 +200,18 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name", model.CarId);
 
-			return PartialView("EditUser", model);
+			return PartialView("Edit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public IActionResult ChangeUserPass(string id)
+		public IActionResult ChangePassword(string id)
 		{
-			return PartialView("ChangeUserPass", new AdminChangePasswordViewModel { Id = id });
+			return PartialView("ChangePassword", new AdminChangePasswordViewModel { Id = id });
 		}
 
 		//[HttpPost] [ValidateAntiForgeryToken]
-		//public async Task<IActionResult> ChangeUserPass(string id, ChangePasswordViewModel model)
+		//public async Task<IActionResult> ChangePassword(string id, ChangePasswordViewModel model)
 		//{
 		//	if (ModelState.IsValid)
 		//	{
@@ -235,7 +235,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ChangeUserPass(string id, AdminChangePasswordViewModel model, string redirectUrl)
+		public async Task<IActionResult> ChangePassword(string id, AdminChangePasswordViewModel model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -255,7 +255,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					}
 
 					TempData["Notification"] = Notification.ShowNotif("خطایی رخ داد.", ToastType.Red);
-					return PartialView("ChangeUserPass", model);
+					return PartialView("ChangePassword", model);
 				}
 
 				//await _signInManager.RefreshSignInAsync(user);
@@ -263,7 +263,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("ChangeUserPass", model);
+			return PartialView("ChangePassword", model);
 		}
 
 		public async Task<IActionResult> UserAddress(string id)

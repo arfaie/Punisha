@@ -13,7 +13,7 @@
     <div class="panel-heading panel-head">لیست کاربران</div>
     <div class="panel-body">
         <div class="btn-group">
-            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="AddUser"
+            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="Add"
                data-target="#modal-action">
                 <i class="glyphicon glyphicon-pencil"></i>
                 افزودن
@@ -45,13 +45,13 @@
                             @item.UserGroup?.Title
                         </td>
                         <td>
-                            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="EditUser"
+                            <a class="btn btn-info" id="showedituser" data-toggle="modal" asp-action="Edit"
                                data-target="#modal-action" asp-route-Id="@item.Id">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 ویرایش
                             </a>
 
-                            <a class="btn btn-primary" id="showedituser" data-toggle="modal" asp-action="ChangeUserPass"
+                            <a class="btn btn-primary" id="showedituser" data-toggle="modal" asp-action="ChangePassword"
                                data-target="#modal-action" asp-route-Id="@item.Id">
                                 <i class="glyphicon glyphicon-pencil"></i>
                                 ویرایش پسورد
@@ -63,7 +63,7 @@
                                     آدرس
                                 </a>
 
-                                <a class="btn btn-info" id="showedituser" asp-action="ChangeUserPass"
+                                <a class="btn btn-info" id="showedituser" asp-action="ChangePassword"
                                        data-target="#modal-action-user" asp-route-Id="@item.Id">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                         ویرایش پسورد

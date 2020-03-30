@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditFieldType(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var fieldType = await _context.FieldTypes.FirstOrDefaultAsync(c => c.Id == id);
 			if (fieldType != null)
 			{
-				return PartialView("AddEditFieldType", fieldType);
+				return PartialView("AddEdit", fieldType);
 			}
 
-			return PartialView("AddEditFieldType", new FieldType());
+			return PartialView("AddEdit", new FieldType());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditFieldType(string id, FieldType model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, FieldType model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -62,12 +62,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditFieldType", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteFieldType(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var fieldType = await _context.FieldTypes.FirstOrDefaultAsync(c => c.Id == id);
 			if (fieldType == null)
@@ -75,12 +75,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteFieldType", fieldType.Title);
+			return PartialView("Delete", fieldType.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteFieldType(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

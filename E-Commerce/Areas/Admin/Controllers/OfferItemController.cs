@@ -30,7 +30,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditOfferItem(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.Offers = new SelectList(await _context.Offers.ToListAsync(), "Id", "Name");
@@ -38,15 +38,15 @@ namespace ECommerce.Areas.Admin.Controllers
 			var OfferItem = await _context.OfferItems.FirstOrDefaultAsync(c => c.Id == id);
 			if (OfferItem != null)
 			{
-				return PartialView("AddEditOfferItem", OfferItem);
+				return PartialView("AddEdit", OfferItem);
 			}
 
-			return PartialView("AddEditOfferItem", new OfferItem());
+			return PartialView("AddEdit", new OfferItem());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditOfferItem(string id, OfferItem model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, OfferItem model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -71,12 +71,12 @@ namespace ECommerce.Areas.Admin.Controllers
 			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.Offers = new SelectList(await _context.Offers.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditOfferItem", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteOfferItem(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var OfferItem = await _context.OfferItems.Include(x => x.Product).Include(x => x.Offer).FirstOrDefaultAsync(c => c.Id == id);
 			if (OfferItem == null)
@@ -84,12 +84,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteOfferItem", $"{OfferItem.Offer?.Title} {OfferItem.Product?.Name}");
+			return PartialView("Delete", $"{OfferItem.Offer?.Title} {OfferItem.Product?.Name}");
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteOfferItem(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

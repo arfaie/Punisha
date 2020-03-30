@@ -30,22 +30,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditSelectItem(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
 
 			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
 			if (selectItem != null)
 			{
-				return PartialView("AddEditSelectItem", selectItem);
+				return PartialView("AddEdit", selectItem);
 			}
 
-			return PartialView("AddEditSelectItem", new SelectItem());
+			return PartialView("AddEdit", new SelectItem());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditSelectItem(string id, SelectItem model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, SelectItem model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -69,12 +69,12 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Name");
 
-			return PartialView("AddEditSelectItem", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteSelectItem(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var selectItem = await _context.SelectItems.FirstOrDefaultAsync(c => c.Id == id);
 			if (selectItem == null)
@@ -82,12 +82,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteSelectItem", selectItem.Title);
+			return PartialView("Delete", selectItem.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteSelectItem(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

@@ -21,11 +21,5 @@ namespace ECommerce.Models
 		public string Value { get; set; }
 
 		public ICollection<ProductSelectedItem> ProductSelectedItems { get; set; }
-
-		public string CarNames { get; set; }
-
-		[Display(Name = "عنوان")]
-		[Required(ErrorMessage = "فیلد {0} نمی تواند خالی یاشد.")]
-		public string Title { get; set; }
 	}
 }

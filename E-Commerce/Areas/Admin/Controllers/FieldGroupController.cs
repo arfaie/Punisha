@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditFieldGroup(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var fieldGroup = await _context.FieldGroups.SingleOrDefaultAsync(fg => fg.Id == id);
 			if (fieldGroup != null)
 			{
-				return PartialView("AddEditFieldGroup", fieldGroup);
+				return PartialView("AddEdit", fieldGroup);
 			}
 
-			return PartialView("AddEditFieldGroup", new FieldGroup());
+			return PartialView("AddEdit", new FieldGroup());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditFieldGroup(string id, FieldGroup model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, FieldGroup model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -64,12 +64,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditFieldGroup", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteFieldGroup(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var model = await _context.FieldGroups.SingleOrDefaultAsync(fg => fg.Id == id);
 			if (model == null)
@@ -77,12 +77,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteFieldGroup", model.Title);
+			return PartialView("Delete", model.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteFieldGroup(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

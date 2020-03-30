@@ -39,7 +39,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showmaker" data-toggle="modal" asp-action="AddEditMaker"
+                                <a class="btn btn-primary marginbutoom" id="showmaker" data-toggle="modal" asp-action="AddEdit"
                                    data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن سازنده جدید
@@ -69,14 +69,14 @@
                                         @*<td>@item.StateName</td>*@
 
                                         <td>
-                                            <a class="btn btn-info" id="editmaker" data-toggle="modal" asp-action="AddEditMaker"
+                                            <a class="btn btn-info" id="editmaker" data-toggle="modal" asp-action="AddEdit"
                                                data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
                                             @if (item.Cars.Count() == 0)
                                             {
-                                                <a class="btn btn-danger" id="showmaker" data-toggle="modal" asp-action="DeleteMaker"
+                                                <a class="btn btn-danger" id="showmaker" data-toggle="modal" asp-action="Delete"
                                                    data-target="#modal-action" asp-route-Id="@item.Id">
                                                     <i class="glyphicon glyphicon-trash"></i>
                                                     حذف

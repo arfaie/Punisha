@@ -32,20 +32,20 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddEditMaker(string id)
+        public async Task<IActionResult> AddEdit(string id)
         {
             var maker = await _context.Makers.SingleOrDefaultAsync(m => m.Id == id);
             if (maker != null)
             {
-                return PartialView("AddEditMaker", maker);
+                return PartialView("AddEdit", maker);
             }
 
-            return PartialView("AddEditMaker", new Maker());
+            return PartialView("AddEdit", new Maker());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEditMaker(string id, Maker maker, string redirectUrl)
+        public async Task<IActionResult> AddEdit(string id, Maker maker, string redirectUrl)
         {
             if (ModelState.IsValid)
             {
@@ -67,12 +67,12 @@ namespace E_Commerce.Areas.Admin.Controllers
 
             ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
 
-            return PartialView("AddEditMaker", maker);
+            return PartialView("AddEdit", maker);
         }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> DeleteMaker(string id)
+        public async Task<IActionResult> Delete(string id)
         {
             var maker = await _context.Makers.SingleOrDefaultAsync(m => m.Id == id);
             if (maker == null)
@@ -80,13 +80,13 @@ namespace E_Commerce.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            return PartialView("DeleteMaker", maker.Name);
+            return PartialView("Delete", maker.Name);
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteMaker(string id, string redirectUrl)
+        public async Task<IActionResult> Delete(string id, string redirectUrl)
         {
             if (ModelState.IsValid)
             {

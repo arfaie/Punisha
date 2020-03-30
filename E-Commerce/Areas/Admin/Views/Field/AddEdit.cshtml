@@ -1,0 +1,133 @@
+﻿@model ECommerce.Models.Field
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+<form asp-controller="Field" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#AddEdit" data-ajax-mode="replace">
+
+    <link href="~/css/dropdownliststyle.css" rel="stylesheet" />
+
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش فیلد" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن فیلد" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FieldTypeId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="FieldTypeId" asp-items="@ViewBag.FieldTypes" class="form-control"></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SelectGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="SelectGroupId" asp-items="@ViewBag.SelectGroups" class="form-control"></select>
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6" style="padding-right: 2px;">
+                        @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @multiple = "multiple", @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
+                    </div>
+                </div>*@
+            @*<div class="form-group">
+                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6" style="padding-right: 2px;">
+                        <select asp-for="CategoryId" asp-items="@Model.ICategories" class="ddlMultiSlectBox" multiple="multiple"></select>
+                    </div>
+                </div>*@
+            @*@Html.ListBoxFor(model => model.SelectedValues, new MultiSelectList(Models.GetCategoryList().OrderBy(c => c.Value), "Key", "Value", Model.SelectedValues), "Select Category", new { @class = "chzn-select form-control", multiple = "multiple" })*@
+            @*<div class="form-group">
+                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6" style="padding-right: 2px;">
+                        @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی",@class = "ddlMultiSlectBox" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                <label asp-for="FieldGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="FieldGroupId" asp-items="@ViewBag.FieldGroups" class="form-control"></select>
+                </div>
+            </div>
+
+            @* <div class="form-group">
+                    <label asp-for="SelecteFieldTypeId" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6" style="padding-right: 2px;">
+                        @Html.DropDownListFor(m => m.Type, new SelectList(Model.FildTypeModels, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
+                    </div>
+                </div>
+
+                <div class="form-group" id="divSelectGroup">
+                    <label asp-for="SelectGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+                    <div class="col-lg-6" style="padding-right: 2px;">
+                        @Html.DropDownListFor(m => m.SelectGroupId, new SelectList(Model.SelectGroupList, "Id", "Title"), "انتخاب نوع فیلد", new { @placeholder = "انتخاب نوع فیلد", @class = "ddlMultiSlectBox" })
+                    </div>
+                </div>*@
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","Field")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش دسته بندی" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن دسته بندی" })
+    }
+
+</form>
+
+<script src="~/js/MultiSelect/jquery.sumoselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        window.asd = $('.ddlMultiSlectBox').SumoSelect({ csvDispCount: 4 });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $("#divSelectGroup").hide();
+        $('#drpSelectGroup').on('change', function () {
+            if (this.value == '5')
+            //.....................^.......
+            {
+                $("#divSelectGroup").show(500);
+            }
+            else {
+                $("#divSelectGroup").hide(500);
+            }
+        });
+    });
+</script>

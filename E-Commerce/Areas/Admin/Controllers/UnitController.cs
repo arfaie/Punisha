@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditUnit(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var unit = await _context.Units.FirstOrDefaultAsync(c => c.Id == id);
 			if (unit != null)
 			{
-				return PartialView("AddEditUnit", unit);
+				return PartialView("AddEdit", unit);
 			}
 
-			return PartialView("AddEditUnit", new Unit());
+			return PartialView("AddEdit", new Unit());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditUnit(string id, Unit model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Unit model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -64,12 +64,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditUnit", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteUnit(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var unit = await _context.Units.FirstOrDefaultAsync(c => c.Id == id);
 			if (unit == null)
@@ -77,12 +77,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteUnit", unit.Title);
+			return PartialView("Delete", unit.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteUnit(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

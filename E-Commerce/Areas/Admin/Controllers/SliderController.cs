@@ -40,20 +40,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditSlider(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var slider = await _context.Sliders.FirstOrDefaultAsync(c => c.Id == id);
 			if (slider != null)
 			{
-				return PartialView("AddEditSlider", slider);
+				return PartialView("AddEdit", slider);
 			}
 
-			return PartialView("AddEditSlider", new Slider());
+			return PartialView("AddEdit", new Slider());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditSlider(string id, Slider model, IEnumerable<IFormFile> files, string imageName)
+		public async Task<IActionResult> AddEdit(string id, Slider model, IEnumerable<IFormFile> files, string imageName)
 		{
 			if (ModelState.IsValid)
 			{
@@ -107,7 +107,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteSlider(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var slider = await _context.Sliders.SingleOrDefaultAsync(s => s.Id == id);
 			if (slider == null)
@@ -115,12 +115,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteSlider", slider.Image);
+			return PartialView("Delete", slider.Image);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteSlider(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

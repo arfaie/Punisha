@@ -38,7 +38,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showFieldType" data-toggle="modal" asp-action="AddEditFieldType"
+                                <a class="btn btn-primary marginbutoom" id="showFieldType" data-toggle="modal" asp-action="AddEdit"
                                    data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن نوع فیلد جدید
@@ -65,13 +65,13 @@
                                         <td>@item.Title</td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEditFieldType"
+                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEdit"
                                                data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="DeleteFieldType"
+                                            <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="Delete"
                                                data-target="#modal-action" asp-route-id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف

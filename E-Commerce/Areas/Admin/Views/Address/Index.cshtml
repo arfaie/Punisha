@@ -38,7 +38,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showaddress" data-toggle="modal" asp-action="AddEditAddress" data-target="#modal-action">
+                                <a class="btn btn-primary marginbutoom" id="showaddress" data-toggle="modal" asp-action="AddEdit" data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن آژانس جدید
                                 </a>
@@ -80,13 +80,13 @@
                                         <td>@item.Latitude</td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editaddress" data-toggle="modal" asp-action="AddEditAddress"
+                                            <a class="btn btn-info" id="editaddress" data-toggle="modal" asp-action="AddEdit"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
 
-                                            <a class="btn btn-danger" id="showaddress" data-toggle="modal" asp-action="DeleteAddress"
+                                            <a class="btn btn-danger" id="showaddress" data-toggle="modal" asp-action="Delete"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف

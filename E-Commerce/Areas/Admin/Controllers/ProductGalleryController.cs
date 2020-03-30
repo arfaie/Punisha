@@ -47,22 +47,22 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditProductGallery(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
 
 			var productGallery = await _context.ProductGalleries.FirstOrDefaultAsync(c => c.Id == id);
 			if (productGallery != null)
 			{
-				return PartialView("AddEditProductGallery", productGallery);
+				return PartialView("AddEdit", productGallery);
 			}
 
-			return PartialView("AddEditProductGallery", new ProductGallery());
+			return PartialView("AddEdit", new ProductGallery());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditProductGallery(ProductGallery model, string id, IEnumerable<IFormFile> files)
+		public async Task<IActionResult> AddEdit(ProductGallery model, string id, IEnumerable<IFormFile> files)
 		{
 			if (ModelState.IsValid)
 			{
@@ -127,7 +127,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteProductGallery(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var productGallery = await _context.ProductGalleries.FirstOrDefaultAsync(c => c.Id == id);
 			if (productGallery == null)
@@ -135,12 +135,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteProductGallery", productGallery.Image);
+			return PartialView("Delete", productGallery.Image);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteProductGallery(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

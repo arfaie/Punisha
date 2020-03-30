@@ -27,21 +27,21 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditApplicationRole(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var applicationRole = await _roleManager.FindByIdAsync(id);
 
 			if (applicationRole != null)
 			{
-				return PartialView("AddEditApplicationRole", applicationRole);
+				return PartialView("AddEdit", applicationRole);
 			}
 
-			return PartialView("AddEditApplicationRole", new ApplicationRole { Id = String.Empty });
+			return PartialView("AddEdit", new ApplicationRole { Id = String.Empty });
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditApplicationRole(string id, ApplicationRole model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, ApplicationRole model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -58,25 +58,25 @@ namespace ECommerce.Areas.Admin.Controllers
 					return PartialView("_SuccessfulResponse", redirectUrl);
 				}
 			}
-			return PartialView("AddEditApplicationRole", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteRole(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var role = await _roleManager.FindByIdAsync(id);
 			if (role != null)
 			{
-				return PartialView("DeleteRole", role.Name);
+				return PartialView("Delete", role.Name);
 			}
 
-			return PartialView("DeleteRole", String.Empty);
+			return PartialView("Delete", String.Empty);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteRole(string id, IFormCollection form)
+		public async Task<IActionResult> Delete(string id, IFormCollection form)
 		{
 			var role = await _roleManager.FindByIdAsync(id);
 			if (role != null)

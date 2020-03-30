@@ -76,7 +76,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditField(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Title");
 			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
@@ -85,15 +85,15 @@ namespace ECommerce.Areas.Admin.Controllers
 			var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
 			if (field != null)
 			{
-				return PartialView("AddEditField", field);
+				return PartialView("AddEdit", field);
 			}
 
-			return PartialView("AddEditField", new Field());
+			return PartialView("AddEdit", new Field());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditField(string id, Field model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -204,7 +204,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
 			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-			return PartialView("AddEditField", model);
+			return PartialView("AddEdit", model);
 		}
 
 		public bool CheckDuplicateDrp(int[] idCat)
@@ -225,7 +225,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteField(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var field = new Field();
 
@@ -237,12 +237,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				}
 			}
 
-			return PartialView("DeleteField", field.Title);
+			return PartialView("Delete", field.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteField(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{

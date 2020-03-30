@@ -29,20 +29,20 @@ namespace ECommerce.Areas.Admin.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEditOffer(string id)
+		public async Task<IActionResult> AddEdit(string id)
 		{
 			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
 			if (offer != null)
 			{
-				return PartialView("AddEditOffer", offer);
+				return PartialView("AddEdit", offer);
 			}
 
-			return PartialView("AddEditOffer", new Offer());
+			return PartialView("AddEdit", new Offer());
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEditOffer(string id, Offer model, string redirectUrl)
+		public async Task<IActionResult> AddEdit(string id, Offer model, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
@@ -62,12 +62,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			return PartialView("AddEditOffer", model);
+			return PartialView("AddEdit", model);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> DeleteOffer(string id)
+		public async Task<IActionResult> Delete(string id)
 		{
 			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
 			if (offer == null)
@@ -75,12 +75,12 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index");
 			}
 
-			return PartialView("DeleteOffer", offer.Title);
+			return PartialView("Delete", offer.Title);
 		}
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> DeleteOffer(string id, string redirectUrl)
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
 		{
 			if (ModelState.IsValid)
 			{
