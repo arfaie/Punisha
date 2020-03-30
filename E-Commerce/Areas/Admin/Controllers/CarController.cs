@@ -7,26 +7,28 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class CarController : Controller
-	{
-		private readonly ApplicationDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class CarController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-		public CarController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public CarController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Index()
-		{
-			return View(await _context.Cars.Include(x => x.Maker).ToListAsync());
-		}
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Cars.Include(x => x.Maker).ToListAsync());
+        }
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
@@ -54,20 +56,20 @@ namespace ECommerce.Areas.Admin.Controllers
 					_context.Cars.Add(model);
 					await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
 
-				_context.Cars.Update(model);
-				await _context.SaveChangesAsync();
+                _context.Cars.Update(model);
+                await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
 
-			ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
+            ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
 			return PartialView("AddEdit", model);
 		}
@@ -93,17 +95,17 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				var model = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
 
-				_context.Cars.Remove(model);
-				await _context.SaveChangesAsync();
+                _context.Cars.Remove(model);
+                await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-			return RedirectToAction("Index");
-		}
-	}
+            return RedirectToAction("Index");
+        }
+    }
 }
