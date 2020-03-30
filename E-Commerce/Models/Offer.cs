@@ -30,7 +30,6 @@ namespace ECommerce.Models
         [ForeignKey("idUserGroup")]
         public virtual UserGroup userGroup { get; set; }
 
-        public ICollection<Offer> Offers { get; set; }
 
         public ICollection<OfferItem> OfferItems { get; set; }
     }
