@@ -70,12 +70,15 @@
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
+                                            @if (item.Offers.Count() == 0)
+                                            {
+                                                <a class="btn btn-danger" id="showusergroup" data-toggle="modal" asp-action="Delete"
+                                                   data-target="#modal-action" asp-route-Id="@item.Id">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                    حذف
+                                                </a>
+                                            }
 
-                                            <a class="btn btn-danger" id="showusergroup" data-toggle="modal" asp-action="Delete"
-                                               data-target="#modal-action" asp-route-Id="@item.Id">
-                                                <i class="glyphicon glyphicon-trash"></i>
-                                                حذف
-                                            </a>
 
                                         </td>
                                     </tr>
