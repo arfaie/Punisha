@@ -65,5 +65,7 @@ namespace ECommerce.Models
 		public ICollection<ProductField> ProductFields { get; set; }
 
 		public ICollection<ProductGallery> ProductGalleries { get; set; }
+
+        public ICollection<History> Histories { get; set; }
 	}
 }

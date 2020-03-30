@@ -1,0 +1,87 @@
+﻿@model IEnumerable<ECommerce.Models.History>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+@{
+    ViewData["Title"] = "تاریخچه";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div style="color:white;text-align:center" class=@TempData["css"]>
+    @if (TempData["notice"] != null)
+    {
+        <p>@TempData["notice"]</p>
+    }
+</div>
+<div class="layout-content-body">
+    <div class="row gutter-xs">
+        <div class="col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-actions">
+                        <button type="button" class="card-action card-toggler" title="Collapse"></button>
+                        <button type="button" class="card-action card-reload" title="Reload"></button>
+                        <button type="button" class="card-action card-remove" title="Remove"></button>
+                    </div>
+                    <strong>@ViewBag.Title</strong>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="md-form-group md-label-floating col-md-6">
+                        <div class="md-form-group md-label-floating col-md-6">
+                            <input class="md-form-control" type="text" name="name" id="serachInput" spellcheck="false" required="" aria-required="true">
+                            <label class="md-control-label">جستجو</label>
+                        </div>
+                    </div>
+
+                    <table id="example" class="table table-striped table-nowrap dataTable" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>کد</th>
+                                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                                <th>@Html.DisplayNameFor(model => model.User)</th>
+                                <th>@Html.DisplayNameFor(model => model.RegistrationDateAndTime)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var i = 1;
+                                foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>@(i++)</td>
+                                        <td>@item.Product?.Name</td>
+                                        <td>@item.User?.FullName</td>
+                                        <td>@item.RegistrationDateAndTime</td>
+                                    </tr>
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="progress" class="addModal">
+    <div class="addCenter">
+        <img src="~/images/loading.gif" />
+    </div>
+</div>
+<div id="infoModalAlertColored" tabindex="-1" role="dialog" class="modal fade">
+
+</div>
+<div id="successModalAlert" tabindex="-1" role="dialog" class="modal fade">
+
+</div>
+
+@await Html.PartialAsync("_Modal", new BootstrapModel { Id = "modal-action", Size = ModalSize.Medium })
+
+@section Scripts{
+
+}
+
