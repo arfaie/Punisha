@@ -5,25 +5,33 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
 {
-	public class Offer
-	{
-		[Display(Name = "شناسه")]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		public string Id { get; set; }
+    public class Offer
+    {
+        [Display(Name = "شناسه")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string Id { get; set; }
 
-		[Display(Name = "عنوان")]
-		[Required(ErrorMessage = "فیلد عنوان نمیتواند خالی باشد.")]
-		public string Title { get; set; }
+        [Display(Name = "عنوان")]
+        [Required(ErrorMessage = "فیلد عنوان نمیتواند خالی باشد.")]
+        public string Title { get; set; }
 
-		[Display(Name = "تاریخ شروع")]
-		public DateTime StartDate { get; set; }
+        [Display(Name = "تاریخ شروع")]
+        public DateTime StartDate { get; set; }
 
-		[Display(Name = "تاریخ پایان")]
-		public DateTime EndDate { get; set; }
+        [Display(Name = "تاریخ پایان")]
+        public DateTime EndDate { get; set; }
 
-		[Display(Name = "فعال")]
-		public bool IsActive { get; set; }
+        [Display(Name = "فعال")]
+        public bool IsActive { get; set; }
 
-		public ICollection<OfferItem> OfferItems { get; set; }
-	}
+        [Display(Name = "گروه کاربری")]
+        public string idUserGroup { get; set; }
+
+        [ForeignKey("idUserGroup")]
+        public virtual UserGroup userGroup { get; set; }
+
+        public ICollection<Offer> Offers { get; set; }
+
+        public ICollection<OfferItem> OfferItems { get; set; }
+    }
 }

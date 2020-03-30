@@ -74,7 +74,15 @@
                                         @*<td style="width: 10px; text-align: center;">@item.Code</td>*@
                                         <td style="width: 10px; text-align: center;">@item.Name</td>
                                         @*<td style="width: 10px; text-align: center;">@item.CategoryName</td>*@
-                                        <td style="width: 10px; text-align: center;">@item.Inventory</td>
+                                        @if (item.Inventory <= item.OrderPoint)
+                                        {
+                                            <td style="width: 10px; text-align: center; background-color: red;">@item.Inventory</td>
+                                        }
+                                        else
+                                        {
+                                            <td style="width: 10px; text-align: center;">@item.Inventory</td>
+                                        }
+
                                         @*<td style="width: 10px; text-align: center;">@item.IsSellable</td>*@
                                         <td style="width: 10px; text-align: center;">@item.OrderPoint</td>
                                         <td style="width: 10px; text-align: center;">@item.Price</td>
