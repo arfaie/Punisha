@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Data;
+using ECommerce.Models;
+using ECommerce.Models.Helpers;
+using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -38,6 +41,28 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
 
             return null;
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrEmpty(id))
+                {
+                    _context.Orders.Update(model);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
+
+                return null;
+            }
+
+            return PartialView("addIssueCode", model);
         }
     }
 }
