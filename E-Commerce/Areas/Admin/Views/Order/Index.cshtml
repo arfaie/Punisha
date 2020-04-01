@@ -47,7 +47,7 @@
                                 <th>@Html.DisplayNameFor(model => model.Status)</th>
                                 <th>@Html.DisplayNameFor(model => model.IssueCode)</th>
                                 <th>@Html.DisplayNameFor(model => model.Description)</th>
-                               
+                                <th>عملیات</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,12 +65,16 @@
                                         <td>@item.Status?.Title</td>
                                         <td>@item.IssueCode</td>
                                         <td>@item.Description</td>
-
-
+                                        <td>
+                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="addIssueCode"
+                                               data-target="#modal-action" asp-route-id="@item.Id">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                                کد در خواست
+                                            </a>
+                                        </td>
                                     </tr>
                                 }
                             }
-
                         </tbody>
                     </table>
                 </div>

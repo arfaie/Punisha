@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class OrderController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,6 +25,19 @@ namespace E_Commerce.Areas.Admin.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Orders.Include(o => o.Factor).Include(o => o.Status).ToListAsync());
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> addIssueCode(string id)
+        {
+            var order = await _context.Orders.Where(o => o.Id == id).SingleOrDefaultAsync();
+            if (order != null)
+            {
+                return PartialView("addIssueCode", order);
+            }
+
+            return null;
         }
     }
 }
