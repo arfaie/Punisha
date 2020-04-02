@@ -46,5 +46,7 @@ namespace ECommerce.Models
 		public ICollection<Address> Addresses { get; set; }
 
 		public ICollection<Factor> Factors { get; set; }
+
+        public ICollection<History> Histories { get; set; }
 	}
 }

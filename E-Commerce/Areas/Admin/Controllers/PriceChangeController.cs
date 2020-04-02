@@ -15,73 +15,78 @@ namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
-    public class MakerController : Controller
+    public class PriceChangeController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public MakerController(ApplicationDbContext context)
+        public PriceChangeController(ApplicationDbContext context)
         {
             _context = context;
         }
 
+
+        [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Makers.Include(c => c.Cars).ToListAsync());
+            return View(await _context.PriceChanges.Include(p => p.Product).ToListAsync());
         }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddEdit(string id)
         {
-            var maker = await _context.Makers.SingleOrDefaultAsync(m => m.Id == id);
-            if (maker != null)
+            ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
+
+            var select = await _context.PriceChanges.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (select != null)
             {
-                return PartialView("AddEdit", maker);
+                return PartialView("AddEdit", select);
             }
 
-            return PartialView("AddEdit", new Maker());
+            return PartialView("AddEdit", new PriceChange());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, Maker maker, string redirectUrl)
+        public async Task<IActionResult> AddEdit(string id, PriceChange model, string redirecturl)
         {
             if (ModelState.IsValid)
             {
-                if (string.IsNullOrEmpty(id))
+                if (String.IsNullOrEmpty(id))
                 {
-                    _context.Makers.Add(maker);
+                    _context.PriceChanges.Add(model);
                     await _context.SaveChangesAsync();
+
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-                    return PartialView("_SuccessfulResponse", redirectUrl);
+
+                    return PartialView("_SuccessfulResponse", redirecturl);
+
                 }
 
-                _context.Makers.Update(maker);
+                _context.PriceChanges.Update(model);
                 await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-                return PartialView("_SuccessfulResponse", redirectUrl);
+                return PartialView("_SuccessfulResponse", redirecturl);
             }
 
-            ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Title");
-
-            return PartialView("AddEdit", maker);
+            return PartialView("AddEdit", model);
         }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
-            var maker = await _context.Makers.SingleOrDefaultAsync(m => m.Id == id);
-            if (maker == null)
+            var select = await _context.PriceChanges.FirstOrDefaultAsync(p => p.Id == id);
+            if (select == null)
             {
-                return RedirectToAction("Index");
+                return null;
             }
 
-            return PartialView("Delete", maker.Name);
-
+            return PartialView("Delete", $"{select.Product?.Name} {select.Date}");
         }
 
         [HttpPost]
@@ -90,9 +95,9 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var model = await _context.Makers.FirstOrDefaultAsync(c => c.Id == id);
+                var model = await _context.PriceChanges.FirstOrDefaultAsync(p => p.Id == id);
 
-                _context.Makers.Remove(model);
+                _context.PriceChanges.Remove(model);
                 await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
@@ -103,6 +108,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
             return RedirectToAction("Index");
+
         }
     }
 }

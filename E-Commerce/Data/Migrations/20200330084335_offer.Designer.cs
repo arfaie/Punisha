@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200330084335_offer")]
+    partial class offer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -695,13 +697,7 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<DateTime>("AddingDateTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("BrandId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CarId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -722,6 +718,9 @@ namespace ECommerce.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("OldPrice")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderPoint")
                         .HasColumnType("int");
 
@@ -734,8 +733,6 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
-
-                    b.HasIndex("CarId");
 
                     b.HasIndex("CategoryId");
 
@@ -1197,10 +1194,6 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
-
-                    b.HasOne("ECommerce.Models.Car", "Car")
-                        .WithMany("Products")
-                        .HasForeignKey("CarId");
 
                     b.HasOne("ECommerce.Models.Category", "Category")
                         .WithMany("Products")
