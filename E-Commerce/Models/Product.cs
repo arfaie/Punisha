@@ -22,7 +22,7 @@ namespace ECommerce.Models
 		[Display(Name = "برند")]
 		public virtual Brand Brand { get; set; }
 
-		[Display(Name = "دسته یندی")]
+		[Display(Name = "نام محصول")]
 		public string Name { get; set; }
 
 		[Display(Name = "کد")]
