@@ -821,12 +821,13 @@ nav.main-menu {
 
 .promo-single-right {
 	width: 100%;
-	height: 360px;
+	height: 240px;
 	background: #fff;
 	overflow: hidden;
 	box-shadow: 0 0 2px 0 rgba(0,0,0,.3);
 	border-radius: 5px;
-	margin-top: 15px;
+	/*margin-top: 15px;*/
+	margin-top: 140px;
 }
 
 	.promo-single-right a img {

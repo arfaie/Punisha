@@ -45,7 +45,7 @@
     {
 
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برگشت</button>
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-success" value="افزودن اسلاید" />
         </div>
 
@@ -53,7 +53,7 @@
     else
     {
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برگشت</button>
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-success" value="ویرایش اسلاید" />
         </div>
 
@@ -72,12 +72,12 @@
 
             }
             $('input,select').each(function (x, y) {
-                data.append($(y).attr('name'), $(y), val());
+                data.append($(y).attr('name'), $(y).val());
 
             });
             $.ajax({
                 type: "post",
-                url:'@Url.Action("AddEdit", "Slider", new { Areas = "Admin" })',
+                url:'@Url.Action("AddEdit", "Slider", new { Area = "Admin" })',
                 contentType: false,
                 processData: false,
                 data: data

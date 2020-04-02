@@ -1,0 +1,25 @@
+﻿@model IEnumerable<Product>
+
+<div class="col-lg-12 col-md-12 col-xs-12 pull-right">
+    <div class="row">
+        <div class="col-12">
+            <div class="widget widget-product card">
+                <header class="card-header">
+                    <span class="title-one">محصولات مرتبط با خودرو شما @(ViewBag.Car != null ? $"({ViewBag.Car.Name})" : "")</span>
+                    <h3 class="card-title"></h3>
+                </header>
+
+                @if (ViewBag.Car != null)
+                {
+                    @await Component.InvokeAsync("ProductsCarousel", new { products = Model })
+                }
+                else
+                {
+                    <p>لطفاً مدل خودروی خود را از پنل کاربری انتخاب کنید</p>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--   slider-product-------------------->

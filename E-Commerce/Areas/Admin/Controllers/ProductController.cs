@@ -37,8 +37,6 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Index()
 		{
-			ViewBag.rootpath = "/upload/thumbnailimage/";
-
 			return View(await _context.Products.ToListAsync());
 		}
 
@@ -51,6 +49,8 @@ namespace ECommerce.Areas.Admin.Controllers
 			ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
 			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
+
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
 
 			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
 			if (product != null)
@@ -68,7 +68,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			if (ModelState.IsValid)
 			{
 				//upload audio
-				var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+				var uploads = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath);
 
 				foreach (var file in files)
 				{
@@ -76,13 +76,13 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-                        await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+						await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
 						{
 							await file.CopyToAsync(fs);
 							model.ImageName = filename;
 						}
 						var img = new ImageResizer();
-						img.Resize(uploads + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						img.Resize(uploads + filename, _env.WebRootPath + Helper.ThumbnailImagePath + filename);
 					}
 				}
 
@@ -94,6 +94,8 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						model.ImageName = "defaultpic.png";
 					}
+
+					model.AddingDateTime = DateTime.UtcNow;
 
 					_context.Products.Add(model);
 					await _context.SaveChangesAsync();
@@ -131,6 +133,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
+
 			return PartialView("AddEdit", model);
 		}
 
@@ -155,13 +159,13 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
 
-				var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + product.ImageName);
+				var sourcePath = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath, product.ImageName);
 				if (System.IO.File.Exists(sourcePath))
 				{
 					System.IO.File.Delete(sourcePath);
 				}
 
-				var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
+				var sourcePath2 = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.ThumbnailImagePath, product.ImageName);
 				if (System.IO.File.Exists(sourcePath2))
 				{
 					System.IO.File.Delete(sourcePath2);
@@ -323,57 +327,57 @@ namespace ECommerce.Areas.Admin.Controllers
 			return null;
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult AddEdit(Field model)
-		{
-			var lsFieldId = (int[])TempData["lsFieldId"];
-			//string productId = (int)TempData["ProductId"];
-			//string productFieldId = (int)TempData["ProductFieldId"];
-			//var tp = model.FieldType;
-			////check is Update
-			//var carIds = Request.Form["bb"];
-			//var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-			//Product selectedItems;
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public IActionResult AddEdit(Field model)
+		//{
+		//	var lsFieldId = (int[])TempData["lsFieldId"];
+		//string productId = (int)TempData["ProductId"];
+		//string productFieldId = (int)TempData["ProductFieldId"];
+		//var tp = model.FieldType;
+		////check is Update
+		//var carIds = Request.Form["bb"];
+		//var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+		//Product selectedItems;
 
-			//if (model.CarIds != null)
-			//{
-			//	if (select.Any())
-			//	{
-			//		_context.ProductSelectedItems.RemoveRange(select);
-			//		foreach (var item in model.CarIds)
-			//		{
-			//			selectedItems = new Product();
-			//			selectedItems.ItemId = Convert.ToInt16(item);
-			//			selectedItems.ProductFieldId = productFieldId;
-			//			_context.ProductSelectedItems.Add(selectedItems);
-			//		}
-			//	}
-			//	else
-			//	{
-			//		foreach (var item in model.CarIds)
-			//		{
-			//			selectedItems = new ProductSelectedItems();
-			//			selectedItems.ItemId = Convert.ToInt16(item);
-			//			selectedItems.ProductFieldId = productFieldId;
-			//			_context.ProductSelectedItems.Add(selectedItems);
-			//		}
-			//	}
-			//}
+		//if (model.CarIds != null)
+		//{
+		//	if (select.Any())
+		//	{
+		//		_context.ProductSelectedItems.RemoveRange(select);
+		//		foreach (var item in model.CarIds)
+		//		{
+		//			selectedItems = new Product();
+		//			selectedItems.ItemId = Convert.ToInt16(item);
+		//			selectedItems.ProductFieldId = productFieldId;
+		//			_context.ProductSelectedItems.Add(selectedItems);
+		//		}
+		//	}
+		//	else
+		//	{
+		//		foreach (var item in model.CarIds)
+		//		{
+		//			selectedItems = new ProductSelectedItems();
+		//			selectedItems.ItemId = Convert.ToInt16(item);
+		//			selectedItems.ProductFieldId = productFieldId;
+		//			_context.ProductSelectedItems.Add(selectedItems);
+		//		}
+		//	}
+		//}
 
-			//foreach (var item in lsFieldId)
-			//{
-			//	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
-			//	string value = Request.Form[item.ToString()];
-			//	selectPf.Value = value;
-			//	_context.ProductFields.Update(selectPf);
-			//}
-			//_context;
-			//_context.SaveChanges();
+		//foreach (var item in lsFieldId)
+		//{
+		//	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
+		//	string value = Request.Form[item.ToString()];
+		//	selectPf.Value = value;
+		//	_context.ProductFields.Update(selectPf);
+		//}
+		//_context;
+		//_context.SaveChanges();
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+		//	TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-			return RedirectToAction("Index");
-		}
+		//	return RedirectToAction("Index");
+		//}
 	}
 }

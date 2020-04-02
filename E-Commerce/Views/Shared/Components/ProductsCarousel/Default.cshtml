@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Product>
+
+<div class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+    <div class="owl-stage-outer">
+        <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
+            @foreach (var product in Model)
+            {
+                <div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
+                    <div class="item">
+                        <a href="#">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName" class="img-fluid" alt="">
+                        </a>
+                        <h2 class="post-title">
+                            <a href="#">
+                                @product.Name
+                            </a>
+                        </h2>
+                        <div class="price">
+                            @*<del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>*@
+                            <ins><span>@product.Price.ToString("N0")<span> تومان</span></span></ins>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @*<div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
+                    <div class="item">
+                        <a href="#">
+                            <img src="~/images/product-slider-2/111460776.jpg" class="img-fluid" alt="">
+                        </a>
+                        <h2 class="post-title">
+                            <a href="#">
+                                گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو ...
+                            </a>
+                        </h2>
+                        <div class="price">
+                            <del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>
+                            <ins><span>۳,۳۹۵,۰۰۰<span>تومان</span></span></ins>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+    <div class="owl-nav">
+        <button type="button" role="presentation" class="owl-prev disabled">
+            <i class="fa fa-angle-right"></i>
+        </button>
+        <button type="button" role="presentation" class="owl-next">
+            <i class="fa fa-angle-left"></i>
+        </button>
+    </div>
+    <div class="owl-dots disabled"></div>
+</div>
