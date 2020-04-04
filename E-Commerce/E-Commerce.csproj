@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\_AdminLayout.cshtml" />
+    <Content Remove="Views\Product\Home.cshtml" />
+    <Content Remove="Views\Product\ProductDetailes.cshtml" />
+    <Content Remove="Views\Product\SearchProduct.cshtml" />
     <Content Remove="wwwroot\js\iziToast-master\types\index.d.ts" />
     <Content Remove="wwwroot\js\jquery-cropper.js" />
   </ItemGroup>
@@ -44,7 +47,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\upload\normalimage\" />
     <Folder Include="wwwroot\upload\thumbnailimage\" />
   </ItemGroup>

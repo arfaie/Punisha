@@ -76,6 +76,8 @@ namespace ECommerce.Models
 
 		public ICollection<ProductGallery> ProductGalleries { get; set; }
 
-        public ICollection<History> Histories { get; set; }
+		public ICollection<CommentAndStar> CommentAndStars { get; set; }
+
+		public ICollection<History> Histories { get; set; }
 	}
 }
