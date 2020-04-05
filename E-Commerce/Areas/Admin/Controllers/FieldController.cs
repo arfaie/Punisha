@@ -78,7 +78,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEdit(string id)
 		{
-			ViewBag.SelectGroups = new SelectList(await _context.SelectGroups.ToListAsync(), "Id", "Title");
+			ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
 			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
