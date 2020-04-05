@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Data\Migrations\20200322070141_Initial.cs" />
-    <Compile Remove="Data\Migrations\20200322070141_Initial.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Remove="Areas\Admin\Views\_AdminLayout.cshtml" />
     <Content Remove="Views\Product\Home.cshtml" />
     <Content Remove="Views\Product\ProductDetailes.cshtml" />

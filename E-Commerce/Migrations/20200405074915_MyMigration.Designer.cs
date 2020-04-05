@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200405074915_MyMigration")]
+    partial class MyMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -578,9 +580,6 @@ namespace ECommerce.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OfferId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -592,8 +591,6 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
 
                     b.HasIndex("idUserGroup");
 
@@ -1093,7 +1090,7 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.CommentAndStar", b =>
                 {
                     b.HasOne("ECommerce.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("CommentAndStars")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
@@ -1137,11 +1134,11 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.History", b =>
                 {
                     b.HasOne("ECommerce.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("UserId");
                 });
 
@@ -1154,12 +1151,8 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.Offer", b =>
                 {
-                    b.HasOne("ECommerce.Models.Offer", null)
-                        .WithMany("Offers")
-                        .HasForeignKey("OfferId");
-
                     b.HasOne("ECommerce.Models.UserGroup", "userGroup")
-                        .WithMany()
+                        .WithMany("Offers")
                         .HasForeignKey("idUserGroup");
                 });
 

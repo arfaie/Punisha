@@ -4,16 +4,14 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200330084335_offer")]
-    partial class offer
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -580,9 +578,6 @@ namespace ECommerce.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("OfferId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -594,8 +589,6 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("OfferId");
 
                     b.HasIndex("idUserGroup");
 
@@ -697,7 +690,13 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<DateTime>("AddingDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("BrandId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -718,9 +717,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OldPrice")
-                        .HasColumnType("int");
-
                     b.Property<int>("OrderPoint")
                         .HasColumnType("int");
 
@@ -733,6 +729,8 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("CategoryId");
 
@@ -1090,7 +1088,7 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.CommentAndStar", b =>
                 {
                     b.HasOne("ECommerce.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("CommentAndStars")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
@@ -1134,11 +1132,11 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.History", b =>
                 {
                     b.HasOne("ECommerce.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("ProductId");
 
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("Histories")
                         .HasForeignKey("UserId");
                 });
 
@@ -1151,12 +1149,8 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.Offer", b =>
                 {
-                    b.HasOne("ECommerce.Models.Offer", null)
-                        .WithMany("Offers")
-                        .HasForeignKey("OfferId");
-
                     b.HasOne("ECommerce.Models.UserGroup", "userGroup")
-                        .WithMany()
+                        .WithMany("Offers")
                         .HasForeignKey("idUserGroup");
                 });
 
@@ -1194,6 +1188,10 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
+
+                    b.HasOne("ECommerce.Models.Car", "Car")
+                        .WithMany("Products")
+                        .HasForeignKey("CarId");
 
                     b.HasOne("ECommerce.Models.Category", "Category")
                         .WithMany("Products")
