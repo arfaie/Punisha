@@ -44,7 +44,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\upload\normalimage\" />
     <Folder Include="wwwroot\upload\thumbnailimage\" />
   </ItemGroup>

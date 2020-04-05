@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class PriceChangeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -50,27 +50,27 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, PriceChange model, string redirecturl)
+        public async Task<IActionResult> AddEdit(PriceChange model)
         {
             if (ModelState.IsValid)
             {
-                if (String.IsNullOrEmpty(id))
-                {
+                //if (String.IsNullOrEmpty(id))
+                //{
                     _context.PriceChanges.Add(model);
                     await _context.SaveChangesAsync();
 
-                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+                    //TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-                    return PartialView("_SuccessfulResponse", redirecturl);
+                    //return PartialView("_SuccessfulResponse", redirecturl);
 
-                }
+                //}
 
-                _context.PriceChanges.Update(model);
-                await _context.SaveChangesAsync();
+                //_context.PriceChanges.Update(model);
+                //await _context.SaveChangesAsync();
 
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                //TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-                return PartialView("_SuccessfulResponse", redirecturl);
+                //return PartialView("_SuccessfulResponse", redirecturl);
             }
 
             return PartialView("AddEdit", model);

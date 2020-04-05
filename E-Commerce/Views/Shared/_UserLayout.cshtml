@@ -1,0 +1,652 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Identity
+@using Newtonsoft.Json;
+
+@inject IHttpContextAccessor HttpContextAccessor
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+
+//string categories = HttpContextAccessor.HttpContext.Session.GetString("Categories");
+//var select = JsonConvert.DeserializeObject<IEnumerable<Category>>(categories);
+}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+          name='viewport' />
+    <title>فروشگاه اینترنتی کاربیوتیک</title>
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/materialdesignicons.css">
+    <link rel="stylesheet" href="~/css/materialdesignicons.css.map">
+    <!--    font--------------------------------------------->
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link href="~/js/iziToast-master/dist/css/iziToast.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+            <div class="row">
+                    <div class="header-right">
+
+                        <div class="logo">
+                            <a href="/HomePage/Home"><img src="~/images/logo.png"></a>
+                        </div>
+
+                        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                            <div class="search-header">
+                                <div class="search-header">
+                                    <form action="/HomePage/HeaderSearch" method="post">
+                                        <input name="Product" type="text" class="header-search-input" placeholder="جستجو در کاربیوتیک...">
+
+                                        <button class="btn-search"><img src="~/images/search.png"></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
+            <div class="header-left">
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <div class="mini-cart-header">
+                                <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
+                                    @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                                    {
+                                        var count = Context.Session.GetInt32("CartItemsCount");
+                                        if (count > 0)
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                        }
+                                        else
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"></span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span id="cartIcon" class="mdi mdi-cart"></span>
+                                    }
+                                </a>
+                            </div>
+                            @*<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="mdi mdi-account-outline"></span>Welcom @UserManager.GetUserName(User)</a>*@
+                            <div class="mini-cart-exit">
+                                <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                            </div>
+
+                            <div class="mini-cart-exit">
+                                <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                            </div>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <div class="mini-cart-header">
+                                <a asp-controller="Factor" asp-action="Requestedproduct" style="color: #4a5f73;">
+                                    @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                                    {
+                                        var count = Context.Session.GetInt32("CartItemsCount");
+                                        if (count > 0)
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                        }
+                                        else
+                                        {
+                                            <span id="cartIcon" class="mdi mdi-cart"></span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span id="cartIcon" class="mdi mdi-cart"></span>
+                                    }
+                                </a>
+                            </div>
+                            @*<a href="#"><button class="btn-login" style="width: 40px; text-align: center;">خروج</button><span>Welcom @UserManager.GetUserName(User)</span></a>*@
+                            <div class="mini-cart-exit">
+                                <a asp-controller="User" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                            </div>
+
+                            <div class="mini-cart-exit">
+                                <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                            </div>
+                        }
+                    </form>
+                }
+                else
+                {
+                    <div class="mini-cart-header">
+                        <a asp-area="" asp-controller="User" asp-action="Login" style="color: #4a5f73;">
+                            @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                            {
+                                var count = Context.Session.GetInt32("CartItemsCount");
+                                if (count > 0)
+                                {
+                                    <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                }
+                                else
+                                {
+                                    <span id="cartIcon" class="mdi mdi-cart"></span>
+                                }
+                            }
+                            else
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"></span>
+                            }
+                        </a>
+                    </div>
+                    <a asp-area="" asp-controller="User" asp-action="Login"><button class="btn-login"><span class="mdi mdi-account-outline"></span>ورود به حساب کاربری</button></a>
+
+                }
+
+                <!--responsive header------------------->
+                <div class="responsive-header-left">
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                        }
+                        @if (User.IsInRole("User"))
+                        {
+                            <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                        }
+                    }
+                    else
+                    {
+                        <a asp-area="" asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                    }
+
+                    <div class="mini-cart-header-responsive">
+                        @if (Context.Session != null && Context.Session.Keys.Contains("CartItemsCount"))
+                        {
+                            var count = Context.Session.GetInt32("CartItemsCount");
+                            if (count > 0)
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span><span class="badge badge-pill badge-danger">@count</span></span>
+                            }
+                            else
+                            {
+                                <span id="cartIcon" class="mdi mdi-cart"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span id="cartIcon" class="mdi mdi-cart"></span>
+                        }
+                    </div>
+
+                    <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
+                </div>
+                <!--responsive header------------------->
+            </div>
+        </div>
+
+        <!--Start megamenu----------------->
+        <nav class="main-menu">
+            <ul class="new-list-menu">
+                <li class="item-list-menu megamenu-1 category">
+                    <a href="#" class="list-category first after" style="font-weight: bold;"><i class="fa fa-navicon"></i> دسته بندی کالاها</a>
+
+                    <ul class="list-menu-level-2">
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var VARIABLE in ViewBag.Categories)
+                            {
+                                <li class="item-menu-2">
+                                    <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@VARIABLE.Id" class="list-category-menu-2"><i class="fa fa-car"></i>@VARIABLE.Title</a>
+                                </li>
+                            }
+                        }
+
+                    </ul>
+
+                </li>
+
+                <li class="item-list-menu megamenu-1"><a href="/ContactUs/Index" class="list-category first after" style="font-weight: bold;">تماس باما</a></li>
+                <li class="item-list-menu megamenu-1"><a href="/About/Index" class="list-category first after">درباره ما</a></li>
+            </ul>
+
+        </nav>
+        </div>
+        <!--End megamenu------------------->
+        <!--responsive-megamenu-mobile----------------->
+        <nav class="sidebar">
+            <div class="nav-header">
+                <!--<img class="pic-header" src="images/header-pic.jpg" alt="">-->
+                <div class="header-cover"></div>
+                <div class="logo-wrap">
+                    <a class="logo-icon" href="/homepage/home"><img alt="logo-icon" src="~/images/logo.png" width="40"></a>
+                </div>
+            </div>
+            <ul class="nav-categories ul-base">
+                <li class="has-sub">
+                    <a href="#">کالای دیجیتال</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">آرایشی، بهداشتی و سلامت</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خودرو ، ابزار اداری</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">مد پوشاک</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خانه آشپزخانه</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">کتاب، لوازم تحریر</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="has-sub">
+                    <a href="#">اسباب بازی ، کودک نوزاد</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">ورزش و سفر</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">خوردنی و آشامیدنی</a>
+                    <ul>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">لوازم جانبی گوشی</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">کیف و کاور گوشی</a></li>
+                                <li><a href="#" class="category-level-3">پاور بانک(شارژر همراه)</a></li>
+                                <li><a href="#" class="category-level-3">پایه نگهدارنده گوشی</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">گوشی موبایل</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">سامسونگ</a></li>
+                                <li><a href="#" class="category-level-3">هوآوی</a></li>
+                                <li><a href="#" class="category-level-3">اپل</a></li>
+                                <li><a href="#" class="category-level-3">شیائومی</a></li>
+                                <li><a href="#" class="category-level-3">آنر</a></li>
+                                <li><a href="#" class="category-level-3">نوکیا</a></li>
+                                <li><a href="#" class="category-level-3">همه موارد این دسته</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub">
+                            <a href="#" class="category-level-2">دوربین</a>
+                            <ul>
+                                <li><a href="#" class="category-level-3">دوربین عکاسی دیجیتال</a></li>
+                                <li><a href="#" class="category-level-3">دوربین ورزشی و فیلم برداری</a></li>
+                                <li><a href="#" class="category-level-3">دوربین چاپ سریع</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a href="#">پیشنهاد ها و تخفیف ها</a>
+                    <ul>
+                        <li><a href="#" class="category-level-2">کالاهای شگفت انگیز</a></li>
+                        <li><a href="#" class="category-level-2">فروش ویژه</a></li>
+                        <li><a href="#" class="category-level-2">با هر خرید هدیه بگیرید</a></li>
+                        <li><a href="#" class="category-level-2">تخفیف پایان فصل</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="nav-btn nav-slider">
+            <span class="linee1"></span>
+            <span class="linee2"></span>
+            <span class="linee3"></span>
+        </div>
+        <div class="overlay"></div>
+        <!--    responsive-megamenu-mobile----------------->
+    </header>
+    @RenderBody()
+    <footer>
+        <div class="footer-jump">
+            <a href="#">
+                <span class="footer-jump-angle"><i class="fa fa-angle-up"></i>برگشت به بالا</span>
+            </a>
+        </div>
+
+        <div class="col-12">
+            <div class="middle-bar-footer">
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="footer-form">
+                        <span class="newslitter-form">
+                            از تخفیف‌ها و جدیدترین‌های کاربیوتیک باخبر
+                            شوید:
+                        </span>
+
+                        <form action="#">
+                            <input type="text" class="input-footer" placeholder="آدرس ایمیل خود را وارد کنید">
+
+                            <button class="btn-footer-post" style="background: rebeccapurple">ارسال</button>
+                        </form>
+                    </div>
+
+                    <div class="footer-social">
+                        <span class="newslitter-form-social">کاربیوتیک را در شبکه‌های اجتماعی دنبال کنید:</span>
+
+                        <div class="social-links">
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-linkedin-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="footer-form">
+                        <span class="newslitter-form">
+                            راه های تماس با ما:
+                        </span>
+
+                        <form action="#">
+                            info@carbiotic.ir
+                            <br />
+                            تلفن تماس : 88243738 و 88243637
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-xs-12 pull-right">
+                    <div class="footer-form">
+                        <span class="newslitter-form">
+                            آدرس دفتر مرکزی:
+                        </span>
+
+                        <form action="#">
+                            تهران ، خیابان ستارخان ، خیابان پاتریس لومومبا ، بین خیابان 23 و 25 ، پلاک 190 ، واحد 2
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="more-info">
+            <div class="col-12">
+
+                <div class="copy-right-footer">
+                    <p>
+                        استفاده از مطالب فروشگاه اینترنتی کاربیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع
+                        بلامانع است. کلیه حقوق این سایت متعلق به شرکت نوآوران فن آوازه (فروشگاه آنلاین کاربیوتیک) می‌باشد.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!--   Footer---------------------------->
+    <script src="~/js/iziToast-master/dist/js/iziToast.js"></script>
+    <script src="~/js/jquery-3.2.1.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/jquery.countdown.min.js"></script>
+    <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/jquery.ez-plus.js"></script>
+    <script src="~/js/main.js"></script>
+
+    @RenderSection("Scripts", required: false)
+
+    @if (TempData["Notif"] != null)
+    {
+        @Html.Raw(TempData["Notif"])
+    }
+</body>
+</html>
