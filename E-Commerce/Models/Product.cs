@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,10 +11,10 @@ namespace ECommerce.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string Id { get; set; }
 
-		[Display(Name = "دسته یندی")]
+		[Display(Name = "دسته بندی")]
 		public string CategoryId { get; set; }
 
-		[Display(Name = "دسته یندی")]
+		[Display(Name = "دسته بندی")]
 		public virtual Category Category { get; set; }
 
 		[Display(Name = "برند")]
@@ -22,7 +23,13 @@ namespace ECommerce.Models
 		[Display(Name = "برند")]
 		public virtual Brand Brand { get; set; }
 
-		[Display(Name = "نام محصول")]
+		[Display(Name = "مدل خودرو")]
+		public string CarId { get; set; }
+
+		[Display(Name = "مدل خودرو")]
+		public virtual Car Car { get; set; }
+
+		[Display(Name = "نام")]
 		public string Name { get; set; }
 
 		[Display(Name = "کد")]
@@ -47,9 +54,12 @@ namespace ECommerce.Models
 		[Required(ErrorMessage = "فیلد قیمت نمی تواند خالی یاشد.")]
 		public int Price { get; set; }
 
-		[Display(Name = "قیمت قدیم")]
-		[Required(ErrorMessage = "فیلد قیمت نمی تواند خالی یاشد.")]
-		public int OldPrice { get; set; }
+		[Display(Name = "زمان اضافه کردن")]
+		public DateTime AddingDateTime { get; set; }
+
+		//[Display(Name = "قیمت قدیم")]
+		//[Required(ErrorMessage = "فیلد قیمت نمی تواند خالی یاشد.")]
+		//public int OldPrice { get; set; }
 
 		[Display(Name = "عکس")]
 		public string ImageName { get; set; }
@@ -66,6 +76,8 @@ namespace ECommerce.Models
 
 		public ICollection<ProductGallery> ProductGalleries { get; set; }
 
-        public ICollection<History> Histories { get; set; }
+		public ICollection<CommentAndStar> CommentAndStars { get; set; }
+
+		public ICollection<History> Histories { get; set; }
 	}
 }

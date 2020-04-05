@@ -21,5 +21,7 @@ namespace ECommerce.Models
 		public virtual Maker Maker { get; set; }
 
 		public ICollection<ApplicationUser> ApplicationUsers { get; set; }
+
+		public ICollection<Product> Products { get; set; }
 	}
 }

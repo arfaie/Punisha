@@ -53,7 +53,7 @@
     {
 
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برکشت</button>
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-success" value="افزودن عکس" />
         </div>
 
@@ -61,7 +61,7 @@
     else
     {
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برکشت">برکشت</button>
+            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-success" value="ویرایش عکس" />
         </div>
 
@@ -86,7 +86,7 @@
             });
             $.ajax({
                 type: "post",
-                url: '@Url.Action("ProductGallery", "ProductGallery", new { Areas = "Admin" })',
+                url: '@Url.Action("ProductGallery", "ProductGallery", new { Area = "Admin" })',
                 contentType: false,
                 processData: false,
                 data: data

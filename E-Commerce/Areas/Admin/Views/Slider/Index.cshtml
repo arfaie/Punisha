@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>
-                                            <img src="@ViewBag.rootpath@item.Image" style=" width:80px; height:80px" class="thumbnail text-center" />
+                                            <img src="@Helper.ThumbnailImagePath@item.Image" style=" width:80px; height:80px" class="thumbnail text-center" />
                                         </td>
 
                                         <td>
@@ -123,7 +123,7 @@
             });
             $.ajax({
                 type: "post",
-                url:'@Url.Action("AddEdit", "Slider", new { Areas = "Admin" })',
+                url:'@Url.Action("AddEdit", "Slider", new { Area = "Admin" })',
                 contentType: false,
                 processData: false,
                 data: data

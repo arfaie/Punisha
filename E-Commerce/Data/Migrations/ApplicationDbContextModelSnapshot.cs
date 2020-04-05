@@ -690,7 +690,13 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<DateTime>("AddingDateTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("BrandId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("CarId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -711,9 +717,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("OldPrice")
-                        .HasColumnType("int");
-
                     b.Property<int>("OrderPoint")
                         .HasColumnType("int");
 
@@ -726,6 +729,8 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("CategoryId");
 
@@ -1183,6 +1188,10 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Brand", "Brand")
                         .WithMany("Products")
                         .HasForeignKey("BrandId");
+
+                    b.HasOne("ECommerce.Models.Car", "Car")
+                        .WithMany("Products")
+                        .HasForeignKey("CarId");
 
                     b.HasOne("ECommerce.Models.Category", "Category")
                         .WithMany("Products")

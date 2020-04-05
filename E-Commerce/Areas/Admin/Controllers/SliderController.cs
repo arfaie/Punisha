@@ -34,7 +34,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var model = await _context.Sliders.ToListAsync();
-			ViewBag.rootpath = "/upload/thumbnailimage/";
+
 			return View(model);
 		}
 
@@ -57,7 +57,7 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var upload = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+				var upload = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath);
 				foreach (var file in files)
 				{
 					if (file != null && file.Length > 0)
@@ -69,7 +69,7 @@ namespace ECommerce.Areas.Admin.Controllers
 							model.Image = filename;
 						}
 						var image = new ImageResizer();
-						image.Resize(upload + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						image.Resize(upload + filename, _env.WebRootPath + Helper.ThumbnailImagePath + filename);
 					}
 				}
 
@@ -127,13 +127,13 @@ namespace ECommerce.Areas.Admin.Controllers
 				{
 					var model = await _context.Sliders.SingleOrDefaultAsync(b => b.Id == id);
 
-					var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
+					var sourcePath = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath, model.Image);
 					if (System.IO.File.Exists(sourcePath))
 					{
 						System.IO.File.Delete(sourcePath);
 					}
 
-					var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
+					var sourcePath2 = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.ThumbnailImagePath, model.Image);
 					if (System.IO.File.Exists(sourcePath2))
 					{
 						System.IO.File.Delete(sourcePath2);

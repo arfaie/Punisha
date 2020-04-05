@@ -11,6 +11,8 @@ namespace ECommerce.Helpers
 	{
 		public static string MerchantId { get; set; } = "594f1d08-5bfe-11ea-a1d1-000c295eb8fc";
 		public static string EmailAddress { get; set; } = "@carbiotic.ir";
+		public static string ThumbnailImagePath { get; set; } = "/upload/thumbnailimage/";
+		public static string NormalImagePath { get; set; } = "/upload/normalimage/";
 
 		private static readonly List<ConfirmationCodeViewModel> ConfirmationCodes = new List<ConfirmationCodeViewModel>();
 

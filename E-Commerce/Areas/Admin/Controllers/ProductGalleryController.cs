@@ -40,8 +40,6 @@ namespace ECommerce.Areas.Admin.Controllers
 				return RedirectToAction("Index", "Product");
 			}
 
-			ViewBag.rootpath = "/upload/thumbnailimage/";
-
 			return View(await _context.ProductGalleries.Where(g => g.ProductId == id).ToListAsync());
 		}
 
@@ -68,7 +66,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				var stList = new List<string>();
 
-				var upload = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+				var upload = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath);
 				foreach (var file in files)
 				{
 					if (file != null && file.Length > 0)
@@ -83,7 +81,7 @@ namespace ECommerce.Areas.Admin.Controllers
 						}
 
 						var img = new ImageResizer();
-						img.Resize(upload + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+						img.Resize(upload + filename, _env.WebRootPath + Helper.ThumbnailImagePath + filename);
 					}
 				}
 				if (model.Image == null)
@@ -146,13 +144,13 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				var model = await _context.ProductGalleries.SingleOrDefaultAsync(b => b.Id == id);
 
-				var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + model.Image);
+				var sourcePath = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.NormalImagePath, model.Image);
 				if (System.IO.File.Exists(sourcePath))
 				{
 					System.IO.File.Delete(sourcePath);
 				}
 
-				var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + model.Image);
+				var sourcePath2 = Path.Combine(_env.WebRootPath.Replace("\\", "/") + Helper.ThumbnailImagePath, model.Image);
 				if (System.IO.File.Exists(sourcePath2))
 				{
 					System.IO.File.Delete(sourcePath2);

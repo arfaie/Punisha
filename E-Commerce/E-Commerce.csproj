@@ -12,6 +12,9 @@
 
   <ItemGroup>
     <Content Remove="Areas\Admin\Views\_AdminLayout.cshtml" />
+    <Content Remove="Views\Product\Home.cshtml" />
+    <Content Remove="Views\Product\ProductDetailes.cshtml" />
+    <Content Remove="Views\Product\SearchProduct.cshtml" />
     <Content Remove="wwwroot\js\iziToast-master\types\index.d.ts" />
     <Content Remove="wwwroot\js\jquery-cropper.js" />
   </ItemGroup>
@@ -108,6 +111,7 @@
     <None Include="Areas\Admin\Views\User\Index.cshtml" />
     <None Include="Areas\Admin\Views\User\UserAddress.cshtml" />
     <None Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
+    <None Include="Views\Shared\Components\LatestProducts\Default.cshtml" />
     <None Include="wwwroot\lib\TimePicker\wickedpicker.min.js" />
   </ItemGroup>
 
