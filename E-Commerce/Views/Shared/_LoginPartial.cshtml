@@ -15,7 +15,16 @@
                 </li>
             </ul>*@
     </form>
-    <button asp-controller="UserProfile" asp-action="Index" class="btn-login" style="width: 150px;"><span class="mdi mdi-account"></span>حساب کاربری</button>
+   
+        <button onclick="Profileinter()" class="btn-login" style="width: 150px;"><span class="mdi mdi-account"></span>حساب کاربری</button>
+    
+
+    <script type="text/javascript">
+        function Profileinter() {
+            document.location = '@Url.Action("Index","UserProfile")';
+        }
+    </script>
+    
 }
 else
 {
