@@ -15,5 +15,11 @@ namespace ECommerce.ViewModels
 		[DataType(DataType.Password)]
 		[Display(Name = "رمز عبور جدید")]
 		public string NewPassword { get; set; }
-	}
+
+        [Display(Name = " تکرار رمز عبور جدید")]
+        [Required(ErrorMessage = "لطفا تکرار رمز عبور جدید را وارد کنید")]
+        [DataType(DataType.Password)]
+        [Compare("NewPassword", ErrorMessage = "رمز عبور با تکرار آن یکسان نیست!")]
+        public string ConfirmNewPassword { get; set; }
+    }
 }

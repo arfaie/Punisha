@@ -30,13 +30,21 @@
                         <span class="profile-box-phone">@Mobile</span>
                     </div>
                     <div class="profile-box-tabs">
-                        <a href="password-change.html" class="profile-box-tab"><span class="mdi mdi-lock"></span>تغییر رمز</a>
-                        <a href="index.html" class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
+                        <a asp-controller="UserProfile" asp-action="ChangePasswordProfile" class="profile-box-tab"><span class="mdi mdi-lock"></span>تغییر رمز</a>
+                        @*<form asp-controller="Account" asp-action="Logout" id="logoutForm" class="navbar-right">
+                            <button class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب </button>
+                        </form>*@
+                        <form asp-controller="Account" asp-action="Logout" method="post">
+                           
+                                <a class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
+                           
+                        </form>
+                       
+                       
+                       
                     </div>
                 </div>
-
             </div>
-      
 
         @*<a href="#" class="profile-box-row-arrow">
                 <div class="profile-box-title">کیف پول</div>

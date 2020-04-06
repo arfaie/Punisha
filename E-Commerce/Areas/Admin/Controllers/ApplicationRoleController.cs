@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class ApplicationRoleController : Controller
 	{
 		private readonly RoleManager<ApplicationRole> _roleManager;

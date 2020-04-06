@@ -3,7 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data">
 
     @*header*@
     @if (!String.IsNullOrWhiteSpace(Model.Id))
@@ -62,39 +62,41 @@
 </form>
 
 <script>
-        $(document).on('click', '#submitdata', function (evt) {
-            evt.preventDefault();
-            var fileupload = $("#files").get(0);
-            var files = fileupload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                data.append('files', files[i]);
+    $(document).on('click', '#submitdata', function (evt) {
+        evt.preventDefault();
+        var fileupload = $("#files").get(0);
+        var files = fileupload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append('files', files[i]);
 
-            }
-            $('input,select').each(function (x, y) {
-                data.append($(y).attr('name'), $(y).val());
-
-            });
-            $.ajax({
-                type: "post",
-                url:'@Url.Action("AddEdit", "Slider", new { Area = "Admin" })',
-                contentType: false,
-                processData: false,
-                data: data
-
-            }).done(function (res) {
-                if (res.status === "success") {
-                    alert(res.message);
-                }
-                else {
-                    alert("در ثبت اطلاعات مشکلی وجود دارد");
-
-                }
-            }).fail(function (xhr, b, error) {
-
-                alert(error);
-            });
+        }
+        $('input,select').each(function (x, y) {
+            data.append($(y).attr('name'), $(y), val());
 
         });
+        $.ajax({
+            type: "post",
+            url:'@Url.Action("AddEdit", "Slider", new { Areas = "Admin" })',
+            contentType: false,
+            processData: false,
+            data: data
+
+        }).done(function (res) {
+            if (res.status === "success") {
+                alert(res.message);
+            }
+            else {
+                alert("در ثبت اطلاعات مشکلی وجود دارد");
+
+            }
+        }).fail(function (xhr, b, error) {
+
+            alert(error);
+        });
+
+    });
+
+
 
 </script>
