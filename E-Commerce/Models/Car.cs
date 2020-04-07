@@ -22,6 +22,6 @@ namespace ECommerce.Models
 
 		public ICollection<ApplicationUser> ApplicationUsers { get; set; }
 
-		public ICollection<Product> Products { get; set; }
+		public ICollection<CarProduct> CarProducts { get; set; }
 	}
 }

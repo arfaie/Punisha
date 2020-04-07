@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace EShop.ViewComponents
@@ -28,7 +27,8 @@ namespace EShop.ViewComponents
 			{
 				ViewBag.Car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == user.CarId);
 
-				return View(await _context.Products.Where(x => x.CarId == user.CarId).ToListAsync());
+				return View(await _context.Products.ToListAsync());
+				//return View(await _context.Products.Where(x => x.CarId == user.CarId).ToListAsync());
 			}
 
 			return View();

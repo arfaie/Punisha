@@ -3,7 +3,6 @@ using ECommerce.Helpers;
 using ECommerce.Models;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,411 +10,405 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using E_Commerce.Areas.Admin.Controllers;
 
 // TODO product
 namespace ECommerce.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    //[Authorize(Roles = "Admin")]
-    public class ProductController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	[Area("Admin")]
+	//[Authorize(Roles = "Admin")]
+	public class ProductController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _env;
 
-        public ProductController(ApplicationDbContext context, IWebHostEnvironment env)
-        {
-            _context = context;
+		public ProductController(ApplicationDbContext context, IWebHostEnvironment env)
+		{
+			_context = context;
 
-            _env = env;
-        }
+			_env = env;
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
-        {
-            ViewBag.rootpath = "/upload/thumbnailimage/";
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Index()
+		{
+			ViewBag.rootpath = "/upload/thumbnailimage/";
 
-            return View(await _context.Products.ToListAsync());
-        }
+			return View(await _context.Products.ToListAsync());
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddEdit(string id)
-        {
-            ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> AddEdit(string id)
+		{
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
-            ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
+			ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
-            ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
+			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
-            var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
-            if (product != null)
-            {
-                return PartialView("AddEdit", product);
-            }
+			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+			if (product != null)
+			{
+				return PartialView("AddEdit", product);
+			}
 
-            return PartialView("AddEdit", new Product());
-        }
+			return PartialView("AddEdit", new Product());
+		}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(Product model, string imgName, string id, IEnumerable<IFormFile> files)
-        {
-            if (ModelState.IsValid)
-            {
-                //upload image
-                var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddEdit(Product model, string imgName, string id, IEnumerable<IFormFile> files)
+		{
+			if (ModelState.IsValid)
+			{
+				//upload image
+				var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 
-                foreach (var file in files)
-                {
-                    if (file != null && file.Length > 0)
-                    {
-                        var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
+				foreach (var file in files)
+				{
+					if (file != null && file.Length > 0)
+					{
+						var filename = Guid.NewGuid().ToString().Replace("-", "") + Path.GetExtension(file.FileName);
 
-                        await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
-                        {
-                            await file.CopyToAsync(fs);
-                            model.ImageName = filename;
-                        }
-                        var img = new ImageResizer();
-                        img.Resize(uploads + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
-                    }
-                }
-                //upload image
+						await using (var fs = new FileStream(Path.Combine(uploads, filename), FileMode.Create))
+						{
+							await file.CopyToAsync(fs);
+							model.ImageName = filename;
+						}
+						var img = new ImageResizer();
+						img.Resize(uploads + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
+					}
+				}
+				//upload image
 
-                var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+				var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-                if (!String.IsNullOrWhiteSpace(id))
-                {
-                    if (model.ImageName == null)
-                    {
-                        model.ImageName = "defaultpic.png";
-                    }
+				if (!String.IsNullOrWhiteSpace(id))
+				{
+					if (model.ImageName == null)
+					{
+						model.ImageName = "defaultpic.png";
+					}
 
-                    //Add PriceChange
-                    //PriceChange priceChange = new PriceChange();
-                    //priceChange.ProductId = model.Id;
-                    //priceChange.Old = model.Price;
+					//Add PriceChange
+					//PriceChange priceChange = new PriceChange();
+					//priceChange.ProductId = model.Id;
+					//priceChange.Old = model.Price;
 
+					//var CurrentDate = DateTime.Now;
+					//PersianCalendar pcalender = new PersianCalendar();
+					//int year = pcalender.GetYear(CurrentDate);
+					//int month = pcalender.GetMonth(CurrentDate);
+					//int day = pcalender.GetDayOfMonth(CurrentDate);
+					//string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
 
-                    //var CurrentDate = DateTime.Now;
-                    //PersianCalendar pcalender = new PersianCalendar();
-                    //int year = pcalender.GetYear(CurrentDate);
-                    //int month = pcalender.GetMonth(CurrentDate);
-                    //int day = pcalender.GetDayOfMonth(CurrentDate);
-                    //string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+					//priceChange.Date = Convert.ToDateTime(ShamsiDate);
+					//_context.PriceChanges.Add(priceChange);
+					//Add PriceChange
 
-                    //priceChange.Date = Convert.ToDateTime(ShamsiDate);
-                    //_context.PriceChanges.Add(priceChange);
-                    //Add PriceChange
+					_context.Products.Add(model);
 
-                    _context.Products.Add(model);
+					await _context.SaveChangesAsync();
 
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+					//return PartialView("_SuccessfulResponse", redirectUrl);
+					//return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
+					return RedirectToAction("Index");
+				}
 
-                    await _context.SaveChangesAsync();
+				if (model.ImageName == null)
+				{
+					model.ImageName = imgName;
+				}
 
-                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-                    //return PartialView("_SuccessfulResponse", redirectUrl);
-                    //return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
-                    return RedirectToAction("Index");
-                }
+				//if (select.Price != model.Price)
+				//{
+				//    PriceChange priceChange = new PriceChange();
+				//    priceChange.ProductId = model.Id;
+				//    priceChange.Old = model.Price;
 
-                if (model.ImageName == null)
-                {
-                    model.ImageName = imgName;
-                }
+				//    var CurrentDate = DateTime.Now;
+				//    PersianCalendar pcalender = new PersianCalendar();
+				//    int year = pcalender.GetYear(CurrentDate);
+				//    int month = pcalender.GetMonth(CurrentDate);
+				//    int day = pcalender.GetDayOfMonth(CurrentDate);
+				//    string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
 
-                //if (select.Price != model.Price)
-                //{
-                  
-                //    PriceChange priceChange = new PriceChange();
-                //    priceChange.ProductId = model.Id;
-                //    priceChange.Old = model.Price;
+				//    priceChange.Date = Convert.ToDateTime(ShamsiDate);
+				//    _context.PriceChanges.Add(priceChange);
+				//}
 
+				_context.Products.Update(model);
 
-                //    var CurrentDate = DateTime.Now;
-                //    PersianCalendar pcalender = new PersianCalendar();
-                //    int year = pcalender.GetYear(CurrentDate);
-                //    int month = pcalender.GetMonth(CurrentDate);
-                //    int day = pcalender.GetDayOfMonth(CurrentDate);
-                //    string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
+				await _context.SaveChangesAsync();
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+				//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
+				//return PartialView("_SuccessfulResponse", redirectUrl);
+				return RedirectToAction("Index");
+			}
+			if (!String.IsNullOrWhiteSpace(id))
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Yellow);
+			}
+			else
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
+			}
 
-                //    priceChange.Date = Convert.ToDateTime(ShamsiDate);
-                //    _context.PriceChanges.Add(priceChange);
-                //}
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
-                _context.Products.Update(model);
+			ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
-                await _context.SaveChangesAsync();
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-                //return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
-                //return PartialView("_SuccessfulResponse", redirectUrl);
-                return RedirectToAction("Index");
-            }
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Yellow);
-            }
-            else
-            {
-                TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
-            }
+			ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
-            ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+			return PartialView("AddEdit", model);
+		}
 
-            ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Delete(string id)
+		{
+			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+			if (product == null)
+			{
+				return RedirectToAction("Index");
+			}
 
-            ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
+			return PartialView("Delete", product.Name);
+		}
 
-            return PartialView("AddEdit", model);
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
-            if (product == null)
-            {
-                return RedirectToAction("Index");
-            }
+				var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + product.ImageName);
+				if (System.IO.File.Exists(sourcePath))
+				{
+					System.IO.File.Delete(sourcePath);
+				}
 
-            return PartialView("Delete", product.Name);
-        }
+				var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
+				if (System.IO.File.Exists(sourcePath2))
+				{
+					System.IO.File.Delete(sourcePath2);
+				}
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id, string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
+				_context.Products.Remove(product);
+				await _context.SaveChangesAsync();
 
-                var sourcePath = Path.Combine(_env.WebRootPath, "upload\\normalimage\\" + product.ImageName);
-                if (System.IO.File.Exists(sourcePath))
-                {
-                    System.IO.File.Delete(sourcePath);
-                }
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
-                var sourcePath2 = Path.Combine(_env.WebRootPath, "upload\\thumbnailimage\\" + product.ImageName);
-                if (System.IO.File.Exists(sourcePath2))
-                {
-                    System.IO.File.Delete(sourcePath2);
-                }
+				return PartialView("_SuccessfulResponse", redirectUrl);
+			}
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+			return RedirectToAction("Index");
+		}
 
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> GetProductField(string id)
+		{
+			var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
+			var categoryId = product.CategoryId;
 
-                return PartialView("_SuccessfulResponse", redirectUrl);
-            }
-            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+			//دسته بندی کالای ما شامل کدام گروه فیلد هاست؟انتخاب همه گروه فیلدها
+			var selectGroupField = _context.CategoryFields.Where(a => a.CategoryId == categoryId);
 
-            return RedirectToAction("Index");
-        }
+			var selectProductField = _context.ProductFields.Where(x => x.ProductId == id);
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> GetProductField(string id)
-        {
-            var product = await _context.Products.SingleOrDefaultAsync(a => a.Id == id);
-            var categoryId = product.CategoryId;
+			//کل فیلد ها در چند گروه اند؟انتخاب تمامی گروه ها بدون تکرار
+			//List<int> lsFieldGroup = new List<int>();
+			//foreach (var item in _context.Fields)
+			//{
+			//    if (!lsFieldGroup.Contains(item.FieldGroupId))
+			//    {
+			//        lsFieldGroup.Add(item.FieldGroupId);
+			//    }
+			//}
 
-            //دسته بندی کالای ما شامل کدام گروه فیلد هاست؟انتخاب همه گروه فیلدها
-            var selectGroupField = _context.CategoryFields.Where(a => a.CategoryId == categoryId);
+			//var model = (from f in _context.Fields
+			//             join pg in SelectGroupField on f.Id equals pg.FieldId
+			//             join pf in SelectProductField on f.Id equals pf.FieldId
+			//             join psi in _context.ProductSelectedItems on pf.Id equals psi.ProductFieldId
+			//             select new ProductField()
+			//             {
+			//                 ItemId = psi.ItemId,
+			//                 CategoryId = pg.CategoryId,
+			//                 FieldId = f.Id,
+			//                 FieldGroupId = f.FieldGroupId,
+			//                 Type = f.Type,
+			//                 Title = f.Title,
+			//                 lsFieldGroup = lsFieldGroup,
+			//                 ProductId = pf.ProductId,
+			//                 ProductFieldId = pf.Id,
+			//                 Value = pf.Value,
+			//                 //CarId=_context.ProductSelectedItems.Where(x=>x.ProductFieldId==pf.Id),
+			//                 fieldGroup = _context.FieldGroups.Where(x => x.Id == f.FieldGroupId).FirstOrDefault().Title,
+			//                 //CarListItems = new List<SelectListItem>(),
 
-            var selectProductField = _context.ProductFields.Where(x => x.ProductId == id);
+			//             }).ToList();
 
-            //کل فیلد ها در چند گروه اند؟انتخاب تمامی گروه ها بدون تکرار
-            //List<int> lsFieldGroup = new List<int>();
-            //foreach (var item in _context.Fields)
-            //{
-            //    if (!lsFieldGroup.Contains(item.FieldGroupId))
-            //    {
-            //        lsFieldGroup.Add(item.FieldGroupId);
-            //    }
-            //}
+			//var ProductFieldId_ = model.Where(x => x.Type == 4).ToList();
 
-            //var model = (from f in _context.Fields
-            //             join pg in SelectGroupField on f.Id equals pg.FieldId
-            //             join pf in SelectProductField on f.Id equals pf.FieldId
-            //             join psi in _context.ProductSelectedItems on pf.Id equals psi.ProductFieldId
-            //             select new ProductField()
-            //             {
-            //                 ItemId = psi.ItemId,
-            //                 CategoryId = pg.CategoryId,
-            //                 FieldId = f.Id,
-            //                 FieldGroupId = f.FieldGroupId,
-            //                 Type = f.Type,
-            //                 Title = f.Title,
-            //                 lsFieldGroup = lsFieldGroup,
-            //                 ProductId = pf.ProductId,
-            //                 ProductFieldId = pf.Id,
-            //                 Value = pf.Value,
-            //                 //CarId=_context.ProductSelectedItems.Where(x=>x.ProductFieldId==pf.Id),
-            //                 fieldGroup = _context.FieldGroups.Where(x => x.Id == f.FieldGroupId).FirstOrDefault().Title,
-            //                 //CarListItems = new List<SelectListItem>(),
+			//var selectProductFieldId = model.Where(x => x.Type == 4).FirstOrDefault();
+			//if (selectProductFieldId != null)
+			//{
+			//    string ProductFieldId = selectProductFieldId.ProductFieldId;
+			//    var select = _context.ProductSelectedItems.Where(a => a.ProductFieldId == ProductFieldId);
+			//    int[] b = new int[999];
+			//    int i = 0;
+			//    foreach (var item in select)
+			//    {
+			//        try
+			//        {
+			//            b[i] = item.ItemId;
+			//        }
+			//        catch (Exception e)
+			//        {
+			//            throw;
+			//        }
 
-            //             }).ToList();
+			//        i++;
+			//    }
+			//    TempData["key"] = b;
+			//}
 
-            //var ProductFieldId_ = model.Where(x => x.Type == 4).ToList();
+			//try
+			//{
+			//    model.FirstOrDefault().CarListItems = await _context.Cars.Select(c => new SelectListItem
+			//    {
+			//        Text = c.Name,
+			//        Value = c.Id.ToString()
+			//    }).ToListAsync();
+			//}
+			//catch (Exception e)
+			//{
+			//}
 
-            //var selectProductFieldId = model.Where(x => x.Type == 4).FirstOrDefault();
-            //if (selectProductFieldId != null)
-            //{
-            //    string ProductFieldId = selectProductFieldId.ProductFieldId;
-            //    var select = _context.ProductSelectedItems.Where(a => a.ProductFieldId == ProductFieldId);
-            //    int[] b = new int[999];
-            //    int i = 0;
-            //    foreach (var item in select)
-            //    {
-            //        try
-            //        {
-            //            b[i] = item.ItemId;
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            throw;
-            //        }
+			//var ss = (from f in _context.Fields
+			//		  join fg in _context.FieldGroups on f.FieldGroupId equals fg.Id
+			//		  join pcf in _context.CategoryFields on f.Id equals pcf.FieldId
+			//		  join pf in _context.ProductFields on f.Id equals pf.FieldId
+			//		  join p in _context.Products on pf.ProductId equals p.Id
+			//		  join psi in _context.ProductSelectedItems on pf.Id equals psi.ProductFieldId into dep
+			//		  from dept in dep.DefaultIfEmpty()
+			//		  join c in _context.Cars on dept.ItemId equals c.Id into dep1
+			//		  from dept1 in dep1.DefaultIfEmpty()
+			//		  ).ToList()).ToList();
 
-            //        i++;
-            //    }
-            //    TempData["key"] = b;
-            //}
+			var selectProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
+			//TempData["lsFieldGroup"] = lsFieldGroup;
 
-            //try
-            //{
-            //    model.FirstOrDefault().CarListItems = await _context.Cars.Select(c => new SelectListItem
-            //    {
-            //        Text = c.Name,
-            //        Value = c.Id.ToString()
-            //    }).ToListAsync();
-            //}
-            //catch (Exception e)
-            //{
-            //}
+			TempData["CarListItems"] = await _context.Cars.Select(c => new SelectListItem
+			{
+				Text = c.Name,
+				Value = c.Id.ToString()
+			}).ToListAsync();
+			return PartialView("ProductField");//ss
+		}
 
-            //var ss = (from f in _context.Fields
-            //		  join fg in _context.FieldGroups on f.FieldGroupId equals fg.Id
-            //		  join pcf in _context.CategoryFields on f.Id equals pcf.FieldId
-            //		  join pf in _context.ProductFields on f.Id equals pf.FieldId
-            //		  join p in _context.Products on pf.ProductId equals p.Id
-            //		  join psi in _context.ProductSelectedItems on pf.Id equals psi.ProductFieldId into dep
-            //		  from dept in dep.DefaultIfEmpty()
-            //		  join c in _context.Cars on dept.ItemId equals c.Id into dep1
-            //		  from dept1 in dep1.DefaultIfEmpty()
-            //		  ).ToList()).ToList();
+		//public string CarNames(string id)
+		//{
+		//    if (!String.IsNullOrWhiteSpace(id))
+		//    {
+		//        var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == id);
+		//        var cars = new List<string>();
+		//        var i = 0;
+		//        foreach (var item in select)
+		//        {
+		//            var name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
+		//            cars.Add(name);
+		//        }
+		//        return String.Join("،", cars);
+		//    }
+		//    return null;
+		//}
 
-            var selectProduct = await _context.Products.FirstOrDefaultAsync(x => x.Id == id);
-            //TempData["lsFieldGroup"] = lsFieldGroup;
+		//public string[] CarIds(string productFieldId)
+		//{
+		//    if (!String.IsNullOrWhiteSpace(productFieldId))
+		//    {
+		//        var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+		//        var ds = new string[select.Count()];
+		//        var i = 0;
+		//        foreach (var item in select)
+		//        {
+		//            try
+		//            {
+		//                ds[i] = item.Id;
+		//                i++;
+		//            }
+		//            catch (Exception e)
+		//            {
+		//                throw;
+		//            }
+		//        }
+		//        return ds;
+		//    }
+		//    return null;
+		//}
 
-            TempData["CarListItems"] = await _context.Cars.Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString()
-            }).ToListAsync();
-            return PartialView("ProductField");//ss
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult AddEdit(Field model)
+		{
+			var lsFieldId = (int[])TempData["lsFieldId"];
+			//string productId = (int)TempData["ProductId"];
+			//string productFieldId = (int)TempData["ProductFieldId"];
+			//var tp = model.FieldType;
+			////check is Update
+			//var carIds = Request.Form["bb"];
+			//var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+			//Product selectedItems;
 
-        public string CarNames(string id)
-        {
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == id);
-                var cars = new List<string>();
-                var i = 0;
-                foreach (var item in select)
-                {
-                    var name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
-                    cars.Add(name);
-                }
-                return String.Join("،", cars);
-            }
-            return null;
-        }
+			//if (model.CarIds != null)
+			//{
+			//	if (select.Any())
+			//	{
+			//		_context.ProductSelectedItems.RemoveRange(select);
+			//		foreach (var item in model.CarIds)
+			//		{
+			//			selectedItems = new Product();
+			//			selectedItems.ItemId = Convert.ToInt16(item);
+			//			selectedItems.ProductFieldId = productFieldId;
+			//			_context.ProductSelectedItems.Add(selectedItems);
+			//		}
+			//	}
+			//	else
+			//	{
+			//		foreach (var item in model.CarIds)
+			//		{
+			//			selectedItems = new ProductSelectedItems();
+			//			selectedItems.ItemId = Convert.ToInt16(item);
+			//			selectedItems.ProductFieldId = productFieldId;
+			//			_context.ProductSelectedItems.Add(selectedItems);
+			//		}
+			//	}
+			//}
 
-        public string[] CarIds(string productFieldId)
-        {
-            if (!String.IsNullOrWhiteSpace(productFieldId))
-            {
-                var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-                var ds = new string[select.Count()];
-                var i = 0;
-                foreach (var item in select)
-                {
-                    try
-                    {
-                        ds[i] = item.Id;
-                        i++;
-                    }
-                    catch (Exception e)
-                    {
-                        throw;
-                    }
-                }
-                return ds;
-            }
-            return null;
-        }
+			//foreach (var item in lsFieldId)
+			//{
+			//	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
+			//	string value = Request.Form[item.ToString()];
+			//	selectPf.Value = value;
+			//	_context.ProductFields.Update(selectPf);
+			//}
+			//_context;
+			//_context.SaveChanges();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddEdit(Field model)
-        {
-            var lsFieldId = (int[])TempData["lsFieldId"];
-            //string productId = (int)TempData["ProductId"];
-            //string productFieldId = (int)TempData["ProductFieldId"];
-            //var tp = model.FieldType;
-            ////check is Update
-            //var carIds = Request.Form["bb"];
-            //var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-            //Product selectedItems;
+			TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-            //if (model.CarIds != null)
-            //{
-            //	if (select.Any())
-            //	{
-            //		_context.ProductSelectedItems.RemoveRange(select);
-            //		foreach (var item in model.CarIds)
-            //		{
-            //			selectedItems = new Product();
-            //			selectedItems.ItemId = Convert.ToInt16(item);
-            //			selectedItems.ProductFieldId = productFieldId;
-            //			_context.ProductSelectedItems.Add(selectedItems);
-            //		}
-            //	}
-            //	else
-            //	{
-            //		foreach (var item in model.CarIds)
-            //		{
-            //			selectedItems = new ProductSelectedItems();
-            //			selectedItems.ItemId = Convert.ToInt16(item);
-            //			selectedItems.ProductFieldId = productFieldId;
-            //			_context.ProductSelectedItems.Add(selectedItems);
-            //		}
-            //	}
-            //}
-
-            //foreach (var item in lsFieldId)
-            //{
-            //	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
-            //	string value = Request.Form[item.ToString()];
-            //	selectPf.Value = value;
-            //	_context.ProductFields.Update(selectPf);
-            //}
-            //_context;
-            //_context.SaveChanges();
-
-            TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-
-            return RedirectToAction("Index");
-        }
-    }
+			return RedirectToAction("Index");
+		}
+	}
 }

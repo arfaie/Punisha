@@ -15,6 +15,7 @@ namespace ECommerce.Data
 		public DbSet<Agency> Agencies { get; set; }
 		public DbSet<Brand> Brands { get; set; }
 		public DbSet<Car> Cars { get; set; }
+		public DbSet<CarProduct> CarProducts { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<CategoryGroup> CategoryGroups { get; set; }
 		public DbSet<CategoryField> CategoryFields { get; set; }
@@ -35,7 +36,6 @@ namespace ECommerce.Data
 		public DbSet<Product> Products { get; set; }
 		public DbSet<ProductField> ProductFields { get; set; }
 		public DbSet<ProductGallery> ProductGalleries { get; set; }
-		public DbSet<ProductSelectedItem> ProductSelectedItems { get; set; }
 		public DbSet<SelectGroup> SelectGroups { get; set; }
 		public DbSet<SelectItem> SelectItems { get; set; }
 		public DbSet<Slider> Sliders { get; set; }
@@ -55,6 +55,7 @@ namespace ECommerce.Data
 			builder.Entity<Agency>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Brand>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Car>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+			builder.Entity<CarProduct>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Category>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<CategoryGroup>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<CategoryField>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
@@ -74,7 +75,6 @@ namespace ECommerce.Data
 			builder.Entity<Product>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<ProductField>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<ProductGallery>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
-			builder.Entity<ProductSelectedItem>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<SelectGroup>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<SelectItem>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Slider>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
