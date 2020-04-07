@@ -3,7 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="ProductField" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+<form asp-controller="ProductSelectedItem" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
       data-ajax-update="#AddEdit" data-ajax-mode="replace">
 
     @*header*@
@@ -21,19 +21,19 @@
 
         @*<div class="row">
             <div class="form-group">
-                <label asp-for="ProductId" class="col-lg-3 col-sm-3 control-label"></label>
+                <label asp-for="ProductFieldId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
-                    <select asp-for="ProductId" asp-items="@ViewBag.Categories" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب گروه</option>
+                    <select asp-for="ProductFieldId" asp-items="@ViewBag.ProductFields" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب فیلد محصول</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <label asp-for="FieldId" class="col-lg-3 col-sm-3 control-label"></label>
+                <label asp-for="SelectItemId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
-                    <select asp-for="FieldId" asp-items="@ViewBag.Fields" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب فیلد</option>
+                    <select asp-for="SelectItemId" asp-items="@ViewBag.SelectItems" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب آیتم انتخابی</option>
                     </select>
                 </div>
             </div>
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <input type="hidden" name="redirectUrl" value="@Url.Action("index","ProductField")" />
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","ProductSelectedItem")" />
 
         </div>*@
     </div>

@@ -705,6 +705,9 @@ namespace ECommerce.Migrations
                     b.Property<int>("Code")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 

@@ -1,0 +1,191 @@
+﻿@model Factor
+
+@{
+    ViewBag.Title = "سبد خرید";
+}
+
+@if (Model.FactorItems == null || Model.FactorItems.Count == 0)
+{
+    <div class="col-12">
+        <div class="cart-page">
+            <div class="container">
+                <div class="checkout-empty">
+                    <div class="checkout-empty-icon">
+                        <span class="mdi mdi-cart-remove"></span>
+                    </div>
+                    <div class="checkout-empty-title">سبد خرید شما خالیست!</div>
+                    <div class="col-lg-4 col-md-5!important col-xs-6 mx-auto">
+                        <div class="parent-btn btn-cart-empty">
+                            <button class="dk-btn dk-btn-info" style="padding:18px 50px; font-size:18px;">
+                                ورود به حساب کاربری
+                                <i class="fa fa-sign-in sign-in"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="checkout-empty-register">
+                        <span>کاربر جدید هستید؟</span>
+                        <a href="register.html">ثبت نام در کاربیوتیک</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <!--  cart------------------>
+    <div class="col-12">
+        <div class="page-content">
+            <div class="col-lg-4 col-md-4 col-xs-12 pull-right">
+                <div class="checkout-tab">
+                    <div class="checkout-tab-pill listing-active-cart">
+                        سبد خرید
+                        <span class="checkout-tab-counter">@Model.FactorItems.Count</span>
+                    </div>
+                    @*<div class="checkout-tab-pill">لیست خرید بعدی</div>*@
+                </div>
+
+            </div>
+        </div>
+        <div class="cart-tab-main">
+            <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                <div class="page-content-cart">
+                    <div class="header-express">
+                        <span class="checkout-header-title"><i class="fa fa-truck"></i>ارسال عادی</span>
+                        <span class="header-extra-info">
+                            (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)
+                        </span>
+                        <span class="checkout-header-delivery-cost">هزینه ارسال: رایگان</span>
+                    </div>
+
+                    @foreach (var factorItem in Model.FactorItems)
+                    {
+                        <div class="checkout-body">
+                            <a id="removeFromCart" data-product-id="@factorItem.Id" href="#" class="remove-from-cart"><i class="fa fa-close"></i></a>
+                            <a href="#" class="col-thumb"><img src="@Helper.ThumbnailImagePath@factorItem.Product?.ImageName"></a>
+
+                            <div class="checkout-col-desc">
+                                <a href="#"><h3>@factorItem.Product?.Name</h3></a>
+                                <div class="checkout-variant-color">
+                                    <span class="checkout-variant-title">سفید</span>
+                                    <div class="checkout-variant-shape"></div>
+                                    <div class="checkout-guarantee"><i class="fa fa-check"></i>گارانتی ۱۸ ماهه</div>
+                                    @*<div class="checkout-dealer"><i class="fa fa-check"></i></div>*@
+                                </div>
+                                <div class="quantity">
+                                    <input type="number" min="1" max="10" step="1" value="1" data-product-id="@factorItem.Id">
+                                </div>
+                                <div id="itemTotalPrice" class="cart-item-product-price">
+                                    @($"{factorItem.UnitCount * factorItem.UnitPrice:N0}")
+                                    <span>
+                                        تومان
+                                    </span>
+                                </div>
+                                @*<a href="#" class="add-to-sfl">
+                                        ذخیره در لیست خرید بعدی
+                                        <div id="itemTotalPrice" class="cart-item-product-price">
+                                            @($"{factorItem.UnitCount * factorItem.UnitPrice:N0}")
+                                            <span>
+                                                تومان
+                                            </span>
+                                        </div>
+
+                                    </a>*@
+                                <br />
+
+                            </div>
+                        </div>
+                        <hr />
+                    }
+                </div>
+
+                <div class="checkout-to-shipping-sticky">
+                    <a asp-controller="Payment" asp-action="PaymentCheckout" asp-route-id="@Model.Id" class="selenium-next-step-shipping">ادامه فرآیند خرید</a>
+                    <div class="checkout-to-shipping-price-report">
+                        <p>مبلغ قابل پرداخت</p>
+                        <div class="cart-item-product-price">
+                            @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}")
+                            <span>
+                                تومان
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
+                <div class="page-aside">
+                    <div class="checkout-summary">
+                        <ul class="checkout-summary-summary">
+                            <li>
+                                <span>مبلغ کل (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)</span>
+                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            </li>
+                            <li>
+                                <span>جمع</span>
+                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            </li>
+                            <li>
+                                <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
+                                <span></span>
+                            </li>
+                            <li>
+                                <span><i class="fa fa-truck"></i>ارسال عادی</span>
+                                <span>رایگان</span>
+                            </li>
+                            <li>
+                                <span>مبلغ قابل پرداخت</span>
+                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            </li>
+                            @*<li class="checkout-digiclub-container">
+                                    <span class="checkout-digiclub-row">
+                                        <img src="images/digiclub.png">
+                                        <span class="checkout-digiclub-points">
+                                            امتیاز دیجی‌کلاب
+                                        </span>
+                                    </span>
+                                    <span class="checkout-digiclub-row">
+                                        150
+                                        <span class="checkout-bill-currency">
+                                            امتیاز
+                                        </span>
+                                    </span>
+
+                                </li>*@
+                        </ul>
+                    </div>
+                    <div class="checkout-summary-content">
+                        <p>کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت سفارش مراحل بعدی را تکمیل کنید.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="cart-tab-main" style="display:none;">
+                <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                    <div class="page-content-cart">
+                        <div class="container">
+                            <div class="checkout-empty">
+                                <div class="checkout-empty-icon">
+                                    <span class="mdi mdi-cart-remove"></span>
+                                </div>
+                                <div class="checkout-empty-title">لیست خرید بعدی شما خالی است!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
+                    <div class="page-aside">
+                        <div class="checkout-summary">
+                            <h1>لیست خرید بعدی چیست؟</h1>
+                            <p>
+                                شما می‌توانید محصولاتی که به سبد خرید
+                                خود افزوده اید و موقتا قصد خرید آن‌ها را ندارید، در لیست خرید بعدی خود قرار داده و
+                                هر زمان مایل بودید آن‌ها را مجدداً به سبد خرید اضافه کرده و خرید آن‌ها را تکمیل کنید.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+    </div>
+    <!--  cart------------------>
+}

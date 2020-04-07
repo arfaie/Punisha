@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -63,27 +64,34 @@ namespace ECommerce
 				options.Password.RequireUppercase = false;
 			});
 
-			services.AddDistributedMemoryCache();
-
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
+			//services.AddSession(options =>
+			//{
+			//	// Set a short timeout for easy testing.
+			//	options.IdleTimeout = TimeSpan.FromMinutes(60);
+			//	// You might want to only set the application cookies over a secure connection:
+			//	options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+			//	options.Cookie.SameSite = SameSiteMode.Strict;
+			//	options.Cookie.HttpOnly = true;
+			//	// Make the session cookie essential
+			//	options.Cookie.IsEssential = true;
+			//	options.Cookie.Name = ".Carbiotic";
+			//});
+
+			services.AddDistributedMemoryCache();
+
 			services.AddSession(options =>
 			{
-				// Set a short timeout for easy testing.
-				options.IdleTimeout = TimeSpan.FromMinutes(60);
-				// You might want to only set the application cookies over a secure connection:
-				options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-				options.Cookie.SameSite = SameSiteMode.Strict;
+				options.IdleTimeout = TimeSpan.FromDays(10);
 				options.Cookie.HttpOnly = true;
-				// Make the session cookie essential
 				options.Cookie.IsEssential = true;
-				options.Cookie.Name = ".Carbiotic";
 			});
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
-			services.AddMvc();
+			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -111,18 +119,22 @@ namespace ECommerce
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 
-			app.UseSession(new SessionOptions
-			{
-				Cookie = new CookieBuilder
-				{
-					Name = ".Carbiotic"
-				}
-			});
+			//app.UseSession(new SessionOptions
+			//{
+			//	Cookie = new CookieBuilder
+			//	{
+			//		Name = ".Carbiotic"
+			//	}
+			//});
+
+			//app.UseHttpContextItemsMiddleware();
 
 			app.UseRouting();
 
 			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.UseSession();
 
 			// Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 

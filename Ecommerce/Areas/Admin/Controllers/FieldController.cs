@@ -155,14 +155,14 @@ namespace Ecommerce.Areas.Admin.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var query = (from f in _context.Fields
-							 join pcf in _context.ProductCategoryFields on f.Id equals pcf.IdFaild
-							 select new ProductFieldViewModel()
-							 {
-								 Type = f.Type,
-								 IdProduct = f.Id,
-								 IdCategory = pcf.IdCategory
-							 }).Where(x => x.Type == 4);
+				//var query = (from f in _context.Fields
+				//			 join pcf in _context.ProductCategoryFields on f.Id equals pcf.IdFaild
+				//			 select new ProductFieldViewModel()
+				//			 {
+				//				 Type = f.Type,
+				//				 IdProduct = f.Id,
+				//				 IdCategory = pcf.IdCategory
+				//			 }).Where(x => x.Type == 4);
 				if (Id == 0)
 				{
 					using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())

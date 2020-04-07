@@ -32,6 +32,9 @@ namespace ECommerce.Models
 		[Display(Name = "نام")]
 		public string Name { get; set; }
 
+		[Display(Name = "توضیحات")]
+		public string Description { get; set; }
+
 		[Display(Name = "کد")]
 		public int Code { get; set; }
 

@@ -3,7 +3,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="ProductField" asp-action="Delete">
+<form asp-controller="ProductSelectedItem" asp-action="Delete">
 
     @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "حذف " })
 
@@ -11,7 +11,7 @@
         آیا از حذف  @Model مطمئن هستید؟
     </div>
 
-    <input type="hidden" name="redirectUrl" value="@Url.Action("index","ProductField")" />
+    <input type="hidden" name="redirectUrl" value="@Url.Action("index","ProductSelectedItem")" />
 
     @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "حذف " })
 
