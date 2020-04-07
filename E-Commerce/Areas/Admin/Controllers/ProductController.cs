@@ -69,6 +69,7 @@ namespace ECommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.CarId = "9B965BD0-A295-42E6-BCBE-8DD28B05B7A8";
                 //upload image
                 var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 
@@ -365,57 +366,57 @@ namespace ECommerce.Areas.Admin.Controllers
             return null;
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddEdit(Field model)
-        {
-            var lsFieldId = (int[])TempData["lsFieldId"];
-            //string productId = (int)TempData["ProductId"];
-            //string productFieldId = (int)TempData["ProductFieldId"];
-            //var tp = model.FieldType;
-            ////check is Update
-            //var carIds = Request.Form["bb"];
-            //var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-            //Product selectedItems;
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public IActionResult AddEdit(Field model)
+        //{
+        //    var lsFieldId = (int[])TempData["lsFieldId"];
+        //    //string productId = (int)TempData["ProductId"];
+        //    //string productFieldId = (int)TempData["ProductFieldId"];
+        //    //var tp = model.FieldType;
+        //    ////check is Update
+        //    //var carIds = Request.Form["bb"];
+        //    //var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+        //    //Product selectedItems;
 
-            //if (model.CarIds != null)
-            //{
-            //	if (select.Any())
-            //	{
-            //		_context.ProductSelectedItems.RemoveRange(select);
-            //		foreach (var item in model.CarIds)
-            //		{
-            //			selectedItems = new Product();
-            //			selectedItems.ItemId = Convert.ToInt16(item);
-            //			selectedItems.ProductFieldId = productFieldId;
-            //			_context.ProductSelectedItems.Add(selectedItems);
-            //		}
-            //	}
-            //	else
-            //	{
-            //		foreach (var item in model.CarIds)
-            //		{
-            //			selectedItems = new ProductSelectedItems();
-            //			selectedItems.ItemId = Convert.ToInt16(item);
-            //			selectedItems.ProductFieldId = productFieldId;
-            //			_context.ProductSelectedItems.Add(selectedItems);
-            //		}
-            //	}
-            //}
+        //    //if (model.CarIds != null)
+        //    //{
+        //    //	if (select.Any())
+        //    //	{
+        //    //		_context.ProductSelectedItems.RemoveRange(select);
+        //    //		foreach (var item in model.CarIds)
+        //    //		{
+        //    //			selectedItems = new Product();
+        //    //			selectedItems.ItemId = Convert.ToInt16(item);
+        //    //			selectedItems.ProductFieldId = productFieldId;
+        //    //			_context.ProductSelectedItems.Add(selectedItems);
+        //    //		}
+        //    //	}
+        //    //	else
+        //    //	{
+        //    //		foreach (var item in model.CarIds)
+        //    //		{
+        //    //			selectedItems = new ProductSelectedItems();
+        //    //			selectedItems.ItemId = Convert.ToInt16(item);
+        //    //			selectedItems.ProductFieldId = productFieldId;
+        //    //			_context.ProductSelectedItems.Add(selectedItems);
+        //    //		}
+        //    //	}
+        //    //}
 
-            //foreach (var item in lsFieldId)
-            //{
-            //	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
-            //	string value = Request.Form[item.ToString()];
-            //	selectPf.Value = value;
-            //	_context.ProductFields.Update(selectPf);
-            //}
-            //_context;
-            //_context.SaveChanges();
+        //    //foreach (var item in lsFieldId)
+        //    //{
+        //    //	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
+        //    //	string value = Request.Form[item.ToString()];
+        //    //	selectPf.Value = value;
+        //    //	_context.ProductFields.Update(selectPf);
+        //    //}
+        //    //_context;
+        //    //_context.SaveChanges();
 
-            TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+        //    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-            return RedirectToAction("Index");
-        }
+        //    return RedirectToAction("Index");
+        //}
     }
 }
