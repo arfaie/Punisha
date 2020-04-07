@@ -18,7 +18,7 @@
 
                                 @foreach (var category in categoryGroup.Categories.OrderBy(x => x.Title))
                                 {
-                                    <li class="item-megamenu-3"><a href="#" class="list-category-megamenu-3"><span>@category.Title</span></a></li>
+                                    <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@category.Id" class="list-category-megamenu-3"><span>@category.Title</span></a></li>
 
                                 }
 

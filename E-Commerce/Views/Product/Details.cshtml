@@ -146,6 +146,7 @@
                                             </li>
                                         </ul>
                                     </div>
+
                                     @*<div class="product-variants">
                                             <span>انتخاب رنگ: </span>
                                             <ul>
@@ -224,6 +225,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div>
+                                        @Model.Description
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -262,8 +266,8 @@
                                             تومان
                                         </div>
 
-                                        <a href="#" class="btn-add-to-cart"><span class="btn-add-to-cart-txt">افزودن به سبد خرید</span></a>
-
+                                        <a id="btnproductborrow" class="btn-add-to-cart"><span class="btn-add-to-cart-txt">افزودن به سبد خرید</span></a>
+                                        <span style="display:none" id="pid">@Model.Id</span>
                                         @*<div class="product-seller-digiclub">
                                                 <img src="images/digiclub.png">
                                                 <div>
@@ -1962,5 +1966,38 @@
             </div>*@
     </div>
 </div>
-
 <!--single-product------------------------->
+
+@section Scripts{
+    <script>
+        $('#btnproductborrow').on("click",
+            function() {
+                var post_data = $('#pid').text();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddToCart","Product")',
+                    data: { 'productId': post_data },
+
+                    success: function(msg) {
+                        if (msg.status === 'success') {
+                            //alert(msg.message);
+                            //$("#requestcount").text(msg.count);
+                        } else {
+                            //alert(msg.message);
+                        }
+
+                        $("#cartIcon").empty();
+                        if (msg.count > 0) {
+                            $("#cartIcon").html('<span class="badge badge-pill badge-danger">' + msg.count + '</span>');
+                        }
+
+                        var scriptOption = "<script> iziToast.show({message:'" + msg.message + "'" + ",theme: 'light', color: '2',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
+
+                            $("#notificationDiv").append(scriptOption);
+                    }
+                });
+            })
+    </script>
+
+}

@@ -3020,6 +3020,7 @@ textarea {
 .cart-tab-main .page-content-cart .checkout-body {
 	width: 100%;
 	height: auto;
+	clear: both;
 }
 
 	.cart-tab-main .page-content-cart .checkout-body .remove-from-cart {
@@ -3038,6 +3039,7 @@ textarea {
 	.cart-tab-main .page-content-cart .checkout-body .col-thumb {
 		float: right;
 		margin-top: 27px;
+		padding: 10px;
 	}
 
 		.cart-tab-main .page-content-cart .checkout-body .col-thumb img {
@@ -3100,7 +3102,7 @@ input[type=number] {
 	padding: 0;
 	margin: 10px 0 0 10px;
 	padding-left: 30px;
-	padding-right: 50px;
+	padding-right: 45px;
 	border: 1px solid #eee;
 	font-size: 1.071rem;
 	color: #0fabc6;
@@ -6956,7 +6958,8 @@ form#shipping-data-form {
 			}
 
 				.payment ul.checkout-paymethod .wallet-container .checkout-paymethod-item .checkout-paymethod-by-digipay img {
-					width: 120px;
+					width: 60px;
+					margin-top: -60px;
 				}
 
 .checkout-order-summary {
@@ -9846,4 +9849,13 @@ ul.faq-list {
 .field-validation-error {
 	font-size: 12px;
 	color: red;
+}
+
+.badge {
+	font-size: 8px !important;
+	-moz-transform: scale(-1, 1);
+	-webkit-transform: scale(-1, 1);
+	-o-transform: scale(-1, 1);
+	-ms-transform: scale(-1, 1);
+	transform: scale(-1, 1);
 }

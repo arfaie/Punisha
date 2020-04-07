@@ -50,8 +50,8 @@
                         <thead>
                             <tr>
                                 <th>کد</th>
-                                <th>@Html.DisplayNameFor(model => model.Product)</th>
-                                <th>@Html.DisplayNameFor(model => model.Field)</th>
+                                <th>@Html.DisplayNameFor(model => model.ProductField)</th>
+                                <th>@Html.DisplayNameFor(model => model.SelectItem)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -63,8 +63,8 @@
 
                                     <tr>
                                         <td>@(i++)</td>
-                                        <td>@item.Product?.Name</td>
-                                        <td>@item.Field?.Title</td>
+                                        <td>@item.ProductField?.Value</td>
+                                        <td>@item.SelectItem?.Title</td>
 
                                         <td>
                                             <a class="btn btn-info" id="editProductField" data-toggle="modal" asp-action="AddEdit"

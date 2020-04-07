@@ -32,8 +32,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEdit(string id)
 		{
-			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			ViewBag.Fields = new SelectList(await _context.Fields.ToListAsync(), "Id", "Name");
+			ViewBag.ProductFields = new SelectList(await _context.ProductFields.ToListAsync(), "Id", "Value");
+			ViewBag.SelectItem = new SelectList(await _context.SelectItems.ToListAsync(), "Id", "Title");
 
 			var productSelectedItem = await _context.ProductSelectedItems.FirstOrDefaultAsync(c => c.Id == id);
 			if (productSelectedItem != null)
@@ -68,8 +68,8 @@ namespace ECommerce.Areas.Admin.Controllers
 				return PartialView("_SuccessfulResponse", redirectUrl);
 			}
 
-			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			ViewBag.Fields = new SelectList(await _context.Fields.ToListAsync(), "Id", "Name");
+			ViewBag.ProductFields = new SelectList(await _context.ProductFields.ToListAsync(), "Id", "Value");
+			ViewBag.SelectItem = new SelectList(await _context.SelectItems.ToListAsync(), "Id", "Title");
 
 			return PartialView("AddEdit", model);
 		}

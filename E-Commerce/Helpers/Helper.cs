@@ -51,6 +51,140 @@ namespace ECommerce.Helpers
 				var persianCalendar = new PersianCalendar();
 				dateTime = dateTime.ToLocalTime();
 
+				return $"{Convert.ToDateTime(persianCalendar.GetYear(dateTime) + "/" + persianCalendar.GetMonth(dateTime) + "/" + persianCalendar.GetDayOfMonth(dateTime)):yyyy/MM/dd}";
+			}
+			catch (Exception)
+			{
+				return String.Empty;
+			}
+		}
+
+		public static string GetGregorianToPersianDate(DateTime dateTime)
+		{
+			try
+			{
+				var persianCalendar = new PersianCalendar();
+				dateTime = dateTime.ToLocalTime();
+
+				return $"{persianCalendar.GetYear(dateTime)}/{GetPersianMonth(persianCalendar.GetMonth(dateTime))}/{persianCalendar.GetDayOfMonth(dateTime)} {GetPersianDayOfWeek(persianCalendar.GetDayOfWeek(dateTime))}";
+			}
+			catch (Exception)
+			{
+				return String.Empty;
+			}
+		}
+
+		public static string GetGregorianToPersianDateInverse(DateTime dateTime)
+		{
+			try
+			{
+				var persianCalendar = new PersianCalendar();
+				dateTime = dateTime.ToLocalTime();
+
+				return $"{GetPersianDayOfWeek(persianCalendar.GetDayOfWeek(dateTime))} - {persianCalendar.GetDayOfMonth(dateTime):00} {GetPersianMonth(persianCalendar.GetMonth(dateTime))} {persianCalendar.GetYear(dateTime)}";
+			}
+			catch (Exception)
+			{
+				return String.Empty;
+			}
+		}
+
+		public static string GetPersianYear(DateTime dateTime)
+		{
+			try
+			{
+				var persianCalendar = new PersianCalendar();
+
+				return $"{persianCalendar.GetYear(dateTime)}";
+			}
+			catch (Exception)
+			{
+				return String.Empty;
+			}
+		}
+
+		public static string GetPersianMonth(int month)
+		{
+			switch (month)
+			{
+				case 1:
+					return "فروردین";
+
+				case 2:
+					return "اردیبهشت";
+
+				case 3:
+					return "خرداد";
+
+				case 4:
+					return "تیر";
+
+				case 5:
+					return "مرداد";
+
+				case 6:
+					return "شهریور";
+
+				case 7:
+					return "مهر";
+
+				case 8:
+					return "آبان";
+
+				case 9:
+					return "آذر";
+
+				case 10:
+					return "دی";
+
+				case 11:
+					return "بهمن";
+
+				case 12:
+					return "اسفند";
+
+				default:
+					return month.ToString();
+			}
+		}
+
+		public static string GetPersianDayOfWeek(DayOfWeek dayOdWeek)
+		{
+			switch (dayOdWeek)
+			{
+				case DayOfWeek.Saturday:
+					return "شنبه";
+
+				case DayOfWeek.Sunday:
+					return "یکشنبه";
+
+				case DayOfWeek.Monday:
+					return "دوشنبه";
+
+				case DayOfWeek.Tuesday:
+					return "سه شنبه";
+
+				case DayOfWeek.Wednesday:
+					return "چهارشنبه";
+
+				case DayOfWeek.Thursday:
+					return "پنجشنبه";
+
+				case DayOfWeek.Friday:
+					return "جمعه";
+
+				default:
+					return String.Empty;
+			}
+		}
+
+		public static string GetPersianDateAndTimeText(DateTime dateTime)
+		{
+			try
+			{
+				var persianCalendar = new PersianCalendar();
+				dateTime = dateTime.ToLocalTime();
+
 				return $"{Convert.ToDateTime(persianCalendar.GetYear(dateTime) + "/" + persianCalendar.GetMonth(dateTime) + "/" + persianCalendar.GetDayOfMonth(dateTime)):yyyy/MM/dd}|{Convert.ToDateTime(dateTime.TimeOfDay.Hours + ":" + dateTime.TimeOfDay.Minutes + ":" + dateTime.TimeOfDay.Seconds):HH:mm:ss}";
 			}
 			catch (Exception)

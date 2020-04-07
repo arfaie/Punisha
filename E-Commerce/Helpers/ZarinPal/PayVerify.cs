@@ -4,12 +4,12 @@
 	{
 		public PayVerify(string merchantId, long amount, string authority)
 		{
-			MerchantId = merchantId;
+			MerchantID = merchantId;
 			Amount = amount;
 			Authority = authority;
 		}
 
-		public string MerchantId { get; set; }
+		public string MerchantID { get; set; }
 		public long Amount { get; set; }
 		public string Authority { get; set; }
 	}

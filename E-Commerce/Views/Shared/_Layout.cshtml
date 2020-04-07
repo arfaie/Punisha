@@ -13,6 +13,8 @@
     <!-- font--------------------------------------------->
     <link rel="stylesheet" href="~/css/bootstrap.css">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link href="~/js/iziToast-master/dist/css/iziToast.min.css" rel="stylesheet" />
+
     <link rel="stylesheet" href="~/css/style.css">
 </head>
 <body>
@@ -42,10 +44,27 @@
                 <div class="col-lg-4 col-md-4 col-xs-12 pull-left">
                     <div class="header-left">
                         <div class="mini-cart-header">
-                            <a href="" style="color: #4a5f73;"><span class="mdi mdi-cart"></span></a>
+                            <a asp-controller="Payment" asp-action="Cart" style="color: #4a5f73;">
+                                @if (Context.Session != null && Context.Session.Keys.Contains("CartItems"))
+                                {
+                                    var count = Context.Session.GetComplexData<List<string>>("CartItems").Count;
+                                    if (count > 0)
+                                    {
+                                        <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                    }
+                                    else
+                                    {
+                                        <span id="cartIcon" class="mdi mdi-cart"></span>
+                                    }
+                                }
+                                else
+                                {
+                                    <span id="cartIcon" class="mdi mdi-cart"></span>
+                                }
+                            </a>
                         </div>
                         @await Html.PartialAsync("_LoginPartial")
-                        <!--                 responsive header------------------->
+                        <!-- responsive header------------------->
                         <div class="responsive-header-left">
                             <a href="#"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
 
@@ -55,7 +74,7 @@
 
                             <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
                         </div>
-                        <!--                 responsive header------------------->
+                        <!--  responsive header------------------->
                     </div>
                 </div>
             </div>
@@ -469,7 +488,7 @@
 
                 <div class="copy-right-footer">
                     <p>
-                        استفاده از مطالب فروشگاه اینترنتی کاربیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع
+                        استفاده از مطالب کاربیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع
                         بلامانع است. کلیه حقوق این سایت متعلق به (فروشگاه آنلاین کاربیوتیک) می‌باشد.
                     </p>
                 </div>
@@ -478,11 +497,17 @@
     </footer>
     <!--   Footer---------------------------->
 
+    <div id="notificationDiv"></div>
+
     <script src="~/js/jquery-3.2.1.min.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/jquery.countdown.min.js"></script>
     <script src="~/js/bootstrap.js"></script>
+    <script src="~/js/jquery.ez-plus.js"></script>
+    <script src="~/js/iziToast-master/dist/js/iziToast.min.js"></script>
+
     <script src="~/js/main.js"></script>
+
     @RenderSection("Scripts", false)
 </body>
 </html>

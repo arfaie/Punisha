@@ -1,6 +1,10 @@
 ﻿using ECommerce.Data;
+using ECommerce.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -47,28 +51,68 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> CategoryGroup(string id)
 		{
-			return View(await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id));
+			ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
+
+			return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Category(string id)
 		{
-			return View(await _context.Categories.FirstOrDefaultAsync(x => x.Id == id));
+			ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
+			return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Brand(string id)
 		{
-			return View(await _context.Brands.FirstOrDefaultAsync(x => x.Id == id));
+			ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
+
+			return View(await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Search(string id)
 		{
-			return View(await _context.Products.FirstOrDefaultAsync(x => x.Id == id));
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		public async Task<IActionResult> AddToCart(string productId)
+		{
+			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+			if (product == null)
+			{
+				return Json(new { status = "fail", message = "این محصول موجود نیست" });
+			}
+
+			if (product.Inventory == 0)
+			{
+				return Json(new { status = "fail", message = "این محصول در انبار موجود نیست" });
+			}
+
+			if (!HttpContext.Session.Keys.Contains("CartItems"))
+			{
+				HttpContext.Session.SetComplexData("CartItems", new List<string> { productId });
+
+				return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = 1 });
+			}
+
+			var cartItems = HttpContext.Session.GetComplexData<List<string>>("CartItems");
+
+			if (cartItems.Contains(productId))
+			{
+				return Json(new { status = "success", message = "این محصول از قبل در لیست درخواستی شما وجود دارد", count = cartItems.Count });
+			}
+
+			cartItems.Add(productId);
+
+			HttpContext.Session.SetComplexData("CartItems", cartItems);
+
+			return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = cartItems.Count });
 		}
 	}
 }
