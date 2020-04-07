@@ -1,0 +1,152 @@
+﻿
+@model ECommerce.Models.Address
+@using ECommerce.PublicModel
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+<form asp-controller="UserProfile" asp-action="AddEditUserAddress" id="addeditauthor" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#addeditauthor" data-ajax-mode="replace">
+
+    @*header*@
+
+    @if (Model.Id != "")
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش نویسنده" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن نویسنده" })
+    }
+
+
+
+
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Recipient" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Recipient" class="form-control" />
+                    <span asp-validation-for="Recipient" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group hidden">
+                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Id" class="form-control" />
+                </div>
+            </div>
+
+            <input type="hidden" name="redirecturl" value="@Url.Action("userAddress","UserProfile")" />
+
+        </div>
+
+
+    </div>
+
+    @*footer*@
+    @if (Model.Id != "")
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش نویسنده" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن نویسنده" })
+    }
+
+
+</form>
+
+
+
+@*<form asp-controller="UserProfile" asp-action="AddEditUserAddress" id="AddEdit" data-ajax="true" data-ajax-method="post"
+          data-ajax-update="#AddEdit" data-ajax-mode="replace" method="post" class="form-checkout">
+        <div class="remodal-overlay" id="modal">
+            <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+                <div class="remodal">
+                    <a href="#" class="remodal-close close-profile-address" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
+                    <div class="middle-container">
+                        ------------------------------------------------------------
+
+                        <div class="form-checkout-headline">ویرایش آدرس</div>
+                        <div class="form-checkout-row">
+                            <label for="name">نام و نام خانوادگی تحویل گیرنده <span class="required-star" style="color: red;">*</span></label>
+                            <input type="text" asp-for="Recipient" class="input-name-checkout" placeholder="نام تحویل گیرنده را وارد نمایید">
+                            <label for="phone-number">شماره موبایل <span class="required-star" style="color: red;">*</span></label>
+                            <input type="text" asp-for="Mobile" class="input-name-checkout" placeholder="09xxxxxxxxx" style="text-align: left;">
+                            <label for="fixed-number">شماره تلفن ثابت <span class="required-star" style="color: red;">*</span></label>
+                            <input type="text" asp-for="Phone" class="input-name-checkout" placeholder="021xxxxxx" style="text-align: left;">
+                            <label for="fixed-number">کد پستی <span class="required-star" style="color: red;">*</span></label>
+                            <input type="text" asp-for="PostalCode" class="input-name-checkout" placeholder="" style="text-align: left;">
+
+                            <div class="form-checkout-valid-row">
+                                <label for="province">استان <span class="required-star" style="color: red;"></span></label>
+                                <select name="" id="province">
+                                    <option value="date-desc" selected="selected" disabled="disabled">شهر مورد نظر خود را انتخاب کنید </option>
+                                    <option value="date-asc">تهران</option>
+                                    <option value="rate">مشهد</option>
+                                    <option value="views">اصفهان</option>
+                                    <option value="comments">شیراز</option>
+                                </select>
+                            </div>
+
+                            <div class="form-checkout-valid-row">
+                                <label for="city">
+                                    شهر
+                                    <span class="required-star" style="color: red;">*</span>
+                                </label>
+                                <select name="" id="city">
+                                    <option value="date-desc" selected="selected" disabled="disabled">شهر مورد نظر خود را انتخاب کنید</option>
+                                    <option value="date-asc">آشخانه</option>
+                                    <option value="rate">شیروان</option>
+                                    <option value="views">اسفراین</option>
+                                    <option value="comments">جاجرم</option>
+                                </select>
+                            </div>
+
+                            <label for="address">
+                                آدرس
+                                <span class="required-star" style="color: red;">*</span>
+                            </label>
+                            <input type="text" asp-for="Description" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height: 80px;">
+
+                            <div class="form-group hidden">
+                                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
+                                <div class="col-lg-6">
+                                    <input asp-for="Id" class="form-control" />
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="redirectUrl" value="@Url.Action("userAddress", "UserProfile")" />
+
+                            <div class="form-checkout-valid-row">
+                                <div class="parent-btn">
+                                    <button type="submit" class="dk-btn dk-btn-info">
+                                        ثبت آدرس
+                                        <i class="fa fa-check sign-in"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <a href="#" class="cancel-edit-address" onclick="document.getElementById('modal').style.display = 'none'">انصراف و بازگشت</a>
+                            <a href="#" class="cancel-edit-address">انصراف و بازگشت</a>
+                        </div>
+                        ---------------------------------------------------------
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>*@

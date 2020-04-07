@@ -142,14 +142,23 @@ namespace Ecommerce.Controllers
             var UserAdrresses =
                 await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
 
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
             return View(UserAdrresses);
         }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddUserAddress()
+        public async Task<IActionResult> AddEditUserAddress(string id)
         {
-            return null;
+            var address = await _context.Addresses.FirstOrDefaultAsync(c => c.Id == id);
+            if (address != null)
+            {
+                return PartialView("AddEditUserAddress", address);
+            }
+
+            return PartialView("AddEditUserAddress", new Address());
         }
 
     }
