@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "ویرایش پروفایل";
-    Layout = "~/Views/Shared/_UserLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{
     string fullName = Model.FullName == "" ? "-" : Model.FullName;
@@ -17,54 +17,14 @@
 
 <!--    responsive-megamenu-mobile----------------->
 <!--search-category------------------------->
-<div class="col-lg-3 col-md-4 col-xs-12">
-    <div class="sidebar-wrapper">
-        <div class="box-sidebar">
-            <div class="profile-box">
-                <div class="profile-box-avator">
-                    <img src="assets/images/svg/user-profile.svg">
-                </div>
-
-                <div class="profile-box-content">
-                    <span class="profile-box-nameuser">@fullName</span>
-                    <span class="profile-box-phone">@Mobile</span>
-                </div>
-
-                <div class="profile-box-tabs">
-                    <a asp-controller="UserProfile" asp-action="ChangePasswordProfile" class="profile-box-tab"><span class="mdi mdi-lock"></span>تغییر رمز</a>
-                  
-                    <a href="index.html" class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="box-sidebar">
-            <div class="profile-box">
-                <img src="assets/images/profile/1.jpg" class="profile-box-img-banner">
-            </div>
-        </div>
-
-        <div class="box-sidebar">
-            <span class="box-header-sidebar">حساب کاربری شما</span>
-            <ul class="profile-menu-items">
-                <li><a href="profile.html" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>پروفایل</a></li>
-                <li><a href="profile-order.html" class="profile-menu-url"><span class="fa fa-shopping-basket"></span>همه سفارش ها</a></li>
-                <li><a href="profile-order-return.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>در خواست مرجوعی</a></li>
-                <li><a href="profile-favorites.html" class="profile-menu-url"><span class="fa fa-star-o"></span>لیست علاقه مندی ها</a></li>
-                <li><a href="profile-comments.html" class="profile-menu-url"><span class="fa fa-file-text-o"></span>نقد و نظرات</a></li>
-                <li><a href="profile-addresses.html" class="profile-menu-url"><span class="mdi mdi-map"></span>آدرس ها</a></li>
-                <li><a href="#" class="profile-menu-url"><span class="fa fa-clock-o"></span>بازدید های اخیر</a></li>
-                <li><a href="#" class="profile-menu-url"><span class="mdi mdi-account-outline"></span>اطلاعات شخصی</a></li>
-            </ul>
-        </div>
-
-    </div>
+<div>
+    @Html.Partial("_UserPanel", Model)
 </div>
 <div class="col-lg-9 col-md-8 col-xs-12 pull-right">
     <div class="col-lg-12 col-xs-12 pull-right">
         <div class="profile-navbar">
             <div class="profile-navbar-back-alignment">
-                <a href="#" class="profile-navbar-btn-back">بازگشت</a>
+                <a asp-controller="UserProfile" asp-action="Index" class="profile-navbar-btn-back">بازگشت</a>
                 <h4 class="edit-personal">
                     ویرایش اطلاعات شخصی
 
@@ -89,10 +49,10 @@
                                     </div>*@
 
                                 <div class="form-legal-item">
-                                    <label asp-for="@Model.CarId"></label>
-                                    <select asp-for="@Model.CarId" asp-items="@ViewBag.Cars"></select>
+                                    <label>سازنده</label>
+                                    <select asp-items="@ViewBag.Makers"></select>
                                 </div>
-                                
+
                                 <div class="form-legal-item">
                                     <label asp-for="@Model.CarId"></label>
                                     <select asp-for="@Model.CarId" asp-items="@ViewBag.Cars"></select>
@@ -105,7 +65,7 @@
                                         </div>
                                     </div>*@
 
-                             
+
 
                                 <div class="form-legal-item">
                                     <label for="code-national">کد ملی</label>

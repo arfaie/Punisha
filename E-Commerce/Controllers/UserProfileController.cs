@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Controllers
@@ -45,6 +46,7 @@ namespace Ecommerce.Controllers
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
+            ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
             return PartialView("EditProfile", select);
         }
