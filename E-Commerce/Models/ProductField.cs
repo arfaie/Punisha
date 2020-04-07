@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
@@ -19,7 +18,5 @@ namespace ECommerce.Models
 		public virtual Field Field { get; set; }
 
 		public string Value { get; set; }
-
-		public ICollection<ProductSelectedItem> ProductSelectedItems { get; set; }
 	}
 }

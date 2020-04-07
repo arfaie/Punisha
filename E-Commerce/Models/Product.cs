@@ -23,12 +23,6 @@ namespace ECommerce.Models
 		[Display(Name = "برند")]
 		public virtual Brand Brand { get; set; }
 
-		[Display(Name = "مدل خودرو")]
-		public string CarId { get; set; }
-
-		[Display(Name = "مدل خودرو")]
-		public virtual Car Car { get; set; }
-
 		[Display(Name = "نام")]
 		public string Name { get; set; }
 
@@ -82,5 +76,7 @@ namespace ECommerce.Models
 		public ICollection<CommentAndStar> CommentAndStars { get; set; }
 
 		public ICollection<History> Histories { get; set; }
+
+		public ICollection<CarProduct> CarProducts { get; set; }
 	}
 }

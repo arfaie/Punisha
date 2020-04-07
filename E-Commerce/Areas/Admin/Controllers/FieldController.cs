@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 
 // TODO field
@@ -98,119 +97,119 @@ namespace ECommerce.Areas.Admin.Controllers
 		//{
 		//	if (ModelState.IsValid)
 		//	{
-  //              //var query = (from f in _context.Fields
-  //              //			 join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
-  //              if (Id == 0)
-  //              {
-  //                  using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-  //                  {
-  //                      //model.Type = (short)model.SelecteFieldTypeId;
-  //                      int[] aa = model.;
-  //                      if (model.IdSelectGroup == 0)
-  //                          model.IdSelectGroup = -1;
-  //                      Field fieldModel = _mapper.Map<AddEditFieldViewModel, Field>(model);
+		//              //var query = (from f in _context.Fields
+		//              //			 join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
+		//              if (Id == 0)
+		//              {
+		//                  using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
+		//                  {
+		//                      //model.Type = (short)model.SelecteFieldTypeId;
+		//                      int[] aa = model.;
+		//                      if (model.IdSelectGroup == 0)
+		//                          model.IdSelectGroup = -1;
+		//                      Field fieldModel = _mapper.Map<AddEditFieldViewModel, Field>(model);
 
-  //                      if (!CheckDuplicateDrp(model.IdCategory) || model.Type != 4)
-  //                      {
-  //                          db.Fields.Add(fieldModel);
-  //                          await db.SaveChangesAsync();
-  //                          var select = _context.Fields.LastOrDefault();
-  //                          int ss = select.Id;
+		//                      if (!CheckDuplicateDrp(model.IdCategory) || model.Type != 4)
+		//                      {
+		//                          db.Fields.Add(fieldModel);
+		//                          await db.SaveChangesAsync();
+		//                          var select = _context.Fields.LastOrDefault();
+		//                          int ss = select.Id;
 
-  //                          foreach (var item in aa)
-  //                          {
-  //                              ProductCategoryFields groupField = new ProductCategoryFields();
-  //                              groupField.IdFaild = ss;
-  //                              groupField.IdCategory = item;
-  //                              db.ProductCategoryFields.Add(groupField);
+		//                          foreach (var item in aa)
+		//                          {
+		//                              ProductCategoryFields groupField = new ProductCategoryFields();
+		//                              groupField.IdFaild = ss;
+		//                              groupField.IdCategory = item;
+		//                              db.ProductCategoryFields.Add(groupField);
 
-  //                              //Add to ProductFields
-  //                              ProductField pf = new ProductField();
-  //                              var selectProducts = _context.Products.Where(x => x.IdCategory == item);
-  //                              foreach (var itemProduct in selectProducts)
-  //                              {
-  //                                  pf.IdProduct = itemProduct.Id;
-  //                                  pf.IdField = ss;
-  //                                  pf.Value = null;
-  //                                  db.ProductFields.Add(pf);
-  //                              }
-  //                              //Add to ProductFields
-  //                          }
+		//                              //Add to ProductFields
+		//                              ProductField pf = new ProductField();
+		//                              var selectProducts = _context.Products.Where(x => x.IdCategory == item);
+		//                              foreach (var itemProduct in selectProducts)
+		//                              {
+		//                                  pf.IdProduct = itemProduct.Id;
+		//                                  pf.IdField = ss;
+		//                                  pf.Value = null;
+		//                                  db.ProductFields.Add(pf);
+		//                              }
+		//                              //Add to ProductFields
+		//                          }
 
-  //                          await db.SaveChangesAsync();
-  //                      }
-  //                      else
-  //                      {
-  //                          TempData["Notif"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.red);
+		//                          await db.SaveChangesAsync();
+		//                      }
+		//                      else
+		//                      {
+		//                          TempData["Notif"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.red);
 
-  //                          return PartialView("_Succefullyresponse", redirectUrl);
-  //                      }
-  //                  }
+		//                          return PartialView("_Succefullyresponse", redirectUrl);
+		//                      }
+		//                  }
 
-  //                  TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
-  //                  return PartialView("_Succefullyresponse", redirectUrl);
-  //              }
+		//                  TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
+		//                  return PartialView("_Succefullyresponse", redirectUrl);
+		//              }
 
-                //{
-                //
-                //	{
-                //		_context.CategoryFields.RemoveRange(_context.CategoryFields.Where(x => x.FieldId == id));
+		//              //{
+		//              //
+		//              //	{
+		//              //		_context.CategoryFields.RemoveRange(_context.CategoryFields.Where(x => x.FieldId == id));
 
-                //		if (model.ICategories != null)
-                //		{
-                //		}
-                //		await _context.SaveChangesAsync();
-                //		if (!CheckDuplicateDrp(model.CategoryId))
-                //		{
-                //			var selectType = _context.Fields.AsNoTracking().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+		//              //		if (model.ICategories != null)
+		//              //		{
+		//              //		}
+		//              //		await _context.SaveChangesAsync();
+		//              //		if (!CheckDuplicateDrp(model.CategoryId))
+		//              //		{
+		//              //			var selectType = _context.Fields.AsNoTracking().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
 
-                //			if (selectType.Type == 4 && model.Type != 4)
-                //			{
-                //				string ProductFieldId = _context.ProductFields.Where(x => x.FieldId == selectType.Id).AsNoTracking().FirstOrDefault().Id;
-                //				_context.ProductSelectedItems.RemoveRange(_context.ProductSelectedItems.Where(x => x.ProductFieldId == ProductFieldId));
-                //				//await _context.SaveChangesAsync();
-                //			}
-                //			model.Type = (short)model.Type;
-                //			if (model.SelectGroupId == 0)
-                //				model.SelectGroupId = -1;
-                //			int[] aa = model.CategoryId;
-                //			Field fieldModel = AutoMapper.Mapper.Map<Field, Field>(model);
-                //			try
-                //			{
-                //				_context.Fields.Update(fieldModel);
-                //			}
-                //			catch (Exception e)
-                //			{
-                //				throw;
-                //			}
-                //			foreach (var item in aa)
-                //			{
-                //				CategoryFields groupField = new CategoryFields();
-                //				groupField.FieldId = id;
-                //				groupField.CategoryId = item;
-                //				_context.CategoryFields.Add(groupField);
-                //			}
-                //			await _context.SaveChangesAsync();
-                //		}
-                //		else
-                //		{
-                //			TempData["Notification"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.Red);
-                //			return PartialView("_SuccessfulResponse", redirectUrl);
-                //		}
-                //	}
+		//              //			if (selectType.Type == 4 && model.Type != 4)
+		//              //			{
+		//              //				string ProductFieldId = _context.ProductFields.Where(x => x.FieldId == selectType.Id).AsNoTracking().FirstOrDefault().Id;
+		//              //				_context.ProductSelectedItems.RemoveRange(_context.ProductSelectedItems.Where(x => x.ProductFieldId == ProductFieldId));
+		//              //				//await _context.SaveChangesAsync();
+		//              //			}
+		//              //			model.Type = (short)model.Type;
+		//              //			if (model.SelectGroupId == 0)
+		//              //				model.SelectGroupId = -1;
+		//              //			int[] aa = model.CategoryId;
+		//              //			Field fieldModel = AutoMapper.Mapper.Map<Field, Field>(model);
+		//              //			try
+		//              //			{
+		//              //				_context.Fields.Update(fieldModel);
+		//              //			}
+		//              //			catch (Exception e)
+		//              //			{
+		//              //				throw;
+		//              //			}
+		//              //			foreach (var item in aa)
+		//              //			{
+		//              //				CategoryFields groupField = new CategoryFields();
+		//              //				groupField.FieldId = id;
+		//              //				groupField.CategoryId = item;
+		//              //				_context.CategoryFields.Add(groupField);
+		//              //			}
+		//              //			await _context.SaveChangesAsync();
+		//              //		}
+		//              //		else
+		//              //		{
+		//              //			TempData["Notification"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.Red);
+		//              //			return PartialView("_SuccessfulResponse", redirectUrl);
+		//              //		}
+		//              //	}
 
-                //	TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+		//              //	TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
 
-                //	return PartialView("_SuccessfulResponse", redirectUrl);
-                //}
-            }
+		//              //	return PartialView("_SuccessfulResponse", redirectUrl);
+		//              //}
+		//          }
 
-			//ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			//ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
-			//ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
+		//	ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+		//	ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+		//	ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-			//return PartialView("AddEdit", model);
-		}
+		//	return PartialView("AddEdit", model);
+		//}
 
 		//public bool CheckDuplicateDrp(int[] idCat)
 		//{

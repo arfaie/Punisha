@@ -10,11 +10,11 @@ namespace ECommerce.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string Id { get; set; }
 
-		[Display(Name = "گروه انتخابی")]
-		public string SelectGroupId { get; set; }
+		[Display(Name = "دسته بندی")]
+		public string CategoryId { get; set; }
 
-		[Display(Name = "گروه انتخابی")]
-		public virtual SelectGroup SelectGroup { get; set; }
+		[Display(Name = "دسته بندی")]
+		public virtual Category Category { get; set; }
 
 		[Display(Name = "گروه فیلد")]
 		public string FieldGroupId { get; set; }

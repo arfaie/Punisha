@@ -6,6 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Views\ProductSelectedItem\**" />
+    <Content Remove="Areas\Admin\Views\ProductSelectedItem\**" />
+    <EmbeddedResource Remove="Areas\Admin\Views\ProductSelectedItem\**" />
+    <None Remove="Areas\Admin\Views\ProductSelectedItem\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Controllers\ProductSelectedItemController.cs" />
+    <Compile Remove="Models\ProductSelectedItem.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Remove="Areas\Admin\Views\_AdminLayout.cshtml" />
     <Content Remove="Views\Product\Home.cshtml" />
     <Content Remove="Views\Product\ProductDetailes.cshtml" />

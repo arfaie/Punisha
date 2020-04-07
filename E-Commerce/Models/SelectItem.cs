@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
@@ -16,7 +15,5 @@ namespace ECommerce.Models
 
 		[Display(Name = "عنوان")]
 		public string Title { get; set; }
-
-		public ICollection<ProductSelectedItem> ProductSelectedItems { get; set; }
 	}
 }

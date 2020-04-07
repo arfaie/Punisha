@@ -23,5 +23,7 @@ namespace ECommerce.Models
 		public ICollection<CategoryField> CategoryFields { get; set; }
 
 		public ICollection<Product> Products { get; set; }
+
+		public ICollection<Field> Fields { get; set; }
 	}
 }

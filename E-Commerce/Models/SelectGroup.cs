@@ -14,8 +14,6 @@ namespace ECommerce.Models
 		[Required(ErrorMessage = "فیلد {0} نمی تواند خالی باشد.")]
 		public string Title { get; set; }
 
-		public ICollection<Field> Fields { get; set; }
-
 		public ICollection<SelectItem> SelectItems { get; set; }
 	}
 }
