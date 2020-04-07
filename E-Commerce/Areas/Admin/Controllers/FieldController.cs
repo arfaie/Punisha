@@ -211,59 +211,59 @@ namespace ECommerce.Areas.Admin.Controllers
 		//	return PartialView("AddEdit", model);
 		//}
 
-		public bool CheckDuplicateDrp(int[] idCat)
-		{
-			var exist = true;
-			//var query = (from f in _context.Fields
-			//	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
-			//foreach (var item in idCat)
-			//{
-			//	exist = query.Where(x => x.CategoryId == item).Any();//آیتمی وجود دارد؟
-			//	if (exist == true)
-			//	{
-			//		break;
-			//	}
-			//}
-			return exist;
-		}
+		//public bool CheckDuplicateDrp(int[] idCat)
+		//{
+		//	var exist = true;
+		//	//var query = (from f in _context.Fields
+		//	//	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
+		//	//foreach (var item in idCat)
+		//	//{
+		//	//	exist = query.Where(x => x.CategoryId == item).Any();//آیتمی وجود دارد؟
+		//	//	if (exist == true)
+		//	//	{
+		//	//		break;
+		//	//	}
+		//	//}
+		//	return exist;
+		//}
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Delete(string id)
-		{
-			var field = new Field();
+		//[HttpGet]
+		//[AutoValidateAntiforgeryToken]
+		//public async Task<IActionResult> Delete(string id)
+		//{
+		//	var field = new Field();
 
-			{
-				field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
-				if (field == null)
-				{
-					return RedirectToAction("Index");
-				}
-			}
+		//	{
+		//		field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
+		//		if (field == null)
+		//		{
+		//			return RedirectToAction("Index");
+		//		}
+		//	}
 
-			return PartialView("Delete", field.Title);
-		}
+		//	return PartialView("Delete", field.Title);
+		//}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Delete(string id, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				{
-					var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Delete(string id, string redirectUrl)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		{
+		//			var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 
-					_context.Fields.Remove(field);
-					await _context.SaveChangesAsync();
+		//			_context.Fields.Remove(field);
+		//			await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
-			}
+		//			TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+		//			return PartialView("_SuccessfulResponse", redirectUrl);
+		//		}
+		//	}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+		//	TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-			return RedirectToAction("Index");
-		}
-	}
-}
+		//	return RedirectToAction("Index");
+//		//}
+//	}
+//}

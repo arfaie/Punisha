@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Helpers;
 using ECommerce.Models;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Controllers
@@ -45,6 +47,7 @@ namespace Ecommerce.Controllers
                 .FirstOrDefaultAsync(u => u.Id == user.Id);
 
             ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
+            ViewBag.Makers = new SelectList(await _context.Makers.ToListAsync(), "Id", "Name");
 
             return PartialView("EditProfile", select);
         }
@@ -128,6 +131,34 @@ namespace Ecommerce.Controllers
             }
 
             return PartialView("ChangePasswordProfile", model);
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userAddress()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var UserAdrresses =
+                await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
+            return View(UserAdrresses);
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddEditUserAddress(string id)
+        {
+            var address = await _context.Addresses.FirstOrDefaultAsync(c => c.Id == id);
+            if (address != null)
+            {
+                return PartialView("AddEditUserAddress", address);
+            }
+
+            return PartialView("AddEditUserAddress", new Address());
         }
 
     }
