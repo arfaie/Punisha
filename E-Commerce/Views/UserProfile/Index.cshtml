@@ -10,11 +10,13 @@
     string Email = Model.Email == "" ? "-" : Model.Email;
     string Mobile = Model.PhoneNumber == "" ? "-" : Model.PhoneNumber;
     long NationalCode = Model.NationalCode == 0 ? 0 : Model.NationalCode;
+    ViewBag.UserFullName = fullName;
+    ViewBag.UserMobile = Mobile;
 
 }
 
 <div>
-    @Html.Partial("_UserPanel", Model)
+    @Html.Partial("_UserPanel")
 </div>
 <div class="col-lg-9 col-md-8 col-xs-12 pull-right">
     <div class="col-lg-12 col-xs-12 pull-right">

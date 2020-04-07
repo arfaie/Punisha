@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Helpers;
 using ECommerce.Models;
@@ -130,6 +131,25 @@ namespace Ecommerce.Controllers
             }
 
             return PartialView("ChangePasswordProfile", model);
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userAddress()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            var UserAdrresses =
+                await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
+
+            return View(UserAdrresses);
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddUserAddress()
+        {
+            return null;
         }
 
     }

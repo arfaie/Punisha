@@ -1,0 +1,125 @@
+﻿@model IEnumerable<Address>
+
+@{
+    string fullName = Model.User.FullName == "" ? "-" : Model.User.FullName;
+    string Mobile = Model.User.PhoneNumber == "" ? "-" : Model.User.PhoneNumber;
+    ViewBag.UserFullName = fullName;
+    ViewBag.UserMobile = Mobile;
+}
+
+@{
+    ViewData["Title"] = "آدرس ها";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.Partial("_UserPanel")
+</div>
+<!--search-category------------------------->
+<div class="col-lg-9 col-md-8 col-xs-12 pull-right">
+    <div class="col-lg-12 col-xs-12 pull-right">
+        <div class="headline-profile">
+            <span>آدرس ها</span>
+            <a href="#" class="add-address" onclick="document.getElementById('modal').style.display='block'"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>
+        </div>
+        @*<div class="profile-stats" style="border:none;">
+                <button class="profile-address-add" onclick="document.getElementById('modal').style.display='block'">
+                    <a href="#"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>
+                </button>
+            </div>*@
+        @foreach (var item in Model)
+        {
+            <div class="profile-address-container">
+                <div class="profile-address-card">
+                    <div class="profile-address-card-desc">
+                        <h1 class="address-full-name">@item.Recipient</h1>
+                        <span class="address-address-part">@item.City.Name</span>
+                    </div>
+
+                    <div class="profile-address-card-data">
+                        <ul class="profile-address-card-methods">
+                            <li><i class="fa fa-envelope-o"></i>کدپستی : <span>@item.PostalCode</span></li>
+                            <li><i class="fa fa-mobile"></i>تلفن همراه :  <span>@item.Mobile</span></li>
+                        </ul>
+
+                        <div class="profile-address-card-actions">
+                            <button class="edit-address-btn" onclick="document.getElementById('modal').style.display='block'">ویرایش</button>
+                            <button class="remove-address-btn">حذف</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        
+
+
+    </div>
+</div>
+<!--       modal----------------------->
+<div class="remodal-overlay" id="modal">
+    <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+        <div class="remodal">
+            <a href="#" class="remodal-close close-profile-address" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
+            <div class="middle-container">
+                <form asp-controller="UserProfile" asp-action="userAddrress" method="post" class="form-checkout">
+                    <div class="form-checkout-headline">ویرایش آدرس</div>
+                    <div class="form-checkout-row">
+                        <label for="name">نام و نام خانوادگی تحویل گیرنده <span class="required-star" style="color:red;">*</span></label>
+                        <input type="text" asp-for="Recipient" class="input-name-checkout" placeholder="نام تحویل گیرنده را وارد نمایید">
+                        <label for="phone-number">شماره موبایل <span class="required-star" style="color:red;">*</span></label>
+                        <input type="text" asp-for="Mobile" class="input-name-checkout" placeholder="09xxxxxxxxx" style="text-align:left;">
+                        <label for="fixed-number">شماره تلفن ثابت <span class="required-star" style="color:red;">*</span></label>
+                        <input type="text" asp-for="Phone" class="input-name-checkout" placeholder="021xxxxxx" style="text-align:left;">
+                        <label for="fixed-number">کد پستی <span class="required-star" style="color:red;">*</span></label>
+                        <input type="text" asp-for="PostalCode" class="input-name-checkout" placeholder="" style="text-align:left;">
+
+                        <div class="form-checkout-valid-row">
+                            <label for="province">استان                                     <span class="required-star" style="color:red;"></span></label>
+                            <select name="" id="province">
+                                <option value="date-desc" selected="selected" disabled="disabled">شهر مورد نظر خود را انتخاب کنید </option>
+                                <option value="date-asc">تهران</option>
+                                <option value="rate">مشهد</option>
+                                <option value="views">اصفهان</option>
+                                <option value="comments">شیراز</option>
+                            </select>
+                        </div>
+
+                        <div class="form-checkout-valid-row">
+                            <label for="city">
+                                شهر
+                                <span class="required-star" style="color:red;">*</span>
+                            </label>
+                            <select name="" id="city">
+                                <option value="date-desc" selected="selected" disabled="disabled">شهر مورد نظر خود را انتخاب کنید</option>
+                                <option value="date-asc">آشخانه</option>
+                                <option value="rate">شیروان</option>
+                                <option value="views">اسفراین</option>
+                                <option value="comments">جاجرم</option>
+                            </select>
+                        </div>
+
+                        <label for="address">
+                            آدرس
+                            <span class="required-star" style="color:red;">*</span>
+                        </label>
+                        <input type="text" asp-for="Description" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height:80px;">
+
+                        <div class="form-checkout-valid-row">
+                            <div class="parent-btn">
+                                <button type="submit" class="dk-btn dk-btn-info">
+                                    ثبت آدرس
+                                    <i class="fa fa-check sign-in"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <a href="#" class="cancel-edit-address" onclick="document.getElementById('modal').style.display='none'">انصراف و بازگشت</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--search-category------------------------->
