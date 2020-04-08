@@ -61,6 +61,10 @@ namespace ECommerce.Models
 		[Display(Name = "عکس")]
 		public string ImageName { get; set; }
 
+		[NotMapped]
+		[Display(Name = "مدل خودروها")]
+		public string[] CarIds { get; set; }
+
 		public ICollection<FactorItem> FactorItems { get; set; }
 
 		public ICollection<InventoryChange> InventoryChanges { get; set; }

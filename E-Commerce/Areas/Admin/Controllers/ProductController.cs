@@ -17,7 +17,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using E_Commerce.Areas.Admin.Controllers;
 
-// TODO product
 namespace ECommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -44,21 +43,27 @@ namespace ECommerce.Areas.Admin.Controllers
             return View(await _context.Products.ToListAsync());
         }
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddEdit(string id)
-        {
-            ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> AddEdit(string id)
+		{
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
+
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
             ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
             ViewBag.Units = new SelectList(await _context.Units.ToListAsync(), "Id", "Title");
 
-            var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
-            if (product != null)
-            {
-                return PartialView("AddEdit", product);
-            }
+			var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
+			if (product != null)
+			{
+				var carProducts = await _context.CarProducts.Where(x => x.ProductId == product.Id).ToListAsync();
+
+				product.CarIds = carProducts.Select(x => x.CarId).ToArray();
+
+				return PartialView("AddEdit", product);
+			}
 
             return PartialView("AddEdit", new Product());
         }
@@ -89,20 +94,19 @@ namespace ECommerce.Areas.Admin.Controllers
                 }
                 //upload image
 
-                var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+				//var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
-                if (!String.IsNullOrWhiteSpace(id))
-                {
-                    if (model.ImageName == null)
-                    {
-                        model.ImageName = "defaultpic.png";
-                    }
+				if (String.IsNullOrWhiteSpace(id))
+				{
+					if (model.ImageName == null)
+					{
+						model.ImageName = "defaultpic.png";
+					}
 
                     //Add PriceChange
                     //PriceChange priceChange = new PriceChange();
                     //priceChange.ProductId = model.Id;
                     //priceChange.Old = model.Price;
-
 
                     //var CurrentDate = DateTime.Now;
                     //PersianCalendar pcalender = new PersianCalendar();
@@ -117,14 +121,32 @@ namespace ECommerce.Areas.Admin.Controllers
 
                     _context.Products.Add(model);
 
-
                     await _context.SaveChangesAsync();
 
-                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-                    //return PartialView("_SuccessfulResponse", redirectUrl);
-                    //return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
-                    return RedirectToAction("Index");
-                }
+					var carProducts = await _context.CarProducts.Where(x => x.ProductId == model.Id).ToListAsync();
+					_context.CarProducts.RemoveRange(carProducts);
+
+					if (model.CarIds != null)
+					{
+						foreach (var carId in model.CarIds)
+						{
+							var newCarProduct = new CarProduct
+							{
+								CarId = carId,
+								ProductId = model.Id
+							};
+
+							_context.CarProducts.Add(newCarProduct);
+						}
+					}
+
+					await _context.SaveChangesAsync();
+
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+					//return PartialView("_SuccessfulResponse", redirectUrl);
+					//return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
+					return RedirectToAction("Index");
+				}
 
                 if (model.ImageName == null)
                 {
@@ -133,11 +155,9 @@ namespace ECommerce.Areas.Admin.Controllers
 
                 //if (select.Price != model.Price)
                 //{
-                  
                 //    PriceChange priceChange = new PriceChange();
                 //    priceChange.ProductId = model.Id;
                 //    priceChange.Old = model.Price;
-
 
                 //    var CurrentDate = DateTime.Now;
                 //    PersianCalendar pcalender = new PersianCalendar();
@@ -150,24 +170,42 @@ namespace ECommerce.Areas.Admin.Controllers
                 //    _context.PriceChanges.Add(priceChange);
                 //}
 
-                _context.Products.Update(model);
+				_context.CarProducts.RemoveRange(await _context.CarProducts.Where(x => x.ProductId == model.Id).ToListAsync());
 
-                await _context.SaveChangesAsync();
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-                //return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
-                //return PartialView("_SuccessfulResponse", redirectUrl);
-                return RedirectToAction("Index");
-            }
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Yellow);
-            }
-            else
-            {
-                TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
-            }
+				if (model.CarIds != null)
+				{
+					foreach (var carId in model.CarIds)
+					{
+						var newCarProduct = new CarProduct
+						{
+							CarId = carId,
+							ProductId = model.Id
+						};
 
-            ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+						_context.CarProducts.Add(newCarProduct);
+					}
+				}
+
+				_context.Products.Update(model);
+				await _context.SaveChangesAsync();
+
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+				//return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
+				//return PartialView("_SuccessfulResponse", redirectUrl);
+				return RedirectToAction("Index");
+			}
+			if (!String.IsNullOrWhiteSpace(id))
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Yellow);
+			}
+			else
+			{
+				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
+			}
+
+			ViewBag.Cars = new SelectList(await _context.Cars.ToListAsync(), "Id", "Name");
+
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 
             ViewBag.Brands = new SelectList(await _context.Brands.ToListAsync(), "Id", "Title");
 
@@ -209,8 +247,11 @@ namespace ECommerce.Areas.Admin.Controllers
                     System.IO.File.Delete(sourcePath2);
                 }
 
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
+				var carProducts = await _context.CarProducts.Where(x => x.ProductId == id).ToListAsync();
+				_context.CarProducts.RemoveRange(carProducts);
+
+				_context.Products.Remove(product);
+				await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
@@ -365,57 +406,57 @@ namespace ECommerce.Areas.Admin.Controllers
             return null;
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult AddEdit(Field model)
-        //{
-        //    var lsFieldId = (int[])TempData["lsFieldId"];
-        //    //string productId = (int)TempData["ProductId"];
-        //    //string productFieldId = (int)TempData["ProductFieldId"];
-        //    //var tp = model.FieldType;
-        //    ////check is Update
-        //    //var carIds = Request.Form["bb"];
-        //    //var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-        //    //Product selectedItems;
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public IActionResult AddEdit(Field model)
+		//{
+		//	var lsFieldId = (int[])TempData["lsFieldId"];
+		//	string productId = (int)TempData["ProductId"];
+		//	string productFieldId = (int)TempData["ProductFieldId"];
+		//	var tp = model.FieldType;
+		//	//check is Update
+		//	var carIds = Request.Form["bb"];
+		//	var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+		//	Product selectedItems;
 
-        //    //if (model.CarIds != null)
-        //    //{
-        //    //	if (select.Any())
-        //    //	{
-        //    //		_context.ProductSelectedItems.RemoveRange(select);
-        //    //		foreach (var item in model.CarIds)
-        //    //		{
-        //    //			selectedItems = new Product();
-        //    //			selectedItems.ItemId = Convert.ToInt16(item);
-        //    //			selectedItems.ProductFieldId = productFieldId;
-        //    //			_context.ProductSelectedItems.Add(selectedItems);
-        //    //		}
-        //    //	}
-        //    //	else
-        //    //	{
-        //    //		foreach (var item in model.CarIds)
-        //    //		{
-        //    //			selectedItems = new ProductSelectedItems();
-        //    //			selectedItems.ItemId = Convert.ToInt16(item);
-        //    //			selectedItems.ProductFieldId = productFieldId;
-        //    //			_context.ProductSelectedItems.Add(selectedItems);
-        //    //		}
-        //    //	}
-        //    //}
+		//	if (model.CarIds != null)
+		//	{
+		//		if (select.Any())
+		//		{
+		//			_context.ProductSelectedItems.RemoveRange(select);
+		//			foreach (var item in model.CarIds)
+		//			{
+		//				selectedItems = new Product();
+		//				selectedItems.ItemId = Convert.ToInt16(item);
+		//				selectedItems.ProductFieldId = productFieldId;
+		//				_context.ProductSelectedItems.Add(selectedItems);
+		//			}
+		//		}
+		//		else
+		//		{
+		//			foreach (var item in model.CarIds)
+		//			{
+		//				selectedItems = new ProductSelectedItems();
+		//				selectedItems.ItemId = Convert.ToInt16(item);
+		//				selectedItems.ProductFieldId = productFieldId;
+		//				_context.ProductSelectedItems.Add(selectedItems);
+		//			}
+		//		}
+		//	}
 
-        //    //foreach (var item in lsFieldId)
-        //    //{
-        //    //	var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
-        //    //	string value = Request.Form[item.ToString()];
-        //    //	selectPf.Value = value;
-        //    //	_context.ProductFields.Update(selectPf);
-        //    //}
-        //    //_context;
-        //    //_context.SaveChanges();
+		//	foreach (var item in lsFieldId)
+		//	{
+		//		var selectPf = _context.ProductFields.Where(x => x.FieldId == item && x.ProductId == productId).FirstOrDefault();
+		//		string value = Request.Form[item.ToString()];
+		//		selectPf.Value = value;
+		//		_context.ProductFields.Update(selectPf);
+		//	}
+		//	_context;
+		//	_context.SaveChanges();
 
-        //    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+		//	TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-        //    return RedirectToAction("Index");
-        //}
-    }
+		//	return RedirectToAction("Index");
+		//}
+	}
 }

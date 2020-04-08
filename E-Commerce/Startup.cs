@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -83,6 +82,7 @@ namespace ECommerce
 			//	options.Cookie.IsEssential = true;
 			//	options.Cookie.Name = ".Carbiotic";
 			//});
+			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 			services.AddDistributedMemoryCache();
 
@@ -95,7 +95,7 @@ namespace ECommerce
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
-			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+			services.AddMvc();
 
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
