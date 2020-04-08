@@ -153,13 +153,68 @@ namespace Ecommerce.Controllers
         public async Task<IActionResult> AddEditUserAddress(string id)
         {
             var address = await _context.Addresses.FirstOrDefaultAsync(c => c.Id == id);
+
+            ViewBag.States = new SelectList(await _context.States.ToListAsync(), "Id", "Name");
+            ViewBag.Cities = new SelectList(await _context.Cities.ToListAsync(), "Id", "Name");
+
             if (address != null)
             {
-                return PartialView("AddEditUserAddress", address);
+                return View(address);
             }
 
-            return PartialView("AddEditUserAddress", new Address());
+            return View(new Address());
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEditUserAddress(string id, Address model, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                model.UserId = user.Id;
+
+                if (string.IsNullOrWhiteSpace(id))
+                {
+                   
+                    _context.Addresses.Add(model);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
+
+                _context.Addresses.Update(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
+            TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
+            return View(model);
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> DeleteUserAddress(string id)
+        {
+            var select = await _context.Addresses.FirstOrDefaultAsync(a => a.Id == id);
+            if (select != null)
+            {
+                _context.Addresses.Remove(select);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                return RedirectToAction("userAddress");
+            }
+
+            return RedirectToAction("userAddress");
+        }
+
+
+
 
     }
 }

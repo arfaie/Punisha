@@ -67,6 +67,8 @@ namespace ECommerce
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
+           
+
 			//services.AddSession(options =>
 			//{
 			//	// Set a short timeout for easy testing.
@@ -106,8 +108,9 @@ namespace ECommerce
 
 			if (env.IsDevelopment())
 			{
-				app.UseBrowserLink();
+				
 				app.UseDeveloperExceptionPage();
+               
 				app.UseDatabaseErrorPage();
 			}
 			else
