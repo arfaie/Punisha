@@ -11,87 +11,89 @@ using System.Threading.Tasks;
 // TODO field
 namespace ECommerce.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class FieldController : Controller
-	{
-		private readonly ApplicationDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class FieldController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-		public FieldController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public FieldController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Index()
-		{
-			//var ff = _context.Fields.Where(pr).ToList();
-			//var query = (from field in _context.Fields
-			//			 join cf in _context.CategoryFields on field.Id equals cf.FieldId
-			//			 select new FieldViewModel
-			//			 {
-			//				 Id = field.Id,
-			//				 Title = field.Title,
-			//				 IdType = field.Type,
-			//				 SelectGroupName = "",
-			//				 FieldGroupId = field.FieldGroupId,
-			//				 SelectFieldGroupName = ""
-			//			 }).GroupBy(x => x.Id);
-			//List<FieldViewModel> lsFieldViewModel = new List<FieldViewModel>();
-			//FieldViewModel ob;
-			//foreach (var item in query)
-			//{
-			//	ob = new FieldViewModel();
-			//	ob.Id = item.First().Id;
-			//	ob.Title = item.First().Title;
-			//	ob.Type = FieldType(item.First().IdType);
-			//	ob.SelectGroupName = "";
-			//	ob.FieldGroupId = item.First().FieldGroupId;
-			//	ob.SelectFieldGroupName = ProductCtgNamesAsync(item.First().Id);
-			//	lsFieldViewModel.Add(ob);
-			//}
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Index()
+        {
+            //var ff = _context.Fields.Where(pr).ToList();
+            //var query = (from field in _context.Fields
+            //			 join cf in _context.CategoryFields on field.Id equals cf.FieldId
+            //			 select new FieldViewModel
+            //			 {
+            //				 Id = field.Id,
+            //				 Title = field.Title,
+            //				 IdType = field.Type,
+            //				 SelectGroupName = "",
+            //				 FieldGroupId = field.FieldGroupId,
+            //				 SelectFieldGroupName = ""
+            //			 }).GroupBy(x => x.Id);
+            //List<FieldViewModel> lsFieldViewModel = new List<FieldViewModel>();
+            //FieldViewModel ob;
+            //foreach (var item in query)
+            //{
+            //	ob = new FieldViewModel();
+            //	ob.Id = item.First().Id;
+            //	ob.Title = item.First().Title;
+            //	ob.Type = FieldType(item.First().IdType);
+            //	ob.SelectGroupName = "";
+            //	ob.FieldGroupId = item.First().FieldGroupId;
+            //	ob.SelectFieldGroupName = ProductCtgNamesAsync(item.First().Id);
+            //	lsFieldViewModel.Add(ob);
+            //}
 
-			return View(await _context.Fields.ToListAsync());
-		}
+            return View(await _context.Fields.ToListAsync());
+        }
 
-		//public string FieldType(string id)
-		//{
-		//	var select = _context.FieldTypes.Where(x => x.Id == id).First().Title;
-		//	return select;
-		//}
+        //public string FieldType(string id)
+        //{
+        //	var select = _context.FieldTypes.Where(x => x.Id == id).First().Title;
+        //	return select;
+        //}
 
-		//public string ProductCtgNamesAsync(string FieldId)
-		//{
-		//	var titels = new List<string>();
+        //public string ProductCtgNamesAsync(string FieldId)
+        //{
+        //	var titels = new List<string>();
 
-		//	var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
-		//	foreach (var item in select.ToList())
-		//	{
-		//		var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
-		//		titels.Add(title);
-		//	}
+        //	var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
+        //	foreach (var item in select.ToList())
+        //	{
+        //		var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
+        //		titels.Add(title);
+        //	}
 
-		//	return String.Join("،", titels);
-		//}
+        //	return String.Join("،", titels);
+        //}
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEdit(string id)
-		{
-			ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
-			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddEdit(string id)
+        {
+            ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+            ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+            ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-			var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
-			if (field != null)
-			{
-				return PartialView("AddEdit", field);
-			}
+            var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
+            if (field != null)
+            {
+                return PartialView("AddEdit", field);
+            }
 
-			return PartialView("AddEdit", new Field());
-		}
+            return PartialView("AddEdit", new Field());
+        }
+    }
+}
 
-		//[HttpPost]
+//[HttpPost]
 		//[ValidateAntiForgeryToken]
 		//public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl)
 		//{

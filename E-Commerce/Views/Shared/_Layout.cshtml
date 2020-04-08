@@ -508,5 +508,10 @@
     <script src="~/js/main.js"></script>
 
     @RenderSection("Scripts", false)
+
+    @if (TempData["Notification"] != null)
+    {
+        @Html.Raw(TempData["Notification"])
+    }
 </body>
 </html>
