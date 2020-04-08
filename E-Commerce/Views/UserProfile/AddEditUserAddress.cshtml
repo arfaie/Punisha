@@ -1,5 +1,4 @@
-﻿
-@model ECommerce.Models.Address
+﻿@model ECommerce.Models.Address
 @using ECommerce.PublicModel
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
@@ -18,10 +17,6 @@
     {
         @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن نویسنده" })
     }
-
-
-
-
 
     @*body*@
     <div class="modal-body form-horizontal">
@@ -42,17 +37,11 @@
                 </div>
             </div>
 
-            <div class="form-group hidden">
-                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
-                <div class="col-lg-6">
-                    <input asp-for="Id" class="form-control" />
-                </div>
-            </div>
+            <input type="hidden" asp-for="Id" class="form-control" />
 
             <input type="hidden" name="redirecturl" value="@Url.Action("userAddress","UserProfile")" />
 
         </div>
-
 
     </div>
 
@@ -66,10 +55,7 @@
         @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن نویسنده" })
     }
 
-
 </form>
-
-
 
 @*<form asp-controller="UserProfile" asp-action="AddEditUserAddress" id="AddEdit" data-ajax="true" data-ajax-method="post"
           data-ajax-update="#AddEdit" data-ajax-mode="replace" method="post" class="form-checkout">
@@ -122,12 +108,7 @@
                             </label>
                             <input type="text" asp-for="Description" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height: 80px;">
 
-                            <div class="form-group hidden">
-                                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
-                                <div class="col-lg-6">
-                                    <input asp-for="Id" class="form-control" />
-                                </div>
-                            </div>
+                            <input type="hidden" asp-for="Id" class="form-control" />
 
                             <input type="hidden" name="redirectUrl" value="@Url.Action("userAddress", "UserProfile")" />
 

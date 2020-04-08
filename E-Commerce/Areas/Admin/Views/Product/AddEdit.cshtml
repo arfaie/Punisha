@@ -16,7 +16,7 @@
     @*body*@
     <div class="modal-body form-horizontal">
         <div class="row">
-
+            <input type="hidden" asp-for="Id" class="form-control" />
             <div class="form-group">
                 <label asp-for="Name" class="col-lg-2 col-sm-2 control-label"></label>
                 <div class="col-lg-6">
@@ -54,12 +54,12 @@
                 </div>
             </div>
 
-            @*<div class="form-group">
-                    <label asp-for="CarId" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <select asp-for="CarId" asp-items="@ViewBag.Cars" class="form-control"></select>
-                    </div>
-                </div>*@
+            <div class="form-group">
+                <label asp-for="CarIds" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="CarIds" asp-items="@ViewBag.Cars" class="form-control select2List" multiple="multiple"></select>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label asp-for="Code" class="col-lg-2 col-sm-2 control-label"></label>
@@ -138,7 +138,7 @@
         @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
 
         <div class="modal-footer">
-            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت"></button>
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش محصول" />
         </div>
     }
@@ -147,14 +147,17 @@
         @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
 
         <div class="modal-footer">
-            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت"></button>
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
             <input type="submit" id="submitdata" class="btn btn-success" value="افزودن محصول" />
         </div>
     }
+</form>
 
-    @* ReSharper disable once Razor.SectionNotResolved *@
-    @section Scripts{
-        <script>
+<script>
+
+        $(document).ready(function () {
+           $('.select2List').select2();
+        });
 
         $(document).on('Click', '#submitdata', function (evt) {
             evt.preventDefault();
@@ -203,7 +206,4 @@
 
         });
 
-        </script>
-    }
-    }
-</form>
+</script>

@@ -37,8 +37,7 @@ namespace ECommerce.Controllers
 					ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
 				}
 
-				//TODO related products
-				//ViewBag.RelatedProducts = await _context.Products.Where(x => x.CategoryId == product.CategoryId && x.CarId == product.CarId && x.Id != product.Id).ToListAsync();
+				ViewBag.RelatedProducts = await _context.Products.Where(x => x.CategoryId == product.CategoryId && x.CarIds == product.CarIds && x.Id != product.Id).ToListAsync();
 
 				ViewBag.ProductFields = await _context.ProductFields.Where(x => x.ProductId == product.Id)
 					.Include(x => x.Field).ToListAsync();
