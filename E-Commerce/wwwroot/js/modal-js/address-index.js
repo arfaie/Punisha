@@ -11,10 +11,10 @@
         }
         $this.init = function () {
             initilizeModel();
-        }
+        };
     }
     $(function () {
         var self = new Addresses();
         self.init();
-    })
-}(jQuery))
+    });
+}(jQuery));

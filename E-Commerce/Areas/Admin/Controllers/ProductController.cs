@@ -69,7 +69,6 @@ namespace ECommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.CarId = "9B965BD0-A295-42E6-BCBE-8DD28B05B7A8";
                 //upload image
                 var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 
@@ -327,42 +326,42 @@ namespace ECommerce.Areas.Admin.Controllers
 
         public string CarNames(string id)
         {
-            if (!String.IsNullOrWhiteSpace(id))
-            {
-                var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == id);
-                var cars = new List<string>();
-                var i = 0;
-                foreach (var item in select)
-                {
-                    var name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
-                    cars.Add(name);
-                }
-                return String.Join("،", cars);
-            }
+            //if (!String.IsNullOrWhiteSpace(id))
+            //{
+            //    var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == id);
+            //    var cars = new List<string>();
+            //    var i = 0;
+            //    foreach (var item in select)
+            //    {
+            //        var name = _context.Cars.FirstOrDefault(x => x.Id == item.Id)?.Name;
+            //        cars.Add(name);
+            //    }
+            //    return String.Join("،", cars);
+            //}
             return null;
         }
 
         public string[] CarIds(string productFieldId)
         {
-            if (!String.IsNullOrWhiteSpace(productFieldId))
-            {
-                var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-                var ds = new string[select.Count()];
-                var i = 0;
-                foreach (var item in select)
-                {
-                    try
-                    {
-                        ds[i] = item.Id;
-                        i++;
-                    }
-                    catch (Exception e)
-                    {
-                        throw;
-                    }
-                }
-                return ds;
-            }
+            //if (!String.IsNullOrWhiteSpace(productFieldId))
+            //{
+            //    var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
+            //    var ds = new string[select.Count()];
+            //    var i = 0;
+            //    foreach (var item in select)
+            //    {
+            //        try
+            //        {
+            //            ds[i] = item.Id;
+            //            i++;
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return ds;
+            //}
             return null;
         }
 

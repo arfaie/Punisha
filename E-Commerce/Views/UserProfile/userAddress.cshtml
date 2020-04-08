@@ -19,20 +19,21 @@
             <span>آدرس ها</span>
             @*<a href="#" class="add-address" onclick="document.getElementById('modal').style.display='block'"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>*@
             @*<a class="add-address" id="showaddress" data-toggle="modal" asp-controller="UserProfile" asp-action="AddEditUserAddress"
-                data-target="#modal-action"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>*@
+        data-target="#modal-action"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>*@
+            @Html.ActionLink("Click", "AddEditUserAddress", "UserProfile", new { id = 2 },new {@class="add-address" ,id="showaddress" ,data_toggle="modal",data_target="#modal-action-userprofile" })
 
-            <a class="add-address" id="showaddress" data-toggle="modal" asp-controller="UserProfile" asp-action="AddEditUserAddress"
+            <a class="add-address" id="showaddress" data-toggle="modal" asp-controller="UserProfile" asp-route-id="10" asp-action="AddEditUserAddress"
                data-target="#modal-action-userprofile">
                 <i class="mdi mdi-map-marker-outline"></i>
                 افزودن آدرس جدید
             </a>
 
         </div>
-        @*<div class="profile-stats" style="border:none;">
+        <div class="profile-stats" style="border:none;">
                 <button class="profile-address-add" onclick="document.getElementById('modal').style.display='block'">
                     <a href="#"><i class="mdi mdi-map-marker-outline"></i>افزودن آدرس جدید</a>
                 </button>
-            </div>*@
+            </div>
         @foreach (var item in Model)
         {
             <div class="profile-address-container">
