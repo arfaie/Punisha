@@ -31,7 +31,7 @@
             <div class="profile-navbar-back-alignment">
                 <a asp-controller="UserProfile" asp-action="userAddress" class="profile-navbar-btn-back">بازگشت</a>
                 <h4 class="edit-personal">
-                   @btnName
+                    @btnName
                 </h4>
             </div>
         </div>
@@ -42,29 +42,49 @@
                         <div class="form-legal-col">
                             <fieldset class="form-legal-fieldset">
                                 <div class="form-legal-item">
-                                    <label for="name-first">نام و نام خانوادگی تحویل گیرنده</label>
+                                    <label for="name-first">
+                                        نام و نام خانوادگی تحویل گیرنده
+                                        <span class="required-star" style="color:red;">*</span>
+                                    </label>
                                     <input type="text" asp-for="@Model.Recipient" value="@fullName" class="input-name-first" placeholder="نام تحویل گیرنده را وارد نمایید">
+                                    <span asp-validation-for="Recipient" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
-                                    <label for="phone">شماره موبایل</label>
+                                    <label for="phone">
+                                        شماره موبایل
+                                        <span class="required-star" style="color:red;">*</span>
+                                    </label>
                                     <input type="text" asp-for="@Model.Mobile" value="@Mobile" class="input-code-national" placeholder="09xxxxxxxxx">
+                                    <span asp-validation-for="Mobile" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
-                                    <label for="phone">شماره تلفن ثابت</label>
+                                    <label for="phone">
+                                        شماره تلفن ثابت
+                                        <span class="required-star" style="color:red;">*</span>
+                                    </label>
                                     <input type="text" asp-for="@Model.Phone" value="@Phone" class="input-code-national" placeholder="021xxxxxx">
+                                    <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
-                                    <label for="phone">کد پستی</label>
+                                    <label for="phone">
+                                        کد پستی
+                                        <span class="required-star" style="color:red;">*</span>
+                                    </label>
                                     <input type="text" asp-for="@Model.PostalCode" value="@PostalCode" class="input-code-national" placeholder="کد پستی را وارد نمایید">
+                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
-                                    <label for="selectric">استان و شهر</label>
+                                    <label for="selectric">
+                                        استان و شهر
+                                        <span class="required-star" style="color:red;">*</span>
+                                    </label>
                                     <select asp-items="@ViewBag.States">
                                         <option value="date-desc" selected="selected" disabled="disabled">استان</option>
                                     </select>
                                     <select asp-for="@Model.CityId" asp-items="@ViewBag.Cities">
                                         <option value="date-desc" selected="selected" disabled="disabled">شهر</option>
                                     </select>
+                                    <span asp-validation-for="CityId" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
                                     <label>
@@ -72,6 +92,7 @@
                                         <span class="required-star" style="color:red;">*</span>
                                     </label>
                                     <input type="text" asp-for="@Model.Description" value="@Description" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height:80px;">
+                                    <span asp-validation-for="Description" class="text-danger"></span>
                                 </div>
 
                                 <input type="hidden" name="redirectUrl" value="@Url.Action("userAddress","UserProfile")" />
@@ -84,7 +105,7 @@
                 <div class="form-legal-row-submit" style="margin-top: 1px;">
                     <div class="parent-btn">
                         <button type="submit" class="dk-btn dk-btn-info">
-                           @btnName
+                            @btnName
                             <i class="fa fa-check sign-in"></i>
                         </button>
                     </div>
