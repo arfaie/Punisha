@@ -90,8 +90,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
             return PartialView("AddEdit", new Field());
         }
-    }
-}
+//    }
+//}
 
 //[HttpPost]
 		//[ValidateAntiForgeryToken]
