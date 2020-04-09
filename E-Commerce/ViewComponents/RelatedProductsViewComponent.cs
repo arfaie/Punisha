@@ -28,8 +28,11 @@ namespace EShop.ViewComponents
 			{
 				ViewBag.Car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == user.CarId);
 
-				//return View(await _context.Products.ToListAsync());
-				return View(await _context.Products.Where(x => x.CarProducts.Where(y => y.ProductId == x.Id).Select(y => y.CarId).Contains(user.CarId)).ToListAsync());
+				var carProductsIds = await _context.CarProducts.Where(x => x.CarId == user.CarId).Select(x => x.ProductId).ToListAsync();
+
+				var products = await _context.Products.Where(x => carProductsIds.Count > 0 && carProductsIds.Contains(x.Id)).ToListAsync();
+
+				return View(products);
 			}
 
 			return View();

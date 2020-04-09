@@ -1,0 +1,1237 @@
+﻿@model IEnumerable<Product>
+
+<div class="listing-listing">
+    <div class="listing-counter">@Model.Count() کالا</div>
+    <div class="listing-header">
+        <span class="mdi mdi-sort-variant"></span>
+        <ul class="listing-sort">
+            مرتب‌سازی بر اساس :
+            @*<li><a href="#">پربازدید ترین</a></li>
+                <li><a href="#">پرفروش ترین</a></li>
+                <li><a href="#">محبوب ترین</a></li>*@
+            <li class="listing-active"><a href="#">جدید ترین</a></li>
+            <li><a href="#">ارزان ترین</a></li>
+            <li><a href="#">گران ترین</a></li>
+        </ul>
+    </div>
+
+    <ul class="listing-item">
+        <li style="display:block">
+
+            @foreach (var product in Model.OrderByDescending(x => x.AddingDateTime))
+            {
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                        </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                        </div>
+
+                        @*<div class="product-box-rate">
+                                <span>۲,۶۵۰ نفر</span>
+
+                                <div class="stars">
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </li>
+        <li>
+            @foreach (var product in Model.OrderBy(x => x.Price))
+            {
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                        </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                        </div>
+
+                        @*<div class="product-box-rate">
+                                <span>۲,۶۵۰ نفر</span>
+
+                                <div class="stars">
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </li>
+        <li>
+            @foreach (var product in Model.OrderByDescending(x => x.Price))
+            {
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                        </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                        </div>
+
+                        @*<div class="product-box-rate">
+                                <span>۲,۶۵۰ نفر</span>
+
+                                <div class="stars">
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </li>
+        @*<li>
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-2.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-10.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-9.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-6.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-2.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-7.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-6.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-5.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-3.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-2.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-3.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-4.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-5.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-6.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-8.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-9.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-7.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-4.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-2.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-10.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-9.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-6.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-2.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-7.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-6.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-5.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-1.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller">فروشنده : ای جی</span>
+                        </div>
+
+                        <a href="#" class="promotion-box-image">
+                            <img src="~/images/search/product-3.jpg">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                        </div>
+
+                        <div class="product-box-rate">
+                            <span>۲,۶۵۰ نفر</span>
+
+                            <div class="stars">
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                                <span><img src="~/images/search/star-1.svg"></span>
+                            </div>
+                        </div>
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">۱۸۹,۷۰۰ </span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            </li>*@
+    </ul>
+    @*<div class="pager">
+            <ul class="page-item">
+                <li class="pagination-item"><a href="#" class="pager-item-active">1</a></li>
+                <li class="pagination-item"><a href="#">2</a></li>
+                <li class="pagination-item"><a href="#">3</a></li>
+                <li class="pagination-item"><a href="#">4</a></li>
+                <li class="pagination-item"><a href="#">5</a></li>
+                <div class="pager-items-partition"></div>
+                <li class="pagination-item"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
+            </ul>
+        </div>*@
+</div>
