@@ -65,15 +65,14 @@ namespace ECommerce.Areas.Admin.Controllers
 			return PartialView("AddEdit", new Product());
 		}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEdit(Product model, string imgName, string id, IEnumerable<IFormFile> files)
-		{
-			if (ModelState.IsValid)
-			{
-				//model.CarId = "9B965BD0-A295-42E6-BCBE-8DD28B05B7A8";
-				//upload image
-				var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEdit(Product model, string imgName, string id, IEnumerable<IFormFile> files)
+        {
+            if (ModelState.IsValid)
+            {
+                //upload image
+                var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 
 				foreach (var file in files)
 				{

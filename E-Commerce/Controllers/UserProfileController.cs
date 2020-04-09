@@ -165,7 +165,6 @@ namespace Ecommerce.Controllers
             return View(new Address());
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEditUserAddress(string id, Address model, string redirectUrl)
@@ -192,7 +191,15 @@ namespace Ecommerce.Controllers
                 return PartialView("_SuccessfulResponse", redirectUrl);
             }
 
-            TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
+            }
+            else
+            {
+                TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Red);
+            }
+           
             return View(model);
         }
 
