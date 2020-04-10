@@ -37,7 +37,9 @@ namespace ECommerce.Controllers
 					ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
 				}
 
-				ViewBag.RelatedProducts = await _context.Products.Where(x => x.CategoryId == product.CategoryId && x.CarIds == product.CarIds && x.Id != product.Id).ToListAsync();
+				var carProductsIds = await _context.CarProducts.Where(x => x.ProductId == product.Id).Select(x => x.CarId).ToListAsync();
+
+				ViewBag.RelatedProducts = await _context.Products.Where(x => x.Id != product.Id && x.CategoryId == product.CategoryId && x.CarProducts.Any(y => carProductsIds.Contains(y.CarId))).ToListAsync();
 
 				ViewBag.ProductFields = await _context.ProductFields.Where(x => x.ProductId == product.Id)
 					.Include(x => x.Field).ToListAsync();
@@ -52,6 +54,10 @@ namespace ECommerce.Controllers
 		{
 			ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
 
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
 			return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
@@ -59,7 +65,17 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Category(string id)
 		{
-			ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+			var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (category != null)
+			{
+				ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+				ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
+			}
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
 			return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
@@ -70,6 +86,10 @@ namespace ECommerce.Controllers
 		{
 			ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
 
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
 			return View(await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
@@ -77,6 +97,32 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Search(string id)
 		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Car(string id)
+		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Maker(string id)
+		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
 			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
