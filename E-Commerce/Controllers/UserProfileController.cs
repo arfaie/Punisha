@@ -229,7 +229,7 @@ namespace Ecommerce.Controllers
         }
 
         [HttpGet]
-        [ValidateAntiForgeryToken]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderDetaile(string id)
         {
             return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
