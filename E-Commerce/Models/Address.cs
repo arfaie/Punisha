@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ECommerce.Models
@@ -47,5 +48,7 @@ namespace ECommerce.Models
         [Display(Name = "تحویل گیرنده")]
         [Required(ErrorMessage = "نام تحویل گیرنده را وارد نمایید.")]
         public string Recipient { get; set; }
+
+        public ICollection<Factor> Factors { get; set; }
     }
 }

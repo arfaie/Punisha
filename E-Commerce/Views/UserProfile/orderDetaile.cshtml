@@ -1,0 +1,196 @@
+﻿@model Order
+
+@{
+    ViewData["Title"] = "جزئیات سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--search-category------------------------->
+<div class="col-lg-9 col-md-8 col-xs-12 pull-right">
+        <div class="col-lg-12 col-xs-12 pull-right">
+            <div class="profile-navbar">
+                <div class="profile-navbar-back-alignment">
+                    <a asp-controller="UserProfile" asp-action="userOrders" class="profile-navbar-btn-back">بازگشت</a>
+                    <h4>
+                        سفارش @Model.TransactionNumber
+                        <span>ثبت شده در رتایخ @Model.TransactionDate  </span>
+                    </h4>
+                </div>
+                <div class="profile-navbar-invoice">
+                    <a href="#">
+                        <button class="profile-navbar-btn-invoice">مشاهده فاکتور</button>
+                    </a>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="profile-stats-row">
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span> نام و نام خانوادگی :</span>@Model?.Factor?.Address?.Recipient</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span>شماره تماس تحویل گیرنده: </span>@Model.Factor?.Address?.Mobile</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span>آدرس تحویل گیرنده:</span>@Model.Factor?.Address?.City?.Name</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span>تعداد مرسوله:</span>1 مرسوله</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span>مبلغ قابل پرداخت:</span>0</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
+                        <div class="profile-stats-col">
+                            <p><span>مبلغ کل:</span>@Model.Factor?.FinalPrice</p>
+                        </div>
+                    </div>
+                    <!--                    <a href="#" class="link-spoiler-edit"></a>-->
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12">
+            <div class="headline-profile" style="margin-top:15px;">
+                <span>مرسوله ۱ از ۱</span>
+                <span class="profile-order-cancel-button">
+                    لغو دریافت مرسوله
+                </span>
+            </div>
+            <div class="profile-stats profile-order">
+                <div class="profile-order-steps-note">
+                    <span>
+                        تحویل مرسوله به مشتری
+                    </span>
+                </div>
+                <section class="swiper-container-horizontal">
+                    <div class="profile-order-steps-container">
+                        <div class="profile-order-steps-item profile-order-steps-item-active">
+                            <img src="~/images/svg/profile-order-1.svg">
+                            <span>در صف بررسی</span>
+                        </div>
+                        <div class="hr profile-order-steps-item-active"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-2.svg">
+                            <span>تایید سفارش</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-3.svg">
+                            <span>آماده‌سازی سفارش</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-4.svg">
+                            <span>خروج از مرکز پردازش</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-5.svg">
+                            <span>تحویل به پست</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-6.svg">
+                            <span>دریافت در مرکز مبادلات پست</span>
+                        </div>
+                        <div class="hr"></div>
+                        <div class="profile-order-steps-item">
+                            <img src="~/images/svg/profile-order-7.svg">
+                            <span>تحویل مرسوله به مشتری</span>
+                        </div>
+                    </div>
+                </section>
+                <div class="table-draught">
+                    <div class="table-draught-row">
+                        <div class="table-draught-col">
+                            کد مرسوله: 34527436
+                            <span> &nbsp; | &nbsp; </span>
+                            بارکد پستی: 1659875072014867556894578
+                        </div>
+                        <div class="table-draught-col">
+                            زمان
+                            تحویل: بازه شنبه ۱۱ خرداد - شنبه ۱۸ خرداد
+                            <a href="#" class="btn-modify">
+                                تغییر زمان ارسال
+                            </a>
+                        </div>
+                    </div>
+                    <div class="table-draught-row">
+                        <div class="table-draught-col">
+                            نحوه ارسال سفارش: پست پیشتاز با ظرفیت اختصاصی برای دیجی استور
+                        </div>
+                        <div class="table-draught-col">
+                            هزینه ارسال
+                            : ۸,۰۰۰ تومان
+
+                        </div>
+                    </div>
+                    <div class="table-draught-row">
+                        <div class="table-draught-col last-tabel">
+                            مبلغ این
+                            مرسوله: ۴۳,۰۰۰ تومان
+
+                        </div>
+                    </div>
+                </div>
+                <div class="table-orders">
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">تعداد</th>
+                                <th scope="col">قیمت واحد</th>
+                                <th scope="col">قیمت کل</th>
+                                <th scope="col">تخفیف</th>
+                                <th scope="col">قیمت نهایی</th>
+                                <th scope="col">عملیات</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <img src="~/images/product-slider-2/111460776.jpg" style="width:100px; float:right;">
+                                    <h3>گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو سیم کارت ظرفیت 128گیگابایت</h3>
+                                </td>
+                                <td class="order-code">1</td>
+                                <td>3,420,000 تومان</td>
+                                <td>3,420,000 تومان</td>
+                                <td>0</td>
+                                <td>3,420,000 تومان</td>
+                                <td class="detail"><i class="fa fa-angle-left"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-xs-12" style="padding:0;">
+                <div class="product-box-profile">
+                    <div class="product-box-content-profile">
+                        <div class="product-box-count">1</div>
+                        <a href="#" class="product-box-img">
+                            <img src="~/images/product-slider-2/111460776.jpg">
+                        </a>
+                        <div class="product-box-title">گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو سیم کارت ظرفیت 128گیگابایت</div>
+                        <div class="product-box-seller"><span>فروشنده: </span><span class="product-box-seller-name">هیلاتل</span></div>
+                        <div class="product-box-seller"><span></span><span>رنگ : مشکی</span></div>
+                        <div class="price-profile">
+                            <div class="price-value-profile">
+                                3,420,000
+                                <span class="price-currency"> تومان</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
