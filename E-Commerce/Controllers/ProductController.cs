@@ -10,108 +10,154 @@ using System.Threading.Tasks;
 
 namespace ECommerce.Controllers
 {
-    public class ProductController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	public class ProductController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        public ProductController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public ProductController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Details(string id)
-        {
-            var product = await _context.Products.Include(x => x.ProductGalleries).Include(x => x.CommentAndStars).Include(x => x.Brand).FirstOrDefaultAsync(x => x.Id == id);
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Details(string id)
+		{
+			var product = await _context.Products.Include(x => x.ProductGalleries).Include(x => x.CommentAndStars).Include(x => x.Brand).FirstOrDefaultAsync(x => x.Id == id);
 
-            if (product != null)
-            {
-                // breadcrumb data
-                var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == product.CategoryId);
+			if (product != null)
+			{
+				// breadcrumb data
+				var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == product.CategoryId);
 
-                if (category != null)
-                {
-                    ViewBag.Category = category;
+				if (category != null)
+				{
+					ViewBag.Category = category;
 
-                    ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
-                }
+					ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
+				}
 
-                ViewBag.RelatedProducts = await _context.Products.Where(x => x.CategoryId == product.CategoryId && x.CarIds == product.CarIds && x.Id != product.Id).ToListAsync();
+				var carProductsIds = await _context.CarProducts.Where(x => x.ProductId == product.Id).Select(x => x.CarId).ToListAsync();
 
-                ViewBag.ProductFields = await _context.ProductFields.Where(x => x.ProductId == product.Id)
-                    .Include(x => x.Field).ToListAsync();
-            }
+				ViewBag.RelatedProducts = await _context.Products.Where(x => x.Id != product.Id && x.CategoryId == product.CategoryId && x.CarProducts.Any(y => carProductsIds.Contains(y.CarId))).ToListAsync();
 
-            return View(product);
-        }
+				ViewBag.ProductFields = await _context.ProductFields.Where(x => x.ProductId == product.Id)
+					.Include(x => x.Field).ToListAsync();
+			}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CategoryGroup(string id)
-        {
-            ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
+			return View(product);
+		}
 
-            return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> CategoryGroup(string id)
+		{
+			ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Category(string id)
-        {
-            ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-            return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-        }
+			return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Brand(string id)
-        {
-            ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Category(string id)
+		{
+			var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
-            return View(await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-        }
+			if (category != null)
+			{
+				ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+				ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
+			}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Search(string id)
-        {
-            return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-        }
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-        public async Task<IActionResult> AddToCart(string productId)
-        {
-            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
-            if (product == null)
-            {
-                return Json(new { status = "fail", message = "این محصول موجود نیست" });
-            }
+			return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
 
-            if (product.Inventory == 0)
-            {
-                return Json(new { status = "fail", message = "این محصول در انبار موجود نیست" });
-            }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Brand(string id)
+		{
+			ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
 
-            if (!HttpContext.Session.Keys.Contains("CartItems"))
-            {
-                HttpContext.Session.SetComplexData("CartItems", new List<string> { productId });
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-                return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = 1 });
-            }
+			return View(await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
 
-            var cartItems = HttpContext.Session.GetComplexData<List<string>>("CartItems");
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Search(string id)
+		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-            if (cartItems.Contains(productId))
-            {
-                return Json(new { status = "success", message = "این محصول از قبل در لیست درخواستی شما وجود دارد", count = cartItems.Count });
-            }
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
 
-            cartItems.Add(productId);
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Car(string id)
+		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-            HttpContext.Session.SetComplexData("CartItems", cartItems);
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
 
-            return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = cartItems.Count });
-        }
-    }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Maker(string id)
+		{
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		public async Task<IActionResult> AddToCart(string productId)
+		{
+			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+			if (product == null)
+			{
+				return Json(new { status = "fail", message = "این محصول موجود نیست" });
+			}
+
+			if (product.Inventory == 0)
+			{
+				return Json(new { status = "fail", message = "این محصول در انبار موجود نیست" });
+			}
+
+			if (!HttpContext.Session.Keys.Contains("CartItems"))
+			{
+				HttpContext.Session.SetComplexData("CartItems", new List<string> { productId });
+
+				return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = 1 });
+			}
+
+			var cartItems = HttpContext.Session.GetComplexData<List<string>>("CartItems");
+
+			if (cartItems.Contains(productId))
+			{
+				return Json(new { status = "success", message = "این محصول از قبل در لیست درخواستی شما وجود دارد", count = cartItems.Count });
+			}
+
+			cartItems.Add(productId);
+
+			HttpContext.Session.SetComplexData("CartItems", cartItems);
+
+			return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = cartItems.Count });
+		}
+	}
 }

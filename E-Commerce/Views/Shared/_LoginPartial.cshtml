@@ -23,9 +23,47 @@
             document.location = '@Url.Action("Index","UserProfile")';
         }
     </script>
+
+    <div class="responsive-header-left">
+        <a asp-controller="UserProfile" asp-action="Index"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+
+        <div class="mini-cart-header-responsive">
+            <a asp-controller="Payment" asp-action="Cart" style="color: #4a5f73;">
+                @if (Context.Session != null && Context.Session.Keys.Contains("CartItems"))
+                {
+                    var count = Context.Session.GetComplexData<List<string>>("CartItems").Count;
+                    if (count > 0)
+                    {
+                        @*<span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>*@
+                        <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                    }
+                    else
+                    {
+                        <span id="cartIcon" class="mdi mdi-cart"></span>
+                    }
+                }
+                else
+                {
+                    <span id="cartIcon" class="mdi mdi-cart"></span>
+                }
+            </a>
+        </div>
+
+        <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
+    </div>
     
 }
 else
 {
     <a asp-controller="Account" asp-action="Login"><button class="btn-login"><span class="mdi mdi-account-outline"></span>ورود به حساب کاربری</button></a>
+
+    <div class="responsive-header-left">
+        <a asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+
+        <div class="mini-cart-header-responsive">
+            <a asp-controller="Account" asp-action="Login"><span class="mdi mdi-cart"></span></a>
+        </div>
+
+        <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
+    </div>
 }

@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200408164607_AddressRequired")]
+    partial class AddressRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -403,9 +405,6 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
-                    b.Property<string>("AddressId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
@@ -431,8 +430,6 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.HasIndex("UserId");
 
@@ -1120,10 +1117,6 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.Factor", b =>
                 {
-                    b.HasOne("ECommerce.Models.Address", "Address")
-                        .WithMany("Factors")
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("ECommerce.Models.ApplicationUser", "User")
                         .WithMany("Factors")
                         .HasForeignKey("UserId");

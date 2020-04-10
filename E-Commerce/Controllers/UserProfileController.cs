@@ -165,7 +165,6 @@ namespace Ecommerce.Controllers
             return View(new Address());
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddEditUserAddress(string id, Address model, string redirectUrl)
@@ -177,7 +176,7 @@ namespace Ecommerce.Controllers
 
                 if (string.IsNullOrWhiteSpace(id))
                 {
-                   
+
                     _context.Addresses.Add(model);
                     await _context.SaveChangesAsync();
 
@@ -192,7 +191,15 @@ namespace Ecommerce.Controllers
                 return PartialView("_SuccessfulResponse", redirectUrl);
             }
 
-            TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
+            if (string.IsNullOrWhiteSpace(id))
+            {
+                TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
+            }
+            else
+            {
+                TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Red);
+            }
+
             return View(model);
         }
 
@@ -213,7 +220,21 @@ namespace Ecommerce.Controllers
             return RedirectToAction("userAddress");
         }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userOrders()
+        {
+            var user =await _userManager.GetUserAsync(HttpContext.User);
+            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).Where(o => o.Factor.UserId == user.Id).ToListAsync());
+        }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> orderDetaile(string id)
+        {
+            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
+                .FirstOrDefaultAsync(o => o.Id == id));
+        }
 
 
     }

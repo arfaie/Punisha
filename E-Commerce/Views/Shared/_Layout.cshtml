@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="~/css/bootstrap.css">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css">
     <link href="~/js/iziToast-master/dist/css/iziToast.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/select2.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" href="~/css/style.css">
 </head>
@@ -31,7 +32,11 @@
                         <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
                             <div class="search-header">
                                 <form action="#">
-                                    <input type="text" class="header-search-input" placeholder="جستجو در کاربیوتیک...">
+                                    <select id="searchBox" class="header-search-input" placeholder="جستجو در کاربیوتیک...">
+                                        <option value="one">اول</option>
+                                        <option value="two" disabled="disabled">دوم (disabled)</option>
+                                        <option value="three">سوم</option>
+                                    </select>
 
                                     <button class="btn-search"><img src="~/images/search.png"></button>
                                 </form>
@@ -65,15 +70,15 @@
                         </div>
                         @await Html.PartialAsync("_LoginPartial")
                         <!-- responsive header------------------->
-                        <div class="responsive-header-left">
-                            <a href="#"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
+                        @*<div class="responsive-header-left">
+                            <a asp-controller="Account" asp-action="Login"><button class="btn-login-responsive"><span class="mdi mdi-account-outline"></span></button></a>
 
                             <div class="mini-cart-header-responsive">
                                 <span class="mdi mdi-cart"></span>
                             </div>
 
                             <button class="question-faq"><span class="fa fa-question-circle-o"></span></button>
-                        </div>
+                        </div>*@
                         <!--  responsive header------------------->
                     </div>
                 </div>
@@ -504,8 +509,10 @@
     <script src="~/js/bootstrap.js"></script>
     <script src="~/js/jquery.ez-plus.js"></script>
     <script src="~/js/iziToast-master/dist/js/iziToast.min.js"></script>
+    <script src="~/lib/select2/select2.full.min.js"></script>
 
     <script src="~/js/main.js"></script>
+    <script src="~/js/script.js"></script>
 
     @RenderSection("Scripts", false)
 

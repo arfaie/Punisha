@@ -5,7 +5,7 @@
         <div class="col-12">
             <div class="widget widget-product card">
                 <header class="card-header">
-                    <span class="title-one">محصولات مرتبط با خودرو شما @(ViewBag.Car != null ? $"({ViewBag.Car.Name})" : "")</span>
+                    <span class="title-one">محصولات مرتبط با خودروی شما @(ViewBag.Car != null ? $"({ViewBag.Car.Name})" : "")</span>
                     <h3 class="card-title"></h3>
                 </header>
 
@@ -15,7 +15,7 @@
                 }
                 else
                 {
-                    <p>لطفاً مدل خودروی خود را از پنل کاربری انتخاب کنید</p>
+                    <p>لطفاً مدل خودروی خود را از <a asp-controller="UserProfile" asp-action="Index">پنل کاربری</a> انتخاب کنید</p>
                 }
 
             </div>

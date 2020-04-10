@@ -1,0 +1,114 @@
+﻿@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "سفارشات کاربر";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    @Html.Partial("_UserPanel")
+</div>
+<div class="col-lg-9 col-md-8 col-xs-12 pull-left">
+    <div class="headline-profile page-profile-order" style="margin-top:140px;">
+        <span>آخرین سفارش ها</span>
+    </div>
+    <div class="profile-stats page-profile-order">
+        <div class="table-orders">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">شماره سفارش</th>
+                        <th scope="col">تاریخ ثبت سفارش</th>
+                        <th scope="col">مبلغ قابل پرداخت</th>
+                        <th scope="col">مبلغ کل</th>
+                        <th scope="col">عملیات پرداخت</th>
+                        <th scope="col">جزئیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 1;
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@(i++)</td>
+                                <td class="order-code">@item.TransactionNumber</td>
+                                <td>@item.TransactionDate</td>
+                                <td>0</td>
+                                <td>@item.Factor?.FinalPrice تومان</td>
+                                @if (item.TransactionStatus)
+                                {
+                                    <td class="text-success">پرداخت موفق</td>
+                                }
+                                else
+                                {
+                                    <td class="text-danger">پرداخت ناموفق</td>
+                                }
+
+                                <td class="detail"><a asp-controller="UserProfile" asp-action="orderDetaile" asp-route-id="@item.Id"><i class="fa fa-angle-left"></i></a></td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--        responsive-profile-order------------------------->
+    <div class="page-profile">
+        <div class="page-navigation">
+            <div class="page-navigation-title">سفارش‌های من</div>
+            <a asp-controller="UserProfile" asp-action="Index" class="page-navigation-btn-back">بازگشت <i class="fa fa-angle-left"></i></a>
+        </div>
+        <div class="profile-orders">
+            <div class="collapse">
+                <div class="profile-orders-item">
+                    @{
+                        foreach (var item in Model)
+                        {
+                            <div class="profile-orders-header">
+                                <a asp-controller="UserProfile" asp-action="orderDetaile" asp-route-id="@item.Id" class="profile-orders-header-details">
+                                    <div class="profile-orders-header-summary">
+                                        <div class="profile-orders-header-row">
+                                            <span class="profile-orders-header-id">@item.TransactionNumber</span>
+                                            @if (item.TransactionStatus)
+                                            {
+                                                <span class="profile-orders-header-state">پرداخت شده</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="profile-orders-header-state">پرداخت نشده</span>
+                                            }
+
+                                        </div>
+                                    </div>
+                                </a>
+                                <hr class="ui-separator">
+                                <div class="profile-orders-header-data">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-label">تاریخ ثبت سفارش</div>
+                                        <div class="profile-info-value">@item.TransactionDate</div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-label">مبلغ قابل پرداخت</div>
+                                        <div class="profile-info-value">0</div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-label">مبلغ کل</div>
+                                        <div class="profile-info-value">@item.Factor?.FinalPrice</div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--        responsive-profile-order------------------------->
+</div>
+<!--search-category------------------------->
