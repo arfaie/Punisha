@@ -35,6 +35,13 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label asp-for="StatusId" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="StatusId" asp-items="@ViewBag.Status" class="form-control"></select>
+                </div>
+            </div>
+
             <input type="hidden" asp-for="Id" class="form-control" />
 
             <input type="hidden" name="redirectUrl" value="@Url.Action("index","Order")" />

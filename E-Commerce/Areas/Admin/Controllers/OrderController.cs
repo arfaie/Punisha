@@ -8,6 +8,7 @@ using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.Areas.Admin.Controllers
@@ -34,6 +35,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> addIssueCode(string id)
         {
+            ViewBag.Status = new SelectList(await _context.Statuses.ToListAsync(), "Id", "Title");
+
             var order = await _context.Orders.Where(o => o.Id == id).SingleOrDefaultAsync();
             if (order != null)
             {
