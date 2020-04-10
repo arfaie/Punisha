@@ -27,77 +27,77 @@ namespace ECommerce.Areas.Admin.Controllers
 			return View(await _context.Statuses.ToListAsync());
 		}
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEdit(string id)
-		{
-			var status = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
-			if (status != null)
-			{
-				return PartialView("AddEdit", status);
-			}
+		//[HttpGet]
+		//[AutoValidateAntiforgeryToken]
+		//public async Task<IActionResult> AddEdit(string id)
+		//{
+		//	var status = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
+		//	if (status != null)
+		//	{
+		//		return PartialView("AddEdit", status);
+		//	}
 
-			return PartialView("AddEdit", new Status());
-		}
+		//	return PartialView("AddEdit", new Status());
+		//}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEdit(string id, Status model, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				if (String.IsNullOrWhiteSpace(id))
-				{
-					_context.Statuses.Add(model);
-					await _context.SaveChangesAsync();
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> AddEdit(string id, Status model, string redirectUrl)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		if (String.IsNullOrWhiteSpace(id))
+		//		{
+		//			_context.Statuses.Add(model);
+		//			await _context.SaveChangesAsync();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+		//			TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+		//			return PartialView("_SuccessfulResponse", redirectUrl);
+		//		}
 
-				_context.Statuses.Update(model);
-				await _context.SaveChangesAsync();
+		//		_context.Statuses.Update(model);
+		//		await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+		//		TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+		//		return PartialView("_SuccessfulResponse", redirectUrl);
+		//	}
 
-			return PartialView("AddEdit", model);
-		}
+		//	return PartialView("AddEdit", model);
+		//}
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Delete(string id)
-		{
-			var status = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
-			if (status == null)
-			{
-				return RedirectToAction("Index");
-			}
+		//[HttpGet]
+		//[AutoValidateAntiforgeryToken]
+		//public async Task<IActionResult> Delete(string id)
+		//{
+		//	var status = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
+		//	if (status == null)
+		//	{
+		//		return RedirectToAction("Index");
+		//	}
 
-			return PartialView("Delete", status.Title);
-		}
+		//	return PartialView("Delete", status.Title);
+		//}
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Delete(string id, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				var model = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
+		//[HttpPost]
+		//[ValidateAntiForgeryToken]
+		//public async Task<IActionResult> Delete(string id, string redirectUrl)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		var model = await _context.Statuses.FirstOrDefaultAsync(c => c.Id == id);
 
-				_context.Statuses.Remove(model);
-				_context.SaveChanges();
+		//		_context.Statuses.Remove(model);
+		//		_context.SaveChanges();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+		//		TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+		//		return PartialView("_SuccessfulResponse", redirectUrl);
+		//	}
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+		//	TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-			return RedirectToAction("Index");
-		}
+		//	return RedirectToAction("Index");
+		//}
 	}
 }
