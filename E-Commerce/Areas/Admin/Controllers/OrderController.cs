@@ -61,7 +61,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl,string ModalId)
+        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl, string ModalId)
         {
             if (ModelState.IsValid)
             {
@@ -91,7 +91,9 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderFactor(string id)
         {
-            return View(await _context.Orders.Include(x => x.Factor).FirstOrDefaultAsync(x => x.Id == id));
+            var select = await _context.Orders.Include(x => x.Factor).FirstOrDefaultAsync(x => x.Id == id);
+            select.FactorItems = await _context.FactorItems.Include(f => f.Product).Where(f => f.FactorId == select.FactorId).ToListAsync();
+            return View(select);
         }
 
 
