@@ -7,8 +7,8 @@
 @inject UserManager<ApplicationUser> UserManager
 @{
 
-//string categories = HttpContextAccessor.HttpContext.Session.GetString("Categories");
-//var select = JsonConvert.DeserializeObject<IEnumerable<Category>>(categories);
+    //string categories = HttpContextAccessor.HttpContext.Session.GetString("Categories");
+    //var select = JsonConvert.DeserializeObject<IEnumerable<Category>>(categories);
 }
 <!DOCTYPE html>
 <html lang="fa">
@@ -32,25 +32,25 @@
     <header>
         <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
             <div class="row">
-                    <div class="header-right">
+                <div class="header-right">
 
-                        <div class="logo">
-                            <a href="/HomePage/Home"><img src="~/images/logo.png"></a>
-                        </div>
+                    <div class="logo">
+                        <a href="/HomePage/Home"><img src="~/images/logo.png"></a>
+                    </div>
 
-                        <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                    <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
+                        <div class="search-header">
                             <div class="search-header">
-                                <div class="search-header">
-                                    <form action="/HomePage/HeaderSearch" method="post">
-                                        <input name="Product" type="text" class="header-search-input" placeholder="جستجو در کاربیوتیک...">
+                                <form action="/HomePage/HeaderSearch" method="post">
+                                    <input name="Product" type="text" class="header-search-input" placeholder="جستجو در کاربیوتیک...">
 
-                                        <button class="btn-search"><img src="~/images/search.png"></button>
-                                    </form>
-                                </div>
+                                    <button class="btn-search"><img src="~/images/search.png"></button>
+                                </form>
                             </div>
                         </div>
-
                     </div>
+
+                </div>
 
             </div>
         </div>
@@ -70,7 +70,7 @@
                                         var count = Context.Session.GetInt32("CartItemsCount");
                                         if (count > 0)
                                         {
-                                            <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                            <span id="cartIcon" class="mdi mdi-cart"><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span></span>
                                         }
                                         else
                                         {
@@ -85,12 +85,12 @@
                             </div>
                             @*<a asp-area="Admin" asp-controller="User" asp-action="Index"><span class="mdi mdi-account-outline"></span>Welcom @UserManager.GetUserName(User)</a>*@
                             @*<div class="mini-cart-exit">
-                                <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
-                            </div>
+                                    <a asp-area="" asp-controller="Account" asp-action="Logout"><button class="btn-exit"><span class=""></span>خروج</button></a>
+                                </div>
 
-                            <div class="mini-cart-exit">
-                                <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
-                            </div>*@
+                                <div class="mini-cart-exit">
+                                    <a href="#"><span class="btn-welcome" style="font-size: 14px;">Welcome @UserManager.GetUserName(User)</span></a>
+                                </div>*@
                         }
                         @if (User.IsInRole("User"))
                         {
@@ -101,7 +101,7 @@
                                         var count = Context.Session.GetInt32("CartItemsCount");
                                         if (count > 0)
                                         {
-                                            <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                            <span id="cartIcon" class="mdi mdi-cart"><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span></span>
                                         }
                                         else
                                         {
@@ -134,7 +134,7 @@
                                 var count = Context.Session.GetInt32("CartItemsCount");
                                 if (count > 0)
                                 {
-                                    <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                    <span id="cartIcon" class="mdi mdi-cart"><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span></span>
                                 }
                                 else
                                 {
@@ -175,7 +175,7 @@
                             var count = Context.Session.GetInt32("CartItemsCount");
                             if (count > 0)
                             {
-                                <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span><span class="badge badge-pill badge-danger">@count</span></span>
+                                <span id="cartIcon" class="mdi mdi-cart"><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span></span>
                             }
                             else
                             {

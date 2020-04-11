@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Product>
 
 @{
-    ViewBag.Title = $"گروه دسته بندی {ViewBag.CategoryGroup?.Title}";
+    ViewBag.Title = $"مدل خودروی {ViewBag.Maker?.Name} {ViewBag.Car?.Name}";
 }
 
 <!--search-category------------------------->
@@ -269,11 +269,15 @@
             <ul class="js-breadcrumb">
                 <li><a asp-controller="Home" asp-action="Index">کاربیوتیک</a></li>
 
-                @if (ViewBag.CategoryGroup != null)
+                @if (ViewBag.Maker != null)
                 {
-                    <li><a asp-controller="Product" asp-action="CategoryGroup" asp-route-id="@ViewBag.CategoryGroup.Id">@ViewBag.CategoryGroup.Title</a></li>
+                    <li><a asp-controller="Product" asp-action="Maker" asp-route-id="@ViewBag.Maker.Id">@ViewBag.Maker.Name</a></li>
                 }
 
+                @if (ViewBag.Car != null)
+                {
+                    <li><a asp-controller="Product" asp-action="Car" asp-route-id="@ViewBag.Car.Id">@ViewBag.Car.Name</a></li>
+                }
             </ul>
         </div>
     </div>

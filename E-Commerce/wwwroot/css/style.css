@@ -3191,6 +3191,7 @@ input[type=number] {
 	text-decoration: none;
 	line-height: 50px;
 	color: #777;
+	width: 100%;
 }
 
 .cart-item-product-price {
@@ -6579,7 +6580,7 @@ header.shopping-page {
 .checkout-contact-item .checkout-contact-item-mobile {
 	border-left: 1px solid #e4e4e4;
 	padding-left: 10px;
-	width: 170px;
+	width: 200px;
 	float: right;
 	font: 14px iranyekan;
 }
@@ -6604,7 +6605,7 @@ header.shopping-page {
 	box-shadow: 0 8px 9px 0 rgba(0,0,0,.05);
 	border: 1px solid #8dd4dd;
 	position: absolute;
-	right: -20px;
+	right: -18px;
 	top: 50%;
 	-webkit-transform: translateY(-50%);
 	transform: translateY(-50%);
