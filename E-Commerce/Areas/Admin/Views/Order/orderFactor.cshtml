@@ -1,0 +1,132 @@
+﻿@model ECommerce.Models.Order
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+@{
+    ViewData["Title"] = "فاکتور";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+
+@*<div class="layout-main">*@
+
+@*<div class="layout-content">
+    <div class="layout-content-body">*@
+<div class="title-bar" style="margin-right: 25px; margin-top: 15px;">
+    <h1 class="title-bar-title">
+        <span class="d-ib">فاکتور</span>
+    </h1>
+    @*<p class="title-bar-description">
+        <small>
+            In addition to the basic styling that Bootstrap offers for every element of a form, we have expanded this styling with custom <code>selects</code>, <code>checkboxes</code>, <code>radios</code>, <code>switches</code> and a few additional classes.
+            <span class="nowrap">Please see <a href="toggles.html">Toggles page</a></span>.
+        </small>
+    </p>*@
+</div>
+<div class="row" style="margin-top: 15px;">
+    <div class="col-md-8">
+        <div class="demo-form-wrapper">
+            <form class="form form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">نام و نام خانوادگی</label>
+                    <div class="col-sm-9">
+                        <input readonly="readonly" value="@Model.Factor?.User?.FullName" class="form-control" type="text">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-2">آدرس ارسال شده</label>
+                    <div class="col-sm-9">
+                        <input  class="form-control" type="text" value="@Model.Factor?.Address?.Description" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-3">جمع مبلغ</label>
+                    <div class="col-sm-9">
+                        <input  class="form-control" type="number" value="@Model.Factor?.TotalPrice" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-4">جمع تخفیف</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" value="@Model.Factor?.TotalDiscount" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">مبلغ نهایی</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" value="@Model.Factor?.FinalPrice" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">کد فاکتور</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" value="@Model.Factor?.FactorCode" readonly="readonly">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">پرداخت شده</label>
+                    <div class="col-sm-9">
+                        @if (Model?.Factor?.IsPaid == true)
+                        {
+                            <input class="form-control" type="text" value="پرداخت شده" readonly="readonly">
+                        }
+                        else
+                        {
+                            <input class="form-control" type="text" value="پرداخت نشده" readonly="readonly">
+                        }
+
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">شماره تراکنش</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="number" value="@Model.TransactionNumber" readonly="readonly">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">تاریخ تراکنش</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="datetime" value="@Model.TransactionDate" readonly="readonly">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">وضعیت</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="@Model.Status?.Title" readonly="readonly">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="form-control-5">توضیحات</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" value="@Model.Description" readonly="readonly">
+                    </div>
+                </div>
+              
+                <a class="btn btn-primary" id="editBookgroup" asp-area="Admin" asp-controller="Order" asp-action="Index"
+                   data-target="#modal-action-News" style="margin-right: 50%;">
+                    <i class="glyphicon glyphicon-pencil"></i>
+                    برگشت
+                </a>
+
+            </form>
+        </div>
+       
+    </div>
+</div>
+
+
+
+
+@*</div>
+    </div>*@
+
+@*</div>*@
+
+

@@ -67,9 +67,21 @@
                                         <td>@item.Description</td>
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="addIssueCode"
-                                               data-target="#modal-action" asp-route-id="@item.Id">
+                                               data-target="#modal-action" asp-route-id="@item.Id" asp-route-modalId="1">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 کد در خواست
+                                            </a>
+
+                                            <a class="btn btn-warning" id="editagency" data-toggle="modal" asp-action="addIssueCode"
+                                               data-target="#modal-action" asp-route-id="@item.Id" asp-route-modalId="2">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                                وضعیت
+                                            </a>
+                                            
+                                            <a class="btn btn-primary" id="editBookgroup" asp-area="Admin" asp-controller="Order" asp-action="orderFactor"
+                                               data-target="#modal-action-News" asp-route-id="@item.Id">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                                فاکتور
                                             </a>
                                         </td>
                                     </tr>

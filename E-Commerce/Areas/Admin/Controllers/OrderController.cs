@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
@@ -33,14 +34,26 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> addIssueCode(string id)
+        public async Task<IActionResult> addIssueCode(string id, string modalId)
         {
             ViewBag.Status = new SelectList(await _context.Statuses.ToListAsync(), "Id", "Title");
+
+            ViewBag.Factor = new SelectList(await _context.Factors.ToListAsync(), "Id", "FactorCode");
 
             var order = await _context.Orders.Where(o => o.Id == id).SingleOrDefaultAsync();
             if (order != null)
             {
-                return PartialView("addIssueCode", order);
+                if (modalId == "1")
+                {
+                    return PartialView("addIssueCode", order);
+                }
+                else if (modalId == "2")
+                {
+                    return PartialView("ChangeStatus", order);
+                }
+
+                return null;
+
             }
 
             return null;
@@ -48,7 +61,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl)
+        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl,string ModalId)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +78,22 @@ namespace E_Commerce.Areas.Admin.Controllers
                 return null;
             }
 
-            return PartialView("addIssueCode", model);
+            if (ModalId == "1")
+            {
+                return PartialView("addIssueCode", model);
+            }
+
+            return PartialView("ChangeStatus", model);
+
         }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> orderFactor(string id)
+        {
+            return View(await _context.Orders.Include(x => x.Factor).FirstOrDefaultAsync(x => x.Id == id));
+        }
+
+
     }
 }
