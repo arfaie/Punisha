@@ -176,7 +176,7 @@ namespace Ecommerce.Controllers
 
                 if (string.IsNullOrWhiteSpace(id))
                 {
-                   
+
                     _context.Addresses.Add(model);
                     await _context.SaveChangesAsync();
 
@@ -199,7 +199,7 @@ namespace Ecommerce.Controllers
             {
                 TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Red);
             }
-           
+
             return View(model);
         }
 
@@ -220,7 +220,21 @@ namespace Ecommerce.Controllers
             return RedirectToAction("userAddress");
         }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userOrders()
+        {
+            var user =await _userManager.GetUserAsync(HttpContext.User);
+            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).Where(o => o.Factor.UserId == user.Id).ToListAsync());
+        }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> orderDetaile(string id)
+        {
+            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
+                .FirstOrDefaultAsync(o => o.Id == id));
+        }
 
 
     }

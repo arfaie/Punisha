@@ -17,6 +17,12 @@ namespace ECommerce.Models
 		[Display(Name = "کاربر")]
 		public virtual ApplicationUser User { get; set; }
 
+        [Display(Name = "آدرس ارسال شده")]
+        public string AddressId { get; set; }
+
+        [ForeignKey("AddressId")]
+        public virtual Address Address { get; set; }
+
 		[Display(Name = "جمع مبلغ")]
 		public int TotalPrice { get; set; }
 

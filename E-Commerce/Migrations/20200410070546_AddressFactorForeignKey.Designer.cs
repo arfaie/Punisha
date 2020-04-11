@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200410070546_AddressFactorForeignKey")]
+    partial class AddressFactorForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -452,9 +454,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("FactorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
@@ -467,8 +466,6 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FactorId");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -1139,10 +1136,6 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Factor", "Factor")
                         .WithMany("FactorItems")
                         .HasForeignKey("FactorId");
-
-                    b.HasOne("ECommerce.Models.Order", null)
-                        .WithMany("FactorItems")
-                        .HasForeignKey("OrderId");
 
                     b.HasOne("ECommerce.Models.Product", "Product")
                         .WithMany("FactorItems")

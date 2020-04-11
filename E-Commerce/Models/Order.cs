@@ -38,6 +38,8 @@ namespace ECommerce.Models
         [Display(Name = "نوضیحات")]
         public string Description { get; set; }
 
+        public ICollection<FactorItem> FactorItems { get; set; }
+
       
     }
 }
