@@ -107,5 +107,40 @@ namespace ECommerce.Areas.Admin.Controllers
 
 			return RedirectToAction("Index");
 		}
-	}
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> confirmComment(string id)
+        {
+            var commentAndStar = await _context.CommentAndStars.Include(x => x.User).Include(x => x.Product).FirstOrDefaultAsync(c => c.Id == id);
+            if (commentAndStar == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return PartialView("confirmComment", $"{commentAndStar.User?.UserName} برای محصول {commentAndStar.Product?.Name}");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> confirmComment(string id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
+                model.IsApproved = true;
+
+                _context.CommentAndStars.Update(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
+            TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Yellow);
+
+            return RedirectToAction("Index");
+        }
+    }
 }

@@ -41,7 +41,7 @@
                                 <a class="btn btn-primary marginbutoom" id="showCommentAndStar" data-toggle="modal" asp-action="AddEdit"
                                    data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
-                                    افزودن فیلد دسته بندی جدید
+                                    افزودن کامنت جدید
                                 </a>
                             </div>
                         </div>
@@ -52,6 +52,7 @@
                                 <th>کد</th>
                                 <th>@Html.DisplayNameFor(model => model.User)</th>
                                 <th>@Html.DisplayNameFor(model => model.Product)</th>
+                                <th>@Html.DisplayNameFor(model => model.IsApproved)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -64,6 +65,15 @@
                                         <td>@(i++)</td>
                                         <td>@item.User?.UserName</td>
                                         <td>@item.Product?.Name</td>
+                                        @if (item.IsApproved)
+                                        {
+                                            <td>تایید شده</td>
+                                        }
+                                        else
+                                        {
+                                            <td>در انتظار تایید</td>
+                                        }
+
 
                                         <td>
                                             <a class="btn btn-info" id="editCommentAndStar" data-toggle="modal" asp-action="AddEdit"
@@ -77,6 +87,15 @@
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
+                                            @if (item.IsApproved == false)
+                                            {
+                                                <a class="btn btn-warning" id="showCommentAndStar" data-toggle="modal" asp-action="confirmComment"
+                                                   data-target="#modal-action" asp-route-Id="@item.Id">
+                                                    <i class="glyphicon glyphicon-chevron-right"></i>
+                                                    تایید
+                                                </a>
+                                            }
+                                           
 
                                         </td>
                                     </tr>
