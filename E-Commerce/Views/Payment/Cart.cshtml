@@ -16,15 +16,15 @@
                     <div class="checkout-empty-title">سبد خرید شما خالیست!</div>
                     <div class="col-lg-4 col-md-5!important col-xs-6 mx-auto">
                         <div class="parent-btn btn-cart-empty">
-                            <button class="dk-btn dk-btn-info" style="padding:18px 50px; font-size:18px;">
+                            <a asp-controller="Account" asp-action="Login" class="dk-btn dk-btn-info" style="padding:18px 50px; font-size:18px;">
                                 ورود به حساب کاربری
                                 <i class="fa fa-sign-in sign-in"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                     <div class="checkout-empty-register">
                         <span>کاربر جدید هستید؟</span>
-                        <a href="register.html">ثبت نام در کاربیوتیک</a>
+                        <a asp-controller="Account" asp-action="Register">ثبت نام در کاربیوتیک</a>
                     </div>
                 </div>
             </div>
@@ -53,49 +53,45 @@ else
                     <div class="header-express">
                         <span class="checkout-header-title"><i class="fa fa-truck"></i>ارسال عادی</span>
                         <span class="header-extra-info">
-                            (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)
+                            (@Model.FactorItems?.Count() کالا) - (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)
                         </span>
                         <span class="checkout-header-delivery-cost">هزینه ارسال: رایگان</span>
+                        <span style="display:none" class="hidden" id="totalCount">@Model.FactorItems?.Sum(x => x.UnitCount)</span>
+                        <span style="display:none" id="itemsCount">@Model.FactorItems?.Count()</span>
+                        <span style="display:none" id="totalSum">@(Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice))</span>
                     </div>
 
                     @foreach (var factorItem in Model.FactorItems)
                     {
-                        <div class="checkout-body">
-                            <a id="removeFromCart" data-product-id="@factorItem.Id" href="#" class="remove-from-cart"><i class="fa fa-close"></i></a>
+                        <div class="checkout-body" id="checkoutitem@(factorItem.Id)">
+                            <a data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.Price" href="#" class="remove-from-cart"><i class="fa fa-close"></i></a>
                             <a href="#" class="col-thumb"><img src="@Helper.ThumbnailImagePath@factorItem.Product?.ImageName"></a>
 
                             <div class="checkout-col-desc">
                                 <a href="#"><h3>@factorItem.Product?.Name</h3></a>
                                 <div class="checkout-variant-color">
-                                    <span class="checkout-variant-title">سفید</span>
-                                    <div class="checkout-variant-shape"></div>
-                                    <div class="checkout-guarantee"><i class="fa fa-check"></i>گارانتی ۱۸ ماهه</div>
-                                    @*<div class="checkout-dealer"><i class="fa fa-check"></i></div>*@
+                                    <span class="checkout-variant-title">@factorItem.Product?.Description</span>
+                                    @*<div class="checkout-variant-shape"></div>
+                                        <div class="checkout-guarantee"><i class="fa fa-check"></i>گارانتی ۱۸ ماهه</div>
+                                        <div class="checkout-dealer"><i class="fa fa-check"></i></div>*@
                                 </div>
                                 <div class="quantity">
-                                    <input type="number" min="1" max="10" step="1" value="1" data-product-id="@factorItem.Id">
+                                    <input value="@factorItem.UnitCount" type="number" min="1" max="10" step="1" data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.Price">
                                 </div>
-                                <div id="itemTotalPrice" class="cart-item-product-price">
-                                    @($"{factorItem.UnitCount * factorItem.UnitPrice:N0}")
-                                    <span>
-                                        تومان
-                                    </span>
-                                </div>
-                                @*<a href="#" class="add-to-sfl">
-                                        ذخیره در لیست خرید بعدی
-                                        <div id="itemTotalPrice" class="cart-item-product-price">
-                                            @($"{factorItem.UnitCount * factorItem.UnitPrice:N0}")
-                                            <span>
-                                                تومان
-                                            </span>
-                                        </div>
+                                <div id="itemTotalPrice@(factorItem.Id)" class="cart-item-product-price">@($"{factorItem.UnitCount * factorItem.UnitPrice:N0}") تومان</div>
+                                <a href="#" class="add-to-sfl">
+                                    <div class="cart-item-product-price">
+                                        <span>
+                                            قیمت واحد : @($"{factorItem.UnitPrice:N0}") تومان
+                                        </span>
+                                    </div>
 
-                                    </a>*@
+                                </a>
                                 <br />
 
                             </div>
                         </div>
-                        <hr />
+                        <hr id="hr@(factorItem.Id)" />
                     }
                 </div>
 
@@ -103,12 +99,7 @@ else
                     <a asp-controller="Payment" asp-action="PaymentCheckout" asp-route-id="@Model.Id" class="selenium-next-step-shipping">ادامه فرآیند خرید</a>
                     <div class="checkout-to-shipping-price-report">
                         <p>مبلغ قابل پرداخت</p>
-                        <div class="cart-item-product-price">
-                            @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}")
-                            <span>
-                                تومان
-                            </span>
-                        </div>
+                        <div class="cart-item-product-price totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</div>
                     </div>
                 </div>
             </div>
@@ -117,12 +108,12 @@ else
                     <div class="checkout-summary">
                         <ul class="checkout-summary-summary">
                             <li>
-                                <span>مبلغ کل (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)</span>
-                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span id="checkout-summary-info">مبلغ کل (@Model.FactorItems?.Count() کالا) - (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                             </li>
                             <li>
                                 <span>جمع</span>
-                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                             </li>
                             <li>
                                 <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
@@ -134,7 +125,7 @@ else
                             </li>
                             <li>
                                 <span>مبلغ قابل پرداخت</span>
-                                <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                             </li>
                             @*<li class="checkout-digiclub-container">
                                     <span class="checkout-digiclub-row">
@@ -188,4 +179,111 @@ else
             </div>*@
     </div>
     <!--  cart------------------>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("input").change(function () {
+                var id = $(this).attr("data-factorItem-id");
+                var unitPrice = parseInt($(this).attr("data-factorItem-price"));
+                var value = parseInt($(this).val());
+
+                $.ajax({
+                    type: 'POST',
+                    data: { "factorItemId": id, "value": $(this).val() },
+                    url: '@Url.Action("ChangeFactorItemCount", "Product")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                })
+                .done(function (data) {
+
+                    var itemsCount = $("#itemsCount").text();
+                    var totalCount = parseInt($("#totalCount").text());
+                    var totalSum = parseInt($("#totalSum").text());
+
+                    totalCount = totalCount + data.changeValue;
+                    $("#totalCount").text(totalCount);
+
+                    $(".header-extra-info").text("(" + itemsCount + " کالا) - (" + totalCount + " قلم کالا)");
+                    $("#checkout-summary-info").text("مبلغ کل (" + itemsCount + " کالا) - (" + totalCount + " قلم کالا)");
+
+                    var price = unitPrice * value;
+
+                    totalSum = totalSum + data.changeValue * unitPrice;
+
+                    $("#totalSum").text(totalSum);
+
+                    $("#itemTotalPrice" + id).html(price.toLocaleString() + " تومان");
+                    $(".totalPriceSpan").text(totalSum.toLocaleString() + " تومان");
+
+                })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert("OK");
+                });
+            });
+
+            $(".remove-from-cart").click(function (e) {
+                e.preventDefault();
+
+                var id = $(this).attr("data-factorItem-id");
+                var unitPrice = parseInt($(this).attr("data-factorItem-price"));
+
+                $.ajax({
+                    type: 'POST',
+                    data: { "factorItemId": id },
+                    url: '@Url.Action("RemoveFactorItem", "Product")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                })
+                .done(function (data) {
+
+                    var itemsCount = parseInt($("#itemsCount").text());
+                    var totalCount = parseInt($("#totalCount").text());
+                    var totalSum = parseInt($("#totalSum").text());
+
+                    $("#itemsCount").text(--itemsCount);
+
+                    $(".checkout-tab-counter").text(itemsCount);
+
+                    if (itemsCount == 0) {
+                        $("#itemCountBadge").remove();
+                    }
+                    else {
+                        $("#itemCountBadge").text(itemsCount);
+                    }
+
+                    totalCount = totalCount - data.value;
+
+                    $("#totalCount").text(totalCount);
+
+                    $(".header-extra-info").text("(" + itemsCount + " کالا) - (" + totalCount + " قلم کالا)");
+                    $("#checkout-summary-info").text("مبلغ کل (" + itemsCount + " کالا) - (" + totalCount + " قلم کالا)");
+
+                    totalSum = totalSum - unitPrice * data.value;
+
+                    $("#totalSum").text(totalSum);
+
+                    $("#checkoutitem" + id).remove();
+                    $("#hr" + id).remove();
+                    $(".totalPriceSpan").text(totalSum.toLocaleString() + " تومان");
+
+                })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert("OK");
+                });
+            });
+        });
+
+    </script>
 }
