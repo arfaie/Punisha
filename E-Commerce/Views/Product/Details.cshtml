@@ -150,6 +150,17 @@
                                                 <a asp-controller="Product" asp-action="Category" asp-route-id="@Model.CategoryId" class="link-border">@Model.Category?.Title</a>
                                             </li>
                                         </ul>
+                                        <ul>
+                                            <li>
+                                                <br />
+                                                <span>خودرو</span>
+                                                :
+                                                @foreach (Car car in ViewBag.Cars)
+                                                {
+                                                    <a asp-controller="Product" asp-action="Car" asp-route-id="@car.Id" class="link-border">@car.Maker?.Name @car.Name</a><text>&nbsp;&nbsp;</text>
+                                                }
+                                            </li>
+                                        </ul>
                                     </div>
 
                                     @*<div class="product-variants">
@@ -176,9 +187,9 @@
                                             </ul>
                                         </div>*@
                                     <div class="product-params">
-                                        <ul>
+                                        @*<ul>
                                             ویژگی‌های محصول
-                                            @*<li>
+                                            <li>
                                                     <span>حافظه داخلی: </span>
                                                     <span>128 گیگابایت</span>
                                                 </li>
@@ -219,8 +230,9 @@
                                                         <span class="show-more">موارد بیشتر</span>
                                                         <span class="show-less">بستن</span>
                                                     </a>
-                                                </li>*@
-                                        </ul>
+
+                                                </li>
+                                                                    </ul>*@
                                         <div class="product-additional-info">
                                             <div class="product-additional-item">
                                                 @*<p>هشدار سامانه همتا: حتما در زمان تحویل دستگاه، به کمک کد فعال‌سازی چاپ شده روی جعبه یا کارت گارانتی، دستگاه را از طریق #7777*، برای سیم‌کارت خود فعال‌سازی کنید. آموزش تصویری در آدرس اینترنتی hmti.ir/05</p>*@
@@ -1922,7 +1934,7 @@
                         }
                         $("#cartIcon").empty();
                         if (msg.count > 0) {
-                            $("#cartIcon").html('<span class="badge badge-pill badge-danger">' + msg.count + '</span>');
+                            $("#cartIcon").html('<span id="itemCountBadge" class="badge badge-pill badge-danger">' + msg.count + '</span>');
                         }
                         var scriptOption = "<script> iziToast.show({message:'" + msg.message + "'" + ",theme: 'light', color: '2',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
                             $("#notificationDiv").append(scriptOption);

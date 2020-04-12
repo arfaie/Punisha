@@ -55,7 +55,7 @@
                                     var count = Context.Session.GetComplexData<List<string>>("CartItems").Count;
                                     if (count > 0)
                                     {
-                                        <span id="cartIcon" class="mdi mdi-cart"><span class="badge badge-pill badge-danger">@count</span></span>
+                                        <span id="cartIcon" class="mdi mdi-cart"><span id="itemCountBadge" class="badge badge-pill badge-danger">@count</span></span>
                                     }
                                     else
                                     {

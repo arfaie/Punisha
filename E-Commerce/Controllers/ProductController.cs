@@ -1,9 +1,7 @@
 ﻿using ECommerce.Data;
 using ECommerce.Helpers;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +37,8 @@ namespace ECommerce.Controllers
 
 				var carProductsIds = await _context.CarProducts.Where(x => x.ProductId == product.Id).Select(x => x.CarId).ToListAsync();
 
+				ViewBag.Cars = await _context.Cars.Where(x => carProductsIds.Contains(x.Id)).Include(x => x.Maker).ToListAsync();
+
 				ViewBag.RelatedProducts = await _context.Products.Where(x => x.Id != product.Id && x.CategoryId == product.CategoryId && x.CarProducts.Any(y => carProductsIds.Contains(y.CarId))).ToListAsync();
 
 				ViewBag.ProductFields = await _context.ProductFields.Where(x => x.ProductId == product.Id)
@@ -69,7 +69,7 @@ namespace ECommerce.Controllers
 
 			if (category != null)
 			{
-				ViewBag.Category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
+				ViewBag.Category = category;
 				ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
 			}
 
@@ -95,6 +95,38 @@ namespace ECommerce.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Car(string id)
+		{
+			var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (car != null)
+			{
+				ViewBag.Car = car;
+				ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == car.MakerId);
+			}
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
+			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Maker(string id)
+		{
+			ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == id);
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+
+			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Search(string id)
 		{
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
@@ -104,28 +136,7 @@ namespace ECommerce.Controllers
 			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
 		}
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Car(string id)
-		{
-			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-		}
-
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Maker(string id)
-		{
-			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
-		}
-
+		[HttpPost]
 		public async Task<IActionResult> AddToCart(string productId)
 		{
 			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
@@ -158,6 +169,51 @@ namespace ECommerce.Controllers
 			HttpContext.Session.SetComplexData("CartItems", cartItems);
 
 			return Json(new { status = "success", message = "محصول به لیست درخواستی شما اضافه شد", count = cartItems.Count });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> ChangeFactorItemCount(string factorItemId, int value)
+		{
+			var factorItem = await _context.FactorItems.FirstOrDefaultAsync(x => x.Id == factorItemId);
+
+			if (factorItem != null)
+			{
+				var changeValue = value - factorItem.UnitCount;
+				factorItem.UnitCount = value;
+
+				_context.FactorItems.Update(factorItem);
+				await _context.SaveChangesAsync();
+
+				return Json(new { status = "success", changeValue, unitPrice = factorItem.UnitPrice });
+			}
+			return Json(new { status = "success", changeValue = 0, unitPrice = 0 });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> RemoveFactorItem(string factorItemId)
+		{
+			var factorItem = await _context.FactorItems.FirstOrDefaultAsync(x => x.Id == factorItemId);
+
+			if (factorItem != null)
+			{
+				if (HttpContext.Session.Keys.Contains("CartItems"))
+				{
+					var cartItems = HttpContext.Session.GetComplexData<List<string>>("CartItems");
+
+					var list = new List<string>(cartItems);
+					list.Remove(factorItem.ProductId);
+
+					HttpContext.Session.SetComplexData("CartItems", list.ToArray());
+				}
+
+				var value = factorItem.UnitCount;
+
+				_context.FactorItems.Remove(factorItem);
+				await _context.SaveChangesAsync();
+
+				return Json(new { status = "success", value });
+			}
+			return Json(new { status = "success", value = 0 });
 		}
 	}
 }
