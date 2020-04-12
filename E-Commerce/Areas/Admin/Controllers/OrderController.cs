@@ -91,7 +91,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderFactor(string id)
         {
-            return View(await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id));
+            var Select = await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
+            return View(Select);
         }
     }
 }
