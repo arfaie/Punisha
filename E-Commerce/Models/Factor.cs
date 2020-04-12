@@ -44,12 +44,6 @@ namespace ECommerce.Models
 		[Display(Name = "پرداخت شده")]
 		public bool IsPaid { get; set; }
 
-		[Display(Name = "آدرس تحویل")]
-		public string AddressId { get; set; }
-
-		[Display(Name = "آدرس تحویل")]
-		public virtual Address Address { get; set; }
-
 		public ICollection<FactorItem> FactorItems { get; set; }
 
 		public ICollection<Order> Orders { get; set; }
