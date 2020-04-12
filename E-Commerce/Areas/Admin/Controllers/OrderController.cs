@@ -93,7 +93,5 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             return View(await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems).FirstOrDefaultAsync(x => x.Id == id));
         }
-
-
     }
 }
