@@ -257,6 +257,23 @@ namespace Ecommerce.Controllers
             return View(select);
         }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> DeleteUserComment(string id)
+        {
+            var select = await _context.CommentAndStars.FirstOrDefaultAsync(a => a.Id == id);
+            if (select != null)
+            {
+                _context.CommentAndStars.Remove(select);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                return RedirectToAction("userComments");
+            }
+
+            return RedirectToAction("userComments");
+        }
+
 
     }
 }

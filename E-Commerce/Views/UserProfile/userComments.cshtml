@@ -61,9 +61,11 @@
                                             </button>
                                         </li>*@
                                     <li>
-                                       <a class="edit-address-btn" asp-controller="UserProfile" asp-action="userCommentEdit">ویرایش</a>
+                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="userCommentEdit">ویرایش</a>
                                         <button class="edit-address-btn">ویرایش</button>
                                         <button class="remove-address-btn">حذف</button>
+                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>
+
                                     </li>
                                 </ul>
                             </div>
