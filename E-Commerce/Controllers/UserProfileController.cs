@@ -236,6 +236,27 @@ namespace Ecommerce.Controllers
                 .FirstOrDefaultAsync(o => o.Id == id));
         }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userComments()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return View(await _context.CommentAndStars.Include(c => c.User).Include(c => c.Product)
+                .Where(c => c.UserId == user.Id).ToListAsync());
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userCommentEdit(string id)
+        {
+            var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
+            if (select == null)
+            {
+                return null;
+            }
+            return View(select);
+        }
+
 
     }
 }

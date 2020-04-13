@@ -53,6 +53,7 @@
                                 <th>@Html.DisplayNameFor(model => model.User)</th>
                                 <th>@Html.DisplayNameFor(model => model.Product)</th>
                                 <th>@Html.DisplayNameFor(model => model.IsApproved)</th>
+                                <th>@Html.DisplayNameFor(model => model.Comment)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -65,6 +66,7 @@
                                         <td>@(i++)</td>
                                         <td>@item.User?.UserName</td>
                                         <td>@item.Product?.Name</td>
+                                        <td>@item.Comment</td>
                                         @if (item.IsApproved)
                                         {
                                             <td>تایید شده</td>
@@ -95,7 +97,7 @@
                                                     تایید
                                                 </a>
                                             }
-                                           
+
 
                                         </td>
                                     </tr>
