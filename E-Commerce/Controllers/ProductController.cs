@@ -58,7 +58,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+			return View(await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).ToListAsync());
 		}
 
 		[HttpGet]
@@ -77,7 +77,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+			return View(await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).ToListAsync());
 		}
 
 		[HttpGet]
@@ -109,7 +109,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).ToListAsync());
 		}
 
 		[HttpGet]
@@ -122,7 +122,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+			return View(await _context.Products.Where(x => x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).ToListAsync());
 		}
 
 		[HttpGet]
@@ -133,7 +133,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).ToListAsync());
+			return View(await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).ToListAsync());
 		}
 
 		[HttpPost]

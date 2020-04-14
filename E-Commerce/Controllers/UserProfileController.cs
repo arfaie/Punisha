@@ -218,53 +218,53 @@ namespace Ecommerce.Controllers
 		public async Task<IActionResult> userOrders()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).Where(o => o.Factor.UserId == user.Id).ToListAsync());
+			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).ToListAsync());
 		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> orderDetaile(string id)
-        {
-            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
-                .FirstOrDefaultAsync(o => o.Id == id));
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> orderDetaile(string id)
+		{
+			return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
+				.FirstOrDefaultAsync(o => o.Id == id));
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> userComments()
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            return View(await _context.CommentAndStars.Include(c => c.User).Include(c => c.Product)
-                .Where(c => c.UserId == user.Id).ToListAsync());
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> userComments()
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+			return View(await _context.CommentAndStars.Include(c => c.User).Include(c => c.Product)
+				.Where(c => c.UserId == user.Id).ToListAsync());
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> userCommentEdit(string id)
-        {
-            var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
-            if (select == null)
-            {
-                return null;
-            }
-            return View(select);
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> userCommentEdit(string id)
+		{
+			var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
+			if (select == null)
+			{
+				return null;
+			}
+			return View(select);
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> DeleteUserComment(string id)
-        {
-            var select = await _context.CommentAndStars.FirstOrDefaultAsync(a => a.Id == id);
-            if (select != null)
-            {
-                _context.CommentAndStars.Remove(select);
-                await _context.SaveChangesAsync();
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> DeleteUserComment(string id)
+		{
+			var select = await _context.CommentAndStars.FirstOrDefaultAsync(a => a.Id == id);
+			if (select != null)
+			{
+				_context.CommentAndStars.Remove(select);
+				await _context.SaveChangesAsync();
 
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-                return RedirectToAction("userComments");
-            }
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+				return RedirectToAction("userComments");
+			}
 
-            return RedirectToAction("userComments");
-        }
-    }
+			return RedirectToAction("userComments");
+		}
+	}
 }
