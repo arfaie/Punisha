@@ -89,11 +89,11 @@
                             <tbody id="tblItems">
                             @{
                                 int i = 1;
-                                foreach (var item in Model.FactorItems)
+                                foreach (var item in Model.Factor.FactorItems)
                                 {
                                     <tr class="columnSize">
                                         <td>@(i++)</td>
-                                        <td>@item.Product.Name</td>
+                                        <td>@item.Product?.Name</td>
                                         <td>@item.Product.Price</td>
                                         <td>@item.UnitCount</td>
                                         <td>@item.Product?.Unit?.Title</td>
