@@ -78,6 +78,9 @@
                                         قیمت کل
                                     </th>
                                     <th>
+                                        هزینه ارسال
+                                    </th>
+                                    <th>
                                         مالیات
                                     </th>
                                     <th>
@@ -99,6 +102,7 @@
                                             <td>@item.Product?.Unit?.Title</td>
                                             <td>@item.Discount</td>
                                             <td>@item.Factor?.TotalPrice</td>
+                                            <td>@item.Factor?.ShippingCost</td>
                                             <td>@item.Factor.Tax</td>
                                             <td>@item.Factor.FinalPrice</td>
                                         </tr>

@@ -83,8 +83,6 @@ namespace ECommerce.Controllers
 							};
 
 							_context.FactorItems.Add(factorItem);
-
-							factor.FactorItems.Add(factorItem);
 						}
 
 						factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
@@ -114,20 +112,10 @@ namespace ECommerce.Controllers
 			return View(new Factor());
 		}
 
-		//[HttpPost]
-		//public async Task<IActionResult> CartAsync(Factor factor)
-		//{
-		//	factor.FactorItems = await _context.FactorItems.Where(x => x.FactorId == factor.Id).ToListAsync();
-
-		//	factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
-
-		//	return RedirectToAction("PaymentCheckout", new { id = factor.Id });
-		//}
-
 		[HttpGet]
 		public async Task<IActionResult> PaymentCheckout(string id)
 		{
-			var factor = await _context.Factors.Include(x => x.FactorItems).FirstOrDefaultAsync(x => x.Id == id);
+			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
 
 			if (factor == null)
 			{
@@ -148,6 +136,7 @@ namespace ECommerce.Controllers
 			if (addresses.Count > 0)
 			{
 				factor.AddressId = addresses.ElementAt(0).Id;
+				factor.ShippingCost = await Helper.CalculateShippingCostAsync(_context, factor.AddressId, factor.FactorItems);
 			}
 
 			ViewBag.Addresses = addresses;
@@ -169,7 +158,7 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> PaymentCheckout(Factor model)
 		{
-			var factor = await _context.Factors.FirstOrDefaultAsync(x => x.Id == model.Id);
+			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == model.Id);
 
 			if (factor != null)
 			{
@@ -201,14 +190,14 @@ namespace ECommerce.Controllers
 					return View(factor);
 				}
 
-				factor.ShippingCost = Helper.CalculateShippingCost(_context, model.AddressId);
-
 				factor.AddressId = model.AddressId;
+				factor.ShippingCost = await Helper.CalculateShippingCostAsync(_context, model.AddressId, factor.FactorItems);
+
 				_context.Factors.Update(factor);
 				await _context.SaveChangesAsync();
 			}
 
-			return RedirectToAction("PaymentConnect", new { id = model.Id });
+			return RedirectToAction(nameof(PaymentConnect), new { id = model.Id });
 		}
 
 		[HttpGet]
@@ -227,9 +216,7 @@ namespace ECommerce.Controllers
 				return View(factor);
 			}
 
-			factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
-
-			if (factor.TotalPrice == 0)
+			if (factor.FinalPrice == 0)
 			{
 				ModelState.AddModelError("AmountError", "مبلغ نمی تواند خالی باشد. لطفا مبلغی را بیشتر از 100 تومان وارد نمایید.");
 				return View(factor);
@@ -242,7 +229,7 @@ namespace ECommerce.Controllers
 
 			var description = "پرداخت در سایت کاربیوتیک";
 
-			var response = ZarinPalPayment.Request(factor.TotalPrice, description, callbackUrl);
+			var response = ZarinPalPayment.Request(factor.FinalPrice, description, callbackUrl);
 
 			// if there is an error show this page again
 			if (response.Status == 100)
@@ -264,7 +251,7 @@ namespace ECommerce.Controllers
 
 			if (status != "OK")
 			{
-				return RedirectToAction("FailedPayment", new { factorCode = "", error = "خطا در پرداخت" });
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = "", error = "خطا در پرداخت" });
 			}
 
 			var authority = collection["Authority"];
@@ -273,28 +260,28 @@ namespace ECommerce.Controllers
 
 			if (factor == null)
 			{
-				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید فاکتور" });
+				return RedirectToAction(nameof(FailedPayment), new { error = "خطا در تایید فاکتور" });
 			}
 
 			TempData["FactorCode"] = factor.FactorCode;
 
-			if (factor.TotalPrice == 0)
+			if (factor.FinalPrice == 0)
 			{
-				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در مبلغ درست پرداختی" });
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در مبلغ درست پرداختی" });
 			}
 
-			var verificationResponse = ZarinPalPayment.Verify(factor.TotalPrice, authority);
+			var verificationResponse = ZarinPalPayment.Verify(factor.FinalPrice, authority);
 
 			if (!verificationResponse.IsSuccess)
 			{
-				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید پرداخت" });
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید پرداخت" });
 			}
 
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
 			if (user == null)
 			{
-				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
 			}
 			//string dateTimes = Helper.GetPersianDateText(DateTime.Now);
 
@@ -338,11 +325,11 @@ namespace ECommerce.Controllers
 				}
 				catch (Exception ex)
 				{
-					return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = ex.Message });
+					return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = ex.Message });
 				}
 			}
 
-			return RedirectToAction("SuccessfulPayment", new { factorCode = factor.FactorCode });
+			return RedirectToAction(nameof(SuccessfulPayment), new { factorCode = factor.FactorCode });
 		}
 
 		[HttpGet]
@@ -361,6 +348,19 @@ namespace ECommerce.Controllers
 			ViewBag.FactorCode = factorCode;
 
 			return View();
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> CalculateShippingCost(string addressId, string factorId)
+		{
+			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == factorId);
+
+			if (factor != null)
+			{
+				return Json(new { cost = await Helper.CalculateShippingCostAsync(_context, addressId, factor.FactorItems) });
+			}
+
+			return Json(new { cost = 0 });
 		}
 	}
 }

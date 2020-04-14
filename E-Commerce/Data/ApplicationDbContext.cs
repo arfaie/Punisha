@@ -44,6 +44,8 @@ namespace ECommerce.Data
 		public DbSet<Unit> Units { get; set; }
 		public DbSet<UserGroup> UserGroups { get; set; }
 
+		public DbSet<ShippingState> ShippingStates { get; set; }
+
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Ecommerce.Controllers
+namespace ECommerce.Controllers
 {
 	public class UserProfileController : Controller
 	{
@@ -60,6 +60,7 @@ namespace Ecommerce.Controllers
 				if (user == null)
 				{
 					TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red);
+					return RedirectToAction("Index");
 				}
 
 				user.FullName = model.FullName;
@@ -133,13 +134,12 @@ namespace Ecommerce.Controllers
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
-			var UserAdrresses =
-				await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
+			var userAddresses = await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
 
 			ViewBag.UserFullName = user.FullName;
 			ViewBag.UserMobile = user.PhoneNumber;
 
-			return View(UserAdrresses);
+			return View(userAddresses);
 		}
 
 		[HttpGet]

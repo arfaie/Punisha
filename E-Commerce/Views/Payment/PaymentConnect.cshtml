@@ -104,7 +104,7 @@
                                 </div>
                                 <div class="checkout-order-summary-col-shipping-cost">
                                     مبلغ مرسوله
-                                    <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                    <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان</span>
                                 </div>
                                 <i class="fa fa-chevron-down"></i>
                             </div>
@@ -136,7 +136,7 @@
                         <div class="checkout-to-shipping-price-report">
                             <p>مبلغ قابل پرداخت</p>
                             <div class="cart-item-product-price">
-                                @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}")
+                                @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}")
                                 <span>تومان</span>
                             </div>
                         </div>
@@ -202,16 +202,16 @@
                             <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                         </li>
                         <li>
-                            <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
-                            <span></span>
+                            <span style="color: #424750; font-size:14px;"><i class="fa fa-truck"></i>هزینه ارسال</span>
+                            <span>@Model.ShippingCost</span>
                         </li>
-                        <li>
-                            <span><i class="fa fa-truck"></i>ارسال عادی</span>
-                            <span>رایگان</span>
-                        </li>
+                        @*<li>
+                                <span><i class="fa fa-truck"></i>ارسال عادی</span>
+                                <span>رایگان</span>
+                            </li>*@
                         <li>
                             <span>مبلغ قابل پرداخت</span>
-                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان</span>
                         </li>
                         @*<li class="checkout-digiclub-container">
                                 <span class="checkout-digiclub-row">

@@ -6,7 +6,7 @@
 }
 
 <div>
-    @Html.Partial("_UserPanel")
+    @(await Html.PartialAsync("_UserPanel"))
 </div>
 <!--search-category------------------------->
 <div class="col-lg-9 col-md-8 col-xs-12 pull-right">
@@ -82,20 +82,20 @@
                     </div>
                     <div class="hr profile-order-steps-item-active"></div>
                     @*<div class="profile-order-steps-item">
-                        <img src="~/images/svg/profile-order-2.svg">
-                        <span>تایید سفارش</span>
-                    </div>*@
+                            <img src="~/images/svg/profile-order-2.svg">
+                            <span>تایید سفارش</span>
+                        </div>*@
                     @*<div class="hr"></div>*@
                     <div class="profile-order-steps-item">
                         <img src="~/images/svg/profile-order-3.svg">
                         <span>آماده‌سازی سفارش</span>
                     </div>
-                  
+
                     <div class="hr"></div>
                     @*<div class="profile-order-steps-item">
-                        <img src="~/images/svg/profile-order-4.svg">
-                        <span>خروج از مرکز پردازش</span>
-                    </div>*@
+                            <img src="~/images/svg/profile-order-4.svg">
+                            <span>خروج از مرکز پردازش</span>
+                        </div>*@
                     @*<div class="hr"></div>*@
                     <div class="profile-order-steps-item">
                         <img src="~/images/svg/profile-order-5.svg">
@@ -103,9 +103,9 @@
                     </div>
                     <div class="hr"></div>
                     @*<div class="profile-order-steps-item">
-                        <img src="~/images/svg/profile-order-6.svg">
-                        <span>دریافت در مرکز مبادلات پست</span>
-                    </div>*@
+                            <img src="~/images/svg/profile-order-6.svg">
+                            <span>دریافت در مرکز مبادلات پست</span>
+                        </div>*@
                     @*<div class="hr"></div>*@
                     <div class="profile-order-steps-item">
                         <img src="~/images/svg/profile-order-7.svg">
@@ -197,4 +197,3 @@
         </div>
     </div>
 </div>
-

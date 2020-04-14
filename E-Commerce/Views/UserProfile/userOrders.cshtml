@@ -6,7 +6,7 @@
 }
 
 <div>
-    @Html.Partial("_UserPanel")
+    @(await Html.PartialAsync("_UserPanel"))
 </div>
 <div class="col-lg-9 col-md-8 col-xs-12 pull-left">
     <div class="headline-profile page-profile-order" style="margin-top:140px;">
@@ -92,11 +92,11 @@
                                         <div class="profile-info-value">@item.TransactionDate</div>
                                     </div>
                                     <div class="profile-info-row">
-                                        <div class="profile-info-label">مبلغ قابل پرداخت</div>
-                                        <div class="profile-info-value">0</div>
+                                        <div class="profile-info-label">مبلغ کل</div>
+                                        <div class="profile-info-value">@item.Factor?.TotalPrice</div>
                                     </div>
                                     <div class="profile-info-row">
-                                        <div class="profile-info-label">مبلغ کل</div>
+                                        <div class="profile-info-label">مبلغ قابل پرداخت</div>
                                         <div class="profile-info-value">@item.Factor?.FinalPrice</div>
                                     </div>
                                 </div>
