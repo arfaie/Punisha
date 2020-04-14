@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 namespace ECommerce.Helpers
 {
@@ -11,7 +10,5 @@ namespace ECommerce.Helpers
 			var random = rnd.Next(start, end);
 			return random;
 		}
-
-        
-    }
+	}
 }

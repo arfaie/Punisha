@@ -16,17 +16,17 @@
         <div class="row">
             <ul class="checkout-steps">
                 <li class="is-completed is-completed-active">
-                    <a href="shopping.html" class="checkout-steps-item-link active-link-shopping">
+                    <a href="#" class="checkout-steps-item-link active-link-shopping">
                         <span>اطلاعات ارسال</span>
                     </a>
                 </li>
                 <li class="is-completed">
-                    <a href="shopping-payment.html" class="checkout-steps-item-link active-link-shopping">
+                    <a href="#" class="checkout-steps-item-link active-link-shopping">
                         <span>پرداخت</span>
                     </a>
                 </li>
                 <li class="is-active">
-                    <a href="shopping-complate-buy.html" class="checkout-steps-item active-link">
+                    <a href="#" class="checkout-steps-item active-link">
                         <span>اتمام خرید و ارسال</span>
                     </a>
                 </li>
@@ -34,7 +34,6 @@
         </div>
     </div>
 </header>
-<div asp-validation-summary="All" class="text-danger"></div>
 <div class="main-shopping">
     <div class="content-shopping">
         <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
@@ -42,6 +41,7 @@
                 <div class="headline-checkout-shopping">
                     <span>انتخاب شیوه پرداخت</span>
                 </div>
+                <div asp-validation-summary="All" class="text-danger"></div>
                 <div class="payment">
                     <ul class="checkout-paymethod">
                         @*<li class="wallet-container">

@@ -17,11 +17,11 @@ namespace ECommerce.Models
 		[Display(Name = "کاربر")]
 		public virtual ApplicationUser User { get; set; }
 
-        [Display(Name = "آدرس ارسال شده")]
-        public string AddressId { get; set; }
+		[Display(Name = "آدرس ارسال شده")]
+		public string AddressId { get; set; }
 
-        [ForeignKey("AddressId")]
-        public virtual Address Address { get; set; }
+		[Display(Name = "آدرس ارسال شده")]
+		public virtual Address Address { get; set; }
 
 		[Display(Name = "جمع مبلغ")]
 		public int TotalPrice { get; set; }
@@ -32,8 +32,12 @@ namespace ECommerce.Models
 		[Display(Name = "مالیات")]
 		public float Tax { get; set; }
 
+		[Display(Name = "هزینه ارسال")]
+		public int ShippingCost { get; set; }
+
+		[NotMapped]
 		[Display(Name = "مبلغ نهایی")]
-		public int FinalPrice { get; set; }
+		public int FinalPrice => (int)((TotalPrice - TotalDiscount) * (1 + Tax / 100) + ShippingCost);
 
 		[Display(Name = "تاریخ")]
 		public DateTime Date { get; set; }
@@ -43,12 +47,6 @@ namespace ECommerce.Models
 
 		[Display(Name = "پرداخت شده")]
 		public bool IsPaid { get; set; }
-
-		[Display(Name = "آدرس تحویل")]
-		public string AddressId { get; set; }
-
-		[Display(Name = "آدرس تحویل")]
-		public virtual Address Address { get; set; }
 
 		public ICollection<FactorItem> FactorItems { get; set; }
 

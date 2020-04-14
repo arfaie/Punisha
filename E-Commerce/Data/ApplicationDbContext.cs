@@ -82,6 +82,41 @@ namespace ECommerce.Data
 			builder.Entity<Status>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<Unit>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 			builder.Entity<UserGroup>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+
+			builder.Entity<ShippingState>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+			builder.Entity<ShippingState>().HasData(
+				new ShippingState { StateId = 1, Name = "تهران" },
+				new ShippingState { StateId = 2, Name = "گیلان" },
+				new ShippingState { StateId = 3, Name = "آذربایجان شرقی" },
+				new ShippingState { StateId = 4, Name = "خوزستان" },
+				new ShippingState { StateId = 5, Name = "فارس" },
+				new ShippingState { StateId = 6, Name = "اصفهان" },
+				new ShippingState { StateId = 7, Name = "خراسان رضوی" },
+				new ShippingState { StateId = 8, Name = "قزوین" },
+				new ShippingState { StateId = 9, Name = "سمنان" },
+				new ShippingState { StateId = 10, Name = "قم" },
+				new ShippingState { StateId = 11, Name = "مرکزی" },
+				new ShippingState { StateId = 12, Name = "زنجان" },
+				new ShippingState { StateId = 13, Name = "مازندران" },
+				new ShippingState { StateId = 14, Name = "گلستان" },
+				new ShippingState { StateId = 15, Name = "اردبیل" },
+				new ShippingState { StateId = 16, Name = "آذربایجان غربی" },
+				new ShippingState { StateId = 17, Name = "همدان" },
+				new ShippingState { StateId = 18, Name = "کردستان" },
+				new ShippingState { StateId = 19, Name = "کرمانشاه" },
+				new ShippingState { StateId = 20, Name = "لرستان" },
+				new ShippingState { StateId = 21, Name = "بوشهر" },
+				new ShippingState { StateId = 22, Name = "کرمان" },
+				new ShippingState { StateId = 23, Name = "هرمزگان" },
+				new ShippingState { StateId = 24, Name = "چهارمحال و بختیاری" },
+				new ShippingState { StateId = 25, Name = "یزد" },
+				new ShippingState { StateId = 26, Name = "سیستان و بلوچستان" },
+				new ShippingState { StateId = 27, Name = "ایلام" },
+				new ShippingState { StateId = 28, Name = "کهگلویه و بویراحمد" },
+				new ShippingState { StateId = 29, Name = "خراسان شمالی" },
+				new ShippingState { StateId = 30, Name = "خراسان جنوبی" },
+				new ShippingState { StateId = 31, Name = "البرز" }
+			);
 		}
 	}
 }

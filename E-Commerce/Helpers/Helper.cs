@@ -1,4 +1,5 @@
-﻿using ECommerce.ViewModels;
+﻿using ECommerce.Data;
+using ECommerce.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -216,6 +217,15 @@ namespace ECommerce.Helpers
 			value = value.Replace(",", String.Empty).Replace("/", ".").Replace("۰", "0").Replace("۱", "1").Replace("۲", "2").Replace("۳", "3").Replace("۴", "4").Replace("۵", "5").Replace("۶", "6").Replace("۷", "7").Replace("۸", "8").Replace("۹", "9");
 
 			return value;
+		}
+
+		public static int CalculateShippingCost(ApplicationDbContext context, string addressId)
+		{
+			// get address state,
+
+			// calculate cost
+
+			return 0;
 		}
 	}
 }

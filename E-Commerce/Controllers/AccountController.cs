@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using MessageType = ECommerce.Models.Helpers.OptionEnums.MessageType;
 
 namespace ECommerce.Controllers
@@ -132,7 +131,6 @@ namespace ECommerce.Controllers
 			if (ModelState.IsValid)
 			{
 				var user = await _userManager.FindByNameAsync(login.Mobile);
-
 
 				if (user?.IsBlocked == true)
 				{
@@ -358,7 +356,7 @@ namespace ECommerce.Controllers
 		{
 			if (!Helper.IsMobileNumberValid(mobile))
 			{
-				return Json($"شماره موبایل معتبر نیست");
+				return Json("شماره موبایل معتبر نیست");
 			}
 
 			return Json(true);

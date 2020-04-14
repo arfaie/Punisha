@@ -3,7 +3,6 @@ using ECommerce.Helpers;
 using ECommerce.Helpers.ZarinPal;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,14 +53,23 @@ namespace ECommerce.Controllers
 					{
 						Date = DateTime.UtcNow,
 						FactorItems = new List<FactorItem>(),
-						UserId = user.Id
+						UserId = user.Id,
 					};
+
+					// generate random factor code
+					var allFactorCodes = await _context.Factors.Select(x => x.FactorCode).ToListAsync();
+
+					var random = new Random();
+					do
+					{
+						factor.FactorCode = $"CBT-{random.Next(1234567, 10000000)}";
+					} while (allFactorCodes.Contains(factor.FactorCode));
 
 					await using var transaction = _context.Database.BeginTransaction();
 					try
 					{
 						_context.Factors.Add(factor);
-						//await _context.SaveChangesAsync();
+						await _context.SaveChangesAsync();
 
 						foreach (var product in products)
 						{
@@ -81,6 +89,7 @@ namespace ECommerce.Controllers
 
 						factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
 
+						_context.Factors.Update(factor);
 						await _context.SaveChangesAsync();
 
 						transaction.Commit();
@@ -95,6 +104,7 @@ namespace ECommerce.Controllers
 					factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
 					factor.Date = DateTime.UtcNow;
 
+					_context.Factors.Update(factor);
 					await _context.SaveChangesAsync();
 				}
 
@@ -133,7 +143,14 @@ namespace ECommerce.Controllers
 
 			ViewBag.User = user;
 
-			ViewBag.Addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ToListAsync();
+			var addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ToListAsync();
+
+			if (addresses.Count > 0)
+			{
+				factor.AddressId = addresses.ElementAt(0).Id;
+			}
+
+			ViewBag.Addresses = addresses;
 
 			if (factor.FactorItems?.Count > 0)
 			{
@@ -150,9 +167,48 @@ namespace ECommerce.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> PaymentCheckout(Factor factor)
+		public async Task<IActionResult> PaymentCheckout(Factor model)
 		{
-			return RedirectToAction("PaymentConnect", new { id = factor.Id });
+			var factor = await _context.Factors.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+			if (factor != null)
+			{
+				if (String.IsNullOrWhiteSpace(model.AddressId))
+				{
+					var user = await _userManager.GetUserAsync(HttpContext.User);
+
+					if (user == null)
+					{
+						return RedirectToAction("Login", "Account");
+					}
+
+					ViewBag.User = user;
+
+					ViewBag.Addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ToListAsync();
+
+					if (factor.FactorItems?.Count > 0)
+					{
+						factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
+
+						_context.Factors.Update(factor);
+						await _context.SaveChangesAsync();
+
+						var productIds = factor.FactorItems.Select(x => x.ProductId).ToList();
+						ViewBag.Products = await _context.Products.Where(x => productIds.Contains(x.Id)).ToListAsync();
+					}
+
+					ModelState.AddModelError(String.Empty, "داشتن آدرس تحویل الزامی است.");
+					return View(factor);
+				}
+
+				factor.ShippingCost = Helper.CalculateShippingCost(_context, model.AddressId);
+
+				factor.AddressId = model.AddressId;
+				_context.Factors.Update(factor);
+				await _context.SaveChangesAsync();
+			}
+
+			return RedirectToAction("PaymentConnect", new { id = model.Id });
 		}
 
 		[HttpGet]
@@ -167,7 +223,7 @@ namespace ECommerce.Controllers
 
 			if (factor.FactorItems == null || factor.FactorItems.Count == 0)
 			{
-				ModelState.AddModelError(String.Empty, $"خطا محاسبه مبلغ فاکتور");
+				ModelState.AddModelError(String.Empty, "خطا در محاسبه مبلغ فاکتور");
 				return View(factor);
 			}
 
@@ -208,9 +264,7 @@ namespace ECommerce.Controllers
 
 			if (status != "OK")
 			{
-				ModelState.AddModelError("AmountError", "خطا در پرداخت");
-
-				return View("FailedPayment");
+				return RedirectToAction("FailedPayment", new { factorCode = "", error = "خطا در پرداخت" });
 			}
 
 			var authority = collection["Authority"];
@@ -219,30 +273,28 @@ namespace ECommerce.Controllers
 
 			if (factor == null)
 			{
-				ModelState.AddModelError(String.Empty, "خطا در تایید فاکتور");
-				return View("FailedPayment");
+				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید فاکتور" });
 			}
+
+			TempData["FactorCode"] = factor.FactorCode;
 
 			if (factor.TotalPrice == 0)
 			{
-				ModelState.AddModelError(String.Empty, "خطا در مبلغ درست پرداختی");
-				return View("FailedPayment");
+				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در مبلغ درست پرداختی" });
 			}
 
 			var verificationResponse = ZarinPalPayment.Verify(factor.TotalPrice, authority);
 
 			if (!verificationResponse.IsSuccess)
 			{
-				ModelState.AddModelError(String.Empty, "خطا در تایید پرداخت");
-				return View("FailedPayment");
+				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید پرداخت" });
 			}
 
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
 			if (user == null)
 			{
-				ModelState.AddModelError(String.Empty, "خطا در تایید کاربر");
-				return View("FailedPayment");
+				return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
 			}
 			//string dateTimes = Helper.GetPersianDateText(DateTime.Now);
 
@@ -286,12 +338,29 @@ namespace ECommerce.Controllers
 				}
 				catch (Exception ex)
 				{
-					ModelState.AddModelError(String.Empty, ex.Message);
-					return View("FailedPayment");
+					return RedirectToAction("FailedPayment", new { factorCode = factor.FactorCode, error = ex.Message });
 				}
 			}
 
-			return View("SuccessfulPayment");
+			return RedirectToAction("SuccessfulPayment", new { factorCode = factor.FactorCode });
+		}
+
+		[HttpGet]
+		public IActionResult FailedPayment(string factorCode, string error)
+		{
+			ViewBag.FactorCode = factorCode;
+
+			ViewBag.StatusMessage = error;
+
+			return View();
+		}
+
+		[HttpGet]
+		public IActionResult SuccessfulPayment(string factorCode)
+		{
+			ViewBag.FactorCode = factorCode;
+
+			return View();
 		}
 	}
 }

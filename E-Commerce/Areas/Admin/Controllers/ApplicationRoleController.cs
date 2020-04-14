@@ -5,13 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-    //[Authorize(Roles = "Admin")]
-    public class ApplicationRoleController : Controller
+	//[Authorize(Roles = "Admin")]
+	public class ApplicationRoleController : Controller
 	{
 		private readonly RoleManager<ApplicationRole> _roleManager;
 
