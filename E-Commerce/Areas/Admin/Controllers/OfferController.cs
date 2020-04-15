@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using ECommerce.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -25,6 +26,8 @@ namespace ECommerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
+
+
             return View(await _context.Offers.Include(o => o.OfferItems).ToListAsync());
         }
 
@@ -38,6 +41,7 @@ namespace ECommerce.Areas.Admin.Controllers
             var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
             if (offer != null)
             {
+
                 return PartialView("AddEdit", offer);
             }
 
@@ -46,18 +50,28 @@ namespace ECommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, Offer model, string redirectUrl)
+        public async Task<IActionResult> AddEdit(string id, Offer model, string redirectUrl, string strEndDate, string strStartDate)
         {
             if (ModelState.IsValid)
             {
                 if (String.IsNullOrWhiteSpace(id))
                 {
+                    string pDateEnd = strEndDate.PersianToEnglish();
+                    model.EndDate = pDateEnd.ToGeorgianDateTime();
+
+                    string pDateStart = strStartDate.PersianToEnglish();
+                    model.StartDate = pDateStart.ToGeorgianDateTime();
+
                     _context.Offers.Add(model);
                     await _context.SaveChangesAsync();
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
                     return PartialView("_SuccessfulResponse", redirectUrl);
                 }
+
+                model.EndDate = strEndDate.ToGeorgianDateTime();
+
+                model.StartDate = strStartDate.ToGeorgianDateTime();
 
                 _context.Offers.Update(model);
                 await _context.SaveChangesAsync();

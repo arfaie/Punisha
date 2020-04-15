@@ -3,91 +3,112 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-    <form asp-controller="Offer" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
-          data-ajax-update="#AddEdit" data-ajax-mode="replace">
+<form asp-controller="Offer" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#AddEdit" data-ajax-mode="replace">
 
-        <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
 
-        @*header*@
-        @if (!String.IsNullOrWhiteSpace(Model.Id))
-        {
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش تخفیف" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن تخفیف" })
-        }
 
-        @*body*@
-        <div class="modal-body form-horizontal">
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+    <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+
+    @{
+        string sDate = "";
+        string eDate = "";
+    }
+
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        sDate = Model.StartDate.ToPersianDateString();
+        eDate = Model.EndDate.ToPersianDateString();
+
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش تخفیف" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن تخفیف" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="StartDate" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="StartDate" class="form-control" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                    </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="StartDate" class="form-control hidden" />
+                    <input value="@sDate" type="text" class="form-control" id="todate1" name="strStartDate" placeholder="از تاریخ" data-MdDateTimePicker="true" />
                 </div>
-                
-                <div class="form-group">
-                    <label asp-for="EndDate" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="EndDate" class="form-control" />
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
-                    </div>
-                </div>
+            </div>
 
-                
-                @*<div class="input-group" style="width: 500px;">
+            @*<div class="input-group col-md-2 pull-right" style="width: 150px">
                     <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </div>
-                    <input type="text" class="form-control" asp-for="EndDate" placeholder="تا تاریخ" data-MdDateTimePicker="true" data-placement="right" />
+                    <input type="text" class="form-control" id="todate1" name="strEndDate" placeholder="تا تاریخ" data-MdDateTimePicker="true"/>
                 </div>*@
 
-                <div class="form-group">
-                    <label asp-for="IsActive" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="IsActive" style="margin-top: 12px" />
-                        <span asp-validation-for="IsActive" class="text-danger"></span>
+            @*<div class="input-group col-md-2 pull-right" style="width: 150px">
+                    <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
+                        <span class="glyphicon glyphicon-calendar"></span>
                     </div>
+                    <input type="text" class="form-control" id="todate1" name="strStartDate" placeholder="از تاریخ" data-MdDateTimePicker="true"/>
+                </div>*@
+
+
+
+            <div class="form-group">
+                <label asp-for="EndDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="EndDate" class="form-control hidden" />
+                    <input value="@eDate" type="text" class="form-control" id="todate1" name="strEndDate" placeholder="تا تاریخ" data-MdDateTimePicker="true" />
                 </div>
-
-                <div class="form-group">
-                    <label asp-for="idUserGroup" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <select asp-for="idUserGroup" asp-items="@ViewBag.userGroups" class="form-control">
-                            <option value="" disabled="disabled" selected="selected">انتخاب گروه کاربری</option>
-                        </select>
-                    </div>
-                </div>
-
-                <input type="hidden" asp-for="Id" class="form-control" />
-
-                <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Offer")" />
-
             </div>
+
+            <div class="form-group">
+                <label asp-for="IsActive" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="IsActive" style="margin-top: 12px" />
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="idUserGroup" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="idUserGroup" asp-items="@ViewBag.userGroups" class="form-control">
+                        <option value="" disabled="disabled" selected="selected">انتخاب گروه کاربری</option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="Id" class="form-control" />
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Offer")" />
+
         </div>
+    </div>
 
-        @*footer*@
-        @if (!String.IsNullOrWhiteSpace(Model.Id))
-        {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش تخفیف" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن تخفیف" })
-        }
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش تخفیف" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن تخفیف" })
+    }
 
-        <script src="~/persiandatepicker/calendar.js"></script>
-        <script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+    <script src="~/persiandatepicker/calendar.js"></script>
+    <script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
 
-    </form>
+
+</form>
+
+

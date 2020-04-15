@@ -16,7 +16,7 @@
                 <a asp-controller="UserProfile" asp-action="userOrders" class="profile-navbar-btn-back">بازگشت</a>
                 <h4>
                     سفارش @Model.TransactionNumber
-                    <span>ثبت شده در رتایخ @Model.TransactionDate  </span>
+                    <span>ثبت شده در تاریخ @Model.TransactionDate.ToPersianDateString()  </span>
                 </h4>
             </div>
             <div class="profile-navbar-invoice">

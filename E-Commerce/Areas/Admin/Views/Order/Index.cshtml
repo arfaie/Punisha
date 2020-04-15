@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<ECommerce.Models.Order>
 
+
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
@@ -67,7 +68,7 @@
                                         {
                                             <td>پرداخت نشده</td>
                                         }
-                                        <td>@item.TransactionDate</td>
+                                        <td>@item.TransactionDate.ToPersianDateString()</td>
                                         <td>@item.Status?.Title</td>
                                         <td>@item.IssueCode</td>
                                         <td>@item.Description</td>

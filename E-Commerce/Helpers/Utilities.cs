@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace ECommerce.Helpers
 {
@@ -10,5 +13,8 @@ namespace ECommerce.Helpers
 			var random = rnd.Next(start, end);
 			return random;
 		}
-	}
+
+        
+
+    }
 }
