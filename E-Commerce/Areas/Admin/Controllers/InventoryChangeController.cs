@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using ECommerce.Data;
+﻿using ECommerce.Data;
 using ECommerce.Models;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
@@ -10,104 +6,103 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
-    public class InventoryChangeController : Controller
-    {
-        private readonly ApplicationDbContext _context;
+	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
+	public class InventoryChangeController : Controller
+	{
+		private readonly ApplicationDbContext _context;
 
-        public InventoryChangeController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
+		public InventoryChangeController(ApplicationDbContext context)
+		{
+			_context = context;
+		}
 
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Index()
+		{
+			return View(await _context.InventoryChanges.Include(i => i.Product).ToListAsync());
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.InventoryChanges.Include(i => i.Product).ToListAsync());
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> AddEdit(string id)
+		{
+			ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> AddEdit(string id)
-        {
-            ViewBag.Products = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
+			var select = await _context.InventoryChanges.SingleOrDefaultAsync(x => x.Id == id);
+			if (select != null)
+			{
+				return PartialView("AddEdit", select);
+			}
 
-            var select = await _context.InventoryChanges.SingleOrDefaultAsync(x => x.Id == id);
-            if (select != null)
-            {
-                return PartialView("AddEdit", select);
-            }
+			return PartialView("AddEdit", new InventoryChange());
+		}
 
-            return PartialView("AddEdit", new InventoryChange());
-        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddEdit(string id, InventoryChange model, string redirecturl)
+		{
+			if (ModelState.IsValid)
+			{
+				if (String.IsNullOrEmpty(id))
+				{
+					_context.InventoryChanges.Add(model);
+					await _context.SaveChangesAsync();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, InventoryChange model, string redirecturl)
-        {
-            if (ModelState.IsValid)
-            {
-                if (String.IsNullOrEmpty(id))
-                {
-                    _context.InventoryChanges.Add(model);
-                    await _context.SaveChangesAsync();
+					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 
-                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+					return PartialView("_SuccessfulResponse", redirecturl);
+				}
 
-                    return PartialView("_SuccessfulResponse", redirecturl);
+				_context.InventoryChanges.Update(model);
+				await _context.SaveChangesAsync();
 
-                }
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
 
-                _context.InventoryChanges.Update(model);
-                await _context.SaveChangesAsync();
+				return PartialView("_SuccessfulResponse", redirecturl);
+			}
 
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+			return PartialView("AddEdit", model);
+		}
 
-                return PartialView("_SuccessfulResponse", redirecturl);
-            }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Delete(string id)
+		{
+			var select = await _context.InventoryChanges.SingleOrDefaultAsync(i => i.Id == id);
+			if (select == null)
+			{
+				return RedirectToAction("Index");
+			}
 
-            return PartialView("AddEdit", model);
-        }
+			return PartialView("Delete", $"{select.Product?.Name} {select.Date}");
+		}
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> Delete(string id)
-        {
-            var select = await _context.InventoryChanges.SingleOrDefaultAsync(i => i.Id == id);
-            if (select == null)
-            {
-                return RedirectToAction("Index");
-            }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> Delete(string id, string redirectUrl)
+		{
+			if (ModelState.IsValid)
+			{
+				var model = await _context.InventoryChanges.FirstOrDefaultAsync(i => i.Id == id);
 
-            return PartialView("Delete",$"{select.Product?.Name} {select.Date}");
-        }
+				_context.InventoryChanges.Remove(model);
+				await _context.SaveChangesAsync();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(string id, string redirectUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                var model = await _context.InventoryChanges.FirstOrDefaultAsync(i => i.Id == id);
+				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
-                _context.InventoryChanges.Remove(model);
-                await _context.SaveChangesAsync();
+				return PartialView("_SuccessfulResponse", redirectUrl);
+			}
 
-                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-                return PartialView("_SuccessfulResponse", redirectUrl);
-
-            }
-
-            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
-
-            return RedirectToAction("Index");
-        }
-    }
+			return RedirectToAction("Index");
+		}
+	}
 }

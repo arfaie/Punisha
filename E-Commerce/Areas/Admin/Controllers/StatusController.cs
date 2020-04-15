@@ -1,11 +1,7 @@
 ﻿using ECommerce.Data;
-using ECommerce.Models;
-using ECommerce.Models.Helpers;
-using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Threading.Tasks;
 
 namespace ECommerce.Areas.Admin.Controllers

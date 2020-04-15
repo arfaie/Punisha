@@ -51,11 +51,11 @@ else
             <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
                 <div class="page-content-cart">
                     <div class="header-express">
-                        <span class="checkout-header-title"><i class="fa fa-truck"></i>ارسال عادی</span>
+                        @*<span class="checkout-header-title"><i class="fa fa-truck"></i>ارسال عادی</span>*@
                         <span class="header-extra-info">
                             (@Model.FactorItems?.Count() کالا) - (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)
                         </span>
-                        <span class="checkout-header-delivery-cost">هزینه ارسال: رایگان</span>
+                        <span class="checkout-header-delivery-cost">هزینه ارسال: با انتخاب آدرس محاسبه می شود</span>
                         <span style="display:none" class="hidden" id="totalCount">@Model.FactorItems?.Sum(x => x.UnitCount)</span>
                         <span style="display:none" id="itemsCount">@Model.FactorItems?.Count()</span>
                         <span style="display:none" id="totalSum">@(Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice))</span>
@@ -98,7 +98,7 @@ else
                 <div class="checkout-to-shipping-sticky">
                     <a asp-controller="Payment" asp-action="PaymentCheckout" asp-route-id="@Model.Id" class="selenium-next-step-shipping">ادامه فرآیند خرید</a>
                     <div class="checkout-to-shipping-price-report">
-                        <p>مبلغ قابل پرداخت</p>
+                        <p>مبلغ فاکتور</p>
                         <div class="cart-item-product-price totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</div>
                     </div>
                 </div>
@@ -117,14 +117,14 @@ else
                             </li>
                             <li>
                                 <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
-                                <span></span>
+                                <span>با انتخاب آدرس محاسبه می شود</span>
                             </li>
+                            @*<li>
+                                    <span><i class="fa fa-truck"></i>ارسال عادی</span>
+                                    <span>با انتخاب آدرس محاسبه می شود</span>
+                                </li>*@
                             <li>
-                                <span><i class="fa fa-truck"></i>ارسال عادی</span>
-                                <span>رایگان</span>
-                            </li>
-                            <li>
-                                <span>مبلغ قابل پرداخت</span>
+                                <span>مبلغ فاکتور</span>
                                 <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                             </li>
                             @*<li class="checkout-digiclub-container">

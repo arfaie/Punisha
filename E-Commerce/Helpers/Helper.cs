@@ -1,9 +1,13 @@
-﻿using ECommerce.ViewModels;
+﻿using ECommerce.Data;
+using ECommerce.Models;
+using ECommerce.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace ECommerce.Helpers
 {
@@ -216,6 +220,39 @@ namespace ECommerce.Helpers
 			value = value.Replace(",", String.Empty).Replace("/", ".").Replace("۰", "0").Replace("۱", "1").Replace("۲", "2").Replace("۳", "3").Replace("۴", "4").Replace("۵", "5").Replace("۶", "6").Replace("۷", "7").Replace("۸", "8").Replace("۹", "9");
 
 			return value;
+		}
+
+		public static async Task<int> CalculateShippingCostAsync(ApplicationDbContext context, string addressId,
+			ICollection<FactorItem> factorItems)
+		{
+			// get address state,
+			var address = await context.Addresses.FirstOrDefaultAsync(x => x.Id == addressId);
+
+			if (address != null)
+			{
+				var city = await context.Cities.Include(x => x.State).FirstOrDefaultAsync(x => x.Id == address.CityId);
+
+				if (city?.State != null)
+				{
+					var shippingState =
+						await context.ShippingStates.FirstOrDefaultAsync(x => x.Name == city.State.Name);
+
+					// calculate cost
+					if (shippingState != null)
+					{
+						var weight = factorItems.Sum(x => x.UnitCount * x.Product?.Weight);
+
+						if (weight.HasValue)
+						{
+							var shipping = new ShippingCost(1, shippingState.StateId, weight.Value);
+
+							return (int)shipping.Calculate();
+						}
+					}
+				}
+			}
+
+			return 0;
 		}
 	}
 }

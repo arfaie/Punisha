@@ -7,9 +7,9 @@
         <ul class="listing-sort">
             مرتب‌سازی بر اساس :
             @*<li><a href="#">پربازدید ترین</a></li>
-                <li><a href="#">پرفروش ترین</a></li>
                 <li><a href="#">محبوب ترین</a></li>*@
             <li class="listing-active"><a href="#">جدید ترین</a></li>
+            <li><a href="#">پرفروش ترین</a></li>
             <li><a href="#">ارزان ترین</a></li>
             <li><a href="#">گران ترین</a></li>
         </ul>
@@ -19,6 +19,44 @@
         <li style="display:block">
 
             @foreach (var product in Model.OrderByDescending(x => x.AddingDateTime))
+            {
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                    <div class="promotion-box">
+                        <div class="product-seller-details">
+                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                        </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName">
+                        </a>
+
+                        <div class="product-box-content">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                        </div>
+
+                        @*<div class="product-box-rate">
+                                <span>۲,۶۵۰ نفر</span>
+
+                                <div class="stars">
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                    <span><img src="~/images/search/star-1.svg"></span>
+                                </div>
+                            </div>*@
+
+                        <div class="product-box-row">
+                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                            <span class="price-currency">تومان </span>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </li>
+        <li>
+            @foreach (var product in Model.OrderByDescending(x => x.FactorItems?.Count))
             {
                 <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
                     <div class="promotion-box">

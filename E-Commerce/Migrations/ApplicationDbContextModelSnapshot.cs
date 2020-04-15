@@ -415,11 +415,11 @@ namespace ECommerce.Migrations
                     b.Property<string>("FactorCode")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("FinalPrice")
-                        .HasColumnType("int");
-
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
+
+                    b.Property<int>("ShippingCost")
+                        .HasColumnType("int");
 
                     b.Property<float>("Tax")
                         .HasColumnType("real");
@@ -455,9 +455,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("FactorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
@@ -470,8 +467,6 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FactorId");
-
-                    b.HasIndex("OrderId");
 
                     b.HasIndex("ProductId");
 
@@ -767,6 +762,9 @@ namespace ECommerce.Migrations
                     b.Property<string>("UnitId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
@@ -857,6 +855,211 @@ namespace ECommerce.Migrations
                     b.HasIndex("SelectGroupId");
 
                     b.ToTable("SelectItems");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.ShippingState", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShippingStates");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec01",
+                            Name = "تهران",
+                            StateId = 1
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec02",
+                            Name = "گیلان",
+                            StateId = 2
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec03",
+                            Name = "آذربایجان شرقی",
+                            StateId = 3
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec04",
+                            Name = "خوزستان",
+                            StateId = 4
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec05",
+                            Name = "فارس",
+                            StateId = 5
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec06",
+                            Name = "اصفهان",
+                            StateId = 6
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec07",
+                            Name = "خراسان رضوی",
+                            StateId = 7
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec08",
+                            Name = "قزوین",
+                            StateId = 8
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec09",
+                            Name = "سمنان",
+                            StateId = 9
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec10",
+                            Name = "قم",
+                            StateId = 10
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec11",
+                            Name = "مرکزی",
+                            StateId = 11
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec12",
+                            Name = "زنجان",
+                            StateId = 12
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec13",
+                            Name = "مازندران",
+                            StateId = 13
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec14",
+                            Name = "گلستان",
+                            StateId = 14
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec15",
+                            Name = "اردبیل",
+                            StateId = 15
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec16",
+                            Name = "آذربایجان غربی",
+                            StateId = 16
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec17",
+                            Name = "همدان",
+                            StateId = 17
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec18",
+                            Name = "کردستان",
+                            StateId = 18
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec19",
+                            Name = "کرمانشاه",
+                            StateId = 19
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec20",
+                            Name = "لرستان",
+                            StateId = 20
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec21",
+                            Name = "بوشهر",
+                            StateId = 21
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec22",
+                            Name = "کرمان",
+                            StateId = 22
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec23",
+                            Name = "هرمزگان",
+                            StateId = 23
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec24",
+                            Name = "چهارمحال و بختیاری",
+                            StateId = 24
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec25",
+                            Name = "یزد",
+                            StateId = 25
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec26",
+                            Name = "سیستان و بلوچستان",
+                            StateId = 26
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec27",
+                            Name = "ایلام",
+                            StateId = 27
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec28",
+                            Name = "کهگلویه و بویراحمد",
+                            StateId = 28
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec29",
+                            Name = "خراسان شمالی",
+                            StateId = 29
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec30",
+                            Name = "خراسان جنوبی",
+                            StateId = 30
+                        },
+                        new
+                        {
+                            Id = "6f9c65d6-6596-4fd0-8193-7c32dafcec31",
+                            Name = "البرز",
+                            StateId = 31
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Models.Slider", b =>
@@ -1142,10 +1345,6 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Factor", "Factor")
                         .WithMany("FactorItems")
                         .HasForeignKey("FactorId");
-
-                    b.HasOne("ECommerce.Models.Order", null)
-                        .WithMany("FactorItems")
-                        .HasForeignKey("OrderId");
 
                     b.HasOne("ECommerce.Models.Product", "Product")
                         .WithMany("FactorItems")

@@ -26,6 +26,9 @@ namespace ECommerce.Models
 		[Display(Name = "نام")]
 		public string Name { get; set; }
 
+		[Display(Name = "وزن به گرم")]
+		public int Weight { get; set; }
+
 		[Display(Name = "توضیحات")]
 		public string Description { get; set; }
 

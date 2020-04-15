@@ -41,51 +41,69 @@
             <div class="shipment-page-container">
                 <div class="headline-checkout-shopping">
                     <span>انتخاب آدرس تحویل سفارش</span>
+                    <div asp-validation-summary="All" class="text-danger"></div>
                 </div>
                 <div id="address-section">
                     <div class="checkout-contact">
-                        @for (int i = 0; i < ViewBag.Addresses.Count; i++)
+                        @if (ViewBag.Addresses != null && ViewBag.Addresses.Count > 0)
                         {
-                            Address address = ViewBag.Addresses[i];
+                            for (int i = 0; i < ViewBag.Addresses.Count; i++)
+                            {
+                                Address address = ViewBag.Addresses[i];
 
+                                <div class="checkout-contact-content">
+                                    <ul class="checkout-contact-items">
+                                        <li class="checkout-contact-item">
+                                            گیرنده:
+                                            <span class="full-name">@address.Recipient</span>
+                                            <a href="#" class="edit-address-btn" onclick="document.getElementById('modal').style.display='block'">اصلاح این آدرس</a>
+                                            @if (i == 0)
+                                            {
+                                                <a href="#" class="checkout-contact-location" onclick="document.getElementById('modal').style.display='block'">تعریف آدرس جدید</a>
+                                            }
+                                        </li>
+                                        <li class="checkout-contact-item">
+                                            <div class="checkout-contact-item-mobile">
+                                                شماره تماس:
+                                                <span class="mobile-phone">@address.Mobile</span>
+                                                <br>
+                                            </div>
+                                            <div class="checkout-contact-item-message">
+                                                شهر:
+                                                <span class="post-code">@address.City?.Name</span>
+                                                <br>
+                                            </div>
+                                            <div class="checkout-contact-item-message">
+                                                کد پستی:
+                                                <span class="post-code">@address.PostalCode</span>
+                                                <br>
+                                            </div>
+                                            <span class="address-part">آدرس: @address.Description</span>
+                                            <br>
+                                        </li>
+                                    </ul>
+                                    <div id="check@(address.Id)" class="checkout-contact-badge">
+                                        @if (i == 0)
+                                        {
+                                            <i class="fa fa-check"></i>
+                                        }
+                                    </div>
+                                    <hr />
+                                </div>
+                            }
+                        }
+                        else
+                        {
                             <div class="checkout-contact-content">
                                 <ul class="checkout-contact-items">
                                     <li class="checkout-contact-item">
-                                        گیرنده:
-                                        <span class="full-name">@address.Recipient</span>
-                                        <a href="#" class="edit-address-btn" onclick="document.getElementById('modal').style.display='block'">اصلاح این آدرس</a>
-                                        @if (i == 0)
-                                        {
-                                            <a href="#" class="checkout-contact-location" onclick="document.getElementById('modal').style.display='block'">تعریف آدرس جدید</a>
-                                        }
-                                    </li>
-                                    <li class="checkout-contact-item">
-                                        <div class="checkout-contact-item-mobile">
-                                            شماره تماس:
-                                            <span class="mobile-phone">@address.Mobile</span>
-                                            <br>
-                                        </div>
-                                        <div class="checkout-contact-item-message">
-                                            شهر:
-                                            <span class="post-code">@address.City?.Name</span>
-                                            <br>
-                                        </div>
-                                        <div class="checkout-contact-item-message">
-                                            کد پستی:
-                                            <span class="post-code">@address.PostalCode</span>
-                                            <br>
-                                        </div>
-                                        <span class="address-part">آدرس: @address.Description</span>
-                                        <br>
+                                        <a href="#" class="checkout-contact-location" onclick="document.getElementById('modal').style.display='block'">تعریف آدرس جدید</a>
+
                                     </li>
                                 </ul>
-                                <div class="checkout-contact-badge">
-                                    @if (i == 0)
-                                    {
-                                        <i class="fa fa-check"></i>
-                                    }
-                                </div>
-                                <hr />
+                                <br />
+                                <br />
+                                <br />
                             </div>
                         }
 
@@ -105,20 +123,23 @@
                         <div class="checkout-pack-row">
                             <div class="swiper-products-compact">
                                 <div class="box">
-                                    @foreach (Product product in ViewBag.Products)
+                                    @if (ViewBag.Products != null)
                                     {
-                                        <div class="col-lg-3 col-md-4 col-xs-12">
-                                            <div class="product-box-container">
-                                                <div class="product-box-compact">
-                                                    <a href="#">
-                                                        <img src="@Helper.NormalImagePath@product.ImageName">
-                                                    </a>
-                                                    <div class="product-box-title">
-                                                        @product.Name به تعداد @Model.FactorItems.FirstOrDefault(x => x.ProductId == product.Id)?.UnitCount عدد
+                                        foreach (Product product in ViewBag.Products)
+                                        {
+                                            <div class="col-lg-3 col-md-4 col-xs-12">
+                                                <div class="product-box-container">
+                                                    <div class="product-box-compact">
+                                                        <a href="#">
+                                                            <img src="@Helper.NormalImagePath@product.ImageName">
+                                                        </a>
+                                                        <div class="product-box-title">
+                                                            @product.Name به تعداد @Model.FactorItems.FirstOrDefault(x => x.ProductId == product.Id)?.UnitCount عدد
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     }
                                 </div>
                             </div>
@@ -131,12 +152,17 @@
                                     </div>
                                     <div class="checkout-additional-options-action-container">
                                         <div class="action-title">زمان تقریبی تحویل @Helper.GetGregorianToPersianDateInverse(DateTime.UtcNow.AddDays(7))</div>
-                                        @*<ul class="action-description">
-                                                <li>پست پیشتاز با ظرفیت اختصاصی برای کاربیوتیک</li>
-                                                <li class="package-shipping-cost">
-                                                    هزینه ارسال : ۸,۰۰۰ تومان
-                                                </li>
-                                            </ul>*@
+                                        <ul class="action-description">
+                                            <li>ارسال با شرکت پست</li>
+                                            @if (ViewBag.Addresses != null && ViewBag.Addresses.Count > 0 && String.IsNullOrWhiteSpace(Model.AddressId))
+                                            {
+                                                <li class="package-shipping-cost">هزینه ارسال : @Model.ShippingCost.ToString("N0") تومان</li>
+                                            }
+                                            else
+                                            {
+                                                <li class="package-shipping-cost">هزینه ارسال : </li>
+                                            }
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
@@ -159,16 +185,16 @@
                             <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
                         </li>
                         <li>
-                            <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
-                            <span></span>
+                            <span style="color: #424750; font-size:14px;"><i class="fa fa-truck"></i>&nbsp;&nbsp;هزینه ارسال</span>
+                            <span id="package-shipping">@Model.ShippingCost.ToString("N0") تومان</span>
                         </li>
-                        <li>
-                            <span><i class="fa fa-truck"></i>ارسال عادی</span>
-                            <span>رایگان</span>
-                        </li>
+                        @*<li>
+                                <span><i class="fa fa-truck"></i>ارسال عادی</span>
+                                <span>رایگان</span>
+                            </li>*@
                         <li>
                             <span>مبلغ قابل پرداخت</span>
-                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            <span id="finalPrice">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان</span>
                         </li>
                         @*<li class="checkout-digiclub-container">
                                 <span class="checkout-digiclub-row">
@@ -208,12 +234,24 @@
             </div>*@
         <div class="col-lg-8 col-md-8 col-xs-12 pull-right">
             <div class="checkout-to-shipping-sticky">
-                <a asp-controller="Payment" asp-action="PaymentConnect" asp-route-id="@Model.Id" class="selenium-next-step-shipping">ادامه فرآیند خرید</a>
+                <form asp-controller="Payment" asp-action="PaymentCheckout">
+                    <input type="hidden" asp-for="Id" class="form-control" />
+
+                    @if (ViewBag.Addresses != null && ViewBag.Addresses.Count > 0 && String.IsNullOrWhiteSpace(Model.AddressId))
+                    {
+                        <input type="hidden" asp-for="AddressId" class="form-control" value="@ViewBag.Addresses[0]" />
+                    }
+                    else
+                    {
+                        <input type="hidden" asp-for="AddressId" class="form-control" />
+                    }
+
+                    <input type="submit" class="selenium-next-step-shipping" value="ادامه فرآیند خرید" />
+                </form>
                 <div class="checkout-to-shipping-price-report">
                     <p>مبلغ قابل پرداخت</p>
                     <div class="cart-item-product-price">
-                        @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}")
-                        <span>تومان</span>
+                        @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان
                     </div>
                 </div>
             </div>
@@ -328,7 +366,33 @@
 
                 $(".checkout-contact-badge").empty();
 
+                var id = $(this).attr("id").replace("check", "");
+                $("#AddressId").val(id);
+
                 $(this).html('<i class="fa fa-check"></i>');
+
+                //calculate shipping cost
+                $.ajax({
+                    type: 'POST',
+                    data: { "addressId": id, "factorId" : "@Model.Id"  },
+                    url: '@Url.Action("CalculateShippingCost", "Payment")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                })
+                .done(function (data) {
+
+                    $(".package-shipping-cost").text("هزینه ارسال : " + data.cost.toLocaleString() + " تومان");
+                    $("#package-shipping").text(data.cost.toLocaleString() + " تومان");
+
+                    $(".cart-item-product-price").text((@Model.TotalPrice + data.cost).toLocaleString() + " تومان");
+                    $("#finalPrice").text((@Model.TotalPrice + data.cost).toLocaleString() + " تومان");
+                })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert("OK");
+                });
 
             });
 

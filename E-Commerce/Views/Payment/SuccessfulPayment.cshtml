@@ -13,17 +13,17 @@
         <div class="row">
             <ul class="checkout-steps">
                 <li class="is-completed is-completed-active">
-                    <a href="shopping.html" class="checkout-steps-item-link active-link-shopping">
+                    <a href="#" class="checkout-steps-item-link active-link-shopping">
                         <span>اطلاعات ارسال</span>
                     </a>
                 </li>
                 <li class="is-completed is-completed-active">
-                    <a href="shopping-payment.html" class="checkout-steps-item-link active-link-shopping">
+                    <a href="#" class="checkout-steps-item-link active-link-shopping">
                         <span>پرداخت</span>
                     </a>
                 </li>
                 <li class="is-active">
-                    <a href="shopping-complate-buy.html" class="checkout-steps-item-link active-link-shopping">
+                    <a href="#" class="checkout-steps-item-link active-link-shopping">
                         <span>اتمام خرید و ارسال</span>
                     </a>
                 </li>
@@ -31,7 +31,10 @@
         </div>
     </div>
 </header>
-
+@if (ViewBag.StatusMessage != null)
+{
+    @(await Html.PartialAsync("_StatusMessage", (string)ViewBag.StatusMessage))
+}
 <div class="main-shopping">
     <div class="col-12 text-center">
         <div class="complate-page-container">
@@ -42,7 +45,7 @@
                     </div>
                     <div class="order-success">
                         سفارش
-                        <a href="#" class="order-code">CBT-57262900</a>
+                        <a href="#" class="order-code">@ViewBag.FactorCode</a>
                         با موفقیت پرداخت و در سیستم ثبت شد.
                         <span class="order-ready-post">
                             پرداخت با موفقیت انجام شد. سفارش شما با موفقیت ثبت شد و در زمان تعیین شده برای شما ارسال خواهد شد.
@@ -57,7 +60,7 @@
                 <div class="order-info">
                     <div class="order-code">
                         کد سفارش :
-                        <span>CBT-57262900</span>
+                        <span>@ViewBag.FactorCode</span>
                     </div>
                     <div class="checkout-process-order-info">
                         سفارش شما با موفقیت در سیستم ثبت شد و هم اکنون
@@ -73,28 +76,28 @@
                             <i class="fa fa-shopping-bag sign-in"></i>
                         </button>
                     </div>
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th scope="col">نام تحویل گیرنده: حسن شجاعی</th>
-                                <th scope="col">شماره تماس :</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>تعداد مرسوله : 1</td>
-                                <td>مبلغ کل :</td>
-                            </tr>
-                            <tr>
-                                <td>وضعیت پرداخت : پرداخت آنلاین(موفق)</td>
-                                <td>وضعیت سفارش : در حال انجام</td>
-                            </tr>
-                            <tr>
-                                <td>آدرس : استان خراسان شمالی ، بجنورد</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @*<table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">نام تحویل گیرنده: حسن شجاعی</th>
+                                    <th scope="col">شماره تماس :</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>تعداد مرسوله : 1</td>
+                                    <td>مبلغ کل :</td>
+                                </tr>
+                                <tr>
+                                    <td>وضعیت پرداخت : پرداخت آنلاین(موفق)</td>
+                                    <td>وضعیت سفارش : در حال انجام</td>
+                                </tr>
+                                <tr>
+                                    <td>آدرس : استان خراسان شمالی ، بجنورد</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>*@
                 </div>
             </div>
         </div>
