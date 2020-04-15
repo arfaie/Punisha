@@ -67,14 +67,14 @@
                         <a href="#" class="processing">در حال پردازش</a>
                         است.جزئیات این سفارش را می توانید
                         با کلیک بر روی دکمه
-                        <a href="#" class="link-border">پیگیری سفارش</a>
+                        <a asp-controller="UserProfile" asp-action="userOrders" class="link-border">پیگیری سفارش</a>
                         مشاهده نمایید.
                     </div>
                     <div class="parent-btn btn-following-order">
-                        <button class="dk-btn dk-btn-info">
+                        <a asp-controller="UserProfile" asp-action="userOrders" class="dk-btn dk-btn-info">
                             پیگیری سفارش
                             <i class="fa fa-shopping-bag sign-in"></i>
-                        </button>
+                        </a>
                     </div>
                     @*<table class="table table-striped">
                             <thead>

@@ -254,5 +254,44 @@ namespace ECommerce.Helpers
 
 			return 0;
 		}
+
+		public static async Task<List<Product>> GetProductsWithOfferAsync(ApplicationDbContext context, ApplicationUser user)
+		{
+			var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
+
+			if (userGroup != null)
+			{
+				var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+
+				var offerItemIds = await context.OfferItems.Include(x => x.Product)
+					.Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+
+				var products = await context.Products.Include(x => x.OfferItems).ThenInclude(x => x.Product).ToListAsync();
+
+				products = products.Where(x => x.OfferItems != null && x.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any()).ToList();
+
+				foreach (var product in products)
+				{
+					if (product.OfferItems?.Count > 0)
+					{
+						var maxOffer = product.OfferItems.Max(x =>
+							x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
+
+						var bestOffer = product.OfferItems.FirstOrDefault(x =>
+							Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
+
+						if (bestOffer != null)
+						{
+							product.DiscountAmount = bestOffer.DiscountAmount;
+							product.DiscountPercent = bestOffer.DiscountPercent;
+						}
+					}
+				}
+
+				return products;
+			}
+
+			return new List<Product>();
+		}
 	}
 }

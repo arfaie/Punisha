@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Ecommerce.Controllers
 {
-
     public class UserProfileController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -63,8 +62,6 @@ namespace Ecommerce.Controllers
                 if (user == null)
                 {
                     TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red);
-
-
                 }
 
                 user.FullName = model.FullName;
@@ -83,7 +80,6 @@ namespace Ecommerce.Controllers
                 }
 
                 await _userManager.UpdateAsync(user);
-
 
                 return RedirectToAction("Index");
             }
@@ -176,7 +172,6 @@ namespace Ecommerce.Controllers
 
                 if (string.IsNullOrWhiteSpace(id))
                 {
-
                     _context.Addresses.Add(model);
                     await _context.SaveChangesAsync();
 
@@ -220,13 +215,13 @@ namespace Ecommerce.Controllers
             return RedirectToAction("userAddress");
         }
 
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> userOrders()
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).Where(o => o.Factor.UserId == user.Id).ToListAsync());
-        }
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> userOrders()
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
+		}
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
@@ -275,7 +270,5 @@ namespace Ecommerce.Controllers
 
             return RedirectToAction("userComments");
         }
-
-
     }
 }

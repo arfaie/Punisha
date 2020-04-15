@@ -156,6 +156,7 @@
                                 قیمت کل
                                 <br> کل تخفیفات
                                 <br> مالیات
+                                <br> هزینه ارسال
                                 @*<br> اضافات
                                     <br> کسورات*@
                                 <br />
@@ -166,6 +167,7 @@
                             <span>@Model.Factor.TotalPrice</span>
                             <br> <span>@Model.Factor.TotalDiscount</span>
                             <br> <span>@Model.Factor.Tax</span>
+                            <br> <span>@Model.Factor.ShippingCost</span>
                             @*<br> <span>@Model.Factor.Additions.ToPrice()</span>
                                 <br> <span>@Model.Factor.Deductions.ToPrice()</span>*@
                             <br />
@@ -256,11 +258,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-control-5">پرداخت شده</label>
+                        <label class="col-sm-3 control-label" for="form-control-5">در صف بررسی</label>
                         <div class="col-sm-9">
                             @if (Model?.Factor?.IsPaid == true)
                             {
-                                <input class="form-control" type="text" value="پرداخت شده" readonly="readonly">
+                                <input class="form-control" type="text" value="در صف بررسی" readonly="readonly">
                             }
                             else
                             {

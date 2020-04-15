@@ -159,11 +159,21 @@
                                     <span><img src="~/images/search/star-1.svg"></span>
                                 </div>
                             </div>*@
-
-                        <div class="product-box-row">
-                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
-                            <span class="price-currency">تومان </span>
-                        </div>
+                        @if (product.Price > product.RealPrice)
+                        {
+                            <div class="product-box-row">
+                                <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
+                                <span class="price-value-wrapper">@product.RealPrice.ToString("N0")</span>
+                                <span class="price-currency">تومان </span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="product-box-row">
+                                <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                                <span class="price-currency">تومان </span>
+                            </div>
+                        }
                     </div>
                 </div>
             }

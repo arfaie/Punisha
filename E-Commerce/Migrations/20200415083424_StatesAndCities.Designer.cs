@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200415083424_StatesAndCities")]
+    partial class StatesAndCities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7925,43 +7927,6 @@ namespace ECommerce.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Statuses");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec01",
-                            Title = "پرداخت نشده"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec03",
-                            Title = "در صف بررسی"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec04",
-                            Title = "آماده سازی سفارش"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec05",
-                            Title = "تحویل به پسب"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec06",
-                            Title = "تحویل به مشتری"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec07",
-                            Title = "درخواست مرجوعی"
-                        },
-                        new
-                        {
-                            Id = "6f9c65d681937c32dafcec08",
-                            Title = "مرجوع شده"
-                        });
                 });
 
             modelBuilder.Entity("ECommerce.Models.Unit", b =>

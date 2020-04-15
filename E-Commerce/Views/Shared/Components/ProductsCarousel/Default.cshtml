@@ -15,10 +15,22 @@
                                 @product.Name
                             </a>
                         </h2>
-                        <div class="price">
-                            @*<del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>*@
-                            <ins><span>@product.Price.ToString("N0")<span> تومان</span></span></ins>
-                        </div>
+
+                        @if (product.Price > product.RealPrice)
+                        {
+                            <div class="price">
+                                <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
+                                <ins><span>@product.RealPrice.ToString("N0")<span> تومان</span></span></ins>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="price">
+                                @*<del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>*@
+                                <ins><span>@product.Price.ToString("N0")<span> تومان</span></span></ins>
+                            </div>
+                        }
+
                     </div>
                 </div>
             }
