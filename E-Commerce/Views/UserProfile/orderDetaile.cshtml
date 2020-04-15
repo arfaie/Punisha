@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
                     <div class="profile-stats-col">
-                        <p><span>مبلغ قابل پرداخت:</span>0</p>
+                        <p><span>مبلغ قابل پرداخت:</span>@Model.Factor?.FinalPrice</p>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0;">
@@ -62,12 +62,12 @@
         </div>
     </div>
     <div class="col-xs-12">
-        <div class="headline-profile" style="margin-top:15px;">
-            <span>مرسوله ۱ از ۱</span>
-            <span class="profile-order-cancel-button">
-                لغو دریافت مرسوله
-            </span>
-        </div>
+        @*<div class="headline-profile" style="margin-top:15px;">
+                <span>مرسوله ۱ از ۱</span>
+                <span class="profile-order-cancel-button">
+                    لغو دریافت مرسوله
+                </span>
+            </div>*@
         <div class="profile-stats profile-order">
             <div class="profile-order-steps-note">
                 <span>
@@ -116,84 +116,101 @@
             <div class="table-draught">
                 <div class="table-draught-row">
                     <div class="table-draught-col">
-                        کد مرسوله: 34527436
-                        <span> &nbsp; | &nbsp; </span>
+                        @*کد مرسوله: 34527436
+                            <span> &nbsp; | &nbsp; </span>*@
                         بارکد پستی: 1659875072014867556894578
                     </div>
                     <div class="table-draught-col">
-                        زمان
-                        تحویل: بازه شنبه ۱۱ خرداد - شنبه ۱۸ خرداد
-                        <a href="#" class="btn-modify">
-                            تغییر زمان ارسال
-                        </a>
-                    </div>
-                </div>
-                <div class="table-draught-row">
-                    <div class="table-draught-col">
-                        نحوه ارسال سفارش: پست پیشتاز با ظرفیت اختصاصی برای دیجی استور
-                    </div>
-                    <div class="table-draught-col">
                         هزینه ارسال
-                        : ۸,۰۰۰ تومان
+                        : .... تومان
 
                     </div>
+                    @*<div class="table-draught-col">
+                            زمان
+                            تحویل: بازه شنبه ۱۱ خرداد - شنبه ۱۸ خرداد
+                            <a href="#" class="btn-modify">
+                                تغییر زمان ارسال
+                            </a>
+                        </div>*@
+                </div>
+                <div class="table-draught-row">
+                    @*<div class="table-draught-col">
+                            نحوه ارسال سفارش: پست پیشتاز با ظرفیت اختصاصی برای دیجی استور
+                        </div>*@
+                    @*<div class="table-draught-col">
+                            هزینه ارسال
+                            : ۸,۰۰۰ تومان
+
+                        </div>*@
                 </div>
                 <div class="table-draught-row">
                     <div class="table-draught-col last-tabel">
                         مبلغ این
-                        مرسوله: ۴۳,۰۰۰ تومان
+                        مرسوله: @Model.Factor?.FinalPrice تومان
 
                     </div>
                 </div>
             </div>
             <div class="table-orders">
-                <table class="table">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">تعداد</th>
-                            <th scope="col">قیمت واحد</th>
-                            <th scope="col">قیمت کل</th>
-                            <th scope="col">تخفیف</th>
-                            <th scope="col">قیمت نهایی</th>
-                            <th scope="col">عملیات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <img src="~/images/product-slider-2/111460776.jpg" style="width:100px; float:right;">
-                                <h3>گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو سیم کارت ظرفیت 128گیگابایت</h3>
-                            </td>
-                            <td class="order-code">1</td>
-                            <td>3,420,000 تومان</td>
-                            <td>3,420,000 تومان</td>
-                            <td>0</td>
-                            <td>3,420,000 تومان</td>
-                            <td class="detail"><i class="fa fa-angle-left"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
+                @{
+                    foreach (var item in Model.Factor.FactorItems)
+                    {
+                        <table class="table">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">تعداد</th>
+                                    <th scope="col">قیمت واحد</th>
+                                    <th scope="col">قیمت کل</th>
+                                    <th scope="col">تخفیف</th>
+                                    <th scope="col">قیمت نهایی</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img src="@ViewBag.path@item.Product?.ImageName" style="width: 100px; float: right;">
+                                        <h3>@item.Product?.Name</h3>
+                                    </td>
+                                    <td class="order-code">@item.UnitCount</td>
+                                    <td>@item.UnitPrice تومان</td>
+                                    <td>@(item.UnitCount * item.UnitPrice) تومان</td>
+                                    <td>@item.Discount</td>
+                                    <td>@((item.UnitPrice * item.UnitCount) - item.Discount) تومان</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                }
+
             </div>
         </div>
-        <div class="col-lg-12 col-md-12 col-xs-12" style="padding:0;">
-            <div class="product-box-profile">
-                <div class="product-box-content-profile">
-                    <div class="product-box-count">1</div>
-                    <a href="#" class="product-box-img">
-                        <img src="~/images/product-slider-2/111460776.jpg">
-                    </a>
-                    <div class="product-box-title">گوشی موبایل سامسونگ مدل Galaxy A50 SM-A505F/DS دو سیم کارت ظرفیت 128گیگابایت</div>
-                    <div class="product-box-seller"><span>فروشنده: </span><span class="product-box-seller-name">هیلاتل</span></div>
-                    <div class="product-box-seller"><span></span><span>رنگ : مشکی</span></div>
-                    <div class="price-profile">
-                        <div class="price-value-profile">
-                            3,420,000
-                            <span class="price-currency"> تومان</span>
+        @{
+            int i = 1;
+            foreach (var item in Model.Factor.FactorItems)
+            {
+                <div class="col-lg-12 col-md-12 col-xs-12" style="padding:0;">
+                    <div class="product-box-profile">
+                        <div class="product-box-content-profile">
+                            <div class="product-box-count">@(i++)</div>
+                            <a href="#" class="product-box-img">
+                                <img src="@ViewBag.path@item.Product?.ImageName">
+                            </a>
+                            <div class="product-box-title">@item.Product?.Name</div>
+                            @*<div class="product-box-seller"><span>فروشنده: </span><span class="product-box-seller-name">هیلاتل</span></div>*@
+                            @*<div class="product-box-seller"><span></span><span>رنگ : مشکی</span></div>*@
+                            <div class="price-profile">
+                                <div class="price-value-profile">
+                                    @((item.UnitPrice * item.UnitCount) - item.Discount)
+                                    <span class="price-currency"> تومان</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            }
+        }
+
     </div>
 </div>

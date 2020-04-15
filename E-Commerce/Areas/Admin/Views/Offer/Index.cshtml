@@ -68,7 +68,15 @@
                                         <td>@item.Title</td>
                                         <td>@item.StartDate</td>
                                         <td>@item.EndDate</td>
-                                        <td>@item.IsActive</td>
+                                        @if (item.IsActive)
+                                        {
+                                            <td>فعال</td>
+                                        }
+                                        else
+                                        {
+                                            <td>غیر فعال</td>
+                                        }
+
 
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEdit"
@@ -84,7 +92,7 @@
                                                     حذف
                                                 </a>
                                             }
-                                           
+
 
                                         </td>
                                     </tr>

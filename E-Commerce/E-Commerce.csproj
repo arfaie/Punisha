@@ -122,6 +122,8 @@
     <None Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <None Include="Views\Shared\Components\LatestProducts\Default.cshtml" />
     <None Include="wwwroot\lib\TimePicker\wickedpicker.min.js" />
+    <None Include="wwwroot\persiandatepicker\calendar.js" />
+    <None Include="wwwroot\persiandatepicker\jquery.Bootstrap-PersianDateTimePicker.js" />
   </ItemGroup>
 
   <ItemGroup>

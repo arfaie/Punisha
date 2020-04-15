@@ -26,17 +26,32 @@
                                     <a href="#"><img src="~/images/product-slider-2/111460776.jpg"></a>
                                 </div>
                                 <div class="profile-comment-rating">
-                                    <p>امتیاز من به محصول</p>
-                                    <span class="star-item"><img src="~/images/search/star-1.svg"></span>
-                                    <span class="star-item"><img src="~/images/search/star-1.svg"></span>
-                                    <span class="star-item"><img src="~/images/search/star-1.svg"></span>
-                                    <span class="star-item"><img src="~/images/search/star-1.svg"></span>
-                                    <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    @*<p>امتیاز من به محصول</p>*@
+                                    @if (item.Stars >= 1)
+                                    {
+                                        <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    }
+                                    @if (item.Stars >= 2)
+                                    {
+                                        <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    }
+                                    @if (item.Stars >= 3)
+                                    {
+                                        <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    }
+                                    @if (item.Stars >= 4)
+                                    {
+                                        <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    }
+                                    @if (item.Stars == 5)
+                                    {
+                                        <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                    }
                                 </div>
                             </div>
                             <div class="profile-comment-content">
                                 <h4>
-                                    @item.Product?.Name
+                                    امتیاز من به: @item.Product?.Name
                                     @if (item.IsApproved)
                                     {
                                         <span class="profile-comment-status-review">تایید شد</span>
@@ -61,7 +76,7 @@
                                             </button>
                                         </li>*@
                                     <li>
-                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="userCommentEdit">ویرایش</a>
+                                        <a class="edit-address-btn" data-toggel="modal" data-target=".bootstrapmodal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id">ویرایش</a>
                                         <button class="edit-address-btn">ویرایش</button>
                                         <button class="remove-address-btn">حذف</button>
                                         <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>

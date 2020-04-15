@@ -38,9 +38,24 @@
             <div class="form-group">
                 <label asp-for="StatusId" class="col-lg-2 col-sm-2 control-label"></label>
                 <div class="col-lg-6">
-                    <select asp-for="StatusId" asp-items="@ViewBag.Status" class="form-control"></select>
+                    <select id='purpose' asp-for="StatusId" asp-items="@ViewBag.Status" class="form-control"></select>
                 </div>
             </div>
+
+            <div class="form-group" id='business'>
+                <label asp-for="IssueCode" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="IssueCode" class="form-control" />
+                    <span asp-validation-for="IssueCode" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div style='display:none;' id='business'>
+                    Business Name<br />&nbsp;
+                    <br />&nbsp;
+                    <input type='text' class='text' name='business' value size='20' />
+                    <br />
+                </div>*@
 
             <div class="form-group hidden">
                 <label asp-for="FactorId" class="col-lg-2 col-sm-2 control-label"></label>
@@ -70,17 +85,12 @@
                 </div>
             </div>
 
-
             <input type="hidden" asp-for="Id" class="form-control" />
 
-
             <input type="hidden" name="redirectUrl" value="@Url.Action("index","Order")" />
-            
-            <input type="hidden" name="ModalId" value="2" />
 
         </div>
     </div>
-
     @*footer*@
     @if (Model.IssueCode != null)
     {
@@ -90,5 +100,18 @@
     {
         @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن" })
     }
+
+    <script>
+        $(document).ready(function () {
+            $('#purpose').on('change', function () {
+                if (this.value == '5') {
+                    $("#business").show();
+                }
+                else {
+                    $("#business").hide();
+                }
+            });
+        });
+    </script>
 
 </form>

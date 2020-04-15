@@ -1,8 +1,31 @@
-﻿
-@{
-    ViewData["Title"] = "userCommentEdit";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@model ECommerce.Models.CommentAndStar
 
-<h1>userCommentEdit</h1>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
 
+@*<form asp-controller="Brand" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#AddEdit" data-ajax-mode="replace">*@
+    
+    <div class="modal fade bootstrapmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button data-dismiss="modal" class="close"><span>&times;</span></button>
+                    
+                    <div class="modal-title">my modal</div>
+
+                </div>
+                
+                <div class="modal-body">
+
+                </div>
+                
+                <div class="modal-footer">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+   
+@*</form>*@

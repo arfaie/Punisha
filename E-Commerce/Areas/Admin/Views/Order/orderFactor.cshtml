@@ -13,9 +13,10 @@
         <div id="Items">
             <div class="col-xs-12 col-md-3">
                 <div class="md-form-group md-label-static">
-                    <a id="txtCustomer" class="md-form-control">
+                    @*<a id="txtCustomer" class="md-form-control">
                         @($"{Model.Factor?.Address?.Recipient}")
-                    </a>
+                    </a>*@
+                    @Html.TextBoxFor(model => model.Factor.Address.Recipient, new { @class = "md-form-control", type = "text", spellcheck = "false", @readonly = "readonly" })
                     <label class="md-control-label">کاربر صادرکننده</label>
                 </div>
             </div>
@@ -78,9 +79,6 @@
                                         قیمت کل
                                     </th>
                                     <th>
-                                        هزینه ارسال
-                                    </th>
-                                    <th>
                                         مالیات
                                     </th>
                                     <th>
@@ -97,12 +95,11 @@
                                         <tr class="columnSize">
                                             <td>@(i++)</td>
                                             <td>@item.Product?.Name</td>
-                                            <td>@item.Product?.Price</td>
+                                            <td>@item.Product.Price</td>
                                             <td>@item.UnitCount</td>
                                             <td>@item.Product?.Unit?.Title</td>
                                             <td>@item.Discount</td>
                                             <td>@item.Factor?.TotalPrice</td>
-                                            <td>@item.Factor?.ShippingCost</td>
                                             <td>@item.Factor.Tax</td>
                                             <td>@item.Factor.FinalPrice</td>
                                         </tr>
@@ -188,6 +185,22 @@
             </div>
         </div>*@
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @*<div class="layout-main">*@
 
@@ -299,7 +312,12 @@
         </div>
     </div>*@
 
+
+
+
 @*</div>
     </div>*@
 
 @*</div>*@
+
+

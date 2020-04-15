@@ -35,7 +35,7 @@
                                 <td>@(i++)</td>
                                 <td class="order-code">@item.Factor?.FactorCode</td>
                                 <td>@item.TransactionDate</td>
-                                <td>0</td>
+                                <td>@(item.Factor?.FinalPrice-item.Factor?.TotalDiscount)</td>
                                 <td>@item.Factor?.FinalPrice تومان</td>
                                 @if (item.TransactionStatus)
                                 {
