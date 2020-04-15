@@ -32,8 +32,8 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEdit(string id)
 		{
-			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			ViewBag.Offers = new SelectList(await _context.Offers.ToListAsync(), "Id", "Name");
+			ViewBag.Product = new SelectList(await _context.Products.ToListAsync(), "Id", "Name");
+			ViewBag.Offers = new SelectList(await _context.Offers.ToListAsync(), "Id", "Title");
 
 			var OfferItem = await _context.OfferItems.FirstOrDefaultAsync(c => c.Id == id);
 			if (OfferItem != null)

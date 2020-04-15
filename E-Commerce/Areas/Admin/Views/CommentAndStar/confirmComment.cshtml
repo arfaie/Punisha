@@ -1,18 +1,35 @@
-﻿@model string
+﻿@model CommentAndStar
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="CommentAndStar" asp-action="confirmComment">
+    <form asp-controller="CommentAndStar" asp-action="confirmComment">
 
-    @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "تایید" })
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "تایید" })
 
-    <div class="modal-body form-horizontal">
-        آیا از تایید کامنت  @Model مطمئن هستید؟
-    </div>
+        @*<div class="modal-body form-horizontal">
+            آیا از تایید کامنت  @Model مطمئن هستید؟
+        </div>*@
 
-    <input type="hidden" name="redirectUrl" value="@Url.Action("index","CommentAndStar")" />
+        <div class="modal-body form-horizontal">
 
-    @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "تایید " })
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="Comment" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <textarea asp-for="Comment" class="form-control" readonly="readonly" style="width: 450px;"></textarea>
+                    </div>
+                </div>
 
-</form>
+                <input type="hidden" asp-for="Id" class="form-control" />
+
+                <input type="hidden" name="redirectUrl" value="@Url.Action("index","CommentAndStar")" />
+
+            </div>
+        </div>
+
+        
+
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "تایید " })
+
+    </form>

@@ -224,7 +224,7 @@ namespace Ecommerce.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> userOrders()
         {
-            var user =await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).Where(o => o.Factor.UserId == user.Id).ToListAsync());
         }
 
@@ -232,8 +232,10 @@ namespace Ecommerce.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderDetaile(string id)
         {
-            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor)
-                .FirstOrDefaultAsync(o => o.Id == id));
+            ViewBag.path = "\\upload\\normalimage";
+
+            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).ThenInclude(o => o.Address)
+                .ThenInclude(o => o.City).FirstOrDefaultAsync(o => o.Id == id));
         }
 
         [HttpGet]
@@ -252,9 +254,9 @@ namespace Ecommerce.Controllers
             var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
             if (select == null)
             {
-                return null;
+                return RedirectToAction("Index");
             }
-            return View(select);
+            return PartialView("userCommentEdit", select);
         }
 
         [HttpGet]

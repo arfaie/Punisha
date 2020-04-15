@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
@@ -34,7 +31,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> addIssueCode(string id, string modalId)
+        public async Task<IActionResult> addIssueCode(string id)
         {
             ViewBag.Status = new SelectList(await _context.Statuses.ToListAsync(), "Id", "Title");
 
@@ -43,17 +40,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             var order = await _context.Orders.Where(o => o.Id == id).SingleOrDefaultAsync();
             if (order != null)
             {
-                if (modalId == "1")
-                {
-                    return PartialView("addIssueCode", order);
-                }
-                else if (modalId == "2")
-                {
-                    return PartialView("ChangeStatus", order);
-                }
-
-                return null;
-
+                return PartialView("ChangeStatus", order);
             }
 
             return null;
@@ -61,7 +48,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl, string ModalId)
+        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl)
         {
             if (ModelState.IsValid)
             {
@@ -78,11 +65,6 @@ namespace E_Commerce.Areas.Admin.Controllers
                 return null;
             }
 
-            if (ModalId == "1")
-            {
-                return PartialView("addIssueCode", model);
-            }
-
             return PartialView("ChangeStatus", model);
 
         }
@@ -91,7 +73,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderFactor(string id)
         {
-            var Select = await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
+            var Select = await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems)
+                .ThenInclude(x => x.Product).ThenInclude(x => x.Unit).FirstOrDefaultAsync(x => x.Id == id);
             return View(Select);
         }
     }
