@@ -1,6 +1,4 @@
 ﻿using ECommerce.Data;
-using ECommerce.Models;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -11,12 +9,10 @@ namespace EShop.ViewComponents
 	public class LatestProductsViewComponent : ViewComponent
 	{
 		private readonly ApplicationDbContext _context;
-		private readonly UserManager<ApplicationUser> _userManager;
 
-		public LatestProductsViewComponent(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+		public LatestProductsViewComponent(ApplicationDbContext context)
 		{
 			_context = context;
-			_userManager = userManager;
 		}
 
 		public async Task<IViewComponentResult> InvokeAsync()

@@ -218,7 +218,7 @@ namespace ECommerce.Controllers
 		public async Task<IActionResult> userOrders()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).ToListAsync());
+			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
 		}
 
 		[HttpGet]

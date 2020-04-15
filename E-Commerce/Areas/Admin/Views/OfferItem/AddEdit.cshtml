@@ -24,7 +24,7 @@
                 <label asp-for="ProductId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
                     <select asp-for="ProductId" asp-items="@ViewBag.Products" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب گروه</option>
+                        <option value="" disabled="disabled" selected="selected">انتخاب کالا</option>
                     </select>
                 </div>
             </div>
@@ -33,8 +33,24 @@
                 <label asp-for="OfferId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
                     <select asp-for="OfferId" asp-items="@ViewBag.Offers" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب فیلد</option>
+                        <option value="" disabled="disabled" selected="selected">انتخاب تخفیف</option>
                     </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscountAmount" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="DiscountAmount" class="form-control" />
+                    <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DiscountPercent" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="DiscountPercent" class="form-control" />
+                    <span asp-validation-for="DiscountPercent" class="text-danger"></span>
                 </div>
             </div>
 

@@ -57,9 +57,13 @@ namespace ECommerce.Models
 		[Display(Name = "زمان اضافه کردن")]
 		public DateTime AddingDateTime { get; set; }
 
-		//[Display(Name = "قیمت قدیم")]
-		//[Required(ErrorMessage = "فیلد قیمت نمی تواند خالی یاشد.")]
-		//public int OldPrice { get; set; }
+		[NotMapped]
+		public float DiscountAmount { get; set; }
+
+		[NotMapped]
+		public float DiscountPercent { get; set; }
+
+		[NotMapped] public float RealPrice => (1 - DiscountPercent / 100) * Price - DiscountAmount;
 
 		[Display(Name = "عکس")]
 		public string ImageName { get; set; }

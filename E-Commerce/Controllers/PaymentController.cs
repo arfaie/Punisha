@@ -290,7 +290,7 @@ namespace ECommerce.Controllers
 			{
 				statuses = new Status
 				{
-					Title = "پرداخت شده"
+					Title = "در صف بررسی"
 				};
 
 				_context.Statuses.Add(statuses);
