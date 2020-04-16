@@ -170,6 +170,9 @@ namespace Ecommerce.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
                 model.UserId = user.Id;
 
+                ViewBag.UserFullName = user.FullName;
+                ViewBag.UserMobile = user.PhoneNumber;
+
                 if (string.IsNullOrWhiteSpace(id))
                 {
                     _context.Addresses.Add(model);
@@ -220,7 +223,11 @@ namespace Ecommerce.Controllers
 		public async Task<IActionResult> userOrders()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
+            return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
 		}
 
         [HttpGet]
@@ -230,7 +237,7 @@ namespace Ecommerce.Controllers
             ViewBag.path = "\\upload\\normalimage";
 
             return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).ThenInclude(o => o.Address)
-                .ThenInclude(o => o.City).FirstOrDefaultAsync(o => o.Id == id));
+                .ThenInclude(o => o.City).Include(x => x.Factor).ThenInclude(x => x.FactorItems).FirstOrDefaultAsync(o => o.Id == id));
         }
 
         [HttpGet]
@@ -238,6 +245,10 @@ namespace Ecommerce.Controllers
         public async Task<IActionResult> userComments()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
             return View(await _context.CommentAndStars.Include(c => c.User).Include(c => c.Product)
                 .Where(c => c.UserId == user.Id).ToListAsync());
         }

@@ -74,7 +74,8 @@ namespace E_Commerce.Areas.Admin.Controllers
         public async Task<IActionResult> orderFactor(string id)
         {
             var Select = await _context.Orders.Include(x => x.Factor).ThenInclude(x => x.FactorItems)
-                .ThenInclude(x => x.Product).ThenInclude(x => x.Unit).FirstOrDefaultAsync(x => x.Id == id);
+                .ThenInclude(x => x.Product).ThenInclude(x => x.Unit).Include(x => x.Factor).ThenInclude(x => x.Address)
+                .FirstOrDefaultAsync(x => x.Id == id);
             return View(Select);
         }
     }
