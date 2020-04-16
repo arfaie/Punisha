@@ -51,14 +51,14 @@ namespace ECommerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                string pEndDate = strEndDate.PersianToEnglish();
+                model.EndDate = pEndDate.ToGeorgianDateTime();
+
+                string pStartDate = strStartDate.PersianToEnglish();
+                model.StartDate = pStartDate.ToGeorgianDateTime();
+
                 if (String.IsNullOrWhiteSpace(id))
                 {
-                    string pEndDate = strEndDate.PersianToEnglish();
-                    model.EndDate = pEndDate.ToGeorgianDateTime();
-
-                    string pStartDate = strStartDate.PersianToEnglish();
-                    model.StartDate = pStartDate.ToGeorgianDateTime();
-
                     _context.Offers.Add(model);
                     await _context.SaveChangesAsync();
 

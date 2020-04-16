@@ -34,7 +34,7 @@ namespace ECommerce.Models
 		[Display(Name = "کد درخواست")]
 		public long IssueCode { get; set; }
 
-		[Display(Name = "نوضیحات")]
+		[Display(Name = "توضیحات")]
 		public string Description { get; set; }
 	}
 }
