@@ -218,26 +218,62 @@ namespace Ecommerce.Controllers
             return RedirectToAction("userAddress");
         }
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> userOrders()
-		{
-			var user = await _userManager.GetUserAsync(HttpContext.User);
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> userOrders()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
 
             ViewBag.UserFullName = user.FullName;
             ViewBag.UserMobile = user.PhoneNumber;
 
             return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
-		}
+        }
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> orderDetaile(string id)
         {
-            ViewBag.path = "\\upload\\normalimage";
+            ViewBag.path = "/upload/normalimage/";
 
-            return View(await _context.Orders.Include(o => o.Status).Include(o => o.Factor).ThenInclude(o => o.Address)
-                .ThenInclude(o => o.City).Include(x => x.Factor).ThenInclude(x => x.FactorItems).FirstOrDefaultAsync(o => o.Id == id));
+            ViewBag.barasi = "";
+            ViewBag.amadesazi = "";
+            ViewBag.post = "";
+            ViewBag.moshtari = "";
+
+            var select = await _context.Orders.Include(o => o.Status).Include(o => o.Factor).ThenInclude(o => o.Address)
+                .ThenInclude(o => o.City).Include(x => x.Factor).ThenInclude(x => x.FactorItems).ThenInclude(x => x.Product)
+                .FirstOrDefaultAsync(o => o.Id == id);
+
+            switch (select.StatusId)
+            {
+                case "6f9c65d681937c32dafcec03":
+                    ViewBag.barasi = "profile-order-steps-item-active";
+                    break;
+                case "6f9c65d681937c32dafcec04":
+                    ViewBag.amadesazi = "profile-order-steps-item-active";
+                    break;
+                case "6f9c65d681937c32dafcec05":
+                    ViewBag.post = "profile-order-steps-item-active";
+                    break;
+                case "6f9c65d681937c32dafcec06":
+                    ViewBag.moshtari = "profile-order-steps-item-active";
+                    break;
+                default:
+                    ViewBag.barasi = "";
+                    ViewBag.amadesazi = "";
+                    ViewBag.post = "";
+                    ViewBag.moshtari = "";
+                    break;
+
+            }
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
+            return View(select);
         }
 
         [HttpGet]
@@ -258,6 +294,12 @@ namespace Ecommerce.Controllers
         public async Task<IActionResult> userCommentEdit(string id)
         {
             var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
             if (select == null)
             {
                 return RedirectToAction("Index");
@@ -270,6 +312,12 @@ namespace Ecommerce.Controllers
         public async Task<IActionResult> DeleteUserComment(string id)
         {
             var select = await _context.CommentAndStars.FirstOrDefaultAsync(a => a.Id == id);
+
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            ViewBag.UserFullName = user.FullName;
+            ViewBag.UserMobile = user.PhoneNumber;
+
             if (select != null)
             {
                 _context.CommentAndStars.Remove(select);

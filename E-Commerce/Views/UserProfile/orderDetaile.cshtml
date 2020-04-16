@@ -20,10 +20,10 @@
                 </h4>
             </div>
             @*<div class="profile-navbar-invoice">
-                <a href="#">
-                    <button class="profile-navbar-btn-invoice">مشاهده فاکتور</button>
-                </a>
-            </div>*@
+                    <a href="#">
+                        <button class="profile-navbar-btn-invoice">مشاهده فاکتور</button>
+                    </a>
+                </div>*@
         </div>
         <div class="profile-stats">
             <div class="profile-stats-row">
@@ -76,38 +76,38 @@
             </div>
             <section class="swiper-container-horizontal">
                 <div class="profile-order-steps-container">
-                    <div class="profile-order-steps-item profile-order-steps-item-active">
+                    <div class="profile-order-steps-item @ViewBag.barasi">
                         <img src="~/images/svg/profile-order-1.svg">
                         <span>در صف بررسی</span>
                     </div>
-                    <div class="hr profile-order-steps-item-active"></div>
+                    <div class="hr @ViewBag.barasi"></div>
                     @*<div class="profile-order-steps-item">
                             <img src="~/images/svg/profile-order-2.svg">
                             <span>تایید سفارش</span>
                         </div>*@
                     @*<div class="hr"></div>*@
-                    <div class="profile-order-steps-item">
+                    <div class="profile-order-steps-item @ViewBag.amadesazi">
                         <img src="~/images/svg/profile-order-3.svg">
                         <span>آماده‌سازی سفارش</span>
                     </div>
 
-                    <div class="hr"></div>
+                    <div class="hr @ViewBag.amadesazi"></div>
                     @*<div class="profile-order-steps-item">
                             <img src="~/images/svg/profile-order-4.svg">
                             <span>خروج از مرکز پردازش</span>
                         </div>*@
                     @*<div class="hr"></div>*@
-                    <div class="profile-order-steps-item">
+                    <div class="profile-order-steps-item @ViewBag.post">
                         <img src="~/images/svg/profile-order-5.svg">
                         <span>تحویل به پست</span>
                     </div>
-                    <div class="hr"></div>
+                    <div class="hr @ViewBag.post"></div>
                     @*<div class="profile-order-steps-item">
                             <img src="~/images/svg/profile-order-6.svg">
                             <span>دریافت در مرکز مبادلات پست</span>
                         </div>*@
                     @*<div class="hr"></div>*@
-                    <div class="profile-order-steps-item">
+                    <div class="profile-order-steps-item @ViewBag.moshtari">
                         <img src="~/images/svg/profile-order-7.svg">
                         <span>تحویل مرسوله به مشتری</span>
                     </div>
@@ -115,11 +115,23 @@
             </section>
             <div class="table-draught">
                 <div class="table-draught-row">
-                    <div class="table-draught-col">
-                        @*کد مرسوله: 34527436
+                    @if (Model.IssueCode != null)
+                    {
+                        <div class="table-draught-col">
+                            @*کد مرسوله: 34527436
                             <span> &nbsp; | &nbsp; </span>*@
-                        بارکد پستی: 1659875072014867556894578
-                    </div>
+                            بارکد پستی: @Model.IssueCode
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-draught-col">
+                            @*کد مرسوله: 34527436
+                            <span> &nbsp; | &nbsp; </span>*@
+                            بارکد پستی: -
+                        </div>
+                    }
+                   
                     <div class="table-draught-col">
                         هزینه ارسال
                         : .... تومان
@@ -169,8 +181,8 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                        <img src="@ViewBag.path@item.Product?.ImageName" style="width: 100px; float: right;">
-                                        <h3>@item.Product?.Name</h3>
+                                        <img src="@ViewBag.path@item.Product?.ImageName" style="width: 100px; float: right; margin-left: 7px;">
+                                        <h3 style="margin-right: 20px">@item.Product?.Name</h3>
                                     </td>
                                     <td class="order-code">@item.UnitCount</td>
                                     <td>@item.UnitPrice تومان</td>
