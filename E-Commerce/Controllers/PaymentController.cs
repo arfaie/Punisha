@@ -40,9 +40,11 @@ namespace ECommerce.Controllers
 			if (HttpContext.Session.Keys.Contains("CartItems"))
 			{
 				var cartItems = HttpContext.Session.GetComplexData<List<string>>("CartItems");
-				var products = await _context.Products.Where(x => cartItems.Contains(x.Id)).ToListAsync();
+				var products = await _context.Products.Where(x => cartItems.Contains(x.Id)).Include(x => x.OfferItems).ToListAsync();
 
-				var factors = await _context.Factors.Include(x => x.FactorItems).Where(x => !x.IsPaid && x.UserId == user.Id).OrderByDescending(x => x.Date).ToListAsync();
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				var factors = await _context.Factors.Where(x => !x.IsPaid && x.UserId == user.Id).OrderByDescending(x => x.Date).Include(x => x.FactorItems).ThenInclude(x => x.Product).ThenInclude(x => x.OfferItems).ToListAsync();
 
 				// check if there is an unpaid factor with the same items
 				var factor = factors.FirstOrDefault(x => cartItems.All(x.FactorItems.Select(y => y.ProductId).Contains) && x.FactorItems.Count == cartItems.Count);
@@ -52,7 +54,6 @@ namespace ECommerce.Controllers
 					factor = new Factor
 					{
 						Date = DateTime.UtcNow,
-						FactorItems = new List<FactorItem>(),
 						UserId = user.Id,
 					};
 
@@ -79,13 +80,14 @@ namespace ECommerce.Controllers
 								ProductId = product.Id,
 								Product = product,
 								UnitCount = 1,
-								UnitPrice = product.Price
+								UnitPrice = product.Price,
+								Discount = product.Price - product.PriceWithDiscount
 							};
 
 							_context.FactorItems.Add(factorItem);
 						}
 
-						factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
+						factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
 
 						_context.Factors.Update(factor);
 						await _context.SaveChangesAsync();
@@ -99,7 +101,10 @@ namespace ECommerce.Controllers
 				}
 				else
 				{
-					factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
+					if (factor.FactorItems?.Count > 0)
+					{
+						factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
+					}
 					factor.Date = DateTime.UtcNow;
 
 					_context.Factors.Update(factor);
@@ -115,7 +120,7 @@ namespace ECommerce.Controllers
 		[HttpGet]
 		public async Task<IActionResult> PaymentCheckout(string id)
 		{
-			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
+			var factor = await _context.Factors.Include(x => x.FactorItems).FirstOrDefaultAsync(x => x.Id == id);
 
 			if (factor == null)
 			{
@@ -143,7 +148,7 @@ namespace ECommerce.Controllers
 
 			if (factor.FactorItems?.Count > 0)
 			{
-				factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
+				factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
 
 				_context.Factors.Update(factor);
 				await _context.SaveChangesAsync();
@@ -158,7 +163,7 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> PaymentCheckout(Factor model)
 		{
-			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == model.Id);
+			var factor = await _context.Factors.Include(x => x.FactorItems).FirstOrDefaultAsync(x => x.Id == model.Id);
 
 			if (factor != null)
 			{
@@ -177,7 +182,7 @@ namespace ECommerce.Controllers
 
 					if (factor.FactorItems?.Count > 0)
 					{
-						factor.TotalPrice = factor.FactorItems.Sum(x => x.UnitCount * x.UnitPrice);
+						factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
 
 						_context.Factors.Update(factor);
 						await _context.SaveChangesAsync();
@@ -353,7 +358,7 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> CalculateShippingCost(string addressId, string factorId)
 		{
-			var factor = await _context.Factors.Include(x => x.FactorItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == factorId);
+			var factor = await _context.Factors.Include(x => x.FactorItems).FirstOrDefaultAsync(x => x.Id == factorId);
 
 			if (factor != null)
 			{

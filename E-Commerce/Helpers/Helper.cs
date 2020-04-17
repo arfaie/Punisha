@@ -255,24 +255,28 @@ namespace ECommerce.Helpers
 			return 0;
 		}
 
-		public static async Task<List<Product>> GetProductsWithOfferAsync(ApplicationDbContext context, ApplicationUser user)
+		public static async Task<List<Product>> GetAllProductsWithOfferAsync(ApplicationDbContext context, ApplicationUser user)
 		{
-			var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
+			var products = await context.Products.Include(x => x.OfferItems).ToListAsync();
 
-			if (userGroup != null)
+			await AddOfferToProductsAsync(context, user, products);
+
+			return products;
+		}
+
+		public static async Task AddOfferToProductAsync(ApplicationDbContext context, ApplicationUser user, Product product)
+		{
+			if (user != null)
 			{
-				var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
 
-				var offerItemIds = await context.OfferItems.Include(x => x.Product)
-					.Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
-
-				var products = await context.Products.Include(x => x.OfferItems).ThenInclude(x => x.Product).ToListAsync();
-
-				products = products.Where(x => x.OfferItems != null && x.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any()).ToList();
-
-				foreach (var product in products)
+				if (userGroup != null)
 				{
-					if (product.OfferItems?.Count > 0)
+					var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+
+					var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+
+					if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
 					{
 						var maxOffer = product.OfferItems.Max(x =>
 							x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
@@ -287,11 +291,42 @@ namespace ECommerce.Helpers
 						}
 					}
 				}
-
-				return products;
 			}
+		}
 
-			return new List<Product>();
+		public static async Task AddOfferToProductsAsync(ApplicationDbContext context, ApplicationUser user, IEnumerable<Product> products)
+		{
+			if (user != null)
+			{
+				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
+
+				if (userGroup != null)
+				{
+					var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+
+					var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+
+					//products = products.Where(x => x.OfferItems != null && x.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any()).ToList();
+
+					foreach (var product in products)
+					{
+						if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
+						{
+							var maxOffer = product.OfferItems.Max(x =>
+								x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
+
+							var bestOffer = product.OfferItems.FirstOrDefault(x =>
+								Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
+
+							if (bestOffer != null)
+							{
+								product.DiscountAmount = bestOffer.DiscountAmount;
+								product.DiscountPercent = bestOffer.DiscountPercent;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }

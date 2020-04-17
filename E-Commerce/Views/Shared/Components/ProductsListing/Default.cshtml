@@ -159,11 +159,11 @@
                                     <span><img src="~/images/search/star-1.svg"></span>
                                 </div>
                             </div>*@
-                        @if (product.Price > product.RealPrice)
+                        @if (product.Price > product.PriceWithDiscount)
                         {
                             <div class="product-box-row">
                                 <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
-                                <span class="price-value-wrapper">@product.RealPrice.ToString("N0")</span>
+                                <span class="price-value-wrapper">@product.PriceWithDiscount.ToString("N0")</span>
                                 <span class="price-currency">تومان </span>
                             </div>
                         }

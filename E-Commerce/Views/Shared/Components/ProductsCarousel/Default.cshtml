@@ -16,11 +16,11 @@
                             </a>
                         </h2>
 
-                        @if (product.Price > product.RealPrice)
+                        @if (product.Price > product.PriceWithDiscount)
                         {
                             <div class="price">
                                 <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
-                                <ins><span>@product.RealPrice.ToString("N0")<span> تومان</span></span></ins>
+                                <ins><span>@product.PriceWithDiscount.ToString("N0")<span> تومان</span></span></ins>
                             </div>
                         }
                         else

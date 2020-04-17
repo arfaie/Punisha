@@ -14,8 +14,8 @@
             <div class="col-xs-12 col-md-3">
                 <div class="md-form-group md-label-static">
                     @*<a id="txtCustomer" class="md-form-control">
-                        @($"{Model.Factor?.Address?.Recipient}")
-                    </a>*@
+                            @($"{Model.Factor?.Address?.Recipient}")
+                        </a>*@
                     @Html.TextBoxFor(model => model.Factor.Address.Recipient, new { @class = "md-form-control", type = "text", spellcheck = "false", @readonly = "readonly" })
                     <label class="md-control-label">کاربر صادرکننده</label>
                 </div>
@@ -66,6 +66,9 @@
                                         قیمت واحد
                                     </th>
                                     <th>
+                                        تخفیف
+                                    </th>
+                                    <th>
                                         تعداد
                                     </th>
 
@@ -96,6 +99,7 @@
                                             <td>@(i++)</td>
                                             <td>@item.Product?.Name</td>
                                             <td>@item.Product.Price</td>
+                                            <td>@(item.Product.Price - item.Product.PriceWithDiscount)</td>
                                             <td>@item.UnitCount</td>
                                             <td>@item.Product?.Unit?.Title</td>
                                             <td>@item.Discount</td>
@@ -185,22 +189,6 @@
             </div>
         </div>*@
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 @*<div class="layout-main">*@
 
@@ -312,12 +300,7 @@
         </div>
     </div>*@
 
-
-
-
 @*</div>
     </div>*@
 
 @*</div>*@
-
-

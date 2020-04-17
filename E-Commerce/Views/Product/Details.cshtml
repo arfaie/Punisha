@@ -116,21 +116,23 @@
                                     <div class="product-seller-row">
                                         <div class="product-seller-row js-seller-info-shipment">
                                             <div class="product-delivery-warehouse">آماده ارسال</div>
-
                                         </div>
                                         <div class="product-seller-row-price">
-                                            <div class="product-seller-price-prev">@Model.Price.ToString("N0")</div>
-                                            تومان
+                                            <del><span>@Model.Price.ToString("N0")<span> تومان</span></span></del>
+
+                                            <div class="product-seller-row-price">
+                                                <div class="product-seller-price-prev">@Model.PriceWithDiscount.ToString("N0")</div>
+                                                تومان
+                                            </div>
+
+                                            <a id="btnproductborrow" class="btn-add-to-cart"><span class="btn-add-to-cart-txt">افزودن به سبد خرید</span></a>
+                                            <span style="display:none" id="pid">@Model.Id</span>
+
                                         </div>
-
-                                        <a id="btnproductborrow" class="btn-add-to-cart"><span class="btn-add-to-cart-txt">افزودن به سبد خرید</span></a>
-                                        <span style="display:none" id="pid">@Model.Id</span>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 </section>
             </div>
         </article>
