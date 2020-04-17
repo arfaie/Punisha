@@ -266,64 +266,66 @@ namespace ECommerce.Helpers
 
 		public static async Task AddOfferToProductAsync(ApplicationDbContext context, ApplicationUser user, Product product)
 		{
+			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی").Select(x => x.Id).ToListAsync();
 			if (user != null)
 			{
 				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
 
 				if (userGroup != null)
 				{
-					var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+					activeOfferIds.AddRange(await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync());
+				}
+			}
 
-					var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+			var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
 
-					if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
-					{
-						var maxOffer = product.OfferItems.Max(x =>
-							x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
+			if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
+			{
+				var maxOffer = product.OfferItems.Max(x =>
+					x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
 
-						var bestOffer = product.OfferItems.FirstOrDefault(x =>
-							Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
+				var bestOffer = product.OfferItems.FirstOrDefault(x =>
+					Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
 
-						if (bestOffer != null)
-						{
-							product.DiscountAmount = bestOffer.DiscountAmount;
-							product.DiscountPercent = bestOffer.DiscountPercent;
-						}
-					}
+				if (bestOffer != null)
+				{
+					product.DiscountAmount = bestOffer.DiscountAmount;
+					product.DiscountPercent = bestOffer.DiscountPercent;
 				}
 			}
 		}
 
 		public static async Task AddOfferToProductsAsync(ApplicationDbContext context, ApplicationUser user, IEnumerable<Product> products)
 		{
+			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی").Select(x => x.Id).ToListAsync();
 			if (user != null)
 			{
 				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
 
 				if (userGroup != null)
 				{
-					var activeOfferIds = await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync();
+					activeOfferIds.AddRange(await context.Offers.Where(x => x.UserGroupId == userGroup.Id && x.IsActive && x.StartDate < DateTime.UtcNow && x.EndDate > DateTime.UtcNow).Select(x => x.Id).ToListAsync());
+				}
+			}
 
-					var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+			var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
 
-					//products = products.Where(x => x.OfferItems != null && x.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any()).ToList();
+			//products = products.Where(x => x.OfferItems != null && x.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any()).ToList();
 
-					foreach (var product in products)
+			foreach (var product in products)
+			{
+				if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
+				{
+					var maxOffer = product.OfferItems.Max(x =>
+						x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
+
+					var bestOffer = product.OfferItems.FirstOrDefault(x =>
+						Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
+
+					if (bestOffer != null)
 					{
-						if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
-						{
-							var maxOffer = product.OfferItems.Max(x =>
-								x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100);
-
-							var bestOffer = product.OfferItems.FirstOrDefault(x =>
-								Math.Abs(x.DiscountAmount / x.Product.Price + x.DiscountPercent / 100 - maxOffer) < .001);
-
-							if (bestOffer != null)
-							{
-								product.DiscountAmount = bestOffer.DiscountAmount;
-								product.DiscountPercent = bestOffer.DiscountPercent;
-							}
-						}
+						product.DiscountAmount = bestOffer.DiscountAmount;
+						product.DiscountPercent = bestOffer.DiscountPercent;
 					}
 				}
 			}
