@@ -3201,9 +3201,9 @@ input[type=number] {
 	color: #777;
 }
 
-	.cart-item-product-price:first-child {
+	/*.cart-item-product-price:first-child {
 		line-height: 60px;
-	}
+	}*/
 
 	.cart-item-product-price span {
 		font-size: 12px;

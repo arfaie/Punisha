@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<Product>
+
+@{
     ViewBag.Title = "به کاربیوتیک خوش آمدید";
 }
 
@@ -19,12 +21,12 @@
 </div>
 <!--   promo single------------------>
 
-@await Component.InvokeAsync("LatestProducts")
+@await Component.InvokeAsync("LatestProducts", Model)
 
-@await Component.InvokeAsync("RelatedProducts")
+@await Component.InvokeAsync("RelatedProducts", Model)
 
-@await Component.InvokeAsync("BestSaleProducts")
+@await Component.InvokeAsync("BestSaleProducts", Model)
 
-@await Component.InvokeAsync("OfferedItems")
+@await Component.InvokeAsync("OfferedItems", Model)
 
 <!--   slider-product-------------------->

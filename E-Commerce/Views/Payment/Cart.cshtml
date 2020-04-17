@@ -58,13 +58,13 @@ else
                         <span class="checkout-header-delivery-cost">هزینه ارسال: با انتخاب آدرس محاسبه می شود</span>
                         <span style="display:none" class="hidden" id="totalCount">@Model.FactorItems?.Sum(x => x.UnitCount)</span>
                         <span style="display:none" id="itemsCount">@Model.FactorItems?.Count()</span>
-                        <span style="display:none" id="totalSum">@(Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice))</span>
+                        <span style="display:none" id="totalSum">@(Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)))</span>
                     </div>
 
                     @foreach (var factorItem in Model.FactorItems)
                     {
                         <div class="checkout-body" id="checkoutitem@(factorItem.Id)">
-                            <a data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.Price" href="#" class="remove-from-cart"><i class="fa fa-close"></i></a>
+                            <a data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.PriceWithDiscount" href="#" class="remove-from-cart"><i class="fa fa-close"></i></a>
                             <a href="#" class="col-thumb"><img src="@Helper.ThumbnailImagePath@factorItem.Product?.ImageName"></a>
 
                             <div class="checkout-col-desc">
@@ -76,13 +76,17 @@ else
                                         <div class="checkout-dealer"><i class="fa fa-check"></i></div>*@
                                 </div>
                                 <div class="quantity">
-                                    <input value="@factorItem.UnitCount" type="number" min="1" max="10" step="1" data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.Price">
+                                    <input value="@factorItem.UnitCount" type="number" min="1" max="10" step="1" data-factorItem-id="@factorItem.Id" data-factorItem-price="@factorItem.Product?.PriceWithDiscount">
                                 </div>
-                                <div id="itemTotalPrice@(factorItem.Id)" class="cart-item-product-price">@($"{factorItem.UnitCount * factorItem.UnitPrice:N0}") تومان</div>
+                                <div id="itemTotalPrice@(factorItem.Id)" class="cart-item-product-price">@($"{factorItem.UnitCount * (factorItem.UnitPrice - factorItem.Discount):N0}") تومان</div>
                                 <a href="#" class="add-to-sfl">
                                     <div class="cart-item-product-price">
                                         <span>
                                             قیمت واحد : @($"{factorItem.UnitPrice:N0}") تومان
+                                        </span>
+                                        <br />
+                                        <span>
+                                            تخفیف : @($"{factorItem.Discount:N0}") تومان
                                         </span>
                                     </div>
 
@@ -99,7 +103,7 @@ else
                     <a asp-controller="Payment" asp-action="PaymentCheckout" asp-route-id="@Model.Id" class="selenium-next-step-shipping">ادامه فرآیند خرید</a>
                     <div class="checkout-to-shipping-price-report">
                         <p>مبلغ فاکتور</p>
-                        <div class="cart-item-product-price totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</div>
+                        <div class="cart-item-product-price totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</div>
                     </div>
                 </div>
             </div>
@@ -109,11 +113,11 @@ else
                         <ul class="checkout-summary-summary">
                             <li>
                                 <span id="checkout-summary-info">مبلغ کل (@Model.FactorItems?.Count() کالا) - (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)</span>
-                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</span>
                             </li>
                             <li>
                                 <span>جمع</span>
-                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</span>
                             </li>
                             <li>
                                 <span style="color: #424750; font-size:14px;">هزینه ارسال</span>
@@ -125,7 +129,7 @@ else
                                 </li>*@
                             <li>
                                 <span>مبلغ فاکتور</span>
-                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                                <span class="totalPriceSpan">@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</span>
                             </li>
                             @*<li class="checkout-digiclub-container">
                                     <span class="checkout-digiclub-row">

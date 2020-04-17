@@ -63,7 +63,8 @@ namespace ECommerce.Models
 		[NotMapped]
 		public float DiscountPercent { get; set; }
 
-		[NotMapped] public float RealPrice => (1 - DiscountPercent / 100) * Price - DiscountAmount;
+		[NotMapped]
+		public float PriceWithDiscount => (1 - DiscountPercent / 100) * Price - DiscountAmount;
 
 		[Display(Name = "عکس")]
 		public string ImageName { get; set; }

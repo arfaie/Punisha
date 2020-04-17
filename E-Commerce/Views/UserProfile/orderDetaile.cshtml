@@ -173,7 +173,6 @@
                                     <th scope="col">#</th>
                                     <th scope="col">تعداد</th>
                                     <th scope="col">قیمت واحد</th>
-                                    <th scope="col">قیمت کل</th>
                                     <th scope="col">تخفیف</th>
                                     <th scope="col">قیمت نهایی</th>
                                 </tr>
@@ -186,8 +185,7 @@
                                     </td>
                                     <td class="order-code">@item.UnitCount</td>
                                     <td>@item.UnitPrice تومان</td>
-                                    <td>@(item.UnitCount * item.UnitPrice) تومان</td>
-                                    <td>@item.Discount</td>
+                                    <td>@item.Discount تومان</td>
                                     <td>@((item.UnitPrice * item.UnitCount) - item.Discount) تومان</td>
 
                                 </tr>

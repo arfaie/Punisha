@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ namespace EShop.ViewComponents
 			_userManager = userManager;
 		}
 
-		public async Task<IViewComponentResult> InvokeAsync()
+		public async Task<IViewComponentResult> InvokeAsync(List<Product> products)
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
@@ -30,9 +31,7 @@ namespace EShop.ViewComponents
 
 				var carProductsIds = await _context.CarProducts.Where(x => x.CarId == user.CarId).Select(x => x.ProductId).ToListAsync();
 
-				var products = await _context.Products.Where(x => carProductsIds.Count > 0 && carProductsIds.Contains(x.Id)).ToListAsync();
-
-				return View(products);
+				return View(products.Where(x => carProductsIds.Count > 0 && carProductsIds.Contains(x.Id)).ToList());
 			}
 
 			return View();

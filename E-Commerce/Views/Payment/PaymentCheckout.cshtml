@@ -178,11 +178,11 @@
                     <ul class="checkout-summary-summary">
                         <li>
                             <span>مبلغ کل (@Model.FactorItems.Count کالا) - (@Model.FactorItems?.Sum(x => x.UnitCount) قلم کالا)</span>
-                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</span>
                         </li>
                         <li>
                             <span>جمع</span>
-                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice):N0}") تومان</span>
+                            <span>@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)):N0}") تومان</span>
                         </li>
                         <li>
                             <span style="color: #424750; font-size:14px;"><i class="fa fa-truck"></i>&nbsp;&nbsp;هزینه ارسال</span>
@@ -194,7 +194,7 @@
                             </li>*@
                         <li>
                             <span>مبلغ قابل پرداخت</span>
-                            <span id="finalPrice">@($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان</span>
+                            <span id="finalPrice">@($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)) + Model.ShippingCost:N0}") تومان</span>
                         </li>
                         @*<li class="checkout-digiclub-container">
                                 <span class="checkout-digiclub-row">
@@ -251,7 +251,7 @@
                 <div class="checkout-to-shipping-price-report">
                     <p>مبلغ قابل پرداخت</p>
                     <div class="cart-item-product-price">
-                        @($"{Model.FactorItems?.Sum(x => x.UnitCount * x.UnitPrice) + Model.ShippingCost:N0}") تومان
+                        @($"{Model.FactorItems?.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount)) + Model.ShippingCost:N0}") تومان
                     </div>
                 </div>
             </div>

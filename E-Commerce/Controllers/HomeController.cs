@@ -1,13 +1,28 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ECommerce.Data;
+using ECommerce.Helpers;
+using ECommerce.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ECommerce.Controllers
 {
 	public class HomeController : Controller
 	{
-		public IActionResult Index()
+		private readonly ApplicationDbContext _context;
+		private readonly UserManager<ApplicationUser> _userManager;
+
+		public HomeController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
 		{
-           
-            return View();
+			_context = context;
+			_userManager = userManager;
+		}
+
+		public async Task<IActionResult> Index()
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			return View(await Helper.GetAllProductsWithOfferAsync(_context, user));
 		}
 
 		public IActionResult About()
