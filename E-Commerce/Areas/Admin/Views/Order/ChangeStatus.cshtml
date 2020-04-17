@@ -6,9 +6,14 @@
 <form asp-controller="Order" asp-action="addIssueCode" id="AddEdit" data-ajax="true" data-ajax-method="post"
       data-ajax-update="#AddEdit" data-ajax-mode="replace">
 
+    @{
+        long issueCode = 0;
+    }
+
     @*header*@
     @if (Model.IssueCode != null)
     {
+        issueCode = Model.IssueCode;
         @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش کد مرسوله" })
     }
     else
@@ -45,7 +50,8 @@
             <div class="form-group" id='business'>
                 <label asp-for="IssueCode" class="col-lg-2 col-sm-2 control-label"></label>
                 <div class="col-lg-6">
-                    <input asp-for="IssueCode" class="form-control" />
+                    <input asp-for="IssueCode" class="form-control hidden" />
+                    <input value="@issueCode" type="number" name="intIssueCode" class="form-control" />
                     <span asp-validation-for="IssueCode" class="text-danger"></span>
                 </div>
             </div>
