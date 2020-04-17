@@ -62,7 +62,7 @@
                                     }
 
                                     <p>@item.Comment</p>
-                                    <p>تاریخ ثبت:@item.Date</p>
+                                    <p>تاریخ ثبت:@item.Date.ToPersianDateString()</p>
                                 </h4>
                                 <ul class="profile-comment-actions">
                                     @*<li>
@@ -76,11 +76,15 @@
                                             </button>
                                         </li>*@
                                     <li>
-                                        <a class="edit-address-btn" data-toggel="modal" data-target=".bootstrapmodal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id">ویرایش</a>
+                                        @*<a class="edit-address-btn" data-toggel="modal" data-target=".bootstrapmodal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id">ویرایش</a>
                                         <button class="edit-address-btn">ویرایش</button>
                                         <button class="remove-address-btn">حذف</button>
-                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>
-
+                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>*@
+                                        <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="userCommentEdit"
+                                           data-target="#modal-action-comment" asp-route-id="@item.Id">
+                                            <i class="glyphicon glyphicon-pencil"></i>
+                                            ویرایش
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -92,3 +96,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    (function ($) {
+        function ShowModal() {
+            var $this = this;
+
+            function initilizeModel() {
+                $("#modal-action-comment").on('loaded.bs.modal', function (e) {
+                }).on('hidden.bs.modal', function (e) {
+                    $(this).removeData('bs.modal');
+                });
+            }
+            $this.init = function () {
+                initilizeModel();
+            }
+        }
+
+        $(function () {
+            var self = new ShowModal();
+            self.init();
+        });
+    }(jQuery))
+</script>

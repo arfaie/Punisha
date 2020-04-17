@@ -66,8 +66,8 @@
                                     <tr>
                                         <td>@(i++)</td>
                                         <td>@item.Title</td>
-                                        <td>@item.StartDate</td>
-                                        <td>@item.EndDate</td>
+                                        <td>@item.StartDate.ToPersianDateString()</td>
+                                        <td>@item.EndDate.ToPersianDateString()</td>
                                         @if (item.IsActive)
                                         {
                                             <td>فعال</td>

@@ -3,62 +3,63 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-    <form asp-controller="Offer" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
-          data-ajax-update="#AddEdit" data-ajax-mode="replace">
+<form asp-controller="Offer" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#AddEdit" data-ajax-mode="replace">
 
-        <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
+    <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
 
-        @*header*@
-        @if (!String.IsNullOrWhiteSpace(Model.Id))
-        {
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش تخفیف" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن تخفیف" })
-        }
+    @{
+        string startdate = "";
+        string enddate = "";
+    }
 
-        @*body*@
-        <div class="modal-body form-horizontal">
-            <div class="row">
-                <div class="form-group">
-                    <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        startdate = Model.StartDate.ToPersianDateString();
+        enddate = Model.EndDate.ToPersianDateString();
+
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش تخفیف" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن تخفیف" })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="StartDate" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="StartDate" class="form-control" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                    </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="StartDate" class="form-control hidden" />
+                    <input value="@startdate" type="text" class="form-control" id="fromDate1" name="strStartDate" placeholder="از تاریخ" data-MdDateTimePicker="true"  data-placement="left" />
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="EndDate" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="EndDate" class="form-control" />
-                        <span asp-validation-for="EndDate" class="text-danger"></span>
-                    </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="EndDate" class="form-control hidden" />
+                    <input value="@enddate" type="text" class="form-control" id="todate1" name="strEndDate" placeholder="تا تاریخ" data-MdDateTimePicker="true"  data-placement="left" />
                 </div>
+            </div>
 
-                @*<div class="input-group" style="width: 500px;">
-                    <div class="input-group-addon" data-MdDateTimePicker="true" data-trigger="click" data-targetselector="#todate1">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </div>
-                    <input type="text" class="form-control" asp-for="EndDate" placeholder="تا تاریخ" data-MdDateTimePicker="true" data-placement="right" />
-                </div>*@
-
-                <div class="form-group">
-                    <label asp-for="IsActive" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="IsActive" style="margin-top: 12px" />
-                        <span asp-validation-for="IsActive" class="text-danger"></span>
-                    </div>
+            <div class="form-group">
+                <label asp-for="IsActive" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="IsActive" style="margin-top: 12px" />
+                    <span asp-validation-for="IsActive" class="text-danger"></span>
                 </div>
+            </div>
 
             <div class="form-group">
                 <label asp-for="UserGroupId" class="col-lg-2 col-sm-2 control-label"></label>
@@ -69,24 +70,24 @@
                 </div>
             </div>
 
-                <input type="hidden" asp-for="Id" class="form-control" />
+            <input type="hidden" asp-for="Id" class="form-control" />
 
-                <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Offer")" />
+            <input type="hidden" name="redirectUrl" value="@Url.Action("Index","Offer")" />
 
-            </div>
         </div>
+    </div>
 
-        @*footer*@
-        @if (!String.IsNullOrWhiteSpace(Model.Id))
-        {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش تخفیف" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن تخفیف" })
-        }
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش تخفیف" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن تخفیف" })
+    }
 
-        <script src="~/persiandatepicker/calendar.js"></script>
-        <script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+    <script src="~/persiandatepicker/calendar.js"></script>
+    <script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
 
-    </form>
+</form>

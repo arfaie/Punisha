@@ -136,7 +136,7 @@ namespace ECommerce.Data
 				new Status { Id = "6f9c65d681937c32dafcec01", Title = "پرداخت نشده" },
 				new Status { Id = "6f9c65d681937c32dafcec03", Title = "در صف بررسی" },
 				new Status { Id = "6f9c65d681937c32dafcec04", Title = "آماده سازی سفارش" },
-				new Status { Id = "6f9c65d681937c32dafcec05", Title = "تحویل به پسب" },
+				new Status { Id = "6f9c65d681937c32dafcec05", Title = "تحویل به پست" },
 				new Status { Id = "6f9c65d681937c32dafcec06", Title = "تحویل به مشتری" },
 				new Status { Id = "6f9c65d681937c32dafcec07", Title = "درخواست مرجوعی" },
 				new Status { Id = "6f9c65d681937c32dafcec08", Title = "مرجوع شده" }

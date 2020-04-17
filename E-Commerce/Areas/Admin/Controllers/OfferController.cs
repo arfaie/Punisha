@@ -8,96 +8,104 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using ECommerce.Helpers;
 
 namespace ECommerce.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class OfferController : Controller
-	{
-		private readonly ApplicationDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class OfferController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-		public OfferController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public OfferController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Index()
-		{
-			return View(await _context.Offers.Include(o => o.OfferItems).ToListAsync());
-		}
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Index()
+        {
+            var select = await _context.Offers.Include(o => o.OfferItems).ToListAsync();
+            return View(select);
+        }
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEdit(string id)
-		{
-			ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title");
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddEdit(string id)
+        {
+            ViewBag.UserGroups = new SelectList(await _context.UserGroups.ToListAsync(), "Id", "Title");
 
-			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
-			if (offer != null)
-			{
-				return PartialView("AddEdit", offer);
-			}
+            var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
+            if (offer != null)
+            {
+                return PartialView("AddEdit", offer);
+            }
 
-			return PartialView("AddEdit", new Offer());
-		}
+            return PartialView("AddEdit", new Offer());
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> AddEdit(string id, Offer model, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				if (String.IsNullOrWhiteSpace(id))
-				{
-					_context.Offers.Add(model);
-					await _context.SaveChangesAsync();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEdit(string id, Offer model, string redirectUrl, string strEndDate, string strStartDate)
+        {
+            if (ModelState.IsValid)
+            {
+                string pEndDate = strEndDate.PersianToEnglish();
+                model.EndDate = pEndDate.ToGeorgianDateTime();
 
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-					return PartialView("_SuccessfulResponse", redirectUrl);
-				}
+                string pStartDate = strStartDate.PersianToEnglish();
+                model.StartDate = pStartDate.ToGeorgianDateTime();
 
-				_context.Offers.Update(model);
-				await _context.SaveChangesAsync();
+                if (String.IsNullOrWhiteSpace(id))
+                {
+                    _context.Offers.Add(model);
+                    await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
 
-			return PartialView("AddEdit", model);
-		}
+                _context.Offers.Update(model);
+                await _context.SaveChangesAsync();
 
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Delete(string id)
-		{
-			var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
-			if (offer == null)
-			{
-				return RedirectToAction("Index");
-			}
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
 
-			return PartialView("Delete", offer.Title);
-		}
+            return PartialView("AddEdit", model);
+        }
 
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> Delete(string id, string redirectUrl)
-		{
-			if (ModelState.IsValid)
-			{
-				var model = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var offer = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
+            if (offer == null)
+            {
+                return RedirectToAction("Index");
+            }
 
-				_context.Offers.Remove(model);
-				await _context.SaveChangesAsync();
+            return PartialView("Delete", offer.Title);
+        }
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-				return PartialView("_SuccessfulResponse", redirectUrl);
-			}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = await _context.Offers.SingleOrDefaultAsync(b => b.Id == id);
 
-			TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
-			return RedirectToAction("Index");
-		}
-	}
+                _context.Offers.Remove(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
+            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
+            return RedirectToAction("Index");
+        }
+    }
 }
