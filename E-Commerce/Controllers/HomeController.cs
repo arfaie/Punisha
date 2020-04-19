@@ -3,6 +3,8 @@ using ECommerce.Helpers;
 using ECommerce.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ECommerce.Controllers
@@ -21,6 +23,19 @@ namespace ECommerce.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			ViewBag.Makers = await _context.Makers.OrderBy(x => x.Name).ToListAsync();
+
+			var cars = await _context.Cars.OrderBy(x => x.Name).ToListAsync();
+
+			foreach (var car in cars)
+			{
+				car.Maker = null;
+			}
+
+			ViewBag.Cars = cars;
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
 			return View(await Helper.GetAllProductsWithOfferAsync(_context, user));
 		}
