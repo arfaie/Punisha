@@ -7263,6 +7263,72 @@ namespace ECommerce.Migrations
                     b.ToTable("Makers");
                 });
 
+            modelBuilder.Entity("ECommerce.Models.News", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdCategories")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdCategories");
+
+                    b.ToTable("Newses");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.NewsCategory", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("NewsCategories");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.NewsTags", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("IdNews")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("IdTag")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdNews");
+
+                    b.HasIndex("IdTag");
+
+                    b.ToTable("NewsTagses");
+                });
+
             modelBuilder.Entity("ECommerce.Models.Offer", b =>
                 {
                     b.Property<string>("Id")
@@ -7945,7 +8011,7 @@ namespace ECommerce.Migrations
                         new
                         {
                             Id = "6f9c65d681937c32dafcec05",
-                            Title = "تحویل به پسب"
+                            Title = "تحویل به پست"
                         },
                         new
                         {
@@ -7962,6 +8028,21 @@ namespace ECommerce.Migrations
                             Id = "6f9c65d681937c32dafcec08",
                             Title = "مرجوع شده"
                         });
+                });
+
+            modelBuilder.Entity("ECommerce.Models.Tag", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Unit", b =>
@@ -8238,6 +8319,24 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.Product", "Product")
                         .WithMany("InventoryChanges")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.News", b =>
+                {
+                    b.HasOne("ECommerce.Models.NewsCategory", "NewCategories")
+                        .WithMany("Newses")
+                        .HasForeignKey("IdCategories");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.NewsTags", b =>
+                {
+                    b.HasOne("ECommerce.Models.News", "news")
+                        .WithMany()
+                        .HasForeignKey("IdNews");
+
+                    b.HasOne("ECommerce.Models.Tag", "tags")
+                        .WithMany("NewsTagses")
+                        .HasForeignKey("IdTag");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Offer", b =>

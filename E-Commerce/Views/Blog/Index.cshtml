@@ -1,0 +1,325 @@
+﻿@model IEnumerable<News>
+
+
+@{
+    ViewData["Title"] = "اخبار";
+    Layout = "~/Views/Shared/_LayoutNews.cshtml";
+}
+
+<!-- Main Content
+========================================-->
+<main class="entry-main">
+
+    <!-- Blog Section
+    ========================================-->
+    <div class="blog section-without-title" id="blog">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <form class="search-form visible-sm-block visible-xs-block">
+                        <div class="form-group">
+                            <div class="search-input-group">
+                                <input type="text" class="form-control" placeholder="بحث..">
+                                <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="list-posts">
+                        @{
+                            foreach (var item in Model)
+                            {
+                                <article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                    <figure class="entry-header">
+                                        <div class="post-image">
+                                            <img src="@ViewBag.path@item.ImageName" class="img-responsive" />
+                                        </div>
+                                    </figure>
+                                    <div class="entry-content-footer">
+                                        <div class="entry-content">
+                                            <div class="entry-post-info">
+                                                <h4><a href="#">@item.Title</a></h4>
+                                                <p class="posted-on"><span></span>@item.Date.ToPersianDateString()</p>
+                                            </div>
+                                            <div class="entry-expert">
+                                                <p>
+                                                    @item.Text
+                                                </p>
+                                                <div class="post-readMore">
+                                                    <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id" class="pull-left read-more-link">
+                                                        ادامه مطلب <i class="fa fa-long-arrow-left"></i>
+                                                    </a>
+                                                    @*<span class="pull-right"><a href="#">1 تعليق</a></span>*@
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="entry-footer">
+                                            <ul class="entry-tags list-unstyled list-inline">
+                                                <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
+                                                @foreach (var item2 in item.NewsTagses)
+                                                {
+                                                    <li><a href="#">@item2?.tags?.Title</a></li>
+                                                }
+                                                @*<li><a href="#">تصميم</a></li>
+                                                    <li><a href="#">برمجه</a></li>
+                                                    <li><a href="#">جرافك</a></li>*@
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </article>
+                            }
+                        }
+
+                        @*<article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                <figure class="entry-header">
+                                    <div class="post-image">
+                                        <img alt="" src="~\News\images\blog\02.jpg" class="img-responsive">
+                                        <img src="~/News/images/blog/02.jpg" class="img-responsive" />
+                                    </div>
+                                </figure>
+                                <div class="entry-content-footer">
+                                    <div class="entry-content">
+                                        <div class="entry-post-info">
+                                            <h4><a href="#">خبر جميل</a></h4>
+                                            <p class="posted-on"><span>7</span> أكتوبر </p>
+                                        </div>
+                                        <div class="entry-expert">
+                                            <p>
+                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                                النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة
+                                            </p>
+                                            <div class="post-readMore">
+                                                <a href="#" class="pull-left read-more-link">
+                                                    قرأه المزيد <i class="fa fa-long-arrow-left"></i>
+                                                </a>
+                                                <span class="pull-right"><a href="#">1 تعليق</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-footer">
+                                        <ul class="entry-tags list-unstyled list-inline">
+                                            <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                            <li><a href="#">تصميم</a></li>
+                                            <li><a href="#">برمجه</a></li>
+                                            <li><a href="#">جرافك</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                <figure class="entry-header">
+                                    <div class="post-image">
+                                        <img alt="" src="~\News\images\blog\03.jpg" class="img-responsive">
+                                        <img src="~/News/images/blog/03.jpg" class="img-responsive" />
+                                    </div>
+                                </figure>
+                                <div class="entry-content-footer">
+                                    <div class="entry-content">
+                                        <div class="entry-post-info">
+                                            <h4><a href="#">خبر جميل</a></h4>
+                                            <p class="posted-on"><span>7</span> أكتوبر </p>
+                                        </div>
+                                        <div class="entry-expert">
+                                            <p>
+                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                                النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة
+                                            </p>
+                                            <div class="post-readMore">
+                                                <a href="#" class="pull-left read-more-link">
+                                                    قرأه المزيد <i class="fa fa-long-arrow-left"></i>
+                                                </a>
+                                                <span class="pull-right"><a href="#">1 تعليق</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-footer">
+                                        <ul class="entry-tags list-unstyled list-inline">
+                                            <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                            <li><a href="#">تصميم</a></li>
+                                            <li><a href="#">برمجه</a></li>
+                                            <li><a href="#">جرافك</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                <figure class="entry-header">
+                                    <div class="post-image">
+                                        <img alt="" src="~\News\images\blog\04.jpg" class="img-responsive">
+                                        <img src="~/News/images/blog/04.jpg" class="img-responsive" />
+                                    </div>
+                                </figure>
+                                <div class="entry-content-footer">
+                                    <div class="entry-content">
+                                        <div class="entry-post-info">
+                                            <h4><a href="#">خبر جميل</a></h4>
+                                            <p class="posted-on"><span>7</span> أكتوبر </p>
+                                        </div>
+                                        <div class="entry-expert">
+                                            <p>
+                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                                النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة
+                                            </p>
+                                            <div class="post-readMore">
+                                                <a href="#" class="pull-left read-more-link">
+                                                    قرأه المزيد <i class="fa fa-long-arrow-left"></i>
+                                                </a>
+                                                <span class="pull-right"><a href="#">1 تعليق</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-footer">
+                                        <ul class="entry-tags list-unstyled list-inline">
+                                            <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                            <li><a href="#">تصميم</a></li>
+                                            <li><a href="#">برمجه</a></li>
+                                            <li><a href="#">جرافك</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                            <article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                <figure class="entry-header">
+                                    <div class="post-image">
+                                        <img alt="" src="~\News\images\blog\05.jpg" class="img-responsive">
+                                        <img src="~/News/images/blog/05.jpg" class="img-responsive" />
+                                    </div>
+                                </figure>
+                                <div class="entry-content-footer">
+                                    <div class="entry-content">
+                                        <div class="entry-post-info">
+                                            <h4><a href="#">خبر جميل</a></h4>
+                                            <p class="posted-on"><span>7</span> أكتوبر </p>
+                                        </div>
+                                        <div class="entry-expert">
+                                            <p>
+                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                                النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة
+                                            </p>
+                                            <div class="post-readMore">
+                                                <a href="#" class="pull-left read-more-link">
+                                                    قرأه المزيد <i class="fa fa-long-arrow-left"></i>
+                                                </a>
+                                                <span class="pull-right"><a href="#">1 تعليق</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-footer">
+                                        <ul class="entry-tags list-unstyled list-inline">
+                                            <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                            <li><a href="#">تصميم</a></li>
+                                            <li><a href="#">برمجه</a></li>
+                                            <li><a href="#">جرافك</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>*@
+                        @*<article class="list-post wow fadeInUp" data-wow-duration="1s">
+                                <figure class="entry-header">
+                                    <div class="post-image">
+                                        <img alt="" src="~\News\images\blog\06.jpg" class="img-responsive">
+                                        <img src="~/News/images/blog/06.jpg" class="img-responsive" />
+                                    </div>
+                                </figure>
+                                <div class="entry-content-footer">
+                                    <div class="entry-content">
+                                        <div class="entry-post-info">
+                                            <h4><a href="#">خبر جميل</a></h4>
+                                            <p class="posted-on"><span>7</span> أكتوبر </p>
+                                        </div>
+                                        <div class="entry-expert">
+                                            <p>
+                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد
+                                                النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة
+                                            </p>
+                                            <div class="post-readMore">
+                                                <a href="#" class="pull-left read-more-link">
+                                                    قرأه المزيد <i class="fa fa-long-arrow-left"></i>
+                                                </a>
+                                                <span class="pull-right"><a href="#">1 تعليق</a></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="entry-footer">
+                                        <ul class="entry-tags list-unstyled list-inline">
+                                            <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                            <li><a href="#">تصميم</a></li>
+                                            <li><a href="#">برمجه</a></li>
+                                            <li><a href="#">جرافك</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>*@
+                    </div>
+                </div>
+
+                @(await Html.PartialAsync("_newsUserPanel",Model))
+
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Option Template Menu
+========================================-->
+@*<aside class="option-template-menu">
+        <span class="option-template-menu-open"><i class="fa fa-gear"></i></span>
+        <div class="menu-content">
+            <a href="#" class="appsLand-btn appsLand-btn-blue buy-now">شراء هيناتا</a>
+            <div class="apps-option-group">
+                <h5> الوان مدرجه </h5>
+                <p>
+                    اختار واحد من مجموعتنا المتميزه من الالوان المدرجه
+                </p>
+                <ul class="list-unstyled color-list">
+                    <li class="active">
+                        <a href="~/News/css/gradient_colors/theme_color_1.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_2.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_3.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_4.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_5.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_6.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_7.css"></a>
+                    </li>
+                    <li>
+                        <a href="~\News\css\gradient_colors\theme_color_8.css"></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="apps-option-group">
+                <h5> الوان اخري </h5>
+                <p>
+                    يمكنك تركيب اللون الخاص بك فى دقائق معدوده
+                </p>
+            </div>
+        </div>
+    </aside>*@
+
+<!-- Scroll To Top
+========================================-->
+<div class="scrollToTop appsLand-btn appsLand-btn-gradient"><span><i class="fa fa-angle-up"></i></span></div>
+
+<!-- Loading
+========================================-->
+<div class="loading">
+    <div class="spinner">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+
+<!-- Footer
+========================================-->
