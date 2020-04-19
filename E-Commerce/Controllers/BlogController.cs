@@ -1,4 +1,4 @@
-﻿
+﻿using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
@@ -25,7 +25,9 @@ namespace ECommerce.Controllers
         {
             ViewBag.path = "/upload/normalimage/";
 
-            return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses).ThenInclude(x => x.tags).ToListAsync());
+            ViewBag.tags = await _context.Tags.ToListAsync();
+
+            return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses).ThenInclude(x => x.tags).OrderByDescending(x => x.Id).ToListAsync());
         }
     }
 }
