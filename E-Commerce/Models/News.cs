@@ -31,6 +31,6 @@ namespace ECommerce.Models
         [Display(Name = "تصویر")]
         public string ImageName { get; set; }
 
-        public ICollection<Tag> NewsTagses { get; set; }
+        public ICollection<NewsTags> NewsTagses { get; set; }
     }
 }
