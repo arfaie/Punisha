@@ -1,0 +1,505 @@
+﻿@model News
+
+@{
+    ViewData["Title"] = "جزئیات خبر";
+    Layout = "~/Views/Shared/_LayoutNews.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title> هيناتا </title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link rel="icon" href="app.ico">
+    <link rel="stylesheet" href="css\font-awesome.min.css">
+    <link rel="stylesheet" href="css\bootstrap.min.css">
+    <link rel="stylesheet" href="css\swiper.min.css">
+    <link rel="stylesheet" href="css\animate.css">
+    <link rel="stylesheet" href="css\lity.min.css">
+    <link rel="stylesheet" href="css\style.css">
+    <link rel="stylesheet" href="css\style-rtl.css">
+    <link rel="stylesheet" href="css\bootstrap-rtl.min.css">
+    <link rel="stylesheet" href="css/gradient_colors/theme_color_1.css" id="color-option">
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.min.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+    <!-- navbar
+    ========================================-->
+    <nav class="navbar navbar-default navbar-fixed-top appsLand-navbar">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <span class="menu-toggle">
+                    <i class="chart"></i>
+                    <i class="chart"></i>
+                    <i class="chart"></i>
+                </span>
+                <a class="navbar-brand" href="#">
+                    <img alt="" src="images\app land.png">
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="app-links" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right appsLand-links">
+                    <li class="visible-xs-block text-center mobile-size-logo">
+                        <a href="#">
+                            <img alt="" src="images\app land.png">
+                        </a>
+                    </li>
+                    <li><a href="index-demo1-rtl.html#home">الرئيسيه</a></li>
+                    <li><a href="index-demo1-rtl.html#features">ميزاتنا</a></li>
+                    <li><a href="index-demo1-rtl.html#download">تحميل</a></li>
+                    <li><a href="index-demo1-rtl.html#pricing">اسعارنا</a></li>
+                    <li><a href="index-demo1-rtl.html#testimonials">اراء عملائنا</a></li>
+                    <li class="dropdown hidden-xs">
+                        <a href="index-demo1-rtl.html#blog">الاخبار</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="blog-3-column-rtl.html">3 اعمده</a></li>
+                            <li><a href="blog-2-column-rtl.html">2 اعمده</a></li>
+                            <li><a href="blog-2-column-sidebar-left-rtl.html">2 اعمده قائمه يسار</a></li>
+                            <li><a href="blog-2-column-sidebar-right-rtl.html">2 اعمده قائمه يمين</a></li>
+                            <li><a href="blog-list-full-width-rtl.html">افقي كامل العرض</a></li>
+                            <li><a href="blog-list-sidebar-left-rtl.html">افقى قائمه يسار</a></li>
+                            <li><a href="blog-list-sidebar-right-rtl.html">افقى قائمه يمين</a></li>
+                            <li><a href="single-post-rtl.html">الخبر كامل</a></li>
+                            <li><a href="single-post-sidebar-left-rtl.html">الخبر كامل قائمه يسار</a></li>
+                            <li><a href="single-post-sidebar-right-rtl.html">الخبر كامل قائمه يمين</a></li>
+                        </ul>
+                    </li>
+                    <li class="visible-xs-block mobile-dropdown-menu">
+                        <span class="block pointer" role="button" data-toggle="collapse" data-target="#blog_menu" aria-expanded="false">
+                            الاخبار
+                        </span>
+                        <ul class="collapse list-unstyled" id="blog_menu">
+                            <li><a href="index-demo1-rtl.html#blog">اخر الأخبار</a></li>
+                            <li><a href="blog-3-column-rtl.html">3 اعمده</a></li>
+                            <li><a href="blog-2-column-rtl.html">2 اعمده</a></li>
+                            <li><a href="blog-2-column-sidebar-left-rtl.html">2 اعمده قائمه يسار</a></li>
+                            <li><a href="blog-2-column-sidebar-right-rtl.html">2 اعمده قائمه يمين</a></li>
+                            <li><a href="blog-list-full-width-rtl.html">افقي كامل العرض</a></li>
+                            <li><a href="blog-list-sidebar-left-rtl.html">افقى قائمه يسار</a></li>
+                            <li><a href="blog-list-sidebar-right-rtl.html">افقى قائمه يمين</a></li>
+                            <li><a href="single-post-rtl.html">الخبر كامل</a></li>
+                            <li><a href="single-post-sidebar-left-rtl.html">الخبر كامل قائمه يسار</a></li>
+                            <li><a href="single-post-sidebar-right-rtl.html">الخبر كامل قائمه يمين</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="index-demo1-rtl.html#contact">تواصل معنا</a></li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <!-- Header
+    ========================================-->
+    <header class="active-navbar inner-header" id="home">
+        <div class="app-overlay">
+            <div class="header-content">
+                <div class="container">
+                    <div class="site-intro-content">
+                        <h1 class="wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">تفاصيل الخبر قائمه يسار</h1>
+                        <ul class="list-inline list-unstyled header-links wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.25s">
+                            <li>
+                                <a href="#">
+                                    الرئسيه
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    الاخبار
+                                </a>
+                            </li>
+                            <li>
+                                <span>
+                                    خبر
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content
+    ========================================-->
+    <main class="entry-main">
+
+        <!-- Blog Section
+        ========================================-->
+        <div class="blog section-without-title" id="blog">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form class="search-form visible-sm-block visible-xs-block">
+                            <div class="form-group">
+                                <div class="search-input-group">
+                                    <input type="text" class="form-control" placeholder="بحث..">
+                                    <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </form>
+                        <article class="single-post">
+                            <figure class="entry-header wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
+                                <div class="entry-post-info">
+                                    <h2>عنوان الخبر</h2>
+                                    <p class="posted-on">تم النشر في <strong>15 أكتوبر</strong></p>
+                                </div>
+                                <div class="post-image">
+                                    <img alt="" src="images\bg\10.jpg" class="img-responsive">
+                                </div>
+                                <ul class="entry-Categories list-unstyled list-inline">
+                                    <li><a href="#">تصمييم</a></li>
+                                    <li><a href="#">برمجه</a></li>
+                                    <li><a href="#">جرافك</a></li>
+                                </ul>
+                            </figure>
+                            <div class="entry-content wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s">
+                                <p>
+                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد. هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد.
+                                </p>
+                                <p>
+                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد. هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد.
+                                </p>
+                                <blockquote>
+                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                </blockquote>
+                                <p>
+                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد. هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق. إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد.
+                                </p>
+                            </div>
+                            <div class="entry-footer">
+                                <div class="post-footer-data">
+                                    <ul class="entry-tags list-unstyled list-inline pull-left">
+                                        <li><strong><i class="fa fa-tags"></i> الكلمات الافتتاحيه:</strong></li>
+                                        <li><a href="#">تصمييم</a></li>
+                                        <li><a href="#">برمجه</a></li>
+                                        <li><a href="#">جرافك</a></li>
+                                    </ul>
+                                    <ul class="list-unstyled list-inline pull-right comment-share">
+                                        <li><strong><i class="fa fa-comments"></i> تعليقات: 10</strong></li>
+                                        <li>
+                                            <ul class="list-unstyled list-inline share-links">
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر فيسبوك"><i class="fa fa-facebook"></i></a></li>
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر تويتر"><i class="fa fa-twitter"></i></a></li>
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر جوجال بلس"><i class="fa fa-google-plus"></i></a></li>
+                                                <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر الايميل"><i class="fa fa-envelope-o"></i></a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <ul class="post-comments list-unstyled">
+                                    <li>
+                                        <img alt="" src="images\user\01.jpg" class="user-photo">
+                                        <div class="the-comment">
+                                            <div class="comment-box">
+                                                <div class="comment-header">
+                                                    <h4>كريم طارق</h4>
+                                                    <p>
+                                                        منذ سنه
+                                                    </p>
+                                                    <a href="#" class="comment-replay">
+                                                        <i class="fa fa-reply"></i> تعليق
+                                                    </a>
+                                                </div>
+                                                <p>
+                                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img alt="" src="images\user\02.jpg" class="user-photo">
+                                        <div class="the-comment">
+                                            <div class="comment-box">
+                                                <div class="comment-header">
+                                                    <h4>كريم طارق</h4>
+                                                    <p>
+                                                        منذ سنه
+                                                    </p>
+                                                    <a href="#" class="comment-replay">
+                                                        <i class="fa fa-reply"></i> تعليق
+                                                    </a>
+                                                </div>
+                                                <p>
+                                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <img alt="" src="images\user\03.jpg" class="user-photo">
+                                        <div class="the-comment">
+                                            <div class="comment-box">
+                                                <div class="comment-header">
+                                                    <h4>كريم طارق</h4>
+                                                    <p>
+                                                        منذ سنه
+                                                    </p>
+                                                    <a href="#" class="comment-replay">
+                                                        <i class="fa fa-reply"></i> تعليق
+                                                    </a>
+                                                </div>
+                                                <p>
+                                                    هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                                </p>
+                                            </div>
+                                            <ul class="post-comments list-unstyled">
+                                                <li>
+                                                    <img alt="" src="images\user\05.jpg" class="user-photo">
+                                                    <div class="the-comment">
+                                                        <div class="comment-box">
+                                                            <div class="comment-header">
+                                                                <h4>كريم طارق</h4>
+                                                                <p>
+                                                                    منذ سنه
+                                                                </p>
+                                                                <a href="#" class="comment-replay">
+                                                                    <i class="fa fa-reply"></i> تعليق
+                                                                </a>
+                                                            </div>
+                                                            <p>
+                                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <img alt="" src="images\user\01.jpg" class="user-photo">
+                                                    <div class="the-comment">
+                                                        <div class="comment-box">
+                                                            <div class="comment-header">
+                                                                <h4>كريم طارق</h4>
+                                                                <p>
+                                                                    منذ سنه
+                                                                </p>
+                                                                <a href="#" class="comment-replay">
+                                                                    <i class="fa fa-reply"></i> تعليق
+                                                                </a>
+                                                            </div>
+                                                            <p>
+                                                                هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <form class="replay-form">
+                                    <h3>كتابه تعليق</h3>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="الاسم">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" placeholder="البريد الالكتروني">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea class="form-control" placeholder="التعليق"></textarea>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> تعليق </span></button>
+                                    </div>
+                                </form>
+                            </div>
+                        </article>
+                    </div>
+                    <div class="col-md-3">
+                        <aside class="blog-asideMenu">
+                            <form class="search-form hidden-sm hidden-xs">
+                                <div class="search-input-group form-group">
+                                    <input type="text" class="form-control" placeholder="بحث..">
+                                    <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </form>
+                            <div class="aside-box">
+                                <h4>الاقسام</h4>
+                                <ul class="list-unstyled categories">
+                                    <li><a href="#"> برمجه <span class="main-color-text">25</span></a></li>
+                                    <li><a href="#"> تصميم <span class="main-color-text">19</span></a></li>
+                                    <li><a href="#"> مصمم وجهات  <span class="main-color-text">35</span></a></li>
+                                    <li><a href="#"> جرافك  <span class="main-color-text">75</span></a></li>
+                                </ul>
+                            </div>
+                            <div class="aside-box">
+                                <h4>الاخبار الشائعه</h4>
+                                <ul class="list-unstyled popular-posts">
+                                    <li>
+                                        <div class="post-image">
+                                            <img alt="" src="images\blog\01.jpg" class="img-responsive">
+                                        </div>
+                                        <div class="post-data">
+                                            <h5>
+                                                <a href="#">
+                                                    عنوان الخبر
+                                                </a>
+                                            </h5>
+                                            <p>5 مارس</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="post-image">
+                                            <img alt="" src="images\blog\02.jpg" class="img-responsive">
+                                        </div>
+                                        <div class="post-data">
+                                            <h5>
+                                                <a href="#">
+                                                    عنوان الخبر
+                                                </a>
+                                            </h5>
+                                            <p>9 مارس</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="post-image">
+                                            <img alt="" src="images\blog\03.jpg" class="img-responsive">
+                                        </div>
+                                        <div class="post-data">
+                                            <h5>
+                                                <a href="#">
+                                                    عنوان الخبر
+                                                </a>
+                                            </h5>
+                                            <p>15 مارس</p>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="aside-box">
+                                <h4>الكلمات الافتتاحيه</h4>
+                                <ul class="entry-tags list-unstyled list-inline">
+                                    <li><a href="#" rel="tag">اندرويد</a></li>
+                                    <li><a href="#" rel="tag">تصميم</a></li>
+                                    <li><a href="#" rel="tag">جميل</a></li>
+                                    <li><a href="#" rel="tag">عصري</a></li>
+                                    <li><a href="#" rel="tag">انيق</a></li>
+                                    <li><a href="#" rel="tag">للبيع</a></li>
+                                    <li><a href="#" rel="tag">محمد صلاح</a></li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Option Template Menu
+    ========================================-->
+    <aside class="option-template-menu">
+        <span class="option-template-menu-open"><i class="fa fa-gear"></i></span>
+        <div class="menu-content">
+            <a href="#" class="appsLand-btn appsLand-btn-blue buy-now">شراء هيناتا</a>
+            <div class="apps-option-group">
+                <h5> الوان مدرجه </h5>
+                <p>
+                    اختار واحد من مجموعتنا المتميزه من الالوان المدرجه
+                </p>
+                <ul class="list-unstyled color-list">
+                    <li class="active">
+                        <a href="css/gradient_colors/theme_color_1.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_2.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_3.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_4.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_5.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_6.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_7.css"></a>
+                    </li>
+                    <li>
+                        <a href="css\gradient_colors\theme_color_8.css"></a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="apps-option-group">
+                <h5> الوان اخري </h5>
+                <p>
+                    يمكنك تركيب اللون الخاص بك فى دقائق معدوده
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Scroll To Top
+    ========================================-->
+    <div class="scrollToTop appsLand-btn appsLand-btn-gradient"><span><i class="fa fa-angle-up"></i></span></div>
+
+    <!-- Loading
+    ========================================-->
+    <div class="loading">
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+
+    <!-- Footer
+    ========================================-->
+    <footer class="apps-footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="apps-short-info">
+                    <a href="#">
+                        <img alt="" src="images\app land.png">
+                    </a>
+                </div>
+                <ul class="list-inline list-unstyled footer-social-links">
+                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                    <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p> كل الحقوق محفوظه © 2017 تصميم <a href="https://mrkayo.com/">كايو</a></p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- start the script -->
+    <script src="js\jquery-2.2.4.min.js"></script>
+    <script src="js\bootstrap.min.js"></script>
+    <script src="js\swiper.jquery.min.js"></script>
+    <script src="js\wow.min.js"></script>
+    <script src="js\jquery.countTo.min.js"></script>
+    <script src="js\lity.min.js"></script>
+    <script src="js\plugins.js"></script>
+    <!-- end the script -->
+</body>
+
+</html>

@@ -29,5 +29,17 @@ namespace ECommerce.Controllers
 
             return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses).ThenInclude(x => x.tags).OrderByDescending(x => x.Id).ToListAsync());
         }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> DetailesBlog(string id)
+        {
+            ViewBag.path = "/upload/normalimage/";
+
+            ViewBag.tags = await _context.Tags.ToListAsync();
+
+            return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses)
+                .ThenInclude(x => x.tags).FirstOrDefaultAsync(x => x.Id == id));
+        }
     }
 }
