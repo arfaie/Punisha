@@ -1,0 +1,22 @@
+﻿@model List<CategoryGroup>
+
+<ul class="nav-categories ul-base">
+    @foreach (var categoryGroup in Model)
+    {
+        <li class="has-sub">
+            <a href="#">@categoryGroup.Title</a>
+            <ul>
+                @if (categoryGroup.Categories != null)
+                {
+                    @foreach (var category in categoryGroup.Categories)
+                    {
+                        <li>
+                            <a asp-controller="Product" asp-action="Category" asp-route-id="@category.Id" class="category-level-2">@category.Title</a>
+                        </li>
+                    }
+                }
+            </ul>
+        </li>
+    }
+
+</ul>
