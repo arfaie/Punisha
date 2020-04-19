@@ -24,5 +24,6 @@ namespace ECommerce.Models
 
         [ForeignKey("IdTag")]
         public virtual Tag tags { get; set; }
+
     }
 }

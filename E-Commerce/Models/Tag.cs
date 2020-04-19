@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -12,5 +13,7 @@ namespace ECommerce.Models
 
         [Display(Name = "عنوان تگ")]
         public string Title { get; set; }
+
+        public ICollection<NewsTags> NewsTagses { get; set; }
     }
 }

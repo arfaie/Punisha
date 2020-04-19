@@ -1,0 +1,157 @@
+﻿@model ECommerce.Models.News
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+<form asp-controller="News" asp-action="AddEdit" enctype="multipart/form-data">
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش خبر" })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن خبر" })
+    }
+    @*body*@
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            <input type="hidden" asp-for="Id" class="form-control" />
+            <div class="form-group">
+                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Text" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    @*<input asp-for="Description" class="form-control" />*@
+                    <textarea asp-for="Text" class="form-control"></textarea>
+                    <span asp-validation-for="Text" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Date" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="IdCategories" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="IdCategories" asp-items="@ViewBag.newscategory" class="form-control"></select>
+                </div>
+            </div>
+
+            @if (String.IsNullOrWhiteSpace(Model.Id))
+            {
+                <div class="form-group">
+                    <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
+                    </div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.ImageName" />
+                    }
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input type="file" id="files" name="files" multiple class="btn btn-danger" />
+                    </div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.ImageName" />
+                    }
+                </div>
+            }
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index", "News")" />
+
+        </div>
+    </div>
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
+
+        <div class="modal-footer">
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش خبر" />
+        </div>
+    }
+    else
+    {
+        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
+
+        <div class="modal-footer">
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن خبر" />
+        </div>
+    }
+</form>
+
+<script>
+
+        $(document).ready(function () {
+           $('.select2List').select2();
+        });
+
+        $(document).on('Click', '#submitdata', function (evt) {
+            evt.preventDefault();
+
+            var data = new FormData();
+
+            //دریافت مقادیر فایل آپلودی
+            var fileupload = $("#files").get(0);
+            var files = fileupload.files;
+
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i]);
+            }
+
+            //دریافت مقادیر موجود
+            $('input,select').each(function (x,y) {
+
+                data.append($(y).attr('name'), $(y).val());
+
+            });
+
+            $.ajax({
+                type: "Post",
+                url: '@Url.Action("AddEdit", "News", new { Area = "Admin" })',
+                contentType: false,
+                processData: false,
+                data: data
+                //وقتی که اطلاعات سمت سرور رفت و جواب از سرور آمد
+            }).done(function (res) {
+                if (res.status === "success") {
+                    alert(res.message);
+                    window.location.href = '@Url.Action("Index", "News")';
+                }
+                else {
+
+                    $.each(res.error, function (a, b) {
+                        alert(b);
+                    })
+
+                    //alert(res.error);
+                }
+                //برای وقتی که کلا اطلاعات سمت سرور نرفت و در همان بدو ورود خطا داد
+            }).fail(function (xhr, b, error) {
+                alert(error);
+            })
+
+        });
+
+</script>

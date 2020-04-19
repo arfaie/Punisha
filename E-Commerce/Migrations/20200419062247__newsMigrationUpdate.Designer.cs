@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200419062247__newsMigrationUpdate")]
+    partial class _newsMigrationUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -8037,10 +8039,15 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<string>("NewsTagsId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NewsTagsId");
 
                     b.ToTable("Tags");
                 });
@@ -8324,7 +8331,7 @@ namespace ECommerce.Migrations
             modelBuilder.Entity("ECommerce.Models.News", b =>
                 {
                     b.HasOne("ECommerce.Models.NewsCategory", "NewCategories")
-                        .WithMany("Newses")
+                        .WithMany()
                         .HasForeignKey("IdCategories");
                 });
 
@@ -8335,7 +8342,7 @@ namespace ECommerce.Migrations
                         .HasForeignKey("IdNews");
 
                     b.HasOne("ECommerce.Models.Tag", "tags")
-                        .WithMany("NewsTagses")
+                        .WithMany()
                         .HasForeignKey("IdTag");
                 });
 
@@ -8413,6 +8420,13 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.SelectGroup", "SelectGroup")
                         .WithMany("SelectItems")
                         .HasForeignKey("SelectGroupId");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.Tag", b =>
+                {
+                    b.HasOne("ECommerce.Models.NewsTags", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("NewsTagsId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

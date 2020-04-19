@@ -15,5 +15,7 @@ namespace ECommerce.Models
 
         [Display(Name = "عنوان")]
         public string Title { get; set; }
+
+        public ICollection<News> Newses { get; set; }
     }
 }
