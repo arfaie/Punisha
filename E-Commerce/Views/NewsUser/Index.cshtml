@@ -58,9 +58,9 @@
                                         <div class="entry-footer">
                                             <ul class="entry-tags list-unstyled list-inline">
                                                 <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
-                                                @foreach (var item2 in Model)
+                                                @foreach (var tagItem in item.NewsTagses)
                                                 {
-                                                   
+                                                   @tagItem.tags.Title
                                                 }
                                                 <li><a href="#">تصميم</a></li>
                                                 <li><a href="#">برمجه</a></li>
