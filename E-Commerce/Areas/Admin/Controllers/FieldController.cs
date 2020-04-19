@@ -25,31 +25,31 @@ namespace ECommerce.Areas.Admin.Controllers
 		{
 			//var ff = _context.Fields.Where(pr).ToList();
 			//var query = (from field in _context.Fields
-			//			 join cf in _context.CategoryFields on field.Id equals cf.FieldId
-			//			 select new FieldViewModel
-			//			 {
-			//				 Id = field.Id,
-			//				 Title = field.Title,
-			//				 IdType = field.Type,
-			//				 SelectGroupName = "",
-			//				 FieldGroupId = field.FieldGroupId,
-			//				 SelectFieldGroupName = ""
-			//			 }).GroupBy(x => x.Id);
-			//List<FieldViewModel> lsFieldViewModel = new List<FieldViewModel>();
-			//FieldViewModel ob;
-			//foreach (var item in query)
-			//{
-			//	ob = new FieldViewModel();
-			//	ob.Id = item.First().Id;
-			//	ob.Title = item.First().Title;
-			//	ob.Type = FieldType(item.First().IdType);
-			//	ob.SelectGroupName = "";
-			//	ob.FieldGroupId = item.First().FieldGroupId;
-			//	ob.SelectFieldGroupName = ProductCtgNamesAsync(item.First().Id);
-			//	lsFieldViewModel.Add(ob);
-			//}
+   //                      join cf in _context.CategoryFields on field.Id equals cf.FieldId
+   //                      select new FieldViewModel
+   //                      {
+   //                          Id = field.Id,
+   //                          Title = field.Title,
+   //                          IdType = field.Type,
+   //                          SelectGroupName = "",
+   //                          FieldGroupId = field.FieldGroupId,
+   //                          SelectFieldGroupName = ""
+   //                      }).GroupBy(x => x.Id);
+            //List<FieldViewModel> lsFieldViewModel = new List<FieldViewModel>();
+            //FieldViewModel ob;
+            //foreach (var item in query)
+            //{
+            //	ob = new FieldViewModel();
+            //	ob.Id = item.First().Id;
+            //	ob.Title = item.First().Title;
+            //	ob.Type = FieldType(item.First().IdType);
+            //	ob.SelectGroupName = "";
+            //	ob.FieldGroupId = item.First().FieldGroupId;
+            //	ob.SelectFieldGroupName = ProductCtgNamesAsync(item.First().Id);
+            //	lsFieldViewModel.Add(ob);
+            //}
 
-			return View(await _context.Fields.ToListAsync());
+            return View(await _context.Fields.ToListAsync());
 		}
 
 		//public string FieldType(string id)
