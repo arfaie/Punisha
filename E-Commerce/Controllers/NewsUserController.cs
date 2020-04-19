@@ -25,7 +25,9 @@ namespace ECommerce.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Newses.Include(n => n.NewCategories).ToListAsync());
+            ViewBag.path = "/upload/normalimage/";
+
+            return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses).ThenInclude(x => x.tags).ToListAsync());
         }
     }
 }
