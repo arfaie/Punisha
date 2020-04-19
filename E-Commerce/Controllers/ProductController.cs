@@ -178,6 +178,56 @@ namespace ECommerce.Controllers
 			return View(products);
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> SearchBox(string search)
+		{
+			var list = new List<Select2Model>();
+
+			var products = await _context.Products.Where(x => x.Name.Contains(search)).ToListAsync();
+
+			foreach (var product in products)
+			{
+				list.Add(new Select2Model { text = product.Name, id = product.Id });
+			}
+
+			var categoryGroups = await _context.CategoryGroups.Where(x => x.Title.Contains(search)).ToListAsync();
+
+			foreach (var categoryGroup in categoryGroups)
+			{
+				list.Add(new Select2Model { text = $"جستجو در گروه {categoryGroup.Title}", id = $"!{categoryGroup.Id}" });
+			}
+
+			var categories = await _context.Categories.Where(x => x.Title.Contains(search)).ToListAsync();
+
+			foreach (var category in categories)
+			{
+				list.Add(new Select2Model { text = $"جستجو در دسته بندی {category.Title}", id = $"@{category.Id}" });
+			}
+
+			var makers = await _context.Makers.Where(x => x.Name.Contains(search)).ToListAsync();
+
+			foreach (var maker in makers)
+			{
+				list.Add(new Select2Model { text = $"جستجو در نوع خودروی {maker.Name}", id = $"#{maker.Id}" });
+			}
+
+			var cars = await _context.Cars.Where(x => x.Name.Contains(search)).ToListAsync();
+
+			foreach (var car in cars)
+			{
+				list.Add(new Select2Model { text = $"جستجو در مدل خودروی {car.Name}", id = $"${car.Id}" });
+			}
+
+			var brands = await _context.Brands.Where(x => x.Title.Contains(search)).ToListAsync();
+
+			foreach (var brand in brands)
+			{
+				list.Add(new Select2Model { text = $"جستجو در برند {brand.Title}", id = $"%{brand.Id}" });
+			}
+
+			return Json(new { items = list });
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddToCart(string productId)
 		{

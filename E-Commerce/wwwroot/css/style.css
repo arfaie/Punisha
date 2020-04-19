@@ -9886,3 +9886,11 @@ ul.faq-list {
 	padding-right: 55px;
 	padding-left: 20px;
 }
+
+.select2-results__message {
+	display: none !important;
+}
+
+/*.select2-results__option {
+	padding: 6px;
+}*/
