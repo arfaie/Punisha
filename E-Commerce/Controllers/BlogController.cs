@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
@@ -10,12 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerce.Controllers
 {
-    public class NewsUserController : Controller
+    public class BlogController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public NewsUserController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public BlogController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
