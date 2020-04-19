@@ -1,49 +1,26 @@
-﻿@using ECommerce.PublicModel
-@model ECommerce.Models.CommentAndStar
-
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@addTagHelper *, ECommerce
-
-<form asp-controller="UserProfile" asp-action="userCommentEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
-      data-ajax-update="#AddEdit" data-ajax-mode="replace">
-
-    @*header*@
-    @if (!String.IsNullOrWhiteSpace(Model.Id))
-    {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش برند" })
-    }
-    else
-    {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن برند" })
-    }
-
-    @*body*@
-    <div class="modal-body form-horizontal">
-
-        <div class="row">
-            <div class="form-group">
-                <label asp-for="Comment" class="col-lg-2 col-sm-2 control-label"></label>
-                <div class="col-lg-6">
-                    <input asp-for="Comment" class="form-control" />
-                    <span asp-validation-for="Comment" class="text-danger"></span>
-                </div>
+﻿<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+            <div class="modal-body">
+                <form asp-controller="UserProfile" asp-action="userCommentEdittt" method="post">
 
-            <input type="hidden" asp-for="Id" class="form-control" />
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Message:</label>
+                        <textarea class="form-control" id="message-text"></textarea>
 
-            <input type="hidden" name="redirectUrl" value="@Url.Action("userComments","UserProfile")" />
-
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
         </div>
     </div>
-
-    @*footer*@
-    @if (!String.IsNullOrWhiteSpace(Model.Id))
-    {
-        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش برند" })
-    }
-    else
-    {
-        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن برند" })
-    }
-
-</form>
+</div>

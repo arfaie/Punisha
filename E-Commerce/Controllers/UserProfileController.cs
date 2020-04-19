@@ -290,7 +290,6 @@ namespace Ecommerce.Controllers
         }
 
         [HttpGet]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> userCommentEdit(string id)
         {
             var select = await _context.CommentAndStars.FirstOrDefaultAsync(c => c.Id == id);
@@ -305,6 +304,24 @@ namespace Ecommerce.Controllers
                 return RedirectToAction("Index");
             }
             return PartialView("userCommentEdit", select);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> userCommentEdittt(string id, CommentAndStar model, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    _context.CommentAndStars.Update(model);
+                    await _context.SaveChangesAsync();
+
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
+            }
+
+            return PartialView("userCommentEdit", model);
         }
 
         [HttpGet]

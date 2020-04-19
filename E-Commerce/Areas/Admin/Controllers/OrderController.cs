@@ -48,12 +48,17 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl)
+        public async Task<IActionResult> addIssueCode(string id, Order model, string redirectUrl, long intIssueCode)
         {
             if (ModelState.IsValid)
             {
                 if (!string.IsNullOrEmpty(id))
                 {
+                    if (intIssueCode != null)
+                    {
+                        model.IssueCode = intIssueCode;
+                    }
+
                     _context.Orders.Update(model);
                     await _context.SaveChangesAsync();
 

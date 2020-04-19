@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "userComments";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 
 <div>
@@ -76,15 +77,12 @@
                                             </button>
                                         </li>*@
                                     <li>
-                                        @*<a class="edit-address-btn" data-toggel="modal" data-target=".bootstrapmodal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id">ویرایش</a>
-                                        <button class="edit-address-btn">ویرایش</button>
-                                        <button class="remove-address-btn">حذف</button>
-                                        <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>*@
-                                        <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="userCommentEdit"
-                                           data-target="#modal-action-comment" asp-route-id="@item.Id">
-                                            <i class="glyphicon glyphicon-pencil"></i>
-                                            ویرایش
-                                        </a>
+                                        @*<a class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id" data-whatever="@item.Id">ویرایش55</a>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" asp-controller="UserProfile" asp-action="userCommentEdit" asp-route-id="@item.Id" data-whatever="@item.Id">ویرایش</button>*@
+                                        @*<button class="edit-address-btn">ویرایش</button>*@
+                                        @*<button class="remove-address-btn">حذف</button>
+                                            <a class="edit-address-btn" asp-controller="UserProfile" asp-action="DeleteUserComment" asp-route-id="@item.Id">حذف</a>*@
+
                                     </li>
                                 </ul>
                             </div>
@@ -97,25 +95,21 @@
     </div>
 </div>
 
-<script>
-    (function ($) {
-        function ShowModal() {
-            var $this = this;
+@*--------------------------------------------------------------------------------------------------------*@
 
-            function initilizeModel() {
-                $("#modal-action-comment").on('loaded.bs.modal', function (e) {
-                }).on('hidden.bs.modal', function (e) {
-                    $(this).removeData('bs.modal');
-                });
-            }
-            $this.init = function () {
-                initilizeModel();
-            }
-        }
 
-        $(function () {
-            var self = new ShowModal();
-            self.init();
-        });
-    }(jQuery))
-</script>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+            var recipient = button.data('whatever') // Extract info from data-* attributes
+            // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+            // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+            modal.find('.modal-body input').val(recipient)
+        })
+    </script>
+}
