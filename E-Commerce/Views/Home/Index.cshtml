@@ -12,8 +12,54 @@
 <!--   promo single------------------>
 <div class="col-lg-3 col-xs-12 pull-left">
     <div class="promo-single-right">
-        <a href="#"><img src="~/images/promo/1000013399.gif"></a>
+        <p>جستجو در محصولات</p>
+        <div class="row" style="width: 100%; margin: 0">
+            <div class="col-6">
+                <p class="smaller-text">نوع خودرو</p>
+                <select id="MakerList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Makers, "Id", "Name"))">
+                    <option value="0">همه</option>
+                </select>
+            </div>
+
+            <div class="col-6">
+                <p class="smaller-text">مدل خودرو</p>
+                <select id="CarList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Cars, "Id", "Name"))">
+                    <option value="0">همه</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row" style="width: 100%; margin: 0">
+            @*<div class="col-4">
+                    <p class="smaller-text">گروه محصول</p>
+                    <select id="CategoryGroupList" class="smaller-text form-control" asp-items="@ViewBag.CategoryGroups">
+                        <option value="0">همه</option>
+                    </select>
+                </div>*@
+
+            <div class="col-6">
+                <p class="smaller-text">دسته بندی</p>
+                <select id="CategoryList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Title"))">
+                    <option value="0">همه</option>
+                </select>
+            </div>
+
+            <div class="col-6">
+                <p class="smaller-text">برند</p>
+                <select id="BrandList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Title"))">
+                    <option value="0">همه</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="parent-btn col-12">
+            <button id="searchButton" class="dk-btn dk-btn-info" style="margin-top: 0">جستجو کن<i class="fa fa-search search"></i></button>
+        </div>
+
     </div>
+    @*<div class="promo-single-right">
+            <a href="#"><img src="~/images/promo/1000013399.gif"></a>
+        </div>*@
 
     @*<a href="#" class="promo-single-show-more">
             مشاهده همه شگفت انگیزها
@@ -30,3 +76,42 @@
 @await Component.InvokeAsync("OfferedItems", Model)
 
 <!--   slider-product-------------------->
+
+<script src="~/js/jquery-3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+        var cars = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cars))');
+
+        $("#MakerList").change(function () {
+            var id = $("#MakerList").val();
+
+            $("#CarList").empty();
+            var items = '<option value="0">همه</option>';
+
+            if (id === "0") {
+                $.each(cars, function (index, value) {
+                    items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                });
+            }
+            else {
+                $.each(cars, function (index, value) {
+                    if (value.MakerId === id) {
+                        items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                    }
+                });
+            }
+
+            $("#CarList").html(items);
+        });
+
+        $("#searchButton").click(function () {
+            var url = "/Product/Search";
+
+            url += "?makerId=" + $("#MakerList").val() + "&carId=" + $("#CarList").val() + "&categoryId=" + $("#CategoryList").val() + "&brandId=" + $("#BrandList").val();
+
+            window.location.href = url;
+        });
+    });
+
+</script>

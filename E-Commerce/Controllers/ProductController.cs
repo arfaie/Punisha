@@ -4,6 +4,7 @@ using ECommerce.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -164,14 +165,34 @@ namespace ECommerce.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Search(string id)
+		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryId = "0", string brandId = "0")
 		{
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
+			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+
+			if (!String.IsNullOrWhiteSpace(carId) && carId != "0")
+			{
+				products = products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(carId)).ToList();
+			}
+			else if (!String.IsNullOrWhiteSpace(makerId) && makerId != "0")
+			{
+				products = products.Where(x => x.CarProducts.Select(y => y.Car.MakerId).Contains(makerId)).ToList();
+			}
+
+			if (!String.IsNullOrWhiteSpace(categoryId) && categoryId != "0")
+			{
+				products = products.Where(x => x.CategoryId == categoryId).ToList();
+			}
+
+			if (!String.IsNullOrWhiteSpace(brandId) && brandId != "0")
+			{
+				products = products.Where(x => x.BrandId == brandId).ToList();
+			}
+
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.Name.Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
 
 			await Helper.AddOfferToProductsAsync(_context, user, products);
 

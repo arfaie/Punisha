@@ -15,7 +15,7 @@
     <link href="~/News/css/style.css" rel="stylesheet" />
     <link href="~/News/css/style-rtl.css" rel="stylesheet" />
     <link href="~/News/css/bootstrap-rtl.min.css" rel="stylesheet" />
-    <link href="~/News/css/gradient_colors/theme_color_2.css" rel="stylesheet" id="color-option" />
+    <link href="~/News/css/gradient_colors/theme_color_8.css" rel="stylesheet" id="color-option" />
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
@@ -29,31 +29,31 @@
     <nav class="navbar navbar-default navbar-fixed-top appsLand-navbar">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
+            @*<div class="navbar-header">
                 <span class="menu-toggle">
                     <i class="chart"></i>
                     <i class="chart"></i>
                     <i class="chart"></i>
                 </span>
                 <a class="navbar-brand" href="#">
-                    @*<img alt="" src="~\News\images\app land.png">*@
+                    <img alt="" src="~\News\images\app land.png">
                     <img src="~/News/images/app land.png" />
                 </a>
-            </div>
+            </div>*@
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="app-links" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right appsLand-links">
-                    <li class="visible-xs-block text-center mobile-size-logo">
+            <div class="app-links" id="bs-example-navbar-collapse-1" style="height: 50px;">
+                <ul class="nav navbar-nav navbar-right appsLand-links" style="height: 50px;">
+                    @*<li class="visible-xs-block text-center mobile-size-logo">
                         <a href="#">
-                            @*<img alt="" src="~\News\images\app land.png">*@
+                            <img alt="" src="~\News\images\app land.png">
                             <img src="~/News/images/app land.png" />
                         </a>
-                    </li>
-                    <li><a href="index-demo1-rtl.html#home">الرئيسيه</a></li>
-                    <li><a href="index-demo1-rtl.html#features">ميزاتنا</a></li>
-                    <li><a href="index-demo1-rtl.html#download">تحميل</a></li>
-                    <li><a href="index-demo1-rtl.html#pricing">اسعارنا</a></li>
-                    <li><a href="index-demo1-rtl.html#testimonials">اراء عملائنا</a></li>
+                    </li>*@
+                    <li><a asp-controller="Home" asp-action="Index">فروشگاه</a></li>
+                    <li><a asp-controller="Blog" asp-action="Index">بلاگ</a></li>
+                    <li><a asp-controller="Home" asp-action="About">درباره ما</a></li>
+                    <li><a asp-controller="Home" asp-action="Contact">ارتباط با ما</a></li>
+                    @*<li><a href="index-demo1-rtl.html#testimonials">اراء عملائنا</a></li>
                     <li class="dropdown hidden-xs">
                         <a href="index-demo1-rtl.html#blog">الاخبار</a>
                         <ul class="dropdown-menu">
@@ -68,8 +68,8 @@
                             <li><a href="single-post-sidebar-left-rtl.html">الخبر كامل قائمه يسار</a></li>
                             <li><a href="single-post-sidebar-right-rtl.html">الخبر كامل قائمه يمين</a></li>
                         </ul>
-                    </li>
-                    <li class="visible-xs-block mobile-dropdown-menu">
+                    </li>*@
+                    @*<li class="visible-xs-block mobile-dropdown-menu">
                         <span class="block pointer" role="button" data-toggle="collapse" data-target="#blog_menu" aria-expanded="false">
                             الاخبار
                         </span>
@@ -86,22 +86,23 @@
                             <li><a href="single-post-sidebar-left-rtl.html">الخبر كامل قائمه يسار</a></li>
                             <li><a href="single-post-sidebar-right-rtl.html">الخبر كامل قائمه يمين</a></li>
                         </ul>
-                    </li>
-                    <li><a href="index-demo1-rtl.html#contact">تواصل معنا</a></li>
+                    </li>*@
+                    @*<li><a href="index-demo1-rtl.html#contact">تواصل معنا</a></li>*@
                 </ul>
-            </div><!-- /.navbar-collapse -->
+            </div>
+            <!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
 
     <!-- Header
     ========================================-->
     <header class="active-navbar inner-header" id="home">
-        <div class="app-overlay">
+        <div class="app-overlay" style="height: 400px;">
             <div class="header-content">
                 <div class="container">
                     <div class="site-intro-content">
-                        <h1 class="wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">افقى كامل العرض يسار</h1>
-                        <ul class="list-inline list-unstyled header-links wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.25s">
+                        <h1 class="wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s" style="font-size: 100px; margin-top: 10px; ">اخبار</h1>
+                        @*<ul class="list-inline list-unstyled header-links wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.25s">
                             <li>
                                 <a href="#">
                                     الرئسيه
@@ -112,7 +113,7 @@
                                     الاخبار
                                 </span>
                             </li>
-                        </ul>
+                        </ul>*@
                     </div>
                 </div>
             </div>
@@ -120,7 +121,7 @@
     </header>
     @RenderBody()
     <footer class="apps-footer">
-        <div class="footer-top">
+        @*<div class="footer-top">
             <div class="container">
                 <div class="apps-short-info">
                     <a href="#">
@@ -135,10 +136,10 @@
                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                 </ul>
             </div>
-        </div>
+        </div>*@
         <div class="footer-bottom">
             <div class="container">
-                <p> كل الحقوق محفوظه © 2017 تصميم <a href="https://mrkayo.com/">كايو</a></p>
+                <p>استفاده از مطالب فروشگاه اینترنتی کار بیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع بلامانع است. کلیه حقوق این سایت متعلق به (فروشگاه آنلاین کار بیوتیک)<a href="#"></a></p>
             </div>
         </div>
     </footer>
