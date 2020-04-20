@@ -39,7 +39,8 @@
                                         <div class="entry-content">
                                             <div class="entry-post-info">
                                                 <h4><a href="#">@item.Title</a></h4>
-                                                <p class="posted-on"><span></span>@item.Date.ToPersianDateString()</p>
+                                                @*<p class="posted-on"><span></span>@item.Date.ToPersianDateString()</p>*@
+                                                <p class="posted-on">@item.Date.ToPersianDateString()</p>
                                             </div>
                                             <div class="entry-expert">
                                                 <p>
@@ -253,7 +254,7 @@
                     </div>
                 </div>
 
-                @(await Html.PartialAsync("_newsUserPanel",Model))
+                @(await Html.PartialAsync("_newsUserPanel", Model))
 
             </div>
         </div>

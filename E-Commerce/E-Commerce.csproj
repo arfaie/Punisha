@@ -27,6 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\News\.idea\misc.xml" />
+    <Content Include="wwwroot\News\.idea\modules.xml" />
+    <Content Include="wwwroot\News\.idea\workspace.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MD.BootstrapPersianDateTimePicker" Version="2.3.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.13.1" />
     <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
@@ -123,6 +129,7 @@
     <None Include="Areas\Admin\Views\Shared\_AdminLayout.cshtml" />
     <None Include="Views\Shared\Components\LatestProducts\Default.cshtml" />
     <None Include="wwwroot\lib\TimePicker\wickedpicker.min.js" />
+    <None Include="wwwroot\News\.idea\hinata.mrkayo.com.iml" />
     <None Include="wwwroot\News\fonts\AraJozoor-Regular.svg" />
     <None Include="wwwroot\News\fonts\fontawesome-webfont.svg" />
     <None Include="wwwroot\News\fonts\fontawesome-webfont.woff2" />

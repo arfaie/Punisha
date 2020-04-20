@@ -36,55 +36,53 @@
                     <select asp-for="FieldTypeId" asp-items="@ViewBag.FieldTypes" class="form-control"></select>
                 </div>
             </div>
-
             @*<div class="form-group">
-                    <label asp-for="SelectGroupId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6">
-                        <select asp-for="SelectGroupId" asp-items="@ViewBag.SelectGroups" class="ddlMultiSlectBox" multiple="multiple"></select>
-                    </div>
-                </div>*@
-
+            <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6" style="padding-right: 2px;">
+                @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @multiple = "multiple", @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
+            </div>
+        </div>*@
             @*<div class="form-group">
-                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6" style="padding-right: 2px;">
-                        @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @multiple = "multiple", @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
-                    </div>
-                </div>*@
-            @*<div class="form-group">
-                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6" style="padding-right: 2px;">
-                        <select asp-for="CategoryId" asp-items="@Model.ICategories" class="ddlMultiSlectBox" multiple="multiple"></select>
-                    </div>
-                </div>*@
+            <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6" style="padding-right: 2px;">
+                <select asp-for="CategoryId" asp-items="@Model.ICategories" class="ddlMultiSlectBox" multiple="multiple"></select>
+            </div>
+        </div>*@
             @*@Html.ListBoxFor(model => model.SelectedValues, new MultiSelectList(Models.GetCategoryList().OrderBy(c => c.Value), "Key", "Value", Model.SelectedValues), "Select Category", new { @class = "chzn-select form-control", multiple = "multiple" })*@
             @*<div class="form-group">
-                    <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6" style="padding-right: 2px;">
-                        @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی",@class = "ddlMultiSlectBox" })
-                    </div>
-                </div>*@
+            <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6" style="padding-right: 2px;">
+                @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.ICategories, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی",@class = "ddlMultiSlectBox" })
+            </div>
+        </div>*@
 
+
+
+            @* <div class="form-group">
+            <label asp-for="SelecteFieldTypeId" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6" style="padding-right: 2px;">
+                @Html.DropDownListFor(m => m.Type, new SelectList(Model.FildTypeModels, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
+            </div>
+        </div>
+
+        <div class="form-group" id="divSelectGroup">
+            <label asp-for="SelectGroupId" class="col-lg-3 col-sm-3 control-label"></label>
+            <div class="col-lg-6" style="padding-right: 2px;">
+                @Html.DropDownListFor(m => m.SelectGroupId, new SelectList(Model.SelectGroupList, "Id", "Title"), "انتخاب نوع فیلد", new { @placeholder = "انتخاب نوع فیلد", @class = "ddlMultiSlectBox" })
+            </div>
+        </div>*@
             <div class="form-group">
                 <label asp-for="FieldGroupId" class="col-lg-3 col-sm-3 control-label"></label>
                 <div class="col-lg-6">
                     <select asp-for="FieldGroupId" asp-items="@ViewBag.FieldGroups" class="form-control"></select>
                 </div>
             </div>
-
-            @* <div class="form-group">
-                    <label asp-for="SelecteFieldTypeId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6" style="padding-right: 2px;">
-                        @Html.DropDownListFor(m => m.Type, new SelectList(Model.FildTypeModels, "Id", "Title"), new { @placeholder = "انتخاب گروهای کالایی", @class = "ddlMultiSlectBox" })
-                    </div>
+            <div class="form-group">
+                <label asp-for="CategoryId" class="col-lg-3 col-sm-3 control-label"></label>
+                <div class="col-lg-6">
+                    <select asp-for="CategoryId" asp-items="@ViewBag.SelectGroups" class="ddlMultiSlectBox" multiple="multiple"></select>
                 </div>
-
-                <div class="form-group" id="divSelectGroup">
-                    <label asp-for="SelectGroupId" class="col-lg-3 col-sm-3 control-label"></label>
-                    <div class="col-lg-6" style="padding-right: 2px;">
-                        @Html.DropDownListFor(m => m.SelectGroupId, new SelectList(Model.SelectGroupList, "Id", "Title"), "انتخاب نوع فیلد", new { @placeholder = "انتخاب نوع فیلد", @class = "ddlMultiSlectBox" })
-                    </div>
-                </div>*@
-
+            </div>
             <input type="hidden" asp-for="Id" class="form-control" />
 
             <input type="hidden" name="redirectUrl" value="@Url.Action("index","Field")" />
