@@ -31,6 +31,8 @@ namespace ECommerce.Controllers
 			foreach (var car in cars)
 			{
 				car.Maker = null;
+				car.CarProducts = null;
+				car.ApplicationUsers = null;
 			}
 
 			ViewBag.Cars = cars;

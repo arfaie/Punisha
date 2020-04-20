@@ -138,7 +138,7 @@ namespace ECommerce.Controllers
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
 
 			await Helper.AddOfferToProductsAsync(_context, user, products);
 
@@ -156,7 +156,7 @@ namespace ECommerce.Controllers
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
 			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
 
 			await Helper.AddOfferToProductsAsync(_context, user, products);
 
@@ -175,11 +175,11 @@ namespace ECommerce.Controllers
 
 			if (!String.IsNullOrWhiteSpace(carId) && carId != "0")
 			{
-				products = products.Where(x => x.CarProducts.Select(y => y.CarId).Contains(carId)).ToList();
+				products = products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.CarId).Contains(carId)).ToList();
 			}
 			else if (!String.IsNullOrWhiteSpace(makerId) && makerId != "0")
 			{
-				products = products.Where(x => x.CarProducts.Select(y => y.Car.MakerId).Contains(makerId)).ToList();
+				products = products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.MakerId).Contains(makerId)).ToList();
 			}
 
 			if (!String.IsNullOrWhiteSpace(categoryId) && categoryId != "0")
