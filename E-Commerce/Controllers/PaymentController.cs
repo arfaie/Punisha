@@ -324,6 +324,27 @@ namespace ECommerce.Controllers
 
 					HttpContext.Session.Remove("CartItems");
 
+					var factorItems = await _context.FactorItems.Where(x => x.FactorId == factor.Id).ToListAsync();
+
+					var products = await _context.Products.Where(x => factorItems.Select(y => y.ProductId).Contains(x.Id)).ToListAsync();
+
+					foreach (var factorItem in factorItems)
+					{
+						var product = products.FirstOrDefault(x => x.Id == factorItem.ProductId);
+
+						if (product != null)
+						{
+							product.Inventory -= factorItem.UnitCount;
+
+							if (product.Inventory < 0)
+							{
+								product.Inventory = 0;
+							}
+
+							_context.Products.Update(product);
+						}
+					}
+
 					await _context.SaveChangesAsync();
 
 					transaction.Commit();
