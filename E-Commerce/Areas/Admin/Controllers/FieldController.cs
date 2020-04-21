@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Threading.Tasks;
 
 // TODO field
@@ -76,192 +77,125 @@ namespace ECommerce.Areas.Admin.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> AddEdit(string id)
 		{
-			ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
 			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
 			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-			var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
-			if (field != null)
-			{
-				return PartialView("AddEdit", field);
-			}
+			//var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
+			//if (field != null)
+			//{
+			//	return PartialView("AddEdit", field);
+			//}
 
 			return PartialView("AddEdit", new Field());
 		}
 
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//              //var query = (from f in _context.Fields
-		//              //			 join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
-		//              if (Id == 0)
-		//              {
-		//                  using (var db = _serviceProvider.GetRequiredService<ApplicationDbContext>())
-		//                  {
-		//                      //model.Type = (short)model.SelecteFieldTypeId;
-		//                      int[] aa = model.;
-		//                      if (model.IdSelectGroup == 0)
-		//                          model.IdSelectGroup = -1;
-		//                      Field fieldModel = _mapper.Map<AddEditFieldViewModel, Field>(model);
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl,string[] CategoryId)
+        {
+            if (ModelState.IsValid)
+            {
+                if (!CheckDuplicateDrp(CategoryId) || model.FieldTypeId != "4")
+                {
+                    _context.Fields.Add(model);
+                    await _context.SaveChangesAsync();
+                    try
+                    {
+                        var select1 = _context.Fields;
+                    }
+                    catch (System.Exception e)
+                    {
 
-		//                      if (!CheckDuplicateDrp(model.IdCategory) || model.Type != 4)
-		//                      {
-		//                          db.Fields.Add(fieldModel);
-		//                          await db.SaveChangesAsync();
-		//                          var select = _context.Fields.LastOrDefault();
-		//                          int ss = select.Id;
+                        throw;
+                    }
+                    var select = _context.Fields;
+                    string ss = select.ToList().Last().Id;
 
-		//                          foreach (var item in aa)
-		//                          {
-		//                              ProductCategoryFields groupField = new ProductCategoryFields();
-		//                              groupField.IdFaild = ss;
-		//                              groupField.IdCategory = item;
-		//                              db.ProductCategoryFields.Add(groupField);
+                    foreach (var item in CategoryId)
+                    {
+                        CategoryField CategoryField = new CategoryField();
+                        CategoryField.FieldId = ss;
+                        CategoryField.CategoryId = item;
+                        _context.CategoryFields.Add(CategoryField);
 
-		//                              //Add to ProductFields
-		//                              ProductField pf = new ProductField();
-		//                              var selectProducts = _context.Products.Where(x => x.IdCategory == item);
-		//                              foreach (var itemProduct in selectProducts)
-		//                              {
-		//                                  pf.IdProduct = itemProduct.Id;
-		//                                  pf.IdField = ss;
-		//                                  pf.Value = null;
-		//                                  db.ProductFields.Add(pf);
-		//                              }
-		//                              //Add to ProductFields
-		//                          }
+                        //Add to ProductFields
+                        ProductField pf = new ProductField();
+                        var selectProducts = _context.Products.Where(x => x.CategoryId == item);
+                        foreach (var itemProduct in selectProducts)
+                        {
+                            pf.ProductId = itemProduct.Id;
+                            pf.FieldId = ss;
+                            pf.Value = null;
+                            _context.ProductFields.Add(pf);
+                        }
+                        //Add to ProductFields
+                    }
 
-		//                          await db.SaveChangesAsync();
-		//                      }
-		//                      else
-		//                      {
-		//                          TempData["Notif"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.red);
+                    await _context.SaveChangesAsync();
+                }
+            }
 
-		//                          return PartialView("_Succefullyresponse", redirectUrl);
-		//                      }
-		//                  }
+            ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+            ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+            ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-		//                  TempData["Notif"] = Notification.ShowNotif(MessageType.Add, type: ToastType.green);
-		//                  return PartialView("_Succefullyresponse", redirectUrl);
-		//              }
+            return View("Index", model);
+        }
 
-		//              //{
-		//              //
-		//              //	{
-		//              //		_context.CategoryFields.RemoveRange(_context.CategoryFields.Where(x => x.FieldId == id));
+        public bool CheckDuplicateDrp(string[] idCat)
+        {
+            var exist = true;
+            //var query = (from f in _context.Fields
+            //	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
+            //foreach (var item in idCat)
+            //{
+            //	exist = query.Where(x => x.CategoryId == item).Any();//آیتمی وجود دارد؟
+            //	if (exist == true)
+            //	{
+            //		break;
+            //	}
+            //}
+            return exist;
+        }
 
-		//              //		if (model.ICategories != null)
-		//              //		{
-		//              //		}
-		//              //		await _context.SaveChangesAsync();
-		//              //		if (!CheckDuplicateDrp(model.CategoryId))
-		//              //		{
-		//              //			var selectType = _context.Fields.AsNoTracking().Where(x => x.Id == id).AsNoTracking().FirstOrDefault();
+        //[HttpGet]
+        //[AutoValidateAntiforgeryToken]
+        //public async Task<IActionResult> Delete(string id)
+        //{
+        //	var field = new Field();
 
-		//              //			if (selectType.Type == 4 && model.Type != 4)
-		//              //			{
-		//              //				string ProductFieldId = _context.ProductFields.Where(x => x.FieldId == selectType.Id).AsNoTracking().FirstOrDefault().Id;
-		//              //				_context.ProductSelectedItems.RemoveRange(_context.ProductSelectedItems.Where(x => x.ProductFieldId == ProductFieldId));
-		//              //				//await _context.SaveChangesAsync();
-		//              //			}
-		//              //			model.Type = (short)model.Type;
-		//              //			if (model.SelectGroupId == 0)
-		//              //				model.SelectGroupId = -1;
-		//              //			int[] aa = model.CategoryId;
-		//              //			Field fieldModel = AutoMapper.Mapper.Map<Field, Field>(model);
-		//              //			try
-		//              //			{
-		//              //				_context.Fields.Update(fieldModel);
-		//              //			}
-		//              //			catch (Exception e)
-		//              //			{
-		//              //				throw;
-		//              //			}
-		//              //			foreach (var item in aa)
-		//              //			{
-		//              //				CategoryFields groupField = new CategoryFields();
-		//              //				groupField.FieldId = id;
-		//              //				groupField.CategoryId = item;
-		//              //				_context.CategoryFields.Add(groupField);
-		//              //			}
-		//              //			await _context.SaveChangesAsync();
-		//              //		}
-		//              //		else
-		//              //		{
-		//              //			TempData["Notification"] = Notification.ShowNotif("فیلد خودرد ها قبلا به این دسته بندی اضافه شده است", type: ToastType.Red);
-		//              //			return PartialView("_SuccessfulResponse", redirectUrl);
-		//              //		}
-		//              //	}
+        //	{
+        //		field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
+        //		if (field == null)
+        //		{
+        //			return RedirectToAction("Index");
+        //		}
+        //	}
 
-		//              //	TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, type: ToastType.Blue);
+        //	return PartialView("Delete", field.Title);
+        //}
 
-		//              //	return PartialView("_SuccessfulResponse", redirectUrl);
-		//              //}
-		//          }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Delete(string id, string redirectUrl)
+        //{
+        //	if (ModelState.IsValid)
+        //	{
+        //		{
+        //			var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 
-		//	ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-		//	ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
-		//	ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
+        //			_context.Fields.Remove(field);
+        //			await _context.SaveChangesAsync();
 
-		//	return PartialView("AddEdit", model);
-		//}
+        //			TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+        //			return PartialView("_SuccessfulResponse", redirectUrl);
+        //		}
+        //	}
 
-		//public bool CheckDuplicateDrp(int[] idCat)
-		//{
-		//	var exist = true;
-		//	//var query = (from f in _context.Fields
-		//	//	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
-		//	//foreach (var item in idCat)
-		//	//{
-		//	//	exist = query.Where(x => x.CategoryId == item).Any();//آیتمی وجود دارد؟
-		//	//	if (exist == true)
-		//	//	{
-		//	//		break;
-		//	//	}
-		//	//}
-		//	return exist;
-		//}
+        //	TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-		//[HttpGet]
-		//[AutoValidateAntiforgeryToken]
-		//public async Task<IActionResult> Delete(string id)
-		//{
-		//	var field = new Field();
-
-		//	{
-		//		field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
-		//		if (field == null)
-		//		{
-		//			return RedirectToAction("Index");
-		//		}
-		//	}
-
-		//	return PartialView("Delete", field.Title);
-		//}
-
-		//[HttpPost]
-		//[ValidateAntiForgeryToken]
-		//public async Task<IActionResult> Delete(string id, string redirectUrl)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		{
-		//			var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
-
-		//			_context.Fields.Remove(field);
-		//			await _context.SaveChangesAsync();
-
-		//			TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-		//			return PartialView("_SuccessfulResponse", redirectUrl);
-		//		}
-		//	}
-
-		//	TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
-
-		//	return RedirectToAction("Index");
-		//		//}
-	}
+        //	return RedirectToAction("Index");
+        //		//}
+    }
 }
