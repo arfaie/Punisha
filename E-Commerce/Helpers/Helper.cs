@@ -266,7 +266,7 @@ namespace ECommerce.Helpers
 
 		public static async Task AddOfferToProductAsync(ApplicationDbContext context, ApplicationUser user, Product product)
 		{
-			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی").Select(x => x.Id).ToListAsync();
+			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی" && x.IsActive).Select(x => x.Id).ToListAsync();
 			if (user != null)
 			{
 				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
@@ -278,6 +278,18 @@ namespace ECommerce.Helpers
 			}
 
 			var offerItemIds = await context.OfferItems.Include(x => x.Product).Where(x => activeOfferIds.Contains(x.OfferId)).Select(x => x.Id).ToListAsync();
+
+			if (product.OfferItems != null && product.OfferItems.Count > 0)
+			{
+				for (var i = 0; i < product.OfferItems.Count; i++)
+				{
+					if (!offerItemIds.Contains(product.OfferItems.ElementAt(i).Id))
+					{
+						product.OfferItems.Remove(product.OfferItems.ElementAt(i));
+						i--;
+					}
+				}
+			}
 
 			if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
 			{
@@ -297,7 +309,8 @@ namespace ECommerce.Helpers
 
 		public static async Task AddOfferToProductsAsync(ApplicationDbContext context, ApplicationUser user, IEnumerable<Product> products)
 		{
-			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی").Select(x => x.Id).ToListAsync();
+			var activeOfferIds = await context.Offers.Where(x => x.Title == "تخفیف عمومی" && x.IsActive).Select(x => x.Id).ToListAsync();
+
 			if (user != null)
 			{
 				var userGroup = await context.UserGroups.FirstOrDefaultAsync(x => x.Id == user.UserGroupId);
@@ -314,6 +327,18 @@ namespace ECommerce.Helpers
 
 			foreach (var product in products)
 			{
+				if (product.OfferItems != null && product.OfferItems.Count > 0)
+				{
+					for (var i = 0; i < product.OfferItems.Count; i++)
+					{
+						if (!offerItemIds.Contains(product.OfferItems.ElementAt(i).Id))
+						{
+							product.OfferItems.Remove(product.OfferItems.ElementAt(i));
+							i--;
+						}
+					}
+				}
+
 				if (product.OfferItems != null && product.OfferItems.Count > 0 && product.OfferItems.Select(y => y.Id).Intersect(offerItemIds).Any())
 				{
 					var maxOffer = product.OfferItems.Max(x =>
