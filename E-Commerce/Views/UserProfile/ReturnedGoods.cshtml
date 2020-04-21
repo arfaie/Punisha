@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Order>
 
 @{
-    ViewData["Title"] = "کالاهای مرجوعی";
+    ViewData["Title"] = "کالاهای مرجوعی یا قابل مرجوع";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,7 +23,8 @@
                         <th scope="col">مبلغ قابل پرداخت</th>
                         <th scope="col">مبلغ کل</th>
                         <th scope="col">عملیات پرداخت</th>
-                        <th scope="col">جزئیات</th>
+                        <th scope="col">وضعیت سفارش</th>
+                        <th scope="col">درخواست مرجوعی</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,8 +46,9 @@
                                 {
                                     <td class="text-danger">پرداخت ناموفق</td>
                                 }
+                                <td>@item.Status?.Title</td>
 
-                                <td class="detail"><a asp-controller="UserProfile" asp-action="orderDetaile" asp-route-id="@item.Id"><i class="fa fa-angle-left"></i></a></td>
+                                <td class="detail"><a asp-controller="UserProfile" asp-action="orderDetaile" asp-route-id="@item.Id" asp-route-isReturned="true"><i class="fa fa-angle-left"></i></a></td>
                             </tr>
                         }
                     }

@@ -4,6 +4,7 @@ using ECommerce.Models;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
 using ECommerce.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+	[Authorize(Roles = "Admin")]
 	public class UserController : Controller
 	{
 		private readonly UserManager<ApplicationUser> _userManager;

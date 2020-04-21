@@ -2,6 +2,7 @@
 using ECommerce.Models;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace E_Commerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	//[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin")]
 	public class PriceChangeController : Controller
 	{
 		private readonly ApplicationDbContext _context;
