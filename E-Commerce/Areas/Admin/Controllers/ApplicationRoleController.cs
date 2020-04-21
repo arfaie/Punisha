@@ -1,4 +1,5 @@
 ﻿using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace ECommerce.Areas.Admin.Controllers
 {
 	[Area("Admin")]
-	//[Authorize(Roles = "Admin")]
+	[Authorize(Roles = "Admin")]
 	public class ApplicationRoleController : Controller
 	{
 		private readonly RoleManager<ApplicationRole> _roleManager;

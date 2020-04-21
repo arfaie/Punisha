@@ -23,6 +23,7 @@
                         <th scope="col">مبلغ قابل پرداخت</th>
                         <th scope="col">مبلغ کل</th>
                         <th scope="col">عملیات پرداخت</th>
+                        <th scope="col">وضعیت سفارش</th>
                         <th scope="col">جزئیات</th>
                     </tr>
                 </thead>
@@ -45,6 +46,7 @@
                                 {
                                     <td class="text-danger">پرداخت ناموفق</td>
                                 }
+                                <td>@item.Status?.Title</td>
 
                                 <td class="detail"><a asp-controller="UserProfile" asp-action="orderDetaile" asp-route-id="@item.Id"><i class="fa fa-angle-left"></i></a></td>
                             </tr>

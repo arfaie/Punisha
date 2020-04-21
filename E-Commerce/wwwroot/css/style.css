@@ -871,7 +871,11 @@ nav.main-menu {
 
 @media (max-width: 1000px) {
 	.discount-product, .promo-single-right, .promo-single-show-more {
-		display: none;
+		margin-top: 10px;
+	}
+
+	.main-slider {
+		margin-top: 140px;
 	}
 }
 
@@ -4050,8 +4054,7 @@ input[type='checkbox'] {
 }
 
 .card {
-	margin: 13px;
-	margin: 10px;
+	margin: 10px 0;
 	text-align: center;
 	position: relative;
 }
@@ -5210,7 +5213,7 @@ span.profile-order-cancel-button {
 
 	.swiper-container-horizontal .profile-order-steps-container {
 		margin: 0 auto 10px;
-		width: 1280px;
+		/*width: 1280px;*/
 		overflow-x: auto;
 		margin-right: 55px;
 	}
@@ -5241,7 +5244,7 @@ span.profile-order-cancel-button {
 		}
 
 		.swiper-container-horizontal .profile-order-steps-container .hr {
-			width: 65px;
+			width: 15%;
 			margin-left: 10px;
 			margin-right: 10px;
 			height: 5px;
@@ -5263,7 +5266,7 @@ span.profile-order-cancel-button {
 				border-radius: 50%;
 				position: absolute;
 				top: -10px;
-				right: 18px;
+				right: 40%;
 			}
 
 			.swiper-container-horizontal .profile-order-steps-container .hr:after {
@@ -5272,7 +5275,7 @@ span.profile-order-cancel-button {
 				position: absolute;
 				top: -3px;
 				color: #fff;
-				right: 25px;
+				right: 44%;
 			}
 
 .table-draught {

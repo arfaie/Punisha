@@ -60,6 +60,7 @@ namespace ECommerce.Controllers
 				if (user == null)
 				{
 					TempData["Notification"] = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red);
+					return RedirectToAction("Index");
 				}
 
 				user.FullName = model.FullName;
@@ -133,13 +134,12 @@ namespace ECommerce.Controllers
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
-			var UserAdrresses =
-				await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
+			var userAddresses = await _context.Addresses.Where(a => a.UserId == user.Id).Include(a => a.User).Include(a => a.City).ToListAsync();
 
 			ViewBag.UserFullName = user.FullName;
 			ViewBag.UserMobile = user.PhoneNumber;
 
-			return View(UserAdrresses);
+			return View(userAddresses);
 		}
 
 		[HttpGet]
@@ -230,7 +230,7 @@ namespace ECommerce.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> orderDetaile(string id)
+		public async Task<IActionResult> orderDetaile(string id, bool isReturned = false)
 		{
 			ViewBag.path = "/upload/normalimage/";
 
@@ -238,6 +238,8 @@ namespace ECommerce.Controllers
 			ViewBag.amadesazi = "";
 			ViewBag.post = "";
 			ViewBag.moshtari = "";
+
+			ViewBag.isReturned = isReturned;
 
 			var select = await _context.Orders.Include(o => o.Status).Include(o => o.Factor).ThenInclude(o => o.Address)
 				.ThenInclude(o => o.City).Include(x => x.Factor).ThenInclude(x => x.FactorItems).ThenInclude(x => x.Product)
@@ -359,52 +361,51 @@ namespace ECommerce.Controllers
 				return RedirectToAction("Login", "Account");
 			}
 
-			var factors = await _context.Factors.Where(x => x.UserId == user.Id).ToListAsync();
+			var orders = await _context.Orders.Where(x => x.Factor.UserId == user.Id && x.Status.Title != "پرداخت نشده").Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync();
 
 			ViewBag.UserFullName = user.FullName;
 			ViewBag.UserMobile = user.PhoneNumber;
 
-			return View(await _context.Orders.Where(o => o.Factor.UserId == user.Id).Include(o => o.Status).Include(o => o.Factor).OrderByDescending(x => x.TransactionDate).ToListAsync());
+			return View(orders);
 		}
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> ReturnedGoods(string id, Address model, string redirectUrl)
+		public async Task<IActionResult> ReturnRequest(string orderId)
 		{
-			if (ModelState.IsValid)
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
 			{
-				var user = await _userManager.GetUserAsync(HttpContext.User);
-				model.UserId = user.Id;
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red) });
+			}
 
-				ViewBag.UserFullName = user.FullName;
-				ViewBag.UserMobile = user.PhoneNumber;
+			ViewBag.UserFullName = user.FullName;
+			ViewBag.UserMobile = user.PhoneNumber;
 
-				if (string.IsNullOrWhiteSpace(id))
+			var order = await _context.Orders.Include(x => x.Status).FirstOrDefaultAsync(x => x.Id == orderId);
+
+			if (order == null)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن سفارش", ToastType.Red) });
+			}
+
+			if (order.Status.Title == "تحویل به مشتری" || order.Status.Title == "در صف بررسی" || order.Status.Title == "آماده سازی سفارش" || order.Status.Title == "تحویل به پست")
+			{
+				var status = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "درخواست مرجوعی");
+
+				if (status == null)
 				{
-					_context.Addresses.Add(model);
-					await _context.SaveChangesAsync();
-
-					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-					return PartialView("_SuccessfulResponse", redirectUrl);
+					return Json(new { status = "fail", message = Notification.ShowNotif("خطا در ویرایش سفارش", ToastType.Red) });
 				}
 
-				_context.Addresses.Update(model);
+				order.StatusId = status.Id;
+				_context.Orders.Update(order);
 				await _context.SaveChangesAsync();
 
-				TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-				return PartialView("_SuccessfulResponse", redirectUrl);
+				return Json(new { status = "success", message = Notification.ShowNotif("درخواست مرجوعی برای این سفارش ارسال شد", ToastType.Green) });
 			}
 
-			if (string.IsNullOrWhiteSpace(id))
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.AddError, ToastType.Red);
-			}
-			else
-			{
-				TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Red);
-			}
-
-			return View(model);
+			return Json(new { status = "fail", message = Notification.ShowNotif("امکان درخواست مرجوعی برای این سفارش وجود ندارد.", ToastType.Red) });
 		}
 	}
 }

@@ -19,11 +19,12 @@
                     <span>ثبت شده در تاریخ @Model.TransactionDate.ToPersianDateString()  </span>
                 </h4>
             </div>
-            @*<div class="profile-navbar-invoice">
-                    <a href="#">
-                        <button class="profile-navbar-btn-invoice">مشاهده فاکتور</button>
-                    </a>
-                </div>*@
+            @if (ViewBag.IsReturned)
+            {
+                <div class="profile-navbar-invoice">
+                    <a id="ReturnRequestButton" data-value="@Model.Id" class="btn profile-navbar-btn-invoice">درخواست مرجوعی</a>
+                </div>
+            }
         </div>
         <div class="profile-stats">
             <div class="profile-stats-row">
@@ -115,23 +116,13 @@
             </section>
             <div class="table-draught">
                 <div class="table-draught-row">
-                    @if (Model.IssueCode != null)
-                    {
-                        <div class="table-draught-col">
-                            @*کد مرسوله: 34527436
+
+                    <div class="table-draught-col">
+                        @*کد مرسوله: 34527436
                             <span> &nbsp; | &nbsp; </span>*@
-                            بارکد پستی: @Model.IssueCode
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="table-draught-col">
-                            @*کد مرسوله: 34527436
-                            <span> &nbsp; | &nbsp; </span>*@
-                            بارکد پستی: -
-                        </div>
-                    }
-                   
+                        بارکد پستی: @Model.IssueCode
+                    </div>
+
                     <div class="table-draught-col">
                         هزینه ارسال
                         : .... تومان
@@ -224,3 +215,71 @@
 
     </div>
 </div>
+
+<script src="~/js/jquery-3.2.1.min.js"></script>
+<script>
+
+        $(document).ready(function () {
+
+             $('#ReturnRequestButton').on("click", function () {
+
+                 var id = $(this).attr('data-value');
+
+                 iziToast.question({
+                     timeout: 20000,
+                     close: true,
+                     overlay: true,
+                     displayMode: 'once',
+                     id: 'question',
+                     zindex: 999,
+                     rtl: true,
+                     title: '',
+                     message: 'آیا می خواهید درخواست مرجوعی برای این سفارش ارسال شود؟',
+                     position: 'center',
+                     buttons: [
+                         ['<button><b>بله</b></button>', function (instance, toast) {
+
+                             instance.hide({ transitionOut: 'fadeOut' }, toast, 'yesButton');
+
+                         }, true],
+                         ['<button>خیر</button>', function (instance, toast) {
+
+                             instance.hide({ transitionOut: 'fadeOut' }, toast, 'noButton');
+
+                         }],
+                     ],
+                     onClosing: function (instance, toast, closedBy) {
+                         //alert('Closing | closedBy: ' + closedBy);
+                     },
+                     onClosed: function (instance, toast, closedBy) {
+
+                         if (closedBy === 'yesButton') {
+
+                             //alert('Closed | closedBy: ' + closedBy);
+
+                             $.ajax({
+                                type: 'POST',
+                                data: { "orderId": id },
+                                url: '@Url.Action("ReturnRequest", "UserProfile")',
+                                dataType: 'json',
+                                contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                            })
+                             .done(function (data) {
+
+                                 $("#notificationDiv").append(data.message);
+
+                            })
+                            .fail(function (xhr, b, error) {
+                                alert(error);
+                            })
+                            .always(function () {
+                                //alert("OK");
+                            });
+
+                         }
+                     }
+                 });
+            });
+        });
+
+</script>

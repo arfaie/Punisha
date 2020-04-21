@@ -5,65 +5,69 @@
 }
 
 <!-- Start Main Slider -------------------->
-<div class="col-lg-9 col-md-8 col-xs-12 pull-right">
-    @await Component.InvokeAsync("MainSlider")
-</div>
-<!-- End Main Slider ---------------------->
-<!--   promo single------------------>
-<div class="col-lg-3 col-xs-12 pull-left">
-    <div class="promo-single-right">
-        <p>جستجو در محصولات</p>
-        <div class="row" style="width: 100%; margin: 0">
-            <div class="col-6">
-                <p class="smaller-text">نوع خودرو</p>
-                <select id="MakerList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Makers, "Id", "Name"))">
-                    <option value="0">همه</option>
-                </select>
-            </div>
-
-            <div class="col-6">
-                <p class="smaller-text">مدل خودرو</p>
-                <select id="CarList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Cars, "Id", "Name"))">
-                    <option value="0">همه</option>
-                </select>
-            </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-9 col-xs-12 pull-right">
+            @await Component.InvokeAsync("MainSlider")
         </div>
+        <!-- End Main Slider ---------------------->
+        <!--   promo single------------------>
+        <div class="col-lg-3 col-xs-12 pull-left">
+            <div class="promo-single-right">
+                <p>جستجو در محصولات</p>
+                <div class="row" style="width: 100%; margin: 0">
+                    <div class="col-6">
+                        <p class="smaller-text">نوع خودرو</p>
+                        <select id="MakerList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Makers, "Id", "Name"))">
+                            <option value="0">همه</option>
+                        </select>
+                    </div>
 
-        <div class="row" style="width: 100%; margin: 0">
-            @*<div class="col-4">
-                    <p class="smaller-text">گروه محصول</p>
-                    <select id="CategoryGroupList" class="smaller-text form-control" asp-items="@ViewBag.CategoryGroups">
-                        <option value="0">همه</option>
-                    </select>
+                    <div class="col-6">
+                        <p class="smaller-text">مدل خودرو</p>
+                        <select id="CarList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Cars, "Id", "Name"))">
+                            <option value="0">همه</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" style="width: 100%; margin: 0">
+                    @*<div class="col-4">
+                            <p class="smaller-text">گروه محصول</p>
+                            <select id="CategoryGroupList" class="smaller-text form-control" asp-items="@ViewBag.CategoryGroups">
+                                <option value="0">همه</option>
+                            </select>
+                        </div>*@
+
+                    <div class="col-6">
+                        <p class="smaller-text">دسته بندی</p>
+                        <select id="CategoryList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Title"))">
+                            <option value="0">همه</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6">
+                        <p class="smaller-text">برند</p>
+                        <select id="BrandList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Title"))">
+                            <option value="0">همه</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="parent-btn col-12">
+                    <button id="searchButton" class="dk-btn dk-btn-info" style="margin-top: 0">جستجو کن<i class="fa fa-search search"></i></button>
+                </div>
+
+            </div>
+            @*<div class="promo-single-right">
+                    <a href="#"><img src="~/images/promo/1000013399.gif"></a>
                 </div>*@
 
-            <div class="col-6">
-                <p class="smaller-text">دسته بندی</p>
-                <select id="CategoryList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Categories, "Id", "Title"))">
-                    <option value="0">همه</option>
-                </select>
-            </div>
-
-            <div class="col-6">
-                <p class="smaller-text">برند</p>
-                <select id="BrandList" class="smaller-text form-control" asp-items="@(new SelectList(ViewBag.Brands, "Id", "Title"))">
-                    <option value="0">همه</option>
-                </select>
-            </div>
+            @*<a href="#" class="promo-single-show-more">
+                    مشاهده همه شگفت انگیزها
+                </a>*@
         </div>
-
-        <div class="parent-btn col-12">
-            <button id="searchButton" class="dk-btn dk-btn-info" style="margin-top: 0">جستجو کن<i class="fa fa-search search"></i></button>
-        </div>
-
     </div>
-    @*<div class="promo-single-right">
-            <a href="#"><img src="~/images/promo/1000013399.gif"></a>
-        </div>*@
-
-    @*<a href="#" class="promo-single-show-more">
-            مشاهده همه شگفت انگیزها
-        </a>*@
 </div>
 <!--   promo single------------------>
 
