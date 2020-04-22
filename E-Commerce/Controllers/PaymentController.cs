@@ -157,6 +157,19 @@ namespace ECommerce.Controllers
 				ViewBag.Products = await _context.Products.Where(x => productIds.Contains(x.Id)).ToListAsync();
 			}
 
+			ViewBag.States = await _context.States.OrderBy(x => x.Name).ToListAsync();
+
+			var cities = await _context.Cities.OrderBy(x => x.Name).ToListAsync();
+
+			foreach (var city in cities)
+			{
+				city.Addresses = null;
+				city.Agencies = null;
+				city.State = null;
+			}
+
+			ViewBag.Cities = cities;
+
 			return View(factor);
 		}
 

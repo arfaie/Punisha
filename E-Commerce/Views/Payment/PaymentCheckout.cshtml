@@ -289,7 +289,7 @@
         </div>
     </footer>
 </div>
-    </div>
+
 <div class="remodal-overlay" id="modal">
     <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
         <div class="remodal">
@@ -311,12 +311,8 @@
                         <div class="form-checkout-valid-row">
                             <label for="province">استان</label>
                             <span class="required-star" style="color:red;">*</span>
-                            <select name="" id="province">
-                                <option value="date-desc" selected="selected">شهر مورد نظر خود را انتخاب کنید </option>
-                                <option value="date-asc">تهران</option>
-                                <option value="rate">مشهد</option>
-                                <option value="views">اصفهان</option>
-                                <option value="comments">شیراز</option>
+                            <select name="" id="province" asp-items="@(new SelectList(ViewBag.States, "Id", "Name"))">
+                                <option value="0" selected="selected">استان مورد نظر خود را انتخاب کنید</option>
                             </select>
                         </div>
 
@@ -324,11 +320,7 @@
                             <label for="city">شهر</label>
                             <span class="required-star" style="color:red;">*</span>
                             <select name="" id="city">
-                                <option value="date-desc" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>
-                                <option value="date-asc">آشخانه</option>
-                                <option value="rate">شیروان</option>
-                                <option value="views">اسفراین</option>
-                                <option value="comments">جاجرم</option>
+                                <option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>
                             </select>
                         </div>
 
@@ -360,6 +352,23 @@
     <script>
 
         $(document).ready(function () {
+
+            var cities = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cities))');
+
+            $("#province").change(function () {
+                var id = $("#province").val();
+
+                $("#city").empty();
+                var items = '<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>';
+
+                $.each(cities, function (index, value) {
+                    if (value.StateId === id) {
+                        items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                    }
+                });
+
+                $("#city").html(items);
+        });
 
             $(".checkout-contact-badge").click(function (e) {
                 e.preventDefault();

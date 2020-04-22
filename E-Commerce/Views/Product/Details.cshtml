@@ -5,26 +5,34 @@
 }
 
 <!--single-product------------------------->
-<div class="col-12">
-    <div class="product-page">
-        <div class="product-nav-container">
-            <ul class="js-breadcrumb">
-                <li><a asp-controller="Home" asp-action="Index">کاربیوتیک</a></li>
+<div class="container-fluid">
+    <div class="row">
+        <div class="product-page col-12">
+            <div class="product-nav-container">
+                <ul class="js-breadcrumb">
+                    <li><a asp-controller="Home" asp-action="Index">کاربیوتیک</a></li>
 
-                @if (ViewBag.CategoryGroup != null)
+                    @if (ViewBag.CategoryGroup != null)
+                    {
+                        <li><a asp-controller="Product" asp-action="CategoryGroup" asp-route-id="@ViewBag.CategoryGroup.Id">@ViewBag.CategoryGroup.Title</a></li>
+                    }
+
+                    @if (ViewBag.Category != null)
+                    {
+                        <li><a asp-controller="Product" asp-action="Category" asp-route-id="@ViewBag.Category.Id">@ViewBag.Category.Title</a></li>
+                    }
+                </ul>
+
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <li><a asp-controller="Product" asp-action="CategoryGroup" asp-route-id="@ViewBag.CategoryGroup.Id">@ViewBag.CategoryGroup.Title</a></li>
+                    <div class="product-feedback">
+                        <a href="#" class="btn feedback-survey-btn" onclick="document.getElementById('modal').style.display='block'">بازخورد درباره این کالا</a>
+                    </div>
                 }
 
-                @if (ViewBag.Category != null)
-                {
-                    <li><a asp-controller="Product" asp-action="Category" asp-route-id="@ViewBag.Category.Id">@ViewBag.Category.Title</a></li>
-                }
-            </ul>
-            @*<div class="product-feedback">
-                    <a href="#" class="feedback-survey-btn">بازخورد درباره این کالا</a>
-                </div>*@
+            </div>
         </div>
+
         <article class="js-product">
             <div class="col-lg-4 col-md-12 col-xs-12 pull-right">
                 <div class="product-gallery">
@@ -49,6 +57,7 @@
                     }
 
                 </div>
+
             </div>
 
             <!-- Modal -->
@@ -60,9 +69,7 @@
                             @*<span class="product-title-en">Samsung Galaxy A50 SM-A505F/DS Dual SIM 128GB Mobile Phone</span>*@
                         </h1>
                         <div class="product-guaranteed">
-                            <span>
-                                @*بیش از ۹۹۹ نفر از خریداران این محصول را پیشنهاد داده‌اند*@
-                            </span>
+                            <span class="stars">@Model.CommentAndStars?.Average(x => x.Stars)</span>
                         </div>
                     </div>
                     <div class="product-attributes">
@@ -221,33 +228,59 @@
                         <div id="product-comment-list">
                             <ul class="comments-list">
 
-                                @foreach (var commentAndStar in Model.CommentAndStars)
+                                @foreach (var commentAndStar in Model.CommentAndStars.OrderByDescending(x => x.Date))
                                 {
-                                    <li style="display:block">
-                                        <section>
-                                            <div class="col-lg-12 col-md-12 col-xs-12">
-                                                <div class="article">
-                                                    @*<div class="header">
-                                                            <div>
-                                                                ارسال رم 4 بجای رم 6
-                                                                <span>توسط حسن شجاعی در تاریخ ۱۳ خرداد ۱۳۹۸</span>
-                                                            </div>
-                                                        </div>*@
-                                                    <p>
-                                                        @commentAndStar.Comment
-                                                    </p>
-                                                    @*<div class="footer">
-                                                            <div class="comment-like-container">
-                                                                آیا این نظر برایتان مفید بود؟
-                                                                <button class="btn-like" data-counter="۱,۵۲۸">بله</button>
-                                                                <button class="btn-like" data-counter="۷۹">خیر</button>
-                                                            </div>
-                                                        </div>*@
+                                    if (commentAndStar.IsApproved)
+                                    {
+                                        <li style="display:block">
+                                            <section>
+                                                <div class="col-lg-12 col-md-12 col-xs-12">
+                                                    <div class="article">
+                                                        <div class="profile-comment-rating">
+                                                            @if (commentAndStar.Stars >= 1)
+                                                            {
+                                                                <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                                            }
+                                                            @if (commentAndStar.Stars >= 2)
+                                                            {
+                                                                <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                                            }
+                                                            @if (commentAndStar.Stars >= 3)
+                                                            {
+                                                                <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                                            }
+                                                            @if (commentAndStar.Stars >= 4)
+                                                            {
+                                                                <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                                            }
+                                                            @if (commentAndStar.Stars == 5)
+                                                            {
+                                                                <span class="star-item"><img src="~/images/search/star-1.svg"></span>
+                                                            }
+                                                        </div>
+                                                        <br />
+                                                        @*<div class="header">
+                                                                <div>
+                                                                    ارسال رم 4 بجای رم 6
+                                                                    <span>توسط حسن شجاعی در تاریخ ۱۳ خرداد ۱۳۹۸</span>
+                                                                </div>
+                                                            </div>*@
+                                                        <p>
+                                                            @commentAndStar.Comment
+                                                        </p>
+                                                        @*<div class="footer">
+                                                                <div class="comment-like-container">
+                                                                    آیا این نظر برایتان مفید بود؟
+                                                                    <button class="btn-like" data-counter="۱,۵۲۸">بله</button>
+                                                                    <button class="btn-like" data-counter="۷۹">خیر</button>
+                                                                </div>
+                                                            </div>*@
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </section>
+                                            </section>
 
-                                    </li>
+                                        </li>
+                                    }
                                 }
 
                             </ul>
@@ -263,8 +296,87 @@
 </div>
 <!--single-product------------------------->
 
+<div class="remodal-overlay" id="modal">
+    <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+        <div class="remodal">
+            <a href="#" class="remodal-close" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
+            <div class="middle-container">
+                <form action="#" class="form-checkout">
+                    <div class="form-checkout-headline">ارسال نظر</div>
+                    <div class="form-checkout-row">
+
+                        <div class="form-checkout-valid-row">
+                            <label for="province">امتیاز محصول</label>
+                            @*<span class="required-star" style="color:red;">*</span>*@
+                            <select name="" id="stars">
+                                <option value="0" selected="selected">تعداد ستاره</option>
+                                <option value="5">5 ستاره</option>
+                                <option value="4">4 ستاره</option>
+                                <option value="3">3 ستاره</option>
+                                <option value="2">2 ستاره</option>
+                                <option value="1">1 ستاره</option>
+                            </select>
+                        </div>
+
+                        <label for="address">توضیحات</label>
+                        @*<span class="required-star" style="color:red;">*</span>*@
+                        <input type="text" id="comment" class="input-name-checkout" placeholder="توضیحات خود را وارد نمایید" style="height:80px;">
+
+                        <div class="form-checkout-valid-row">
+                            <div class="parent-btn">
+                                <button id="sendFeedbackButton" class="dk-btn dk-btn-info">
+                                    ثبت نظر
+                                    <i class="fa fa-check sign-in"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <a href="#" class="cancel-edit-address" onclick="document.getElementById('modal').style.display='none'">انصراف و بازگشت</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
+        $.fn.stars = function () {
+            return $(this).each(function () {
+                // Get the value
+                var val = parseFloat($(this).html());
+                // Make sure that the value is in 0 - 5 range, multiply to get width
+                var size = Math.max(0, (Math.min(5, val))) * 20;
+                // Create stars holder
+                var $span = $('<span />').width(size);
+                // Replace the numerical value with stars
+                $(this).html($span);
+            });
+        }
+
+        $('span.stars').stars();
+
+        $('#sendFeedbackButton').on("click", function () {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("AddCommentAndStar", "Product")',
+                    data: { "productId": "@Model.Id", "stars": $("#stars").val(), "comment": $("#comment").val() },
+                    success: function(msg) {
+
+                        var color = "#FF5733";
+
+                        if (msg.status === 'success') {
+                            var color = "#196F3D";
+                        }
+
+                        var scriptOption = "<script> iziToast.show({message:'" + msg.message + "'" + ",theme: 'light', color: '" + color + "',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
+
+                        $("#notificationDiv").append(scriptOption);
+                    }
+                });
+        });
+
         $('#btnproductborrow').on("click", function() {
                 var post_data = $('#pid').text();
                 $.ajax({

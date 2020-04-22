@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -29,6 +30,11 @@ namespace ECommerce.Controllers
 		public async Task<IActionResult> Index()
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return RedirectToAction("Login", "Account");
+			}
 
 			return View(await _context.Users.Include(u => u.Car).Include(u => u.UserGroup)
 				.FirstOrDefaultAsync(u => u.Id == user.Id));
@@ -290,6 +296,31 @@ namespace ECommerce.Controllers
 
 			return View(await _context.CommentAndStars.Include(c => c.User).Include(c => c.Product)
 				.Where(c => c.UserId == user.Id).ToListAsync());
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> History()
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			ViewBag.UserFullName = user.FullName;
+			ViewBag.UserMobile = user.PhoneNumber;
+
+			var histories = await _context.Histories.Where(x => x.UserId == user.Id).OrderByDescending(x => x.RegistrationDateAndTime).ToListAsync();
+
+			var products = new List<Product>();
+			foreach (var history in histories)
+			{
+				var product = await _context.Products.FirstOrDefaultAsync(x => x.Id == history.ProductId);
+
+				if (product != null)
+				{
+					products.Add(product);
+				}
+			}
+
+			return View(products);
 		}
 
 		[HttpGet]
