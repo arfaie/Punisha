@@ -10,12 +10,6 @@ namespace ECommerce.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string Id { get; set; }
 
-		[Display(Name = "دسته بندی")]
-		public string CategoryId { get; set; }
-
-		[Display(Name = "دسته بندی")]
-		public virtual Category Category { get; set; }
-
 		[Display(Name = "گروه فیلد")]
 		public string FieldGroupId { get; set; }
 
@@ -31,7 +25,13 @@ namespace ECommerce.Models
 		[Display(Name = "عنوان")]
 		public string Title { get; set; }
 
-		public ICollection<CategoryField> CategoryFields { get; set; }
+        [Display(Name = "ترتیب")]
+        public int Order { get; set; }
+
+        [NotMapped]
+        [Display(Name = "دسته بندی محصولات")]
+        public string[] CategoryIds { get; set; }
+        public ICollection<CategoryField> CategoryFields { get; set; }
 
 		public ICollection<ProductField> ProductFields { get; set; }
 	}

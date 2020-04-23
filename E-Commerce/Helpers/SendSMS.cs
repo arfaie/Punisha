@@ -30,7 +30,11 @@ namespace ECommerce.Helpers
 				{
 					res = await client.GetAsync("v1/6E65695778564344644231365673544D73794E324C7377634149324F7A5270324F6346774D6753666363633D/verify/lookup.json?receptor=" + mobile + "&token=" + token + "&token2=" + token2 + "&template=CarbioticReset");
 				}
-				if (res != null && res.IsSuccessStatusCode)
+                if (type == (int)SmsTypes.DoneOrder)
+                {
+                    res = await client.GetAsync("v1/6E65695778564344644231365673544D73794E324C7377634149324F7A5270324F6346774D6753666363633D/verify/lookup.json?receptor=" + mobile + "&%token10=" + token + "&token =" + token2 + "&template=DoneOrder");
+                }
+                if (res != null && res.IsSuccessStatusCode)
 				{
 					var result = res.Content.ReadAsStringAsync().Result;
 

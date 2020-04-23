@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ProductField>
+
+<article>
+    <h2 class="params-headline">
+        مشخصات محصول
+        <span>@Model.FirstOrDefault().Product.Name</span>
+    </h2>
+    @{
+        if (Model.Any())
+        {
+            var group = Model.GroupBy(x => x.Field.FieldGroupId);
+            //var ls = Model.FirstOrDefault()?.lsFieldGroup;
+            @if (group.Count() == 0)
+            {
+                <div>ویژگی برای این محصول تعریف نشده است</div>
+            }
+            else
+            {
+
+            }
+
+            @foreach (var item in group)
+            {
+                var grp = item.ToList().First().Field.FieldGroup;
+                <section>
+                    @{
+
+
+                        <h3 class="params-title">@grp.Title</h3>
+                        var select = Model.Where(x => x.Field.FieldGroupId == item.First().Field.FieldGroupId);
+
+                        //var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
+                        //Ecommerce.Models.ViewModels.ProductFieldViewModel first = null;
+                        //foreach (var model in Model.ProductFieldViewModels)
+                        //{
+                        //    first = model;
+                        //    select = select.Where(x => x.IdProduct == first.IdProduct);
+                        //    break;
+                        //}
+                        foreach (var selectItem in select)
+                        {
+                            <ul class="params-list">
+
+                                @{
+                                    if (selectItem.Field.FieldTypeId == "1")
+                                    {
+                                        <li>
+                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                <div class="params-list-key">
+                                                    <span class="block">@selectItem.Field.Title</span>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                <div class="params-list-value">
+                                                    <span class="block">@selectItem.Value</span>
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                    }
+                                    if (selectItem.Field.FieldTypeId == "2")
+                                    {
+                                        <li>
+
+                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                <div class="params-list-key">
+                                                    <span class="block">@selectItem.Field.Title</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                <div class="params-list-value">
+                                                    @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                    {
+                                                        <span class="block">بله</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="block">بله</span>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        </li>
+
+                                    }
+                                    if (selectItem.Field.FieldTypeId == "3")
+                                    {
+                                        <li>
+
+                                            <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+                                                <div class="params-list-key">
+                                                    <span class="block">@selectItem.Field.Title</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
+                                                <div class="params-list-value">
+                                                    @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                                    {
+                                                        <span class="block">دارد</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="block">ندارد</span>
+                                                    }
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                    }
+                                }
+                            </ul>
+
+                        }
+
+                    }
+                </section>
+            }
+
+
+        }
+
+    }
+</article>

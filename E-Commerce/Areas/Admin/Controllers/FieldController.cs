@@ -1,103 +1,73 @@
 ﻿using ECommerce.Data;
 using ECommerce.Models;
+using ECommerce.Models.Helpers;
+using ECommerce.Models.Helpers.OptionEnums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 // TODO field
 namespace ECommerce.Areas.Admin.Controllers
 {
-	[Area("Admin")]
-	[Authorize(Roles = "Admin")]
-	public class FieldController : Controller
-	{
-		private readonly ApplicationDbContext _context;
+    [Area("Admin")]
+    [Authorize(Roles = "Admin")]
+    public class FieldController : Controller
+    {
+        private readonly ApplicationDbContext _context;
 
-		public FieldController(ApplicationDbContext context)
-		{
-			_context = context;
-		}
+        public FieldController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Index()
-		{
-            //var ff = _context.Fields.Where(pr).ToList();
-            //var query = (from field in _context.Fields.ToListAsync()
-            //             join cf in _context.CategoryFields on field.Id equals cf.FieldId
-            //             select new FieldViewModel
-            //             {
-            //                 Id = field.Id,
-            //                 Title = field.Title,
-            //                 IdType = field.Type,
-            //                 SelectGroupName = "",
-            //                 FieldGroupId = field.FieldGroupId,
-            //                 SelectFieldGroupName = ""
-            //             }).GroupBy(x => x.Id);
-            //List<FieldViewModel> lsFieldViewModel = new List<FieldViewModel>();
-            //FieldViewModel ob;
-            //foreach (var item in query)
-            //{
-            //    ob = new FieldViewModel();
-            //    ob.Id = item.First().Id;
-            //    ob.Title = item.First().Title;
-            //    ob.Type = FieldType(item.First().IdType);
-            //    ob.SelectGroupName = "";
-            //    ob.FieldGroupId = item.First().FieldGroupId;
-            //    ob.SelectFieldGroupName = ProductCtgNamesAsync(item.First().Id);
-            //    lsFieldViewModel.Add(ob);
-            //}
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Index()
+        {
+            var select = await _context.Fields.ToListAsync();
+            return View(select);
+        }
 
-            return View(await _context.Fields.ToListAsync());
-		}
 
-		//public string FieldType(string id)
-		//{
-		//	var select = _context.FieldTypes.Where(x => x.Id == id).First().Title;
-		//	return select;
-		//}
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> AddEdit(string id)
+        {
+            ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
+            ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
+            ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
+            if (id != null)
+            {
+                var fields = await _context.Fields.FirstOrDefaultAsync(c => c.Id == id);
 
-		//public string ProductCtgNamesAsync(string FieldId)
-		//{
-		//	var titels = new List<string>();
-
-		//	var select = _context.CategoryFields.Where(x => x.FieldId == FieldId).ToList();
-		//	foreach (var item in select.ToList())
-		//	{
-		//		var title = _context.Categories.Where(x => x.Id == item.CategoryId).FirstOrDefault().Title;
-		//		titels.Add(title);
-		//	}
-
-		//	return String.Join("،", titels);
-		//}
-
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> AddEdit(string id)
-		{
-			ViewBag.Categories = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
-			ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
-			ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
-
-			//var field = await _context.Fields.SingleOrDefaultAsync(b => b.Id == id);
-			//if (field != null)
-			//{
-			//	return PartialView("AddEdit", field);
-			//}
-
-			return PartialView("AddEdit", new Field());
-		}
+                var select = await _context.CategoryFields.Where(x => x.FieldId == id).ToListAsync();
+                fields.CategoryIds = select.Select(x => x.CategoryId).ToArray();
+                return PartialView("AddEdit", fields);
+            }
+            return PartialView("AddEdit", new Field());
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl,string[] CategoryId)
+        public async Task<IActionResult> AddEdit(string id, Field model, string redirectUrl)
         {
-            if (ModelState.IsValid)
+            redirectUrl = "/Admin/Field";
+            if (String.IsNullOrWhiteSpace(id))
             {
-                if (!CheckDuplicateDrp(CategoryId) || model.FieldTypeId != "4")
+                if (ModelState.IsValid)
                 {
+                    var selectOrder = _context.Fields;
+                    //var aa=selectOrder.Result;
+                    int order = 0;
+                    if (selectOrder.Count() != 0)
+                    {
+                        order = selectOrder.First().Order + 1;
+                    }
+                    model.Order = order;
                     _context.Fields.Add(model);
                     await _context.SaveChangesAsync();
                     try
@@ -110,9 +80,9 @@ namespace ECommerce.Areas.Admin.Controllers
                         throw;
                     }
                     var select = _context.Fields;
-                    string ss = select.ToList().Last().Id;
+                    string ss = select.ToList().OrderByDescending(x => x.Order).First().Id;
 
-                    foreach (var item in CategoryId)
+                    foreach (var item in model.CategoryIds)
                     {
                         CategoryField CategoryField = new CategoryField();
                         CategoryField.FieldId = ss;
@@ -133,69 +103,135 @@ namespace ECommerce.Areas.Admin.Controllers
                     }
 
                     await _context.SaveChangesAsync();
+                    return PartialView("_SuccessfulResponse", redirectUrl);
                 }
             }
+            else
+            {
+                if (model.CategoryIds != null)
+                {
+                    var CategoryFields = await _context.CategoryFields.Where(x => x.FieldId == model.Id).ToListAsync();
+                    foreach (var item in model.CategoryIds)
+                    {
+                        var isExist = CategoryFields.Where(x => x.CategoryId == item).FirstOrDefault();
+                        if (isExist == null)
+                        {
+                            CategoryField CategoryField = new CategoryField();
+                            CategoryField.FieldId = model.Id;
+                            CategoryField.CategoryId = item;
+                            _context.CategoryFields.Add(CategoryField);
+
+                            //Add to ProductFields
+                            ProductField pf = new ProductField();
+                            var selectProducts = _context.Products.Where(x => x.CategoryId == item);
+                            foreach (var itemProduct in selectProducts)
+                            {
+                                pf.ProductId = itemProduct.Id;
+                                pf.FieldId = model.Id;
+                                pf.Value = null;
+                                _context.ProductFields.Add(pf);
+                            }
+                            //Add to ProductFields
+                        }
+                    }
+                    foreach (var item in CategoryFields)
+                    {
+                        bool isExist = model.CategoryIds.Contains(item.CategoryId);
+                        if (!isExist)
+                        {
+                            var s = _context.CategoryFields.Where(x => x.CategoryId == item.CategoryId).FirstOrDefault();
+                            var ss =  _context.ProductFields.Where(x => x.FieldId == item.FieldId).FirstOrDefault();
+                            _context.CategoryFields.Remove(s);
+                            _context.ProductFields.Remove(ss);
+                        }
+                    }
+                }
+
+                //_context.CategoryFields.RemoveRange(CategoryFields);
+                //_context.ProductFields.RemoveRange(await _context.ProductFields.Where(x => x.FieldId == model.Id).ToListAsync());
+
+                //if (model.CategoryIds != null)
+                //{
+                //    foreach (var item in model.CategoryIds)
+                //    {
+                //        CategoryField CategoryField = new CategoryField();
+                //        CategoryField.FieldId = model.Id;
+                //        CategoryField.CategoryId = item;
+                //        _context.CategoryFields.Add(CategoryField);
+
+                //        //Add to ProductFields
+                //        ProductField pf = new ProductField();
+                //        var selectProducts = _context.Products.Where(x => x.CategoryId == item);
+                //        foreach (var itemProduct in selectProducts)
+                //        {
+                //            pf.ProductId = itemProduct.Id;
+                //            pf.FieldId = model.Id;
+                //            pf.Value = null;
+                //            _context.ProductFields.Add(pf);
+                //        }
+                //        //Add to ProductFields
+                //    }
+                //}
+                _context.Entry(model).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
 
             ViewBag.SelectGroups = new SelectList(await _context.Categories.ToListAsync(), "Id", "Title");
             ViewBag.FieldGroups = new SelectList(await _context.FieldGroups.ToListAsync(), "Id", "Title");
             ViewBag.FieldTypes = new SelectList(await _context.FieldTypes.ToListAsync(), "Id", "Title");
 
-            return View("Index", model);
+            return RedirectToAction("Index");
         }
 
-        public bool CheckDuplicateDrp(string[] idCat)
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Delete(string id)
         {
-            var exist = true;
-            //var query = (from f in _context.Fields
-            //	join pcf in _context.CategoryFields on f.Id equals pcf.FieldId).Where(x => x.Type == 4);
-            //foreach (var item in idCat)
-            //{
-            //	exist = query.Where(x => x.CategoryId == item).Any();//آیتمی وجود دارد؟
-            //	if (exist == true)
-            //	{
-            //		break;
-            //	}
-            //}
-            return exist;
+            var field = new Field();
+
+            {
+                field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
+                if (field == null)
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return PartialView("Delete", field.Title);
         }
 
-        //[HttpGet]
-        //[AutoValidateAntiforgeryToken]
-        //public async Task<IActionResult> Delete(string id)
-        //{
-        //	var field = new Field();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                {
+                    var selectCatField = _context.CategoryFields.Where(x => x.FieldId == id);
+                    if (selectCatField.Count() != 0)
+                    {
+                        _context.CategoryFields.RemoveRange(selectCatField);
+                    }
+                    var selectProductField = _context.ProductFields.Where(x => x.FieldId == id);
+                    if (selectProductField.Count() != 0)
+                    {
+                        _context.ProductFields.RemoveRange(selectProductField);
+                    }
+                    var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
 
-        //	{
-        //		field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
-        //		if (field == null)
-        //		{
-        //			return RedirectToAction("Index");
-        //		}
-        //	}
+                    _context.Fields.Remove(field);
+                    await _context.SaveChangesAsync();
 
-        //	return PartialView("Delete", field.Title);
-        //}
+                    TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+                    return PartialView("_SuccessfulResponse", redirectUrl);
+                }
+            }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Delete(string id, string redirectUrl)
-        //{
-        //	if (ModelState.IsValid)
-        //	{
-        //		{
-        //			var field = await _context.Fields.SingleOrDefaultAsync(a => a.Id == id);
+            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
 
-        //			_context.Fields.Remove(field);
-        //			await _context.SaveChangesAsync();
-
-        //			TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
-        //			return PartialView("_SuccessfulResponse", redirectUrl);
-        //		}
-        //	}
-
-        //	TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
-
-        //	return RedirectToAction("Index");
-        //		//}
+            return RedirectToAction("Index");
+        }
     }
 }

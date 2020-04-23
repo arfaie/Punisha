@@ -177,40 +177,7 @@
                 <div class="tab-active-content">
 
                     <div class="tab params" style="display:block;">
-                        <article>
-                            <h2 class="params-headline">
-                                مشخصات فنی
-                                <span>@Model.Name</span>
-                            </h2>
-                            <section>
-                                @*<h3 class="params-title">مشخصات کلی</h3>*@
-                                <ul class="params-list">
-                                    @if (ViewBag.ProductFields != null)
-                                    {
-                                        @foreach (ProductField item in ViewBag.ProductFields)
-                                        {
-
-                                            <li>
-                                                <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
-                                                    <div class="params-list-key">
-                                                        <span class="block">@item.Field?.Title</span>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-lg-9 col-md-9 col-xs-12 pull-left" style="padding:0;">
-                                                    <div class="params-list-value">
-                                                        <span class="block">@item.Value</span>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-                                        }
-                                    }
-
-                                </ul>
-                            </section>
-
-                        </article>
+                        @await Component.InvokeAsync("ProductProperties",Model.Id)
                     </div>
                     <div class="tab comments" style="display:none;">
 
