@@ -11,5 +11,8 @@ namespace ECommerce.Models
 
 		[Display(Name = "عکس")]
 		public string Image { get; set; }
+
+        [Display(Name = "لینک")]
+        public string Link { get; set; }
 	}
 }

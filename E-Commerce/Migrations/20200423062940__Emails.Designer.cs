@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200423062940__Emails")]
+    partial class _Emails
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7168,9 +7170,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("FieldTypeId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Order")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -8314,7 +8313,7 @@ namespace ECommerce.Migrations
 
             modelBuilder.Entity("ECommerce.Models.Field", b =>
                 {
-                    b.HasOne("ECommerce.Models.Category", null)
+                    b.HasOne("ECommerce.Models.Category", "Category")
                         .WithMany("Fields")
                         .HasForeignKey("CategoryId");
 

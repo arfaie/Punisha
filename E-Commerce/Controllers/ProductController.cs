@@ -30,10 +30,32 @@ namespace ECommerce.Controllers
 
 			var product = await _context.Products.Include(x => x.ProductGalleries).Include(x => x.CommentAndStars).Include(x => x.Brand).Include(x => x.OfferItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
 
-			await Helper.AddOfferToProductAsync(_context, user, product);
-
 			if (product != null)
 			{
+				if (user != null)
+				{
+					var history = await _context.Histories.FirstOrDefaultAsync(x => x.ProductId == product.Id && x.UserId == user.Id);
+
+					if (history != null)
+					{
+						history.RegistrationDateAndTime = DateTime.UtcNow;
+						_context.Histories.Update(history);
+					}
+					else
+					{
+						history = new History
+						{
+							ProductId = product.Id,
+							UserId = user.Id,
+							RegistrationDateAndTime = DateTime.UtcNow
+						};
+						_context.Histories.Add(history);
+					}
+					await _context.SaveChangesAsync();
+				}
+
+				await Helper.AddOfferToProductAsync(_context, user, product);
+
 				// breadcrumb data
 				var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == product.CategoryId);
 
@@ -247,6 +269,50 @@ namespace ECommerce.Controllers
 			}
 
 			return Json(new { items = list });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddCommentAndStar(string productId, string stars, string comment)
+		{
+			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+			if (product == null)
+			{
+				return Json(new { status = "fail", message = "خطا در یافتن محصول" });
+			}
+
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return Json(new { status = "fail", message = "خطا در یافتن کاربر" });
+			}
+
+			var feedback = await _context.CommentAndStars.FirstOrDefaultAsync(x => x.UserId == user.Id && x.ProductId == productId);
+
+			if (feedback != null)
+			{
+				return Json(new { status = "fail", message = "نظر شما درباره این محصول قبلاً ثبت شده است" });
+			}
+
+			if (stars == "0" && String.IsNullOrWhiteSpace(comment))
+			{
+				return Json(new { status = "fail", message = "لطفاً نظر و امتیاز را وارد کنید." });
+			}
+
+			feedback = new CommentAndStar
+			{
+				Comment = comment,
+				Stars = Convert.ToInt32(stars),
+				Date = DateTime.UtcNow,
+				ProductId = productId,
+				UserId = user.Id
+			};
+
+			_context.CommentAndStars.Add(feedback);
+
+			await _context.SaveChangesAsync();
+
+			return Json(new { status = "success", message = "نظر شما ثبت شد. با تشکر" });
 		}
 
 		[HttpPost]

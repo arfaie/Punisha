@@ -136,7 +136,7 @@ namespace ECommerce.Controllers
 
 			ViewBag.User = user;
 
-			var addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ToListAsync();
+			var addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ThenInclude(x => x.State).ToListAsync();
 
 			if (addresses.Count > 0)
 			{
@@ -156,6 +156,19 @@ namespace ECommerce.Controllers
 				var productIds = factor.FactorItems.Select(x => x.ProductId).ToList();
 				ViewBag.Products = await _context.Products.Where(x => productIds.Contains(x.Id)).ToListAsync();
 			}
+
+			ViewBag.States = await _context.States.OrderBy(x => x.Name).ToListAsync();
+
+			var cities = await _context.Cities.OrderBy(x => x.Name).ToListAsync();
+
+			foreach (var city in cities)
+			{
+				city.Addresses = null;
+				city.Agencies = null;
+				city.State = null;
+			}
+
+			ViewBag.Cities = cities;
 
 			return View(factor);
 		}
