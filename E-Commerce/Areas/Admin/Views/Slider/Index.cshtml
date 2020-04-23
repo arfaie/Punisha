@@ -51,6 +51,7 @@
                             <tr>
                                 <th>کد</th>
                                 <th>@Html.DisplayNameFor(model => model.Image)</th>
+                                <th>@Html.DisplayNameFor(model => model.Link)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -65,6 +66,7 @@
                                         <td>
                                             <img src="@Helper.ThumbnailImagePath@item.Image" style=" width:80px; height:80px" class="thumbnail text-center" />
                                         </td>
+                                        <td>@item.Link</td>
 
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEdit"
