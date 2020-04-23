@@ -66,5 +66,24 @@ namespace ECommerce.Controllers
 		{
 			return View();
 		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> getEmail(string strEmail)
+        {
+            if (ModelState.IsValid)
+            {
+                Email model = new Email();
+                model.strEmail = strEmail;
+                model.Readed = false;
+
+                _context.Emails.Add(model);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
 	}
 }

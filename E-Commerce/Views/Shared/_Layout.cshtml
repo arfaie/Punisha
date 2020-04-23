@@ -128,8 +128,8 @@
                             شوید:
                         </span>
 
-                        <form action="#">
-                            <input type="text" class="input-footer" placeholder="آدرس ایمیل خود را وارد کنید">
+                        <form asp-controller="Home" asp-action="getEmail" method="post">
+                            <input type="text" name="strEmail" class="input-footer" placeholder="آدرس ایمیل خود را وارد کنید">
 
                             <button class="btn-footer-post" style="background: rebeccapurple">ارسال</button>
                         </form>
