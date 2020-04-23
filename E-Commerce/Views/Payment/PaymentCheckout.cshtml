@@ -51,21 +51,39 @@
                             {
                                 Address address = ViewBag.Addresses[i];
 
+                                <input type="hidden" id="Recipient@(address.Id)" value="@address.Recipient" />
+                                <input type="hidden" id="Mobile@(address.Id)" value="@address.Mobile" />
+                                <input type="hidden" id="Phone@(address.Id)" value="@address.Phone" />
+                                <input type="hidden" id="State@(address.Id)" value="@address.City?.State?.Id" />
+                                <input type="hidden" id="City@(address.Id)" value="@address.City?.Id" />
+                                <input type="hidden" id="PostalCode@(address.Id)" value="@address.PostalCode" />
+                                <input type="hidden" id="Description@(address.Id)" value="@address.Description" />
+
                                 <div class="checkout-contact-content">
                                     <ul class="checkout-contact-items">
                                         <li class="checkout-contact-item">
                                             گیرنده:
                                             <span class="full-name">@address.Recipient</span>
-                                            <a href="#" class="edit-address-btn" onclick="document.getElementById('modal').style.display='block'">اصلاح این آدرس</a>
+                                            <a href="#" class="edit-address-btn" onclick="document.getElementById('modalEdit').style.display='block'" id="editAddressModal@(address.Id)">اصلاح این آدرس</a>
                                             @if (i == 0)
                                             {
-                                                <a href="#" class="checkout-contact-location" onclick="document.getElementById('modal').style.display='block'">تعریف آدرس جدید</a>
+                                                <a href="#" class="checkout-contact-location" onclick="document.getElementById('modalAdd').style.display='block'">تعریف آدرس جدید</a>
                                             }
                                         </li>
                                         <li class="checkout-contact-item">
                                             <div class="checkout-contact-item-mobile">
                                                 شماره تماس:
                                                 <span class="mobile-phone">@address.Mobile</span>
+                                                <br>
+                                            </div>
+                                            <div class="checkout-contact-item-message">
+                                                تلفن ثابت:
+                                                <span class="post-code">@address.Phone</span>
+                                                <br>
+                                            </div>
+                                            <div class="checkout-contact-item-message">
+                                                استان:
+                                                <span class="post-code">@address.City?.State?.Name</span>
                                                 <br>
                                             </div>
                                             <div class="checkout-contact-item-message">
@@ -97,7 +115,7 @@
                             <div class="checkout-contact-content">
                                 <ul class="checkout-contact-items">
                                     <li class="checkout-contact-item">
-                                        <a href="#" class="checkout-contact-location" onclick="document.getElementById('modal').style.display='block'">تعریف آدرس جدید</a>
+                                        <a href="#" class="checkout-contact-location" onclick="document.getElementById('modalAdd').style.display='block'">تعریف آدرس جدید</a>
 
                                     </li>
                                 </ul>
@@ -290,54 +308,118 @@
     </footer>
 </div>
 
-<div class="remodal-overlay" id="modal">
+<div class="remodal-overlay" id="modalAdd">
     <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
         <div class="remodal">
-            <a href="#" class="remodal-close" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
+            <a href="#" class="remodal-close" onclick="document.getElementById('modalAdd').style.display='none'"><i class="fa fa-close"></i></a>
             <div class="middle-container">
                 <form action="#" class="form-checkout">
-                    <div class="form-checkout-headline">ویرایش آدرس</div>
+                    <div class="form-checkout-headline">افزودن آدرس</div>
                     <div class="form-checkout-row">
-                        <label for="name">نام و نام خانوادگی تحویل گیرنده</label>
+                        <label for="nameAdd">نام و نام خانوادگی تحویل گیرنده</label>
                         <span class="required-star" style="color:red;">*</span>
-                        <input type="text" id="name" class="input-name-checkout" placeholder="نام تحویل گیرنده را وارد نمایید">
-                        <label for="phone-number">شماره موبایل</label>
+                        <input type="text" id="nameAdd" class="input-name-checkout" placeholder="نام تحویل گیرنده را وارد نمایید">
+                        <label for="phone-numberAdd">شماره موبایل</label>
                         <span class="required-star" style="color:red;">*</span>
-                        <input type="text" id="phone-number" class="input-name-checkout" placeholder="09xxxxxxxxx" style="text-align:left;">
-                        <label for="fixed-number">شماره تلفن ثابت</label>
+                        <input type="text" id="phone-numberAdd" class="input-name-checkout" placeholder="09xxxxxxxxx" style="text-align:left;">
+                        <label for="fixed-numberAdd">شماره تلفن ثابت</label>
                         <span class="required-star" style="color:red;">*</span>
-                        <input type="text" id="fixed-number" class="input-name-checkout" placeholder="021xxxxxx" style="text-align:left;">
+                        <input type="text" id="fixed-numberAdd" class="input-name-checkout" placeholder="021xxxxxxxx" style="text-align:left;">
 
                         <div class="form-checkout-valid-row">
-                            <label for="province">استان</label>
+                            <label for="provinceAdd">استان</label>
                             <span class="required-star" style="color:red;">*</span>
-                            <select name="" id="province" asp-items="@(new SelectList(ViewBag.States, "Id", "Name"))">
+                            <select name="" id="provinceAdd" asp-items="@(new SelectList(ViewBag.States, "Id", "Name"))">
                                 <option value="0" selected="selected">استان مورد نظر خود را انتخاب کنید</option>
                             </select>
                         </div>
 
                         <div class="form-checkout-valid-row">
-                            <label for="city">شهر</label>
+                            <label for="cityAdd">شهر</label>
                             <span class="required-star" style="color:red;">*</span>
-                            <select name="" id="city">
+                            <select name="" id="cityAdd">
                                 <option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>
                             </select>
                         </div>
 
-                        <label for="address">آدرس</label>
+                        <label for="addressAdd">آدرس</label>
                         <span class="required-star" style="color:red;">*</span>
-                        <input type="text" id="address" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height:80px;">
+                        <input type="text" id="addressAdd" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height:80px;">
+
+                        <label for="postalCodeAdd">کد پستی</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="postalCodeAdd" class="input-name-checkout">
 
                         <div class="form-checkout-valid-row">
                             <div class="parent-btn">
-                                <button class="dk-btn dk-btn-info">
+                                <button id="addAddressButton" class="dk-btn dk-btn-info">
                                     ثبت آدرس
                                     <i class="fa fa-check sign-in"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <a asp-action="Cart" class="cancel-edit-address" onclick="document.getElementById('modal').style.display='none'">انصراف و بازگشت</a>
+                        <a class="cancel-edit-address" onclick="document.getElementById('modalAdd').style.display='none'">انصراف و بازگشت</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="remodal-overlay" id="modalEdit">
+    <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+        <div class="remodal">
+            <a href="#" class="remodal-close" onclick="document.getElementById('modalEdit').style.display='none'"><i class="fa fa-close"></i></a>
+            <div class="middle-container">
+                <form action="#" class="form-checkout">
+                    <div class="form-checkout-headline">ویرایش آدرس</div>
+                    <div class="form-checkout-row">
+                        <input type="hidden" id="idEdit">
+                        <label for="nameEdit">نام و نام خانوادگی تحویل گیرنده</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="nameEdit" class="input-name-checkout" placeholder="نام تحویل گیرنده را وارد نمایید">
+                        <label for="phone-numberEdit">شماره موبایل</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="phone-numberEdit" class="input-name-checkout" placeholder="09xxxxxxxxx" style="text-align:left;">
+                        <label for="fixed-numberEdit">شماره تلفن ثابت</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="fixed-numberEdit" class="input-name-checkout" placeholder="021xxxxxxxx" style="text-align:left;">
+
+                        <div class="form-checkout-valid-row">
+                            <label for="provinceEdit">استان</label>
+                            <span class="required-star" style="color:red;">*</span>
+                            <select name="" id="provinceEdit" asp-items="@(new SelectList(ViewBag.States, "Id", "Name"))">
+                                <option value="0" selected="selected">استان مورد نظر خود را انتخاب کنید</option>
+                            </select>
+                        </div>
+
+                        <div class="form-checkout-valid-row">
+                            <label for="cityEdit">شهر</label>
+                            <span class="required-star" style="color:red;">*</span>
+                            <select name="" id="cityEdit">
+                                <option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>
+                            </select>
+                        </div>
+
+                        <label for="addressEdit">آدرس</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="addressEdit" class="input-name-checkout" placeholder="آدرس خود را وارد نمایید" style="height:80px;">
+
+                        <label for="postalCodeEdit">کد پستی</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <input type="text" id="postalCodeEdit" class="input-name-checkout">
+
+                        <div class="form-checkout-valid-row">
+                            <div class="parent-btn">
+                                <button id="editAddressButton" class="dk-btn dk-btn-info">
+                                    ویرایش آدرس
+                                    <i class="fa fa-check sign-in"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <a class="cancel-edit-address" onclick="document.getElementById('modalEdit').style.display='none'">انصراف و بازگشت</a>
                     </div>
                 </form>
             </div>
@@ -355,10 +437,10 @@
 
             var cities = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cities))');
 
-            $("#province").change(function () {
-                var id = $("#province").val();
+            $("#provinceAdd").change(function () {
+                var id = $("#provinceAdd").val();
 
-                $("#city").empty();
+                $("#cityAdd").empty();
                 var items = '<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>';
 
                 $.each(cities, function (index, value) {
@@ -367,8 +449,86 @@
                     }
                 });
 
-                $("#city").html(items);
-        });
+                $("#cityAdd").html(items);
+            });
+
+            $("#provinceEdit").change(function () {
+                var id = $("#provinceEdit").val();
+
+                $("#cityEdit").empty();
+                var items = '<option value="0" selected="selected">شهر مورد نظر خود را انتخاب کنید</option>';
+
+                $.each(cities, function (index, value) {
+                    if (value.StateId === id) {
+                        items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                    }
+                });
+
+                $("#cityEdit").html(items);
+            });
+
+            $(".edit-address-btn").click(function (e) {
+                e.preventDefault();
+
+                var id = $(this).attr("id").replace("editAddressModal", "");
+
+                $("#idEdit").val(id);
+                $("#nameEdit").val($("#Recipient" + id).val());
+                $("#phone-numberEdit").val($("#Mobile" + id).val());
+                $("#fixed-numberEdit").val($("#Phone" + id).val());
+                $("#postalCodeEdit").val($("#PostalCode" + id).val());
+                $("#addressEdit").val($("#Description" + id).val());
+
+                $("#provinceEdit").val($("#State" + id).val());
+
+                $("#provinceEdit").trigger('change');
+
+                $("#cityEdit").val($("#City" + id).val());
+            });
+
+            $("#addAddressButton").click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    data: { "recipient": $("#nameAdd").val(), "mobile": $("#phone-numberAdd").val(), "phone": $("#fixed-numberAdd").val(), "postalCode": $("#postalCodeAdd").val(), "description": $("#addressAdd").val(), "city": $("#cityAdd").val()  },
+                    url: '@Url.Action("AddAddress", "UserProfile")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                })
+                .done(function (data) {
+                    location.reload();
+                })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert("OK");
+                });
+
+            });
+
+            $("#editAddressButton").click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    data: { "id": $("#idEdit").val(), "recipient": $("#nameEdit").val(), "mobile": $("#phone-numberEdit").val(), "phone": $("#fixed-numberEdit").val(), "postalCode": $("#postalCodeEdit").val(), "description": $("#addressEdit").val(), "city": $("#cityEdit").val()  },
+                    url: '@Url.Action("EditAddress", "UserProfile")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                })
+                .done(function (data) {
+                    location.reload();
+                })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert("OK");
+                });
+
+            });
 
             $(".checkout-contact-badge").click(function (e) {
                 e.preventDefault();

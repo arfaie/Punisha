@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -437,6 +438,79 @@ namespace ECommerce.Controllers
 			}
 
 			return Json(new { status = "fail", message = Notification.ShowNotif("امکان درخواست مرجوعی برای این سفارش وجود ندارد.", ToastType.Red) });
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> AddAddress(string recipient, string mobile, string phone, string postalCode, string description, string city)
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red) });
+			}
+
+			var address = new Address
+			{
+				CityId = city,
+				Description = description,
+				Recipient = recipient,
+				Mobile = mobile,
+				Phone = phone,
+				PostalCode = postalCode,
+				UserId = user.Id
+			};
+
+			_context.Addresses.Add(address);
+
+			try
+			{
+				await _context.SaveChangesAsync();
+
+				return Json(new { status = "success", message = Notification.ShowNotif("آدرس جدید ثبت شد.", ToastType.Green) });
+			}
+			catch (Exception e)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در ثبت آدرس", ToastType.Red) });
+			}
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> EditAddress(string id, string recipient, string mobile, string phone, string postalCode, string description, string city)
+		{
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red) });
+			}
+
+			var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+
+			if (address == null)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن آدرس", ToastType.Red) });
+			}
+
+			address.CityId = city;
+			address.Description = description;
+			address.Recipient = recipient;
+			address.Mobile = mobile;
+			address.Phone = phone;
+			address.PostalCode = postalCode;
+
+			_context.Addresses.Update(address);
+
+			try
+			{
+				await _context.SaveChangesAsync();
+
+				return Json(new { status = "success", message = Notification.ShowNotif("آدرس اصلاح شد.", ToastType.Green) });
+			}
+			catch (Exception e)
+			{
+				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در اصلاح آدرس", ToastType.Red) });
+			}
 		}
 	}
 }
