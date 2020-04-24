@@ -100,13 +100,13 @@
                                     <span class="visible-xs-block">
                                         <span class="icon icon-bell icon-lg icon-fw"></span>
                                         <span class="badge badge-danger pull-right">77</span>
-                                        نظرات
+                                        کالاها با موجودی کمتر از نقطه سفارش
                                     </span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
-                                    <div class="dropdown-header">
+                                    @*<div class="dropdown-header">
                                         <h5 class="dropdown-heading">نظرات جدید</h5>
-                                    </div>
+                                    </div>*@
                                     <div class="dropdown-body">
                                         @*<div class="list-group list-group-divided custom-scrollbar">
                                                 @{
@@ -401,14 +401,21 @@
                                     </a>
                                 </li>
 
-                                <li class="sidenav-item">
+                                @*<li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="CommentAndStar" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
                                         <span class="sidenav-label">کامنت ها</span>
                                     </a>
-                                </li>
+                                </li>*@
+                                
+                            <li class="sidenav-item">
+                                <a asp-area="Admin" asp-controller="OfferItem" asp-action="Index">
+                                    <span class="sidenav-icon icon icon-th"></span>
+                                    <span class="sidenav-label">آیتم های تخفیف </span>
+                                </a>
+                            </li>
 
-                                <li class="sidenav-item">
+                            <li class="sidenav-item">
                                     <a asp-area="Admin" asp-controller="NewsCategory" asp-action="Index">
                                         <span class="sidenav-icon icon icon-th"></span>
                                         <span class="sidenav-label">دسته بندی اخبار </span>
