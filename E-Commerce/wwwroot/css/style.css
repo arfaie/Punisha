@@ -8932,13 +8932,14 @@ ul.faq-list {
 		background: none;
 	}
 
-		.widget-product .product-carousel .item, .brand-slider .owl-carousel .item {
-			background: #fff;
-			box-shadow: 0 2px 4px 0 rgba(0,0,0,.09);
-			border-radius: 5px;
-			border: 1px solid #f6f6f6;
-			padding-bottom: 15px;
-		}
+        .widget-product .product-carousel .item, .brand-slider .owl-carousel .item {
+            background: #fff;
+            box-shadow: 0 2px 4px 0 rgba(0,0,0,.09);
+            border-radius: 5px;
+            border: 1px solid #f6f6f6;
+            padding-bottom: 15px;
+            height:240px;
+        }
 
 	.widget-product span.title-one, .widget-product .title-super-markets {
 		border-bottom: none !important;

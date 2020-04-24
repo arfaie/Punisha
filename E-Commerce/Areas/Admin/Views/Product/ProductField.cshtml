@@ -1,166 +1,140 @@
-﻿@model IEnumerable<ECommerce.Models.Field>
+﻿@model IEnumerable<ECommerce.Models.ProductField>
 
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="Product" asp-action="AddEdit">
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<form asp-controller="Product" asp-action="AddEditFielsd">
     <link href="~/css/dropdownliststyle.css" rel="stylesheet" />
-    @*@{
-                List<int> lsFieldId = new List<int>();
-                List<int> lsTypes = new List<int>();
-                List<int> firsLoop = new List<int>();
-                foreach (var item in Model)
-                {
-                    lsFieldId.Add(item.FieldId);
-                    lsTypes.Add(item.FieldType);
-                }
-                TempData["lsFieldId"] = lsFieldId;
-                TempData["lsTypes"] = lsTypes;
-                TempData["ProductId"] = Model.First().ProductId;
-                //Model.First().ProductId =
-                firsLoop = (List<int>)TempData["loopCnt"];
-                //string ProductId = (int)HttpContext.
-                //Session.GetInt32("ProductId");
-                List<SelectListItem> carListItems = (List<SelectListItem>)TempData["CarListItems"];
-                <input asp-for="First().ProductId" hidden="hidden" />
+    @{ string pId = ""; }
+    @{
+        List<string> lsIdField = new List<string>();
+
+        var product = Model.FirstOrDefault();
+
+        if (product != null)
+        {
+            pId = product.Product.Id;
+            foreach (var item in Model)
+            {
+                lsIdField.Add(item.FieldId);
             }
-        <div class="modal-body form-horizontal">
-            <div class="row">
-                @foreach (var item in firsLoop)
+        }
+
+        HttpContextAccessor.HttpContext.Session.SetComplexData("lsIdField", lsIdField);
+        HttpContextAccessor.HttpContext.Session.SetString("ProductId", pId);
+        var group = Model.GroupBy(x => x.Field.FieldGroupId);
+    }
+
+    <div class="modal-body form-horizontal">
+        <div class="row">
+            @if (group.Count() == 0)
+            {
+                <div>فیلدی تعریف نشده است</div>
+            }
+            else
+            {
+                @foreach (var item in group)
                 {
-                    string @group = "";
-                    try
+                    var grp = item.ToList().First().Field.FieldGroup;
+                    <div class="form-group">
+                        <div class="col-lg-6 h4">@grp.Title</div>
+                    </div>
+                    var select = Model.Where(x => x.Field.FieldGroupId == item.First().Field.FieldGroupId);
+
+                    foreach (var selectItem in select)
                     {
-                        var selectGroup = Model.Where(x => x.FieldGroupId == item).FirstOrDefault();
-                        if (selectGroup != null)
+
+                        if (selectItem.Field.FieldTypeId == "1")
                         {
-                            @group = selectGroup.FieldGroTitle;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        string dd = e.Message;
-                        throw;
-                    }
+
                             <div class="form-group">
-                                <div class="col-lg-6 h4">@@group</div>
+                                <div class="col-lg-2">@selectItem.Field.Title</div>
+                                <div class="col-lg-4">
+                                    <input name="@selectItem.FieldId" value="@selectItem.Value" class="form-control" required="required" />
+                                </div>
                             </div>
-                                                                                                                                                                                                                        var select = Model.Where(x => x.FieldGroupId == item);
+                        }
 
-                                            foreach (var selectItem in select.GroupBy(x => x.ProductFieldId))
-                                            {
-                                                var selectGrouped = select.GroupBy(x => x.ProductFieldId).Count();
-                                                if (selectItem.First().Type == 1)
-                                                {
+                        if (selectItem.Field.FieldTypeId == "2")
+                        {
+                            <div class="form-group">
+                                <div class="col-lg-2">@selectItem.Field.Title</div>
 
-                                                    <div class="form-group">
-                                                        <div class="col-lg-2">@selectItem.First().FieldTitle</div>
-                                                        <div class="col-lg-4">
-                                                            <input name="@selectItem.First().FieldId" value="@selectItem.First().Value" class="form-control" required="required" />
-                                                        </div>
-                                                    </div>
-                                                }
-                                                if (selectItem.First().Type == 2)
-                                                {
-                                                    <div class="form-group">
-                                                        <div class="col-lg-2">@selectItem.First().FieldTitle</div>
-
-                                                        <select name="@selectItem.First().FieldId">
-                                                            @if (selectItem.First().Value == "1" || selectItem.First().Value == "true")
-                                                            {
-                                                                <option value="1" selected>بله</option>
-                                                                <option value="0">خیر</option>
-                                                            }
-                                                            else if (selectItem.First().Value == "0" || selectItem.First().Value == "false")
-                                                            {
-                                                                <option value="1">بله</option>
-                                                                <option value="0" selected>خیر</option>
-                                                            }
-                                                            else
-                                                            {
-                                                                <option value="true">بله</option>
-                                                                <option value="false">خیر</option>
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                }
-                                                if (selectItem.First().Type == 3)
-                                                {
-                                                    <div class="form-group">
-                                                        <div class="col-lg-2">@selectItem.First().FieldTitle</div>
-
-                                                        @if (selectItem.First().Value == "1" || selectItem.First().Value == "true")
-                                                        {
-                                                            <select name="@selectItem.First().FieldId">
-                                                                <option value="1" selected>دارد</option>
-                                                                <option value="0">ندارد</option>
-                                                            </select>
-
-                                                        }
-                                                        else if (selectItem.First().Value == "0" || selectItem.First().Value == "false")
-                                                        {
-                                                            <select name="@selectItem.First().FieldId">
-                                                                <option value="1">دارد</option>
-                                                                <option value="0" selected>ندارد</option>
-                                                            </select>
-
-                                                        }
-                                                        else
-                                                        {
-                                                            <select name="@selectItem.First().FieldId">
-                                                                <option value="1">دارد</option>
-                                                                <option value="0">ندارد</option>
-                                                            </select>
-
-                                                        }
-
-                                                    </div>
-                                                }
-                                                if (selectItem.First().Type == 4)
-                                                {
-                                                    TempData["ProductFieldId"] = selectItem.First().ProductFieldId;
-                                                    <div class="form-group">
-                                                        <div class="col-lg-2">@selectItem.First().FieldTitle</div>
-                                                        <div class="col-lg-6" style="padding-right: 2px;">
-                                                            <select asp-for="@selectItem.Where(x=>x.CarName!=null).First().CarIds" asp-items="carListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
-                                                        </div>
-                                                    </div>
-                                                }
-                                                i++;
-                                            }
-                                        }
-                @*if (selectItem.Type == 4)
-                    {
-                        TempData["ProductFieldId"] = selectItem.ProductFieldId;
-                        <div class="form-group">
-                            <div class="col-lg-2">
-                                @selectItem.FieldTitle
-                                @{
-                                    var aa = Model.FirstOrDefault().id;
-                                    var bb = TempData["key"];
-                                }
-                            </div>
-                            <div class="col-lg-4">
-                                <div class="form-group">
-                                    @if (Model.FirstOrDefault().Value == null)
+                                <select name="@selectItem.FieldId">
+                                    @if (selectItem.Value == "1" || selectItem.Value == "true")
                                     {
-                                        <div class="col-lg-6" style="padding-right: 2px;">
-                                            <select asp-for="FirstOrDefault().CarId" asp-items="@Model.FirstOrDefault().CarListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
-                                        </div>
+                                        <option value="1" selected>بله</option>
+                                        <option value="0">خیر</option>
+                                    }
+                                    else if (selectItem.Value == "0" || selectItem.Value == "false")
+                                    {
+                                        <option value="1">بله</option>
+                                        <option value="0" selected>خیر</option>
                                     }
                                     else
                                     {
-                                        <div class="col-lg-6" style="padding-right: 2px;">
-                                            <select asp-for="@bb" asp-items="@Model.FirstOrDefault().CarListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    }
 
-            </div>
-        </div>*@
+                                        <option value="true">بله</option>
+                                        <option value="false">خیر</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        if (selectItem.Field.FieldTypeId == "3")
+                        {
+                            <div class="form-group">
+                                <div class="col-lg-2">@selectItem.Field.Title</div>
+
+                                @if (selectItem.Value == "1" || selectItem.Value == "true")
+                                {
+                                    <select name="@selectItem.FieldId">
+                                        <option value="1" selected>دارد</option>
+                                        <option value="0">ندارد</option>
+                                    </select>
+
+                                }
+                                else if (selectItem.Value == "0" || selectItem.Value == "false")
+                                {
+                                    <select name="@selectItem.FieldId">
+                                        <option value="1">دارد</option>
+                                        <option value="0" selected>ندارد</option>
+                                    </select>
+
+                                }
+                                else
+                                {
+                                    <select name="@selectItem.FieldId">
+                                        <option value="1">دارد</option>
+                                        <option value="0">ندارد</option>
+                                    </select>
+
+                                }
+
+                            </div>
+                        }
+                        @*if (selectItem.First().Type == 4)
+                            {
+                                TempData["ProductFieldId"] = selectItem.First().ProductFieldId;
+                                <div class="form-group">
+                                    <div class="col-lg-2">@selectItem.First().FieldTitle</div>
+                                    <div class="col-lg-6" style="padding-right: 2px;">
+                                        <select asp-for="@selectItem.Where(x=>x.CarName!=null).First().CarIds" asp-items="carListItems" class="ddlMultiSlectBox" multiple="multiple"></select>
+                                    </div>
+                                </div>
+                            }
+                            i++;*@
+                    }
+                }
+            }
+
+
+
+
+        </div>
+    </div>
     <div class="modal-footer">
         <button class="btn btn-danger" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
         <input type="submit" id="submitdata" class="btn btn-success" value="ذخیره فیلدها" />

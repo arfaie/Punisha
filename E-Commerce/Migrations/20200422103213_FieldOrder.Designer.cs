@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200422103213_FieldOrder")]
+    partial class FieldOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -7061,24 +7063,6 @@ namespace ECommerce.Migrations
                     b.ToTable("CommentAndStars");
                 });
 
-            modelBuilder.Entity("ECommerce.Models.Email", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<bool>("Readed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("strEmail")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Emails");
-                });
-
             modelBuilder.Entity("ECommerce.Models.Factor", b =>
                 {
                     b.Property<string>("Id")
@@ -7819,9 +7803,6 @@ namespace ECommerce.Migrations
                         .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Image")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Link")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

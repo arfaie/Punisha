@@ -136,7 +136,7 @@ namespace ECommerce.Controllers
 
 			ViewBag.User = user;
 
-			var addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ToListAsync();
+			var addresses = await _context.Addresses.Where(x => x.UserId == user.Id).Include(x => x.City).ThenInclude(x => x.State).ToListAsync();
 
 			if (addresses.Count > 0)
 			{
