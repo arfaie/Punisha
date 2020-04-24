@@ -281,43 +281,10 @@ namespace ECommerce.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddEditFielsd(string FieldId,string Value)
         {
-            //var lsFieldId = (string[])TempData["lsFieldId"];
-            //string productId = (string)TempData["ProductId"];
+
             List<string> lsIdField = new List<string>();
             lsIdField = HttpContext.Session.GetComplexData<List<string>>("lsIdField");
             string productId=HttpContext.Session.GetString("ProductId");
-
-            //string productFieldId = (int)TempData["ProductFieldId"];
-            //var tp = model.FieldType;
-            ////check is Update
-            //var carIds = Request.Form["bb"];
-            //var select = _context.ProductSelectedItems.Where(x => x.ProductFieldId == productFieldId);
-            //Product selectedItems;
-
-            //if (model.CarIds != null)
-            //{
-            //    if (select.Any())
-            //    {
-            //        _context.ProductSelectedItems.RemoveRange(select);
-            //        foreach (var item in model.CarIds)
-            //        {
-            //            selectedItems = new Product();
-            //            selectedItems.ItemId = Convert.ToInt16(item);
-            //            selectedItems.ProductFieldId = productFieldId;
-            //            _context.ProductSelectedItems.Add(selectedItems);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        foreach (var item in model.CarIds)
-            //        {
-            //            selectedItems = new ProductSelectedItems();
-            //            selectedItems.ItemId = Convert.ToInt16(item);
-            //            selectedItems.ProductFieldId = productFieldId;
-            //            _context.ProductSelectedItems.Add(selectedItems);
-            //        }
-            //    }
-            //}
 
             foreach (var item in lsIdField)
             {
@@ -326,7 +293,6 @@ namespace ECommerce.Areas.Admin.Controllers
                 selectPf.Value = value;
                 _context.ProductFields.Update(selectPf);
             }
-            //_context;
             _context.SaveChanges();
 
             TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
