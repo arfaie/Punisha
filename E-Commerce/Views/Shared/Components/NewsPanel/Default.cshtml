@@ -1,0 +1,98 @@
+﻿@model IEnumerable<News>
+
+<div class="col-md-3">
+    <aside class="blog-asideMenu">
+        <form class="search-form hidden-sm hidden-xs">
+            <div class="search-input-group form-group">
+                <input type="text" class="form-control" placeholder="جستجو..">
+                <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                <div class="clearfix"></div>
+            </div>
+        </form>
+        <div class="aside-box">
+            <h4>دسته بندی </h4>
+            <ul class="list-unstyled categories">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <li><a href="#"> @item.NewCategories?.Title</a></li>
+                    }
+                }
+
+                @*<li><a href="#"> تصميم <span class="main-color-text">19</span></a></li>
+                    <li><a href="#"> مصمم وجهات <span class="main-color-text">35</span></a></li>
+                    <li><a href="#"> جرافك <span class="main-color-text">75</span></a></li>*@
+            </ul>
+        </div>
+        <div class="aside-box">
+            <h4>آخرین اخبار</h4>
+            <ul class="list-unstyled popular-posts">
+                @foreach (var item in Model)
+                {
+                    <li>
+                        <div class="post-image">
+                            <img alt="" src="@ViewBag.path@item.ImageName" class="img-responsive">
+                            @*<img src="~/News/images/blog/01.jpg" class="img-responsive" />*@
+                        </div>
+                        <div class="post-data">
+                            <h5>
+                                <a href="#">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <p>@item.Date.ToPersianDateString()</p>
+                        </div>
+                    </li>
+                }
+
+                @*<li>
+                        <div class="post-image">
+                            <img alt="" src="~\News\images\blog\02.jpg" class="img-responsive">
+                            <img src="~/News/images/blog/02.jpg" class="img-responsive"/>
+                        </div>
+                        <div class="post-data">
+                            <h5>
+                                <a href="#">
+                                    عنوان الخبر
+                                </a>
+                            </h5>
+                            <p>9 مارس</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="post-image">
+
+                            <img src="~/News/images/blog/03.jpg" class="img-responsive"/> <img alt="" src="~\News\images\blog\03.jpg" class="img-responsive">
+                        </div>
+                        <div class="post-data">
+                            <h5>
+                                <a href="#">
+                                    عنوان الخبر
+                                </a>
+                            </h5>
+                            <p>15 مارس</p>
+                        </div>
+                    </li>*@
+            </ul>
+        </div>
+        <div class="aside-box">
+            <h4>تگ ها</h4>
+            <ul class="entry-tags list-unstyled list-inline">
+
+                @foreach (var item2 in ViewBag.tags)
+                {
+                    <li><a href="#" rel="tag">@item2.Title</a></li>
+                }
+
+
+                @*<li><a href="#" rel="tag">اندرويد</a></li>
+                    <li><a href="#" rel="tag">تصميم</a></li>
+                    <li><a href="#" rel="tag">جميل</a></li>
+                    <li><a href="#" rel="tag">عصري</a></li>
+                    <li><a href="#" rel="tag">انيق</a></li>
+                    <li><a href="#" rel="tag">للبيع</a></li>
+                    <li><a href="#" rel="tag">محمد صلاح</a></li>*@
+            </ul>
+        </div>
+    </aside>
+</div>

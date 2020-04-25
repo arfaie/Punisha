@@ -254,7 +254,7 @@
                     </div>
                 </div>
 
-                @(await Html.PartialAsync("_newsUserPanel", Model))
+            @await Component.InvokeAsync("NewsPanel")
 
             </div>
         </div>
