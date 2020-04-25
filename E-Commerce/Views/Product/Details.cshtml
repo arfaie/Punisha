@@ -69,7 +69,7 @@
                             @*<span class="product-title-en">Samsung Galaxy A50 SM-A505F/DS Dual SIM 128GB Mobile Phone</span>*@
                         </h1>
                         <div class="product-guaranteed">
-                            <span class="stars">@Model.CommentAndStars?.Average(x => x.Stars)</span>
+                            @*<span class="stars">@Model.CommentAndStars?.Average(x => x.Stars)</span>*@
                         </div>
                     </div>
                     <div class="product-attributes">
@@ -143,6 +143,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                 </section>
             </div>
         </article>
@@ -184,7 +185,7 @@
                 <div class="tab-active-content">
 
                     <div class="tab params" style="display:block;">
-                        @await Component.InvokeAsync("ProductProperties",Model.Id)
+                        @await Component.InvokeAsync("ProductProperties", Model.Id)
                     </div>
                     <div class="tab comments" style="display:none;">
 
