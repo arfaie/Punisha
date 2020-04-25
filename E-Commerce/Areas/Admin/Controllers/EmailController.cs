@@ -4,12 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class EmailController : Controller
     {
         private readonly ApplicationDbContext _context;
