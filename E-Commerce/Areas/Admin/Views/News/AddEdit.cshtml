@@ -3,103 +3,114 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
-<form asp-controller="News" asp-action="AddEdit" enctype="multipart/form-data">
-    @*header*@
-    @if (!String.IsNullOrWhiteSpace(Model.Id))
-    {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش خبر" })
-    }
-    else
-    {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن خبر" })
-    }
-    @*body*@
-    <div class="modal-body form-horizontal">
-        <div class="row">
-            <input type="hidden" asp-for="Id" class="form-control" />
-            <div class="form-group">
-                <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
-                <div class="col-lg-6">
-                    <input asp-for="Title" class="form-control" />
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-            </div>
+    <form asp-controller="News" asp-action="AddEdit" enctype="multipart/form-data">
 
-            <div class="form-group">
-                <label asp-for="Text" class="col-lg-2 col-sm-2 control-label"></label>
-                <div class="col-lg-6">
-                    @*<input asp-for="Description" class="form-control" />*@
-                    <textarea asp-for="Text" class="form-control"></textarea>
-                    <span asp-validation-for="Text" class="text-danger"></span>
-                </div>
-            </div>
+        <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
 
-            <div class="form-group">
-                <label asp-for="Date" class="col-lg-2 col-sm-2 control-label"></label>
-                <div class="col-lg-6">
-                    <input asp-for="Date" class="form-control" />
-                    <span asp-validation-for="Date" class="text-danger"></span>
-                </div>
-            </div>
+        @{
+            string date = "";
+        }
 
-            <div class="form-group">
-                <label asp-for="IdCategories" class="col-lg-2 col-sm-2 control-label"></label>
-                <div class="col-lg-6">
-                    <select asp-for="IdCategories" asp-items="@ViewBag.newscategory" class="form-control"></select>
-                </div>
-            </div>
-
-            @if (String.IsNullOrWhiteSpace(Model.Id))
-            {
+        @*header*@
+        @if (!String.IsNullOrWhiteSpace(Model.Id))
+        {
+            date = Model.Date.ToPersianDateString();
+            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش خبر" })
+        }
+        else
+        {
+            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن خبر" })
+        }
+        @*body*@
+        <div class="modal-body form-horizontal">
+            <div class="row">
+                <input type="hidden" asp-for="Id" class="form-control" />
                 <div class="form-group">
-                    <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                    <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
                     <div class="col-lg-6">
-                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
-                    @if (!String.IsNullOrWhiteSpace(Model.Id))
-                    {
-                        <input type="hidden" name="ImgName" value="@Model.ImageName" />
-                    }
                 </div>
-            }
-            else
-            {
+
                 <div class="form-group">
-                    <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                    <label asp-for="Text" class="col-lg-2 col-sm-2 control-label"></label>
                     <div class="col-lg-6">
-                        <input type="file" id="files" name="files" multiple class="btn btn-danger" />
+                        @*<input asp-for="Description" class="form-control" />*@
+                        <textarea asp-for="Text" class="form-control"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
                     </div>
-                    @if (!String.IsNullOrWhiteSpace(Model.Id))
-                    {
-                        <input type="hidden" name="ImgName" value="@Model.ImageName" />
-                    }
                 </div>
-            }
 
-            <input type="hidden" name="redirectUrl" value="@Url.Action("index", "News")" />
+                <div class="form-group">
+                    <label asp-for="Date" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input asp-for="Date" class="form-control hidden" />
+                        <input value="@date" type="text" class="form-control" id="fromDate1" name="strDate" placeholder="تاریخ" data-MdDateTimePicker="true"  data-placement="left" />
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    <label asp-for="IdCategories" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <select asp-for="IdCategories" asp-items="@ViewBag.newscategory" class="form-control"></select>
+                    </div>
+                </div>
+
+                @if (String.IsNullOrWhiteSpace(Model.Id))
+                {
+                    <div class="form-group">
+                        <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                        <div class="col-lg-6">
+                            <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
+                        </div>
+                        @if (!String.IsNullOrWhiteSpace(Model.Id))
+                        {
+                            <input type="hidden" name="ImgName" value="@Model.ImageName" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
+                        <div class="col-lg-6">
+                            <input type="file" id="files" name="files" multiple class="btn btn-danger" />
+                        </div>
+                        @if (!String.IsNullOrWhiteSpace(Model.Id))
+                        {
+                            <input type="hidden" name="ImgName" value="@Model.ImageName" />
+                        }
+                    </div>
+                }
+
+                <input type="hidden" name="redirectUrl" value="@Url.Action("index", "News")" />
+
+            </div>
         </div>
-    </div>
-    @*footer*@
-    @if (!String.IsNullOrWhiteSpace(Model.Id))
-    {
-        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
+        @*footer*@
+        @if (!String.IsNullOrWhiteSpace(Model.Id))
+        {
+            @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
 
-        <div class="modal-footer">
-            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش خبر" />
-        </div>
-    }
-    else
-    {
-        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
+            <div class="modal-footer">
+                <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+                <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش خبر" />
+            </div>
+        }
+        else
+        {
+            @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
 
-        <div class="modal-footer">
-            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن خبر" />
-        </div>
-    }
-</form>
+            <div class="modal-footer">
+                <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+                <input type="submit" id="submitdata" class="btn btn-success" value="افزودن خبر" />
+            </div>
+        }
+    </form>
+
+<script src="~/persiandatepicker/calendar.js"></script>
+<script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
 
 <script>
 

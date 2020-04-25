@@ -16,14 +16,48 @@
 
                         <ul class="megamenu-level-3" style="@(i ==0? "display:block;":"")">
                             <a href="#" class="list-category-megamenu">همه دسته بندی های @categoryGroup.Title</a>
-                            <div class="menu-level-3">
+                            <div class="row">
 
-                                @foreach (var category in categoryGroup.Categories.OrderBy(x => x.Title))
-                                {
-                                    <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@category.Id" class="list-category-megamenu-3"><span>@category.Title</span></a></li>
+                                @{
+                                    var categories = categoryGroup.Categories.OrderBy(x => x.Title);
+
+                                    <div class="menu-level-3 col-3">
+
+                                        @for (int j = 0; j < categories.Count() && j < 8; j++)
+                                        {
+                                            <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@categories.ElementAt(j).Id" class="list-category-megamenu-3"><span>@categories.ElementAt(j).Title</span></a></li>
+                                        }
+
+                                    </div>
+
+                                    <div class="menu-level-3 col-3">
+
+                                        @for (int j = 8; j < categories.Count() && j < 16; j++)
+                                        {
+                                            <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@categories.ElementAt(j).Id" class="list-category-megamenu-3"><span>@categories.ElementAt(j).Title</span></a></li>
+                                        }
+
+                                    </div>
+
+                                    <div class="menu-level-3 col-3">
+
+                                        @for (int j = 16; j < categories.Count() && j < 24; j++)
+                                        {
+                                            <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@categories.ElementAt(j).Id" class="list-category-megamenu-3"><span>@categories.ElementAt(j).Title</span></a></li>
+                                        }
+
+                                    </div>
+
+                                    <div class="menu-level-3 col-3">
+
+                                        @for (int j = 24; j < categories.Count() && j < 32; j++)
+                                        {
+                                            <li class="item-megamenu-3"><a asp-controller="Product" asp-action="Category" asp-route-id="@categories.ElementAt(j).Id" class="list-category-megamenu-3"><span>@categories.ElementAt(j).Title</span></a></li>
+                                        }
+
+                                    </div>
 
                                 }
-
                             </div>
 
                         </ul>

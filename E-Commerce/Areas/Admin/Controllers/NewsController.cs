@@ -57,10 +57,13 @@ namespace E_Commerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(News model, string imgName, string id, IEnumerable<IFormFile> files)
+        public async Task<IActionResult> AddEdit(News model, string imgName, string id, IEnumerable<IFormFile> files, string strDate)
         {
             if (ModelState.IsValid)
             {
+                string pDate = strDate.PersianToEnglish();
+                model.Date = pDate.ToGeorgianDateTime();
+
                 //upload image
                 var uploads = Path.Combine(_env.WebRootPath, "upload\\normalimage\\");
 

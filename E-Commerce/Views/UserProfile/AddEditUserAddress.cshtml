@@ -54,7 +54,7 @@
                                         شماره موبایل
                                         <span class="required-star" style="color:red;">*</span>
                                     </label>
-                                    <input type="text" asp-for="@Model.Mobile" value="@Mobile" class="input-code-national" placeholder="09xxxxxxxxx">
+                                    <input type="number" asp-for="@Model.Mobile" value="@Mobile" class="input-code-national" placeholder="09xxxxxxxxx">
                                     <span asp-validation-for="Mobile" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
@@ -62,7 +62,7 @@
                                         شماره تلفن ثابت
                                         <span class="required-star" style="color:red;">*</span>
                                     </label>
-                                    <input type="text" asp-for="@Model.Phone" value="@Phone" class="input-code-national" placeholder="021xxxxxx">
+                                    <input type="number" asp-for="@Model.Phone" value="@Phone" class="input-code-national" placeholder="021xxxxxx">
                                     <span asp-validation-for="Phone" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
@@ -70,7 +70,7 @@
                                         کد پستی
                                         <span class="required-star" style="color:red;">*</span>
                                     </label>
-                                    <input type="text" asp-for="@Model.PostalCode" value="@PostalCode" class="input-code-national" placeholder="کد پستی را وارد نمایید">
+                                    <input type="number" asp-for="@Model.PostalCode" value="@PostalCode" class="input-code-national" placeholder="کد پستی را وارد نمایید">
                                     <span asp-validation-for="PostalCode" class="text-danger"></span>
                                 </div>
                                 <div class="form-legal-item">
