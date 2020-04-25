@@ -18,9 +18,8 @@
                             <button class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب </button>
                         </form>*@
                     <form asp-controller="Account" asp-action="Logout" method="post">
-
-                        <a class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
-
+                        @*<button type="submit" class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</button>*@
+                        <a asp-controller="Account" asp-action="Logout" class="profile-box-tab-sign-out"><span class="mdi mdi-power"></span>خروج از حساب</a>
                     </form>
 
                 </div>
