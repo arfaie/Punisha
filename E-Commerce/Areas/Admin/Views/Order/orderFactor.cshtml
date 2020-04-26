@@ -75,9 +75,7 @@
                                     <th>
                                         واحد
                                     </th>
-                                    <th>
-                                        تخفیف
-                                    </th>
+                                   
                                     <th>
                                         قیمت کل
                                     </th>
@@ -102,7 +100,6 @@
                                             <td>@(item.Product.Price - item.Product.PriceWithDiscount)</td>
                                             <td>@item.UnitCount</td>
                                             <td>@item.Product?.Unit?.Title</td>
-                                            <td>@item.Discount</td>
                                             <td>@item.Factor?.TotalPrice</td>
                                             <td>@item.Factor.Tax</td>
                                             <td>@item.Factor.FinalPrice</td>

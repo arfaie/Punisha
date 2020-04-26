@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Product>
+
+<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true">
+    <span class="icon-with-child hidden-xs">
+        <span class="icon icon-bell-o icon-lg"></span>
+        <span class="badge badge-danger badge-above right">@Model.Count()</span>
+    </span>
+    <span class="visible-xs-block">
+        <span class="icon icon-comments-o icon-lg"></span>
+        <span class="badge badge-danger pull-right">@Model.Count()</span>
+        کالاها با موجودی کمتر از نقطه سفارش
+    </span>
+</a>
+<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+    <div class="dropdown-header">
+        <h5 class="dropdown-heading"> کالاها با موجودی کمتر از نقطه سفارش</h5>
+    </div>
+    <div class="dropdown-body">
+        <div class="list-group list-group-divided custom-scrollbar">
+            @{
+                foreach (var item in Model)
+                {
+                    <a class="list-group-item" href="#">
+                        <div class="notification">
+                            <div class="notification-media">
+                                <img src="@ViewBag.rootpath@item.ImageName" style=" width:65px; height:65px" class="thumbnail text-center"/>
+                            </div>
+                            <div class="notification-content">
+                                <small class="notification-timestamp">موجودی:@item.Inventory</small>
+                                <h5 class="notification-heading">@item.Name</h5>
+                                @*<p class="notification-text">
+                                    <small class="truncate">Failed to get available update data. To ensure the proper functioning of your application, update now.</small>
+                                </p>*@
+                            </div>
+                        </div>
+                    </a>
+                }
+            }
+           
+        </div>
+    </div>
+    <div class="dropdown-footer">
+        <a class="dropdown-btn" asp-area="Admin" asp-controller="Product" asp-action="Index">مشاهده همه</a>
+    </div>
+</div>

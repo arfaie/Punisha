@@ -61,7 +61,7 @@
                         </div>
                     </article>
                 </div>
-                @*@(await Html.PartialAsync("_newsUserPanel"))*@
+                @await Component.InvokeAsync("NewsPanel")
             </div>
         </div>
     </div>

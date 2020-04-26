@@ -146,7 +146,20 @@ namespace ECommerce.Controllers
 			ViewBag.UserFullName = user.FullName;
 			ViewBag.UserMobile = user.PhoneNumber;
 
-			return View(userAddresses);
+            ViewBag.States = await _context.States.OrderBy(x => x.Name).ToListAsync();
+
+            var cities = await _context.Cities.OrderBy(x => x.Name).ToListAsync();
+
+            foreach (var city in cities)
+            {
+                city.Addresses = null;
+                city.Agencies = null;
+                city.State = null;
+            }
+
+            ViewBag.Cities = cities;
+
+            return View(userAddresses);
 		}
 
 		[HttpGet]
@@ -512,5 +525,36 @@ namespace ECommerce.Controllers
 				return Json(new { status = "fail", message = Notification.ShowNotif("خطا در اصلاح آدرس", ToastType.Red) });
 			}
 		}
-	}
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteAddress(string id)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user == null)
+            {
+                return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن کاربر", ToastType.Red) });
+            }
+
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (address == null)
+            {
+                return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن آدرس", ToastType.Red) });
+            }
+
+            _context.Addresses.Remove(address);
+
+            try
+            {
+                await _context.SaveChangesAsync();
+
+                return Json(new { status = "success", message = Notification.ShowNotif("آدرس حذف شد.", ToastType.Green) });
+            }
+            catch (Exception e)
+            {
+                return Json(new { status = "fail", message = Notification.ShowNotif("خطا در حذف آدرس", ToastType.Red) });
+            }
+        }
+    }
 }
