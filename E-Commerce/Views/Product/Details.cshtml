@@ -204,6 +204,11 @@
                                             <section>
                                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                                     <div class="article">
+                                                        <div class="header">
+                                                            <div>
+                                                                <span>توسط @($"{commentAndStar.User?.UserName.Substring(0, 4)}xxx{commentAndStar.User?.UserName.Substring(7)}") در تاریخ @Helper.GetGregorianToPersianDateInverse(commentAndStar.Date)</span>
+                                                            </div>
+                                                        </div>
                                                         <div class="profile-comment-rating">
                                                             @if (commentAndStar.Stars >= 1)
                                                             {

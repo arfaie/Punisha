@@ -2,6 +2,8 @@
 using ECommerce.Helpers;
 using ECommerce.Helpers.ZarinPal;
 using ECommerce.Models;
+using ECommerce.Models.Helpers.OptionEnums;
+using ECommerce.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +21,13 @@ namespace ECommerce.Controllers
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly ApplicationDbContext _context;
+		private readonly ISmsSender _smsSender;
 
-		public PaymentController(UserManager<ApplicationUser> userManager, ApplicationDbContext context)
+		public PaymentController(UserManager<ApplicationUser> userManager, ApplicationDbContext context, ISmsSender smsSender)
 		{
 			_userManager = userManager;
 			_context = context;
+			_smsSender = smsSender;
 		}
 
 		[HttpGet]
@@ -92,11 +96,11 @@ namespace ECommerce.Controllers
 						_context.Factors.Update(factor);
 						await _context.SaveChangesAsync();
 
-						transaction.Commit();
+						await transaction.CommitAsync();
 					}
 					catch (Exception)
 					{
-						transaction.Rollback();
+						await transaction.RollbackAsync();
 					}
 				}
 				else
@@ -247,16 +251,23 @@ namespace ECommerce.Controllers
 
 			var description = "پرداخت در سایت کاربیوتیک";
 
-			var response = ZarinPalPayment.Request(factor.FinalPrice, description, callbackUrl);
+			try
+			{
+				var response = ZarinPalPayment.Request(factor.FinalPrice, description, callbackUrl);
 
-			// if there is an error show this page again
-			if (response.Status == 100)
-			{
-				Response.Redirect(ZarinPalPayment.GetPaymentGatewayUrl(response.Authority));
+				// if there is an error show this page again
+				if (response.Status == 100)
+				{
+					Response.Redirect(ZarinPalPayment.GetPaymentGatewayUrl(response.Authority));
+				}
+				else
+				{
+					ModelState.AddModelError(String.Empty, $"خطا در پرداخت. کد خطا: {response.Status} ");
+				}
 			}
-			else
+			catch (Exception e)
 			{
-				ModelState.AddModelError(String.Empty, $"خطا در پرداخت. کد خطا: {response.Status} ");
+				ModelState.AddModelError(String.Empty, "خطا در پرداخت. کد خطا: عدم اتصال به درگاه ");
 			}
 
 			return View(factor);
@@ -360,13 +371,17 @@ namespace ECommerce.Controllers
 
 					await _context.SaveChangesAsync();
 
-					transaction.Commit();
+					await transaction.CommitAsync();
 				}
 				catch (Exception ex)
 				{
+					await transaction.RollbackAsync();
+
 					return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = ex.Message });
 				}
 			}
+
+			await _smsSender.SendSmsAsync(user.UserName, SmsTypes.DoneOrder, factor.FactorCode, (!String.IsNullOrWhiteSpace(user.FullName) ? user.FullName : "کاربیوتیکی"));
 
 			return RedirectToAction(nameof(SuccessfulPayment), new { factorCode = factor.FactorCode });
 		}
