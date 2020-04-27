@@ -28,7 +28,7 @@ namespace ECommerce.Controllers
 		{
 			var user = await _userManager.GetUserAsync(HttpContext.User);
 
-			var product = await _context.Products.Include(x => x.ProductGalleries).Include(x => x.CommentAndStars).Include(x => x.Brand).Include(x => x.OfferItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
+			var product = await _context.Products.Include(x => x.ProductGalleries).Include(x => x.CommentAndStars).ThenInclude(x => x.User).Include(x => x.Brand).Include(x => x.OfferItems).ThenInclude(x => x.Product).FirstOrDefaultAsync(x => x.Id == id);
 
 			if (product != null)
 			{
@@ -193,7 +193,7 @@ namespace ECommerce.Controllers
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).Include(x => x.CarProducts).ThenInclude(x => x.Car).ToListAsync();
 
 			if (!String.IsNullOrWhiteSpace(carId) && carId != "0")
 			{
