@@ -47,13 +47,21 @@
 
                                 <div class="form-legal-item">
                                     <label>برند خودرو</label>
-                                    <select asp-items="@ViewBag.Makers"></select>
+                                    @*<select asp-items="@ViewBag.Makers"></select>*@
+                                    <select name="" id="provinceEdit" asp-items="@(new SelectList(ViewBag.Makers, "Id", "Name"))">
+                                        <option value="0" selected="selected" disabled="disabled">برند مورد نظر خود را انتخاب کنید</option>
+                                    </select>
                                 </div>
 
                                 <div class="form-legal-item">
-                                    <label asp-for="@Model.CarId"></label>
-                                    <select asp-for="@Model.CarId" asp-items="@ViewBag.Cars"></select>
+                                    <label for="carEdit">مدل خودرو</label>
+                                    @*<select asp-for="@Model.CarId" asp-items="@ViewBag.Cars"></select>*@
+                                    <select name="CarId" id="carEdit" asp-for="@Model.CarId" asp-items="@ViewBag.UserCar">
+                                        <option value="0" selected="selected" disabled="disabled">مدل خودرو مورد نظر خود را انتخاب کنید</option>
+                                    </select>
                                 </div>
+
+
 
                                 @*<div class="form-group">
                                         <label asp-for="@Model.CarId" class="col-lg-4 col-sm-4 control-label"></label>
@@ -121,4 +129,48 @@
     </div>
 </div>
 
-<!--   Footer---------------------------->
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        $(document).ready(function () {
+
+            var Cars = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cars))');
+
+            //$("#provinceAdd").change(function () {
+            //    var id = $("#provinceAdd").val();
+
+            //    $("#cityAdd").empty();
+            //    var items = '<option value="0" selected="selected">مدل خودرو مورد نظر خود را انتخاب کنید</option>';
+
+            //    $.each(Cars, function (index, value) {
+            //        if (value.StateId === id) {
+            //            items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+            //        }
+            //    });
+
+            //    $("#cityAdd").html(items);
+            //});
+
+            $("#provinceEdit").change(function () {
+                var id = $("#provinceEdit").val();
+
+                $("#ccarEdit").empty();
+                var items = '<option value="0" selected="selected" disabled="disabled">مدل خودرو مورد نظر خود را انتخاب کنید</option>';
+
+                $.each(Cars, function (index, value) {
+                    if (value.MakerId === id) {
+                        items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                    }
+                });
+
+                $("#carEdit").html(items);
+            });
+
+         
+        });
+
+    </script>
+}
