@@ -97,29 +97,20 @@
                                         <li class="has-sub">
                                             <a href="#">برند</a>
                                             <ul>
-                                                <li>
-                                                    <a href="#" class="filter-label">
-                                                        <div class="form-auth-row">
-                                                            <label for="#" class="ui-checkbox">
-                                                                <input type="checkbox" value="1" name="login" id="remember">
-                                                                <span class="ui-checkbox-check"></span>
-                                                            </label>
-                                                            <label for="remember" class="remember-me">سامسونگ</label>
-                                                        </div>
-                                                    </a>
-                                                </li>
-
-                                                <li>
-                                                    <a href="#" class="filter-label">
-                                                        <div class="form-auth-row">
-                                                            <label for="#" class="ui-checkbox">
-                                                                <input type="checkbox" value="1" name="login" id="remember">
-                                                                <span class="ui-checkbox-check"></span>
-                                                            </label>
-                                                            <label for="remember" class="remember-me">نوکیا</label>
-                                                        </div>
-                                                    </a>
-                                                </li>
+                                                @foreach (Brand brand in ViewBag.Brands)
+                                                {
+                                                    <li>
+                                                        <a href="#" class="filter-label">
+                                                            <div class="form-auth-row">
+                                                                <label for="#" class="ui-checkbox">
+                                                                    <input type="checkbox" value="1" name="login" id="remember">
+                                                                    <span class="ui-checkbox-check"></span>
+                                                                </label>
+                                                                <label for="remember" class="remember-me">@brand.Title</label>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                }
 
                                             </ul>
                                         </li>
