@@ -68,7 +68,7 @@
                                     <tr>
                                         <td style="width: 10px; text-align: center;">@(i++)</td>
                                         <td style="width: 10px; text-align: center;">@item.Title</td>
-                                        <td style="width: 10px; text-align: center;">@item.Text</td>
+                                        <td style="width: 10px; text-align: center;">@item.Text.ToString().Substring(0, 50) ...</td>
                                         <td style="width: 10px; text-align: center;">@item.NewCategories?.Title</td>
                                         <td style="width: 10px; text-align: center;">@item.Date.ToPersianDateString()</td>
                                         <td style="width: 10px; text-align: center;">

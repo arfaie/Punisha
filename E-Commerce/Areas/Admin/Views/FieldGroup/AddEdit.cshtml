@@ -9,11 +9,11 @@
     @*header*@
     @if (!String.IsNullOrWhiteSpace(Model.Id))
     {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش فیلد" })
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش گروه فیلد" })
     }
     else
     {
-        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن فیلد" })
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن گروه فیلد" })
     }
 
     @*body*@
@@ -38,11 +38,11 @@
     @*footer*@
     @if (!String.IsNullOrWhiteSpace(Model.Id))
     {
-        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش فیلد" })
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش گروه فیلد" })
     }
     else
     {
-        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن فیلد" })
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن گروه فیلد" })
     }
 
 </form>

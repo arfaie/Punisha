@@ -90,10 +90,11 @@ namespace ECommerce.Areas.Admin.Controllers
                         _context.CategoryFields.Add(CategoryField);
 
                         //Add to ProductFields
-                        ProductField pf = new ProductField();
                         var selectProducts = _context.Products.Where(x => x.CategoryId == item);
+                        ProductField pf;
                         foreach (var itemProduct in selectProducts)
                         {
+                            pf = new ProductField();
                             pf.ProductId = itemProduct.Id;
                             pf.FieldId = ss;
                             pf.Value = null;
@@ -122,10 +123,11 @@ namespace ECommerce.Areas.Admin.Controllers
                             _context.CategoryFields.Add(CategoryField);
 
                             //Add to ProductFields
-                            ProductField pf = new ProductField();
+                            ProductField pf;
                             var selectProducts = _context.Products.Where(x => x.CategoryId == item);
                             foreach (var itemProduct in selectProducts)
                             {
+                                pf = new ProductField();
                                 pf.ProductId = itemProduct.Id;
                                 pf.FieldId = model.Id;
                                 pf.Value = null;
