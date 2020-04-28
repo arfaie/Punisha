@@ -8,6 +8,7 @@
 
 <!-- Main Content
 ========================================-->
+
 <main class="entry-main">
 
     <!-- Blog Section
@@ -19,7 +20,7 @@
                     <form class="search-form visible-sm-block visible-xs-block">
                         <div class="form-group">
                             <div class="search-input-group">
-                                <input type="text" class="form-control" placeholder="بحث..">
+                                <input type="text" class="form-control" placeholder="جستجو..">
                                 <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
                                 <div class="clearfix"></div>
                             </div>
@@ -29,7 +30,7 @@
                         <figure class="entry-header wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
                             <div class="entry-post-info">
                                 <h2>@Model.Title</h2>
-                                <p class="posted-on">تاریخ:<strong>@Model.Date.ToPersianDateString()</strong></p>
+                                <p class="posted-on">تاریخ:<strong class="persianumber">@Model.Date.ToPersianDateString()</strong></p>
                             </div>
                             <div class="post-image">
                                 <img alt="" src="@ViewBag.path@Model.ImageName" class="img-responsive">
@@ -37,7 +38,7 @@
                             <ul class="entry-Categories list-unstyled list-inline">
                                 @foreach (var item in Model?.NewsTagses)
                                 {
-                                    <li><a href="#">@item?.tags?.Title</a></li>
+                                <li><a href="#">@item?.tags?.Title</a></li>
                                 }
 
                             </ul>
@@ -54,7 +55,7 @@
                                     <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
                                     @foreach (var item in Model.NewsTagses)
                                     {
-                                        <li><a href="#">@item?.tags?.Title</a></li>
+                                    <li><a href="#">@item?.tags?.Title</a></li>
                                     }
                                 </ul>
                             </div>

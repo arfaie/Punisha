@@ -52,7 +52,17 @@ namespace ECommerce.Controllers
 			return View();
 		}
 
-		public IActionResult Error()
+        public IActionResult ContactSlider1()
+        {
+            return View();
+        }
+
+        public IActionResult ContactSlider2()
+        {
+            return View();
+        }
+
+        public IActionResult Error()
 		{
 			return View();
 		}

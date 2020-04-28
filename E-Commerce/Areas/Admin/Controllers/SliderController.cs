@@ -53,7 +53,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(string id, Slider model, IEnumerable<IFormFile> files, string imageName)
+        public async Task<IActionResult> AddEdit(string id, Slider model, IEnumerable<IFormFile> files, string Imgename)
         {
             if (ModelState.IsValid)
             {
@@ -90,7 +90,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
                 if (model.Image == null)
                 {
-                    model.Image = imageName;
+                    model.Image = Imgename;
                 }
 
                 _context.Sliders.Update(model);
