@@ -26,7 +26,7 @@ namespace EShop.ViewComponents
             var product = _context.Products.Where(x => x.Id == id).FirstOrDefault();
             var selectField = _context.ProductFields.Where(x => x.ProductId == id).Include(x => x.Field)
                 .Include(x => x.Field.FieldType).Include(x=>x.Product)
-                .Include(x => x.Field.FieldGroup).Include(x => x.Field.CategoryFields);
+                .Include(x => x.Field.FieldGroup).Include(x => x.Field.CategoryFields).Include(x=>x.Product.CarProducts);
             var filterCategory = selectField.Where(x => x.Field.CategoryFields.Where(y => y.CategoryId == product.CategoryId).Count() > 0);
             return View(filterCategory);
         }

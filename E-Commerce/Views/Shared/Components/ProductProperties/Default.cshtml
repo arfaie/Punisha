@@ -5,6 +5,34 @@
         مشخصات محصول
         @*<span>@Model.FirstOrDefault().Product.Name</span>*@
     </h2>
+    @if (Model.Count() > 0)
+    {
+        <h3 class="params-title">مناسب برای خودرو های:</h3>
+    }
+
+    <div class="col-lg-3 col-md-3 col-xs-12 pull-right" style="padding:0;">
+        <div class="params-list-key">
+            @{
+                if (Model.Count() > 0)
+                {
+                    string cars = "";
+                    int cnt = Model.FirstOrDefault().Product.CarProducts.Count();
+                    @foreach (var item in Model.FirstOrDefault().Product.CarProducts)
+                    {
+                        cars += item.Car.Name;
+                        if (cnt != 1)
+                        {
+                            cars += "،";
+                        }
+                        cnt--;
+                    }
+
+                    <span class="block">@cars</span>
+                }
+            }
+
+        </div>
+    </div>
     @{
         if (Model.Any())
         {
