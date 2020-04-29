@@ -68,7 +68,17 @@
                                     <tr>
                                         <td style="width: 10px; text-align: center;">@(i++)</td>
                                         <td style="width: 10px; text-align: center;">@item.Title</td>
-                                        <td style="width: 10px; text-align: center;">@item.Text.ToString().Substring(0, 50) ...</td>
+                                        @{
+                                            if (item.Text.Length < 50)
+                                            {
+                                                <td style="width: 10px; text-align: center;">@item.Text</td>
+                                            }
+                                            else
+                                            {
+                                                <td style="width: 10px; text-align: center;">@item.Text.Substring(0, 50) ...</td>
+                                            }
+                                        }
+                                       
                                         <td style="width: 10px; text-align: center;">@item.NewCategories?.Title</td>
                                         <td style="width: 10px; text-align: center;">@item.Date.ToPersianDateString()</td>
                                         <td style="width: 10px; text-align: center;">
@@ -80,7 +90,7 @@
                                                data-target="#modal-action-news" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
-                                            </a> 
+                                            </a>
 
                                             <a class="btn btn-danger" id="showbook" data-toggle="modal" asp-action="Delete"
                                                data-target="#modal-action-news" asp-route-id="@item.Id">
@@ -89,10 +99,10 @@
                                             </a>
 
                                             @*<a class="btn btn-info" id="editbook" data-toggle="modal" asp-action="GetProductField"
-                                               data-target="#modal-action-news" asp-route-Id="@item.Id">
-                                                <i class="glyphicon glyphicon-pencil"></i>
-                                                تگ ها 
-                                            </a>*@
+                                                   data-target="#modal-action-news" asp-route-Id="@item.Id">
+                                                    <i class="glyphicon glyphicon-pencil"></i>
+                                                    تگ ها
+                                                </a>*@
                                             @*<a class="btn btn-primary" id="editBookgroup" asp-area="Admin" asp-controller="Product" asp-action="ProductField"
                                                    data-target="#modal-action-News" asp-route-id="@item.Id">
                                                     <i class="glyphicon glyphicon-pencil"></i>
