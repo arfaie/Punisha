@@ -112,9 +112,9 @@ namespace ECommerce
 			{
 				
 				app.UseDeveloperExceptionPage();
-               
-				app.UseDatabaseErrorPage();
-			}
+
+                app.UseDatabaseErrorPage();
+            }
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");
