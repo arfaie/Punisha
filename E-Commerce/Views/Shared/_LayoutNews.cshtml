@@ -25,31 +25,32 @@
     <nav class="navbar navbar-default navbar-fixed-top appsLand-navbar">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
-            @*<div class="navbar-header">
-                    <span class="menu-toggle">
-                        <i class="chart"></i>
-                        <i class="chart"></i>
-                        <i class="chart"></i>
-                    </span>
-                    <a class="navbar-brand" href="#">
-                        <img alt="" src="~\News\images\app land.png">
-                        <img src="~/News/images/app land.png" />
-                    </a>
-                </div>*@
+            <div class="navbar-header">
+                <span class="menu-toggle">
+                    <i class="chart"></i>
+                    <i class="chart"></i>
+                    <i class="chart"></i>
+                </span>
+                <a class="navbar-brand" href="#">
+                    <div class="logo" style="margin-top: 7px;">
+                        <a asp-controller="Home" asp-action="Index"><img src="~/images/logo.png"></a>
+                    </div>
+                </a>
+            </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="app-links" id="bs-example-navbar-collapse-1" style="height: 50px;">
-                <ul class="nav navbar-nav navbar-right appsLand-links" style="height: 50px;">
-                    <li class="visible-xs-block text-center mobile-size-logo">
-                            <a href="#">
-                                @*<img alt="" src="~\News\images\app land.png">*@
-                                <img src="~/News/images/app land.png" />
-                            </a>
-                        </li>
+            <div class="app-links" id="bs-example-navbar-collapse-1" style="height: 40px;">
+                <ul class="nav navbar-nav navbar-right appsLand-links" style="height: 40px;">
+                    @*<li class="visible-xs-block text-center mobile-size-logo">
+                        <a href="#">
+                            <img alt="" src="~\News\images\app land.png">
+                            <img src="~/News/images/app land.png" />
+                        </a>
+                    </li>*@
                     <li><a asp-controller="Home" asp-action="Index">فروشگاه</a></li>
                     <li><a asp-controller="Blog" asp-action="Index">بلاگ</a></li>
                     <li><a asp-controller="Home" asp-action="About">درباره ما</a></li>
                     <li><a asp-controller="Home" asp-action="Contact">ارتباط با ما</a></li>
-                    
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -83,7 +84,7 @@
     </header>
     @RenderBody()
     <footer class="apps-footer">
-        
+
         <div class="footer-bottom">
             <div class="container">
                 <p>استفاده از مطالب فروشگاه اینترنتی کار بیوتیک فقط برای مقاصد غیرتجاری و با ذکر منبع بلامانع است. کلیه حقوق این سایت متعلق به (فروشگاه آنلاین کار بیوتیک)<a href="#"></a></p>

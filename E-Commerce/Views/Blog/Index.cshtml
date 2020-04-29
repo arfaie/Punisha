@@ -44,7 +44,17 @@
                                             </div>
                                             <div class="entry-expert">
                                                 <p>
-                                                    @item.Text.ToString().Substring(0,100) ...
+                                                    @{
+                                                        if (item.Text.Length < 100)
+                                                        {
+                                                            @item.Text
+                                                        }
+                                                        else
+                                                        {
+                                                            @item.Text.Substring(0, 100)
+                                                        }
+                                                    }
+                                                   
                                                 </p>
                                                 <div class="post-readMore">
                                                     <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id" class="pull-left read-more-link">
@@ -253,7 +263,7 @@
                     </div>
                 </div>
 
-            @await Component.InvokeAsync("NewsPanel")
+            @await Component.InvokeAsync("NewsPanel",Model)
 
             </div>
         </div>

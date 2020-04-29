@@ -2,10 +2,10 @@
 
 <div class="col-md-3">
     <aside class="blog-asideMenu">
-        <form class="search-form hidden-sm hidden-xs">
+        <form asp-controller="Blog" asp-action="searchBlog" class="search-form hidden-sm hidden-xs">
             <div class="search-input-group form-group">
-                <input type="text" class="form-control" placeholder="جستجو..">
-                <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                <input name="Titel" type="text" class="form-control" placeholder="جستجو..">
+                <button type="submit" class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
                 <div class="clearfix"></div>
             </div>
         </form>
@@ -15,7 +15,7 @@
                 @{
                     foreach (var item in Model)
                     {
-                        <li><a href="#"> @item.NewCategories?.Title</a></li>
+                        <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-categoryId="@item.IdCategories"> @item.NewCategories?.Title</a></li>
                     }
                 }
 
@@ -81,7 +81,7 @@
 
                 @foreach (var item2 in ViewBag.tags)
                 {
-                    <li><a href="#" rel="tag">@item2.Title</a></li>
+                    <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item2.Id" rel="tag">@item2.Title</a></li>
                 }
 
 
