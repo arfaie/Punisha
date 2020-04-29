@@ -6,7 +6,7 @@ namespace Ecommerce.Helpers.ZarinPal
 	{
 		private const int AUTHORITY_LENGTH = 36;
 
-		private const bool IS_SANDBOX = true;
+		private const bool IS_SANDBOX = false;
 
 		public static PayResponse Request(long amount, string description, string callbackUrl)
 		{

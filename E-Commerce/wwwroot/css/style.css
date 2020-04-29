@@ -1126,14 +1126,14 @@ nav.main-menu {
 		display: none !important;
 	}
 
-	.countdown .countdown-label {
-		padding-top: .25rem;
-		color: #8c8c8c;
-		font-family: 'IRANSans';
-		font-size: .75rem;
-		font-weight: 600;
-		display: none;
-	}
+    .countdown .countdown-label {
+        padding-top: .25rem;
+        color: #8c8c8c;
+        font-family: 'iranyekan';
+        font-size: .75rem;
+        font-weight: 600;
+        display: none;
+    }
 
 	.countdown.h4 .countdown-label,
 	.countdown.h5 .countdown-label,
@@ -1779,13 +1779,13 @@ nav.main-menu {
 
 .widget-product .card-header .card-title span,
 .brand-slider .card-header .card-title span {
-	display: inline-block;
-	border-bottom: 1px solid #ef5661;
-	font-weight: 500;
-	font: 14px IRANSans;
-	padding-bottom: 10px;
-	position: relative;
-	top: 1px;
+    display: inline-block;
+    border-bottom: 1px solid #ef5661;
+    font-weight: 500;
+    font: 14px iranyekan;
+    padding-bottom: 10px;
+    position: relative;
+    top: 1px;
 }
 
 .widget-product .card-header .view-all,

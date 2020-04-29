@@ -59,9 +59,10 @@ $secColor: #cd0fd8;
 ------------------------------------------------------------------*/
 /* 2. General Style
 *********************************************/
+
 body {
-  font-family: 'Open Sans', 'IRANSans', sans-serif;
-  position: relative;
+    font-family: iranyekan;
+    position: relative;
 }
 body.without_footer {
   padding-bottom: 0 !important;

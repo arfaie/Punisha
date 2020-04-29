@@ -19,13 +19,9 @@
 /*=================================
     1. General
 =================================*/
-@font-face {
-    font-family: 'IRANSans';
-    font-weight: normal;
-    font-style: normal;
-}
+
 body {
-    font-family: 'Open Sans', 'IRANSans', sans-serif;
+    font-family: iranyekan;
 }
 .appsLand-btn i {
     margin-right: 0;

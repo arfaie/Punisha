@@ -22,13 +22,13 @@
 =================================*/
 
 @font-face {
-    font-family: 'IRANSans';
+    font-family: iranyekan;
     font-weight: normal;
     font-style: normal;
 }
 
 body {
-    font-family: 'Open Sans', 'IRANSans', sans-serif;
+    font-family: iranyekan;
 }
 
 .appsLand-btn i {
