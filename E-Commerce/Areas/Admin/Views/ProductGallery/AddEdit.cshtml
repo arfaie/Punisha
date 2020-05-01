@@ -18,7 +18,7 @@
         <div class="row">
             <input type="hidden" asp-for="Id" class="form-control" />
 
-            <div class="form-group">
+            <div class="form-group hidden">
                 <label asp-for="ProductId" class="col-lg-2 col-sm-2 control-label"></label>
                 <div class="col-lg-6">
                     <select asp-for="ProductId" asp-items="@ViewBag.Products" class="form-control"></select>
