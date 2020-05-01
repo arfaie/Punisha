@@ -63,11 +63,11 @@ namespace ECommerce.Controllers
 
             if (!string.IsNullOrWhiteSpace(tagId))
             {
-                var select = await _context.Newses.Include(n => n.NewCategories)
-                    .Include(x => x.NewsTagses.Where(x => x.IdTag == tagId))
+                var selectNewses = await _context.Newses.Include(n => n.NewCategories)
+                    .Include(x => x.NewsTagses)
                     .ThenInclude(x => x.tags).ToListAsync();
-                //select.ForEach(x =>x.Tags=x.Tags.Where(x => x.Id==tagId).ToList());
-                return View("Index", select);
+                var selectTag = selectNewses.Where(x=>x.NewsTagses.Where(x => x.IdTag == tagId).Any()).ToList();
+                return View("Index", selectTag);
             }
 
             return RedirectToAction("Index");
