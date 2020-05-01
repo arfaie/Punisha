@@ -137,7 +137,7 @@ namespace ECommerce.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEdit(ProductGallery model, string imgName, string id, IEnumerable<IFormFile> files)
+        public async Task<IActionResult> AddEdit(ProductGallery model, string imgName, string id, IEnumerable<IFormFile> files, string redirectUrl)
         {
             if (ModelState.IsValid)
             {
@@ -174,7 +174,8 @@ namespace ECommerce.Areas.Admin.Controllers
 
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-                    return RedirectToAction("Index");
+                    string path = $"{redirectUrl}/index/{HttpContext.Session.GetString("IDProduct")}";
+                    return PartialView("_SuccessfulResponse", path);
                 }
 
                 if (model.Image == null)
@@ -187,7 +188,8 @@ namespace ECommerce.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-                return RedirectToAction("Index");
+                string path1 = $"{redirectUrl}/index/{HttpContext.Session.GetString("IDProduct")}";
+                return PartialView("_SuccessfulResponse", path1);
             }
             if (!String.IsNullOrWhiteSpace(id))
             {

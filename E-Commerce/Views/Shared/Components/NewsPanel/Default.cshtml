@@ -29,20 +29,22 @@
             <ul class="list-unstyled popular-posts">
                 @foreach (var item in Model)
                 {
-                    <li>
-                        <div class="post-image">
-                            <img alt="" src="@ViewBag.path@item.ImageName" class="img-responsive">
-                            @*<img src="~/News/images/blog/01.jpg" class="img-responsive" />*@
-                        </div>
-                        <div class="post-data">
-                            <h5>
-                                <a href="#">
-                                    @item.Title
-                                </a>
-                            </h5>
-                            <p>@item.Date.ToPersianDateString()</p>
-                        </div>
-                    </li>
+                    <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id">
+                        <li>
+                            <div class="post-image">
+                                <img alt="" src="@ViewBag.path@item.ImageName" class="img-responsive">
+                                @*<img src="~/News/images/blog/01.jpg" class="img-responsive" />*@
+                            </div>
+                            <div class="post-data">
+                                <h5>
+                                    <a href="#">
+                                        @item.Title
+                                    </a>
+                                </h5>
+                                <p>@item.Date.ToPersianDateString()</p>
+                            </div>
+                        </li>
+                    </a>
                 }
             </ul>
         </div>
