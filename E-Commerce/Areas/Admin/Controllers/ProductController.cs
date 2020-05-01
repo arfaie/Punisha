@@ -254,8 +254,6 @@ namespace ECommerce.Areas.Admin.Controllers
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
 
-                
-
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
                 return PartialView("_SuccessfulResponse", redirectUrl);
