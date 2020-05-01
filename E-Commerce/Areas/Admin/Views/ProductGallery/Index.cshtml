@@ -24,7 +24,7 @@
                         <button type="button" class="card-action card-reload" title="Reload"></button>
                         <button type="button" class="card-action card-remove" title="Remove"></button>
                     </div>
-                    <strong>گالری محصول</strong>
+                    <strong>گالری محصول @ViewBag.productname</strong>
                 </div>
 
                 <div class="card-body">
@@ -38,7 +38,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showBrand" data-toggle="modal" asp-action="ProductGallery"
+                                <a class="btn btn-primary marginbutoom" id="showBrand" data-toggle="modal" asp-action="AddEdit"
                                    data-target="#modal-action">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن تصویر جدید
@@ -67,7 +67,7 @@
                                         </td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="ProductGallery"
+                                            <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEdit"
                                                data-target="#modal-action" asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش

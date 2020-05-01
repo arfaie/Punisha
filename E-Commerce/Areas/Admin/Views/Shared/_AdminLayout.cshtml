@@ -95,10 +95,13 @@
                                 @await Component.InvokeAsync("AdminNavbarEmail")
                             </li>
                             @*//////////////////////////////////////////////////////*@
-                        <li class="dropdown">
-                            @await Component.InvokeAsync("AdminNavbarProduct")
-                        </li>
-
+                            <li class="dropdown">
+                                @await Component.InvokeAsync("AdminNavbarProduct")
+                            </li>
+                            @*//////////////////////////////////////////////////////*@
+                            <li class="dropdown">
+                                @await Component.InvokeAsync("AdminNavbarOrders")
+                            </li>
                         </ul>
 
                     </nav>
@@ -174,17 +177,17 @@
 
 
                                 @*<li class="sidenav-item">
-            <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
-                <span class="sidenav-icon icon icon-th"></span>
-                <span class="sidenav-label">آژانس ها</span>
-            </a>
-        </li>*@
+                                        <a asp-area="Admin" asp-controller="Agency" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">آژانس ها</span>
+                                        </a>
+                                    </li>*@
                                 @*<li class="sidenav-item">
-            <a asp-area="Admin" asp-controller="ApplicationRole" asp-action="Index">
-                <span class="sidenav-icon icon icon-th"></span>
-                <span class="sidenav-label">نقش ها</span>
-            </a>
-        </li>*@
+                                        <a asp-area="Admin" asp-controller="ApplicationRole" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">نقش ها</span>
+                                        </a>
+                                    </li>*@
                                 <li class="sidenav-heading sideMenueHeaderColor"> مدیریت خودرو ها</li>
 
 
@@ -261,11 +264,11 @@
 
 
                                 @*<li class="sidenav-item">
-            <a asp-area="Admin" asp-controller="CommentAndStar" asp-action="Index">
-                <span class="sidenav-icon icon icon-th"></span>
-                <span class="sidenav-label">کامنت ها</span>
-            </a>
-        </li>*@
+                                        <a asp-area="Admin" asp-controller="CommentAndStar" asp-action="Index">
+                                            <span class="sidenav-icon icon icon-th"></span>
+                                            <span class="sidenav-label">کامنت ها</span>
+                                        </a>
+                                    </li>*@
 
                                 <li class="sidenav-heading sideMenueHeaderColor"> مدیریت بلاگ</li>
                                 <li class="sidenav-item">
