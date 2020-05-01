@@ -16,8 +16,7 @@
     @*body*@
     <div class="modal-body form-horizontal">
         <div class="row">
-
-            <input type="hidden" asp-for="Id" class="form-control"/>
+            <input type="hidden" asp-for="Id" class="form-control" />
 
             <div class="form-group">
                 <label asp-for="ProductId" class="col-lg-2 col-sm-2 control-label"></label>
@@ -26,18 +25,16 @@
                 </div>
             </div>
 
-
-
             @if (String.IsNullOrWhiteSpace(Model.Id))
             {
                 <div class="form-group">
                     <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
                     <div class="col-lg-6">
-                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger"/>
+                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
                     </div>
                     @if (!String.IsNullOrWhiteSpace(Model.Id))
                     {
-                        <input type="hidden" name="ImgName" value="@Model.Image"/>
+                        <input type="hidden" name="ImgName" value="@Model.Image" />
                     }
                 </div>
             }
@@ -46,16 +43,16 @@
                 <div class="form-group">
                     <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
                     <div class="col-lg-6">
-                        <input type="file" id="files" name="files" multiple class="btn btn-danger"/>
+                        <input type="file" id="files" name="files" multiple class="btn btn-danger" />
                     </div>
                     @if (!String.IsNullOrWhiteSpace(Model.Id))
                     {
-                        <input type="hidden" name="ImgName" value="@Model.Image"/>
+                        <input type="hidden" name="ImgName" value="@Model.Image" />
                     }
                 </div>
             }
 
-            @*<input type="hidden" name="redirectUrl" value="@Url.Action("index", "ProductGallery")"/>*@
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index", "ProductGallery")" />
 
         </div>
     </div>
@@ -66,7 +63,7 @@
 
         <div class="modal-footer">
             <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش " />
+            <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش محصول" />
         </div>
     }
     else
@@ -75,12 +72,16 @@
 
         <div class="modal-footer">
             <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن " />
+            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن محصول" />
         </div>
     }
 </form>
 
 <script>
+
+        $(document).ready(function () {
+           $('.select2List').select2();
+        });
 
         $(document).on('Click', '#submitdata', function (evt) {
             evt.preventDefault();
@@ -103,29 +104,29 @@
             });
 
             $.ajax({
-                type: "Post",
+                type: "post",
                 url: '@Url.Action("AddEdit", "ProductGallery", new { Area = "Admin" })',
                 contentType: false,
                 processData: false,
                 data: data
                 //وقتی که اطلاعات سمت سرور رفت و جواب از سرور آمد
-            }).done(function(res) {
+            }).done(function (res) {
                 if (res.status === "success") {
                     alert(res.message);
                     window.location.href = '@Url.Action("Index", "ProductGallery")';
-                } else {
+                }
+                else {
 
-                    $.each(res.error,
-                        function(a, b) {
-                            alert(b);
-                        });
+                    $.each(res.error, function (a, b) {
+                        alert(b);
+                    })
 
                     //alert(res.error);
                 }
                 //برای وقتی که کلا اطلاعات سمت سرور نرفت و در همان بدو ورود خطا داد
-            }).fail(function(xhr, b, error) {
+            }).fail(function (xhr, b, error) {
                 alert(error);
-            });
+            })
 
         });
 

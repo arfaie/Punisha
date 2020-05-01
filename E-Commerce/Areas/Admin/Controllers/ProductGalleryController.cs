@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using SessionExtensions = ECommerce.Helpers.SessionExtensions;
 
 namespace ECommerce.Areas.Admin.Controllers
@@ -47,6 +48,7 @@ namespace ECommerce.Areas.Admin.Controllers
             HttpContext.Session.SetString("IDProduct", id);
 
             var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+
             ViewBag.productname = select.Name;
 
             return View(await _context.ProductGalleries.Where(g => g.ProductId == id).ToListAsync());
@@ -159,7 +161,6 @@ namespace ECommerce.Areas.Admin.Controllers
                 }
                 //upload image
 
-               
                 if (String.IsNullOrWhiteSpace(id))
                 {
                     if (model.Image == null)
@@ -167,10 +168,10 @@ namespace ECommerce.Areas.Admin.Controllers
                         model.Image = "defaultpic.png";
                     }
 
-                    model.ProductId= HttpContext.Session.GetString("IDProduct");
-
+                    model.ProductId = HttpContext.Session.GetString("IDProduct");
                     _context.ProductGalleries.Add(model);
                     await _context.SaveChangesAsync();
+
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
                     return RedirectToAction("Index");
@@ -181,6 +182,7 @@ namespace ECommerce.Areas.Admin.Controllers
                     model.Image = imgName;
                 }
 
+                model.ProductId = HttpContext.Session.GetString("IDProduct");
                 _context.ProductGalleries.Update(model);
                 await _context.SaveChangesAsync();
 
