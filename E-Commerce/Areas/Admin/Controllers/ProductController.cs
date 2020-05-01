@@ -248,8 +248,13 @@ namespace ECommerce.Areas.Admin.Controllers
                 var carProducts = await _context.CarProducts.Where(x => x.ProductId == id).ToListAsync();
                 _context.CarProducts.RemoveRange(carProducts);
 
+                var history = await _context.Histories.Where(h => h.ProductId == id).ToListAsync();
+                _context.Histories.RemoveRange(history);
+                
                 _context.Products.Remove(product);
                 await _context.SaveChangesAsync();
+
+                
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 
