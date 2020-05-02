@@ -47,12 +47,12 @@ namespace ECommerce.Controllers
 
         public async Task<IActionResult> About()
         {
-            return View(await _context.AboutUses.LastOrDefaultAsync());
+            return View(await _context.AboutUses.ToListAsync());
         }
 
         public async Task<IActionResult> Contact()
         {
-            return View(await _context.AboutUses.LastOrDefaultAsync());
+            return View(await _context.AboutUses.ToListAsync());
         }
 
         public IActionResult ContactSlider1()

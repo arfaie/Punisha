@@ -1,4 +1,4 @@
-﻿@model AboutUs
+﻿@model IEnumerable<AboutUs>
 
 @{
     ViewBag.Title = "تماس با ما";
@@ -17,7 +17,10 @@
                         <div class="content-expert-text">
                             <p style="text-align:justify; line-height: 45px;">
                                 <span style="font-size:18px">
-                                   @Model.ContactUs
+                                  @foreach (var item in Model)
+                                  {
+                                      @item.ContactUs
+                                  }
                                 </span>
                             </p>
                             <p style="text-align:justify; line-height: 45px;">
