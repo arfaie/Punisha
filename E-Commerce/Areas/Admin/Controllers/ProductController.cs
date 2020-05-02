@@ -56,6 +56,8 @@ namespace ECommerce.Areas.Admin.Controllers
             var product = await _context.Products.FirstOrDefaultAsync(c => c.Id == id);
             if (product != null)
             {
+                HttpContext.Session.SetInt32("ProductOldPrice", product.Price);
+
                 var carProducts = await _context.CarProducts.Where(x => x.ProductId == product.Id).ToListAsync();
 
                 product.CarIds = carProducts.Select(x => x.CarId).ToArray();
@@ -182,6 +184,21 @@ namespace ECommerce.Areas.Admin.Controllers
 
                         _context.CarProducts.Add(newCarProduct);
                     }
+                }
+
+                int productOldPrice =(int)HttpContext.Session.GetInt32("ProductOldPrice");
+
+                if (productOldPrice != model.Price)
+                {
+                    var pricechange = new PriceChange
+                    {
+                        ProductId = model.Id,
+                        Old = productOldPrice,
+                        Date = DateTime.Now
+                    };
+
+                    _context.PriceChanges.Add(pricechange);
+                    await _context.SaveChangesAsync();
                 }
 
                 _context.Products.Update(model);
