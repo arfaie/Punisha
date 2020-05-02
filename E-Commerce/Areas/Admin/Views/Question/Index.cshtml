@@ -52,6 +52,7 @@
                                 <th>کد</th>
                                 <th>@Html.DisplayNameFor(model => model.Questions)</th>
                                 <th>@Html.DisplayNameFor(model => model.Answer)</th>
+                                <th>@Html.DisplayNameFor(model => model.Accepted)</th>
                                 <th>عملیات</th>
                             </tr>
                         </thead>
@@ -63,8 +64,30 @@
 
                                     <tr>
                                         <td>@(i++)</td>
-                                        <td>@item.Questions</td>
-                                        <td>@item.Answer</td>
+                                        @if (item.Questions.Length > 30)
+                                        {
+                                            <td>@item.Questions.Substring(0, 30)</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item.Questions</td>
+                                        }
+                                        @if (item.Answer.Length > 30)
+                                        {
+                                            <td>@item.Answer.Substring(0, 30)</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@item.Answer</td>
+                                        }
+                                        @if (item.Accepted)
+                                        {
+                                            <td>تایید شده</td>
+                                        }
+                                        else
+                                        {
+                                            <td>در انتظار تایید</td>
+                                        }
 
                                         <td>
                                             <a class="btn btn-info" id="editagency" data-toggle="modal" asp-action="AddEdit"
