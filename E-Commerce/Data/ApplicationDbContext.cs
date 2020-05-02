@@ -48,6 +48,8 @@ namespace ECommerce.Data
         public DbSet<News> Newses { get; set; }
         public DbSet<NewsTags> NewsTagses { get; set; }
         public DbSet<Email> Emails { get; set; }
+        public DbSet<AboutUs> AboutUses { get; set; }
+        public DbSet<Question> Questions { get; set; }
 
         public DbSet<ShippingState> ShippingStates { get; set; }
 
@@ -94,6 +96,8 @@ namespace ECommerce.Data
             builder.Entity<News>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.Entity<NewsTags>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.Entity<Email>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Entity<AboutUs>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Entity<Question>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 
             addShippingStates(builder);
 
