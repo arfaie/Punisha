@@ -51,7 +51,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 if (String.IsNullOrWhiteSpace(id))
                 {
-                    _context.NewsCategories.Add(model);
+                    await _context.NewsCategories.AddAsync(model);
                     await _context.SaveChangesAsync();
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);

@@ -48,7 +48,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 			{
 				if (string.IsNullOrEmpty(id))
 				{
-					_context.Makers.Add(maker);
+					await _context.Makers.AddAsync(maker);
 					await _context.SaveChangesAsync();
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
 					return PartialView("_SuccessfulResponse", redirectUrl);

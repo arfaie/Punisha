@@ -94,8 +94,8 @@ namespace ECommerce.Areas.Admin.Controllers
 					{
 						model.Image = variable;
 						//model.ProductId = (int)HttpContext.Session.GetInt32("ImageProductKey");
-						_context.ProductGalleries.Add(model);
-						_context.SaveChanges();
+						await _context.ProductGalleries.AddAsync(model);
+						await _context.SaveChangesAsync();
 					}
 
 					return Json(new { Status = "success", Message = "عکس با موفقیت ثبت شد" });
@@ -106,7 +106,7 @@ namespace ECommerce.Areas.Admin.Controllers
 					model.Image = variable;
 
 					_context.ProductGalleries.Update(model);
-					_context.SaveChanges();
+					await _context.SaveChangesAsync();
 				}
 
 				return Json(new { Status = "success", Message = "عکس با موفقیت ویرایش شد" });

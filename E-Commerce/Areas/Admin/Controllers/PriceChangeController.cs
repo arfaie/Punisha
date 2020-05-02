@@ -52,7 +52,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 			{
 				//if (String.IsNullOrEmpty(id))
 				//{
-				_context.PriceChanges.Add(model);
+				await _context.PriceChanges.AddAsync(model);
 				await _context.SaveChangesAsync();
 
 				//TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);

@@ -52,7 +52,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (String.IsNullOrWhiteSpace(id))
 				{
-					_context.Categories.Add(model);
+					await _context.Categories.AddAsync(model);
 					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
@@ -95,7 +95,7 @@ namespace ECommerce.Areas.Admin.Controllers
 				var model = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
 
 				_context.Categories.Remove(model);
-				_context.SaveChanges();
+				await _context.SaveChangesAsync();
 
 				TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
 				return PartialView("_SuccessfulResponse", redirectUrl);
