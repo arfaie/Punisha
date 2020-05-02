@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<AboutUs>
+
+@{
     ViewBag.Title = "تماس با ما";
 }
 
@@ -15,7 +17,10 @@
                         <div class="content-expert-text">
                             <p style="text-align:justify; line-height: 45px;">
                                 <span style="font-size:18px">
-                                    آدرس دفتر مرکزی : تهران ، خیابان ستارخان ، خیابان پاتریس لومومبا ، بین خیابان 23 و 25 ، پلاک 190 ، واحد 2
+                                  @foreach (var item in Model)
+                                  {
+                                      @item.ContactUs
+                                  }
                                 </span>
                             </p>
                             <p style="text-align:justify; line-height: 45px;">

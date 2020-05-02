@@ -2,10 +2,10 @@
 
 <div class="col-md-3">
     <aside class="blog-asideMenu">
-        <form class="search-form hidden-sm hidden-xs">
+        <form asp-controller="Blog" asp-action="searchBlog" method="get" class="search-form hidden-sm hidden-xs">
             <div class="search-input-group form-group">
-                <input type="text" class="form-control" placeholder="جستجو..">
-                <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                <input name="Titel" type="text" class="form-control" placeholder="جستجو..">
+                <button type="submit" class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
                 <div class="clearfix"></div>
             </div>
         </form>
@@ -15,7 +15,7 @@
                 @{
                     foreach (var item in Model)
                     {
-                        <li><a href="#"> @item.NewCategories?.Title</a></li>
+                        <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-categoryId="@item.IdCategories"> @item.NewCategories?.Title</a></li>
                     }
                 }
 
@@ -29,50 +29,21 @@
             <ul class="list-unstyled popular-posts">
                 @foreach (var item in Model)
                 {
-                    <li>
-                        <div class="post-image">
-                            <img alt="" src="@ViewBag.path@item.ImageName" class="img-responsive">
-                            @*<img src="~/News/images/blog/01.jpg" class="img-responsive" />*@
-                        </div>
-                        <div class="post-data">
-                            <h5>
-                                <a href="#">
-                                    @item.Title
-                                </a>
-                            </h5>
-                            <p>@item.Date.ToPersianDateString()</p>
-                        </div>
-                    </li>
+                        <li>
+                            <div class="post-image">
+                                <img alt="" src="@ViewBag.path@item.ImageName" class="img-responsive">
+                            </div>
+                            <div class="post-data">
+                                <h5>
+                                    <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id">
+                                        @item.Title
+                                    </a>
+                                </h5>
+                                <p>@item.Date.ToPersianDateString()</p>
+                            </div>
+                        </li>
+
                 }
-
-                @*<li>
-                        <div class="post-image">
-                            <img alt="" src="~\News\images\blog\02.jpg" class="img-responsive">
-                            <img src="~/News/images/blog/02.jpg" class="img-responsive"/>
-                        </div>
-                        <div class="post-data">
-                            <h5>
-                                <a href="#">
-                                    عنوان الخبر
-                                </a>
-                            </h5>
-                            <p>9 مارس</p>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="post-image">
-
-                            <img src="~/News/images/blog/03.jpg" class="img-responsive"/> <img alt="" src="~\News\images\blog\03.jpg" class="img-responsive">
-                        </div>
-                        <div class="post-data">
-                            <h5>
-                                <a href="#">
-                                    عنوان الخبر
-                                </a>
-                            </h5>
-                            <p>15 مارس</p>
-                        </div>
-                    </li>*@
             </ul>
         </div>
         <div class="aside-box">
@@ -81,17 +52,8 @@
 
                 @foreach (var item2 in ViewBag.tags)
                 {
-                    <li><a href="#" rel="tag">@item2.Title</a></li>
+                    <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item2.Id" rel="tag">@item2.Title</a></li>
                 }
-
-
-                @*<li><a href="#" rel="tag">اندرويد</a></li>
-                    <li><a href="#" rel="tag">تصميم</a></li>
-                    <li><a href="#" rel="tag">جميل</a></li>
-                    <li><a href="#" rel="tag">عصري</a></li>
-                    <li><a href="#" rel="tag">انيق</a></li>
-                    <li><a href="#" rel="tag">للبيع</a></li>
-                    <li><a href="#" rel="tag">محمد صلاح</a></li>*@
             </ul>
         </div>
     </aside>

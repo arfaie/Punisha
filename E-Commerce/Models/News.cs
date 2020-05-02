@@ -32,5 +32,7 @@ namespace ECommerce.Models
         public string ImageName { get; set; }
 
         public ICollection<NewsTags> NewsTagses { get; set; }
+
+        public ICollection<Tag> Tags { get; set; }
     }
 }

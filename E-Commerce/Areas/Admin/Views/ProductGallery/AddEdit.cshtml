@@ -1,111 +1,133 @@
 ﻿@model ECommerce.Models.ProductGallery
 
-@addTagHelper*,Punas
-@addTagHelper*,Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
 
-@*heder*@
-
-<form enctype="multipart/form-data">
-
-    @if (String.IsNullOrWhiteSpace(Model.Id))
+<form asp-controller="ProductGallery" asp-action="AddEdit" enctype="multipart/form-data">
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
     {
-        @await Html.PartialAsync("_Modalheader", new ModalHeader { Heading = "افزودن" })
-
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش " })
     }
     else
     {
-        @await Html.PartialAsync("_Modalheader", new ModalHeader { Heading = "ویرایش " })
-
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن " })
     }
-
+    @*body*@
     <div class="modal-body form-horizontal">
         <div class="row">
+            <input type="hidden" asp-for="Id" class="form-control" />
 
-            <div class="form-group">
-                <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
+            <div class="form-group hidden">
+                <label asp-for="ProductId" class="col-lg-2 col-sm-2 control-label"></label>
                 <div class="col-lg-6">
-                    <input asp-for="Image" type="file" id="files" name="files" multiple />
+                    <select asp-for="ProductId" asp-items="@ViewBag.Products" class="form-control"></select>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label asp-for="ProductId" class="col-lg-3 col-sm-3 control-label"></label>
-                <div class="col-lg-6">
-                    <select asp-for="ProductId" asp-items="@ViewBag.Products" class="form-control">
-                        <option value="" disabled="disabled" selected="selected">انتخاب گروه</option>
-                    </select>
+            @if (String.IsNullOrWhiteSpace(Model.Id))
+            {
+                <div class="form-group">
+                    <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
+                    </div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.Image" />
+                    }
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Image" class="col-lg-2 col-sm-2 control-label"></label>
+                    <div class="col-lg-6">
+                        <input type="file" id="files" name="files" multiple class="btn btn-danger" />
+                    </div>
+                    @if (!String.IsNullOrWhiteSpace(Model.Id))
+                    {
+                        <input type="hidden" name="ImgName" value="@Model.Image" />
+                    }
+                </div>
+            }
 
-            <div class="form-group  hidden">
-                <label asp-for="Id" class="col-lg-3 col-sm-3 control-label"></label>
-                <div class="col-lg-6">
-                    <input asp-for="Id" class="form-control" />
-                </div>
-            </div>
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index", "ProductGallery")" />
 
         </div>
     </div>
-
     @*footer*@
-
-    @if (String.IsNullOrWhiteSpace(Model.Id))
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
     {
+        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
 
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن عکس" />
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش تصویر" />
         </div>
-
     }
     else
     {
+        @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
+
         <div class="modal-footer">
-            <button class="btn btn-default" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
-            <input type="submit" id="submitdata" class="btn btn-success" value="ویرایش عکس" />
+            <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
+            <input type="submit" id="submitdata" class="btn btn-success" value="افزودن تصویر" />
         </div>
-
     }
-
 </form>
-@section Scripts{
 
-    <script>
-        $(document).on('click', '#submitdata', function (evt) {
+<script>
+
+        $(document).ready(function () {
+           $('.select2List').select2();
+        });
+
+        $(document).on('Click', '#submitdata', function (evt) {
             evt.preventDefault();
+
+            var data = new FormData();
+
+            //دریافت مقادیر فایل آپلودی
             var fileupload = $("#files").get(0);
             var files = fileupload.files;
-            var data = new FormData();
-            for (var i = 0; i < files.length; i++) {
-                data.append('files', files[i])
 
+            for (var i = 0; i < files.length; i++) {
+                data.append('files', files[i]);
             }
-            $('input').each(function (x, y) {
-                data.append($(y).attr('name'), $(y), val());
+
+            //دریافت مقادیر موجود
+            $('input,select').each(function (x,y) {
+
+                data.append($(y).attr('name'), $(y).val());
 
             });
+
             $.ajax({
-                type: "post",
-                url: '@Url.Action("ProductGallery", "ProductGallery", new { Area = "Admin" })',
+                type: "Post",
+                url: '@Url.Action("AddEdit", "ProductGallery", new { Area = "Admin" })',
                 contentType: false,
                 processData: false,
                 data: data
-
+                //وقتی که اطلاعات سمت سرور رفت و جواب از سرور آمد
             }).done(function (res) {
                 if (res.status === "success") {
                     alert(res.message);
+                    window.location.href = '@Url.Action("Index", "ProductGallery")';
                 }
                 else {
-                    alert("در ثبت اطلاعات مشکلی وجود دارد")
 
+                    $.each(res.error, function (a, b) {
+                        alert(b);
+                    })
+
+                    //alert(res.error);
                 }
+                //برای وقتی که کلا اطلاعات سمت سرور نرفت و در همان بدو ورود خطا داد
             }).fail(function (xhr, b, error) {
-
-                alert(error)
-            });
+                alert(error);
+            })
 
         });
 
-    </script>
-
-}
+</script>

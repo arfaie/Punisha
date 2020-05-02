@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Order>
+
+<a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true">
+    <span class="icon-with-child hidden-xs">
+        <span class="icon icon-shopping-cart icon-lg icon-fw"></span>
+        <span class="badge badge-danger badge-above right">@Model.Count()</span>
+    </span>
+    <span class="visible-xs-block">
+        <span class="icon icon-shopping-cart icon-lg icon-fw"></span>
+        <span class="badge badge-danger pull-right">@Model.Count()</span>
+        سفارشات با وضعیت در صف بررسی
+    </span>
+</a>
+<div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+    <div class="dropdown-header">
+        <h5 class="dropdown-heading">سفارشات با وضعیت در صف بررسی</h5>
+    </div>
+    <div class="dropdown-body">
+        <div class="list-group list-group-divided custom-scrollbar">
+            @foreach (var item in Model)
+            {
+                <a class="list-group-item" href="#">
+                    <div class="notification">
+                        <div class="notification-media">
+                            <span class="icon icon-exclamation-triangle bg-warning rounded sq-40"></span>
+                        </div>
+                        <div class="notification-content">
+                            <small class="notification-timestamp">@item.TransactionDate.ToPersianDateString()</small>
+                            <h5 style="font-size: 16px; margin-top: 7px;" class="notification-heading">شماره تراکنش:@item.TransactionNumber</h5>
+                            @{
+                                if (item.Description.Length > 25)
+                                {
+                                    <p class="notification-text">
+                                        <small class="truncate">توضیحات:@item.Description.Substring(0, 25)</small>
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p class="notification-text">
+                                        <small class="truncate">توضیحات:@item.Description</small>
+                                    </p>
+                                }
+                            }
+
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+    <div class="dropdown-footer">
+        <a class="dropdown-btn" asp-area="Admin" asp-controller="Order" asp-action="Index">مشاهده همه</a>
+    </div>
+</div>

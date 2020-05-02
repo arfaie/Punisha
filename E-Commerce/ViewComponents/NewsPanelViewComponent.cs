@@ -21,6 +21,8 @@ namespace EShop.ViewComponents
         {
             ViewBag.rootpath = "/upload/thumbnailimage/";
 
+            ViewBag.tags = await _context.Tags.ToListAsync();
+
             return View(await _context.Newses.Include(n => n.NewCategories).ToListAsync());
         }
     }

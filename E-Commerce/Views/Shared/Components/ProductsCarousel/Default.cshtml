@@ -5,34 +5,40 @@
         <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2234px;">
             @foreach (var product in Model)
             {
+
                 <div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
                     <div class="item">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                            <img src="@Helper.ThumbnailImagePath@product.ImageName" class="img-fluid" alt="">
+                            <img src="@Helper.NormalImagePath@product.ImageName" class="img-fluid" alt="">
                         </a>
                         <h2 class="post-title">
-                            <a href="#">
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
                                 @product.Name
                             </a>
                         </h2>
 
                         @if (product.Price > product.PriceWithDiscount)
                         {
-                            <div class="price">
-                                <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
-                                <ins><span>@product.PriceWithDiscount.ToString("N0")<span> تومان</span></span></ins>
-                            </div>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                <div class="price">
+                                    <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
+                                    <ins><span>@product.PriceWithDiscount.ToString("N0")<span> تومان</span></span></ins>
+                                </div>
+                            </a>
                         }
                         else
                         {
-                            <div class="price">
-                                @*<del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>*@
-                                <ins><span>@product.Price.ToString("N0")<span> تومان</span></span></ins>
-                            </div>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
+                                <div class="price">
+                                    @*<del><span>۴,۵۳۰,۰۰۰<span>تومان</span></span></del>*@
+                                    <ins><span>@product.Price.ToString("N0")<span> تومان</span></span></ins>
+                                </div>
+                            </a>
                         }
 
                     </div>
                 </div>
+
             }
 
             @*<div class="owl-item active" style="width: 309.083px; margin-left: 10px;">

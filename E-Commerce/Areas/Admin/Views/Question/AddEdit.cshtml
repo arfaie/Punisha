@@ -1,0 +1,64 @@
+﻿@model ECommerce.Models.Question
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+<form asp-controller="Question" asp-action="AddEdit" id="AddEdit" data-ajax="true" data-ajax-method="post"
+      data-ajax-update="#AddEdit" data-ajax-mode="replace">
+
+    @*header*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش " })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن " })
+    }
+
+    @*body*@
+    <div class="modal-body form-horizontal">
+
+        <div class="row">
+            <div class="form-group">
+                <label asp-for="Questions" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <textarea asp-for="Questions" class="form-control"></textarea>
+                    <span asp-validation-for="Questions" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Answer" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <textarea asp-for="Answer" class="form-control"></textarea>
+                    <span asp-validation-for="Answer" class="text-danger"></span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Accepted" class="col-lg-2 col-sm-2 control-label"></label>
+                <div class="col-lg-6">
+                    <input asp-for="Accepted" class="form-control" />
+                    <span asp-validation-for="Accepted" class="text-danger"></span>
+                </div>
+            </div>
+
+            <input type="hidden" asp-for="Id" class="form-control" />
+
+            <input type="hidden" name="redirectUrl" value="@Url.Action("index","Question")" />
+
+        </div>
+    </div>
+
+    @*footer*@
+    @if (!String.IsNullOrWhiteSpace(Model.Id))
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش " })
+    }
+    else
+    {
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن " })
+    }
+
+</form>

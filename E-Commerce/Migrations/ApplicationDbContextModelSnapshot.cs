@@ -19,6 +19,24 @@ namespace ECommerce.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ECommerce.Models.AboutUs", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("AboutUss")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContactUs")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AboutUses");
+                });
+
             modelBuilder.Entity("ECommerce.Models.Address", b =>
                 {
                     b.Property<string>("Id")
@@ -7570,6 +7588,27 @@ namespace ECommerce.Migrations
                     b.ToTable("ProductGalleries");
                 });
 
+            modelBuilder.Entity("ECommerce.Models.Question", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Questions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Questions");
+                });
+
             modelBuilder.Entity("ECommerce.Models.SelectGroup", b =>
                 {
                     b.Property<string>("Id")
@@ -8061,10 +8100,15 @@ namespace ECommerce.Migrations
                         .HasColumnType("nvarchar(450)")
                         .HasDefaultValueSql("NEWID()");
 
+                    b.Property<string>("NewsId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NewsId");
 
                     b.ToTable("Tags");
                 });
@@ -8437,6 +8481,13 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.SelectGroup", "SelectGroup")
                         .WithMany("SelectItems")
                         .HasForeignKey("SelectGroupId");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.Tag", b =>
+                {
+                    b.HasOne("ECommerce.Models.News", null)
+                        .WithMany("Tags")
+                        .HasForeignKey("NewsId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

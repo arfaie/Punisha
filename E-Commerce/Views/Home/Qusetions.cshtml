@@ -1,0 +1,138 @@
+﻿@using ECommerce.Models.Helpers
+@using ECommerce.Models.Helpers.OptionEnums
+@model IEnumerable<Question>
+
+@{
+    ViewBag.Title = "پرسش های متداول";
+}
+
+
+<!--  faq------------------------->
+<div class="info-page-cover">
+    <div class="col-lg-12 col-md-12 col-xs-12 mx-auto">
+        <div class="info-page-cover-title">پاسخ پرسش‌های پرتکرار</div>
+        <form asp-controller="Home" asp-action="QusetionSearch" method="get" class="info-page-search">
+            <input name="Title" type="text" class="info-page-input-search" placeholder="پرسش خود را جستجو کنید">
+            <a href="#"><button type="submit" class="btn-info-page-search">جستجو</button></a>
+        </form>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="info-page-faq">
+        <div class="content-info-page">
+            <div class="box-rounded_headline">پرتکرارترین پرسش ها</div>
+            @{
+                foreach (var item in Model)
+                {
+                    <div class="toggle-box">
+                        <div class="toggle-box-active">
+                            <ul>
+                                <li class="has-sub">
+                                    <a href="#">                                 @item.Questions</a>
+                                    <ul>
+                                        <li class="has-sub"><a href="#">@item.Answer</a></li>
+                                        @*<a href="#" class="info-page-show-more">مشاهده توضیحات تکمیلی<i class="fa fa-angle-left"></i></a>*@
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+
+    <div class="question-not-found">
+        <div class="question-not-found-title">
+            جواب یا پرسش خود را پیدا نکردید؟
+            <br>
+            روش‌های ارتباط با ما
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="info-page_contact-option info-page_after-faq">
+                <i class="mdi mdi-phone"></i>
+                <span>تماس تلفنی</span>
+                <span>88243738 و 88243637</span>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-12 pull-right">
+            <div class="info-page_contact-option">
+                <i class="mdi mdi-message"></i>
+                @*<a href="#" class="faq-send-message">ارسال پیام</a>*@
+                <a href="#" class="faq-send-message" onclick="document.getElementById('modalAdd').style.display='block'">ارسال پیام</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--  faq------------------------->
+
+
+<div class="remodal-overlay" id="modalAdd">
+    <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+        <div class="remodal" style="height: auto;">
+            <a href="#" class="remodal-close" onclick="document.getElementById('modalAdd').style.display='none'"><i class="fa fa-close"></i></a>
+            <div class="middle-container" style="height: auto;">
+                <form action="#" class="form-checkout">
+                    <div class="form-checkout-headline">پرسش شما</div>
+                    <div class="form-checkout-row">
+                        <label for="nameAdd">پرسش</label>
+                        <span class="required-star" style="color:red;">*</span>
+                        <textarea type="text" id="nameAdd" class="input-name-checkout" placeholder="پرسش خود را وارد نمایید" style="height:80px;"></textarea>
+
+                        <div class="form-checkout-valid-row">
+                            <div class="parent-btn">
+                                <button id="addAddressButton" class="dk-btn dk-btn-info">
+                                    ثبت
+                                    <i class="fa fa-check sign-in"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <a style="cursor:pointer" class="cancel-edit-address" onclick="document.getElementById('modalAdd').style.display='none'">انصراف و بازگشت</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+
+        $(document).ready(function () {
+
+            $("#addAddressButton").click(function (e) {
+                e.preventDefault();
+
+                $.ajax({
+                    type: 'POST',
+                    data: { "Questions": $("#nameAdd").val() },
+                    url: '@Url.Action("AddQusetion", "Home")',
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                    })
+                    .done(function (data) {
+                        location.reload();
+                        alert("پرسش شما با موفقیت ثبت شد");
+                    })
+                .fail(function (xhr, b, error) {
+                    alert(error);
+                })
+                .always(function () {
+                    //alert(message);
+                });
+
+            });
+
+        });
+
+    </script>
+}

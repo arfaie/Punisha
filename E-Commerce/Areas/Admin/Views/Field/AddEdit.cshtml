@@ -58,11 +58,11 @@
         @*footer*@
         @if (!String.IsNullOrWhiteSpace(Model.Id))
         {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش دسته بندی" })
+            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش فیلد" })
         }
         else
         {
-            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن دسته بندی" })
+            @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن فیلد" })
         }
 
     </form>

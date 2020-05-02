@@ -38,19 +38,28 @@
                                     <div class="entry-content-footer">
                                         <div class="entry-content">
                                             <div class="entry-post-info">
-                                                <h4><a href="#">@item.Title</a></h4>
+                                                <h4><a href="/blog/DetailesBlog/@item.Id">@item.Title</a></h4>
                                                 @*<p class="posted-on"><span></span>@item.Date.ToPersianDateString()</p>*@
                                                 <p class="posted-on">@item.Date.ToPersianDateString()</p>
                                             </div>
                                             <div class="entry-expert">
                                                 <p>
-                                                    @item.Text
+                                                    @{
+                                                        if (item.Text.Length < 100)
+                                                        {
+                                                            @item.Text
+                                                        }
+                                                        else
+                                                        {
+                                                            @item.Text.Substring(0, 100)
+                                                        }
+                                                    }
+                                                   
                                                 </p>
                                                 <div class="post-readMore">
                                                     <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id" class="pull-left read-more-link">
                                                         ادامه مطلب <i class="fa fa-long-arrow-left"></i>
                                                     </a>
-                                                    @*<span class="pull-right"><a href="#">1 تعليق</a></span>*@
                                                 </div>
                                             </div>
                                         </div>

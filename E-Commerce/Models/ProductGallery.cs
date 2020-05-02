@@ -13,6 +13,7 @@ namespace ECommerce.Models
 
 		public virtual Product Product { get; set; }
 
+        [Display(Name = "تصویر")]
 		public string Image { get; set; }
 	}
 }

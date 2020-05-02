@@ -35,16 +35,16 @@
                             <div class="post-image">
                                 <img alt="" src="@ViewBag.path@Model.ImageName" class="img-responsive">
                             </div>
-                            <ul class="entry-Categories list-unstyled list-inline">
+                            @*<ul class="entry-Categories list-unstyled list-inline">
                                 @foreach (var item in Model?.NewsTagses)
                                 {
                                 <li><a href="#">@item?.tags?.Title</a></li>
                                 }
 
-                            </ul>
+                            </ul>*@
                         </figure>
                         <div class="entry-content wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s">
-                            <p>
+                            <p class="text-justify">
                                 @Model.Text
                             </p>
 
@@ -55,7 +55,7 @@
                                     <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
                                     @foreach (var item in Model.NewsTagses)
                                     {
-                                    <li><a href="#">@item?.tags?.Title</a></li>
+                                        <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item.tags.Id" rel="tag">@item.tags.Title</a></li>
                                     }
                                 </ul>
                             </div>
@@ -81,4 +81,3 @@
             <div class="double-bounce2"></div>
         </div>
     </div>*@
-
