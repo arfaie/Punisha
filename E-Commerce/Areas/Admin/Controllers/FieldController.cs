@@ -68,7 +68,7 @@ namespace ECommerce.Areas.Admin.Controllers
                         order = selectOrder.First().Order + 1;
                     }
                     model.Order = order;
-                    _context.Fields.Add(model);
+                    await _context.Fields.AddAsync(model);
                     await _context.SaveChangesAsync();
                     try
                     {
@@ -87,7 +87,7 @@ namespace ECommerce.Areas.Admin.Controllers
                         CategoryField CategoryField = new CategoryField();
                         CategoryField.FieldId = ss;
                         CategoryField.CategoryId = item;
-                        _context.CategoryFields.Add(CategoryField);
+                        await _context.CategoryFields.AddAsync(CategoryField);
 
                         //Add to ProductFields
                         var selectProducts = _context.Products.Where(x => x.CategoryId == item);
@@ -98,7 +98,7 @@ namespace ECommerce.Areas.Admin.Controllers
                             pf.ProductId = itemProduct.Id;
                             pf.FieldId = ss;
                             pf.Value = null;
-                            _context.ProductFields.Add(pf);
+                            await _context.ProductFields.AddAsync(pf);
                         }
                         //Add to ProductFields
                     }
@@ -120,7 +120,7 @@ namespace ECommerce.Areas.Admin.Controllers
                             CategoryField CategoryField = new CategoryField();
                             CategoryField.FieldId = model.Id;
                             CategoryField.CategoryId = item;
-                            _context.CategoryFields.Add(CategoryField);
+                            await _context.CategoryFields.AddAsync(CategoryField);
 
                             //Add to ProductFields
                             ProductField pf;
@@ -131,7 +131,7 @@ namespace ECommerce.Areas.Admin.Controllers
                                 pf.ProductId = itemProduct.Id;
                                 pf.FieldId = model.Id;
                                 pf.Value = null;
-                                _context.ProductFields.Add(pf);
+                                await _context.ProductFields.AddAsync(pf);
                             }
                             //Add to ProductFields
                         }

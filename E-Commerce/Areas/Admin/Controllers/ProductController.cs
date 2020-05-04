@@ -119,7 +119,7 @@ namespace ECommerce.Areas.Admin.Controllers
                     //_context.PriceChanges.Add(priceChange);
                     //Add PriceChange
 
-                    _context.Products.Add(model);
+                    await _context.Products.AddAsync(model);
 
                     await _context.SaveChangesAsync();
 
@@ -136,7 +136,7 @@ namespace ECommerce.Areas.Admin.Controllers
                                 ProductId = model.Id
                             };
 
-                            _context.CarProducts.Add(newCarProduct);
+                            await _context.CarProducts.AddAsync(newCarProduct);
                         }
                     }
 
@@ -182,7 +182,7 @@ namespace ECommerce.Areas.Admin.Controllers
                             ProductId = model.Id
                         };
 
-                        _context.CarProducts.Add(newCarProduct);
+                        await _context.CarProducts.AddAsync(newCarProduct);
                     }
                 }
 

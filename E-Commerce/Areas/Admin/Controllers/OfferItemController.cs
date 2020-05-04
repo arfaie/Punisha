@@ -52,7 +52,7 @@ namespace ECommerce.Areas.Admin.Controllers
 			{
 				if (String.IsNullOrWhiteSpace(id))
 				{
-					_context.OfferItems.Add(model);
+					await _context.OfferItems.AddAsync(model);
 					await _context.SaveChangesAsync();
 
 					TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);

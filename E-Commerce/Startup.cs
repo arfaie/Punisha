@@ -39,9 +39,9 @@ namespace ECommerce
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-            //services.AddRazorPages().AddRazorRuntimeCompilation();
+			//services.AddRazorPages().AddRazorRuntimeCompilation();
 
-            services.Configure<CookiePolicyOptions>(options =>
+			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
 				options.CheckConsentNeeded = context => true;
@@ -68,8 +68,6 @@ namespace ECommerce
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 				.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options => Configuration.Bind("CookieSettings", options));
 
-           
-
 			//services.AddSession(options =>
 			//{
 			//	// Set a short timeout for easy testing.
@@ -82,6 +80,7 @@ namespace ECommerce
 			//	options.Cookie.IsEssential = true;
 			//	options.Cookie.Name = ".Carbiotic";
 			//});
+
 			services.AddRazorPages().AddRazorRuntimeCompilation();
 
 			services.AddDistributedMemoryCache();
@@ -95,7 +94,9 @@ namespace ECommerce
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
-			services.AddMvc();
+			services.AddMvc().AddNewtonsoftJson(options =>
+				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+			);
 
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -110,7 +111,6 @@ namespace ECommerce
 
 			if (env.IsDevelopment())
 			{
-				
 				app.UseDeveloperExceptionPage();
 
                 app.UseDatabaseErrorPage();
@@ -120,8 +120,8 @@ namespace ECommerce
 				app.UseExceptionHandler("/Home/Error");
 			}
 
-            //app.UseHttpsRedirection();
-            app.UseDefaultFiles();
+			//app.UseHttpsRedirection();
+			app.UseDefaultFiles();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 

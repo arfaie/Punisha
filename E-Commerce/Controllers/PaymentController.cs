@@ -70,10 +70,10 @@ namespace ECommerce.Controllers
 						factor.FactorCode = $"CBT-{random.Next(1234567, 10000000)}";
 					} while (allFactorCodes.Contains(factor.FactorCode));
 
-					await using var transaction = _context.Database.BeginTransaction();
+					await using var transaction = await _context.Database.BeginTransactionAsync();
 					try
 					{
-						_context.Factors.Add(factor);
+						await _context.Factors.AddAsync(factor);
 						await _context.SaveChangesAsync();
 
 						foreach (var product in products)
@@ -88,7 +88,7 @@ namespace ECommerce.Controllers
 								Discount = product.Price - product.PriceWithDiscount
 							};
 
-							_context.FactorItems.Add(factorItem);
+							await _context.FactorItems.AddAsync(factorItem);
 						}
 
 						factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
@@ -322,11 +322,11 @@ namespace ECommerce.Controllers
 					Title = "در صف بررسی"
 				};
 
-				_context.Statuses.Add(statuses);
+				await _context.Statuses.AddAsync(statuses);
 				await _context.SaveChangesAsync();
 			}
 
-			await using (var transaction = _context.Database.BeginTransaction())
+			await using (var transaction = await _context.Database.BeginTransactionAsync())
 			{
 				try
 				{
@@ -341,7 +341,7 @@ namespace ECommerce.Controllers
 						TransactionStatus = true
 					};
 
-					_context.Orders.Add(order);
+					await _context.Orders.AddAsync(order);
 
 					factor.IsPaid = true;
 					_context.Factors.Update(factor);

@@ -90,7 +90,7 @@ namespace ECommerce.Controllers
                 model.strEmail = strEmail;
                 model.Readed = false;
 
-                _context.Emails.Add(model);
+                await _context.Emails.AddAsync(model);
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction("Index");

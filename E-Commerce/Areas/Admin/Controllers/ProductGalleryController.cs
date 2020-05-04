@@ -172,7 +172,6 @@ namespace ECommerce.Areas.Admin.Controllers
                     _context.ProductGalleries.Add(model);
                     await _context.SaveChangesAsync();
 
-
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
                     string path = $"{redirectUrl}/index/{HttpContext.Session.GetString("IDProduct")}";
                     return PartialView("_SuccessfulResponse", path);

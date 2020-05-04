@@ -109,7 +109,7 @@ namespace E_Commerce.Areas.Admin.Controllers
                     //_context.PriceChanges.Add(priceChange);
                     //Add PriceChange
 
-                    _context.Newses.Add(model);
+                    await _context.Newses.AddAsync(model);
 
                     await _context.SaveChangesAsync();
 
