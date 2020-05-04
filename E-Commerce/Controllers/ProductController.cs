@@ -318,7 +318,7 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddToCart(string productId)
 		{
-			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
 			if (product == null)
 			{
 				return Json(new { status = "fail", message = "این محصول موجود نیست" });
