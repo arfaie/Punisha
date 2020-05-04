@@ -31,7 +31,7 @@ namespace EShop.ViewComponents
 
 				var carProductsIds = await _context.CarProducts.Where(x => x.CarId == user.CarId).Select(x => x.ProductId).ToListAsync();
 
-				return View(products.Where(x => carProductsIds.Count > 0 && carProductsIds.Contains(x.Id)).ToList());
+				return View(products.Where(x => carProductsIds.Count > 0 && carProductsIds.Contains(x.Id)).Take(10).ToList());
 			}
 
 			return View();

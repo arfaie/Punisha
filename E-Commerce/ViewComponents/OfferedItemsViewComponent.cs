@@ -10,7 +10,7 @@ namespace EShop.ViewComponents
 	{
 		public async Task<IViewComponentResult> InvokeAsync(List<Product> products)
 		{
-			return View(products.Where(x => x.DiscountPercent > 0 || x.DiscountPercent > 0).ToList());
+			return View(products.Where(x => x.DiscountPercent > 0 || x.DiscountPercent > 0).Take(10).ToList());
 		}
 	}
 }

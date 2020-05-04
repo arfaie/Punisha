@@ -10,7 +10,7 @@ namespace EShop.ViewComponents
 	{
 		public async Task<IViewComponentResult> InvokeAsync(List<Product> products)
 		{
-			return View(products.OrderByDescending(x => x.AddingDateTime).ToList());
+			return View(products.OrderByDescending(x => x.AddingDateTime).Take(10).ToList());
 		}
 	}
 }
