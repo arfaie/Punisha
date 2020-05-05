@@ -52,6 +52,7 @@ namespace ECommerce.Data
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<ShippingState> ShippingStates { get; set; }
+        public DbSet<ProductSelectedItem> ProductSelectedItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
