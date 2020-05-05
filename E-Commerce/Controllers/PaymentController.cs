@@ -278,19 +278,53 @@ namespace ECommerce.Controllers
 			var collection = HttpUtility.ParseQueryString(HttpContext.Request.QueryString.Value);
 			var status = collection["Status"];
 
-			if (status != "OK")
-			{
-				return RedirectToAction(nameof(FailedPayment), new { factorCode = "", error = "خطا در پرداخت" });
-			}
-
-			var authority = collection["Authority"];
-
 			var factor = await _context.Factors.FirstOrDefaultAsync(x => x.Id == id);
 
 			if (factor == null)
 			{
 				return RedirectToAction(nameof(FailedPayment), new { error = "خطا در تایید فاکتور" });
 			}
+
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
+			}
+
+			if (status != "OK")
+			{
+				var failStatus = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت نشده");
+
+				if (failStatus == null)
+				{
+					failStatus = new Status
+					{
+						Title = "پرداخت نشده"
+					};
+
+					await _context.Statuses.AddAsync(failStatus);
+					await _context.SaveChangesAsync();
+				}
+
+				var order = new Order
+				{
+					Description = user.UserName,
+					TransactionNumber = collection["Authority"].TrimStart('0'),
+					StatusId = failStatus.Id,
+					TransactionDate = DateTime.UtcNow,
+					IssueCode = 0,
+					FactorId = factor.Id,
+					TransactionStatus = false
+				};
+
+				await _context.Orders.AddAsync(order);
+				await _context.SaveChangesAsync();
+
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در پرداخت" });
+			}
+
+			var authority = collection["Authority"];
 
 			TempData["FactorCode"] = factor.FactorCode;
 
@@ -303,23 +337,44 @@ namespace ECommerce.Controllers
 
 			if (!verificationResponse.IsSuccess)
 			{
+				var failStatus = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت نشده");
+
+				if (failStatus == null)
+				{
+					failStatus = new Status
+					{
+						Title = "پرداخت نشده"
+					};
+
+					await _context.Statuses.AddAsync(failStatus);
+					await _context.SaveChangesAsync();
+				}
+
+				var order = new Order
+				{
+					Description = user.UserName,
+					TransactionNumber = verificationResponse.RefId,
+					StatusId = failStatus.Id,
+					TransactionDate = DateTime.UtcNow,
+					IssueCode = 0,
+					FactorId = factor.Id,
+					TransactionStatus = false
+				};
+
+				await _context.Orders.AddAsync(order);
+				await _context.SaveChangesAsync();
+
 				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید پرداخت" });
 			}
 
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-
-			if (user == null)
-			{
-				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
-			}
 			//string dateTimes = Helper.GetPersianDateText(DateTime.Now);
 
-			var statuses = await _context.Statuses.FirstOrDefaultAsync();
+			var statuses = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت شده	");
 			if (statuses == null)
 			{
 				statuses = new Status
 				{
-					Title = "در صف بررسی"
+					Title = "پرداخت شده	"
 				};
 
 				await _context.Statuses.AddAsync(statuses);
