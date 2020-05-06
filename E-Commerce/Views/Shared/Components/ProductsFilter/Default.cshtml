@@ -345,9 +345,36 @@
 
         var maxPrice = $("#slider-range").slider("values", 1);
 
-        var categories = $("#categories").val();
-        var brands = $("#brands").val();
-        var cars = $("#cars").val();
+         var categories = "";
+         var brands = "";
+         var cars = "";
+
+         $(".checkCategories").each(function () {
+             if (this.checked) {
+                 // the checkbox is now checked
+                 categories += $(this).prop('id').replace("checkCategory", "");
+             } else {
+                 // the checkbox is now no longer checked
+             }
+         });
+
+         $(".checkBrands").each(function () {
+             if (this.checked) {
+                 // the checkbox is now checked
+                 brands += $(this).prop('id').replace("checkCategory", "");
+             } else {
+                 // the checkbox is now no longer checked
+             }
+         });
+
+         $(".checkCars").each(function () {
+             if (this.checked) {
+                 // the checkbox is now checked
+                 cars += $(this).prop('id').replace("checkCategory", "");
+             } else {
+                 // the checkbox is now no longer checked
+             }
+         });
 
         getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
      });
@@ -363,9 +390,36 @@
 
             var maxPrice = $("#slider-range").slider("values", 1);
 
-            var categories = $("#categories").val();
-            var brands = $("#brands").val();
-            var cars = $("#cars").val();
+             var categories = "";
+             var brands = "";
+             var cars = "";
+
+             $(".checkCategories").each(function () {
+                 if (this.checked) {
+                     // the checkbox is now checked
+                     categories += $(this).prop('id').replace("checkCategory", "");
+                 } else {
+                     // the checkbox is now no longer checked
+                 }
+             });
+
+             $(".checkBrands").each(function () {
+                 if (this.checked) {
+                     // the checkbox is now checked
+                     brands += $(this).prop('id').replace("checkCategory", "");
+                 } else {
+                     // the checkbox is now no longer checked
+                 }
+             });
+
+             $(".checkCars").each(function () {
+                 if (this.checked) {
+                     // the checkbox is now checked
+                     cars += $(this).prop('id').replace("checkCategory", "");
+                 } else {
+                     // the checkbox is now no longer checked
+                 }
+             });
 
             getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
          });
@@ -425,9 +479,36 @@
 
         var maxPrice = $("#slider-range").slider("values", 1);
 
-        var categories = $("#categories").val();
-        var brands = $("#brands").val();
-        var cars = $("#cars").val();
+        var categories = "";
+        var brands = "";
+        var cars = "";
+
+        $(".checkCategories").each(function () {
+            if (this.checked) {
+                // the checkbox is now checked
+                categories += $(this).prop('id').replace("checkCategory", "");
+            } else {
+                // the checkbox is now no longer checked
+            }
+        });
+
+        $(".checkBrands").each(function () {
+            if (this.checked) {
+                // the checkbox is now checked
+                brands += $(this).prop('id').replace("checkCategory", "");
+            } else {
+                // the checkbox is now no longer checked
+            }
+        });
+
+        $(".checkCars").each(function () {
+            if (this.checked) {
+                // the checkbox is now checked
+                cars += $(this).prop('id').replace("checkCategory", "");
+            } else {
+                // the checkbox is now no longer checked
+            }
+        });
 
         getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
     }
@@ -441,7 +522,8 @@
                 data: { "makerId": makerId, "carId": carId, "categoryGroupId": categoryGroupId, "categoryId": categoryId, "brandId": brandId, "categories": categories, "brands": brands, "cars": cars, "minPrice": minPrice, "maxPrice": maxPrice, "sorting": sortingId, "skip": skip, "limit" : limit, "isAjax": true },
                 url: "/Product/Search",
                 dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=utf-8'
+                contentType: "application/json; charset=utf-8",
+
             })
             .done(function(data) {
 

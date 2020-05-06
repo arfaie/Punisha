@@ -94,9 +94,7 @@ namespace ECommerce
 
 			services.ConfigureApplicationCookie(options => options.LoginPath = "/Account/Login");
 
-			services.AddMvc().AddNewtonsoftJson(options =>
-				options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-			);
+			services.AddMvc().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
 			// Add application services.
 			services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -113,8 +111,8 @@ namespace ECommerce
 			{
 				app.UseDeveloperExceptionPage();
 
-                app.UseDatabaseErrorPage();
-            }
+				app.UseDatabaseErrorPage();
+			}
 			else
 			{
 				app.UseExceptionHandler("/Home/Error");

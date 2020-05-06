@@ -279,14 +279,16 @@ namespace ECommerce.Controllers
 			}
 
 			//var enumerable = products.ToList();
+			var minimumPrice = 0;
+			var maximumPrice = 0;
 
 			if (products.Count > 0)
 			{
 				var user = await _userManager.GetUserAsync(HttpContext.User);
 				await Helper.AddOfferToProductsAsync(_context, user, products);
 
-				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
-				ViewBag.MaxPrice = products.Max(x => x.Price);
+				minimumPrice = (int)products.Min(x => x.PriceWithDiscount);
+				maximumPrice = products.Max(x => x.Price);
 
 				products = applyFilterAndSort(products, minPrice, maxPrice, categories, brands, cars, sorting);
 			}
@@ -300,9 +302,12 @@ namespace ECommerce.Controllers
 
 			if (isAjax)
 			{
-				var result = new { products, count = ViewBag.Count, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice };
+				var result = new { products, count = ViewBag.Count, minPrice = minimumPrice, maxPrice = maximumPrice };
 				return Json(result);
 			}
+
+			ViewBag.MinPrice = minimumPrice;
+			ViewBag.MaxPrice = maximumPrice;
 
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
@@ -460,7 +465,7 @@ namespace ECommerce.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddToCart(string productId)
 		{
-            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
 			if (product == null)
 			{
 				return Json(new { status = "fail", message = "این محصول موجود نیست" });
