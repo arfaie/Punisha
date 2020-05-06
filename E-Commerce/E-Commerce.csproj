@@ -742,7 +742,6 @@
     <None Include="Areas\Admin\Views\User\UserAddress.cshtml" />
     <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
     <None Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <None Include="ECommerce.csproj.user" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <None Include="Views\Account\AccessDenied.cshtml" />
