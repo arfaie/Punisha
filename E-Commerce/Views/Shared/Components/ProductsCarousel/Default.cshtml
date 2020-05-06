@@ -9,7 +9,7 @@
                 <div class="owl-item active" style="width: 309.083px; margin-left: 10px;">
                     <div class="item">
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
-                            <img src="@Helper.NormalImagePath@product.ImageName" class="img-fluid" alt="">
+                            <img src="@Helper.ThumbnailImagePath@product.ImageName" class="img-fluid" alt="">
                         </a>
                         <h2 class="post-title">
                             <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id">
