@@ -1,4 +1,4 @@
-﻿@model ECommerce.Models.MultiModelsProductDetailes
+﻿@*@model ECommerce.Models.MultiModelsProductDetailes*@
 
 @{
     ViewBag.Title = "جزئیات محصول";
@@ -176,11 +176,11 @@
                                                             string Group = "";
                                                             try
                                                             {
-                                                                var selectGroup = Model.ProductFieldViewModels.FirstOrDefault(x => x.IdFieldGroup == item);
-                                                                if (selectGroup != null)
-                                                                {
-                                                                    Group = selectGroup.fieldGroup;
-                                                                }
+                                                                //var selectGroup = Model.ProductFieldViewModels.FirstOrDefault(x => x.IdFieldGroup == item);
+                                                                //if (selectGroup != null)
+                                                                //{
+                                                                //    Group = selectGroup.fieldGroup;
+                                                                //}
                                                             }
                                                             catch (Exception e)
                                                             {
@@ -190,15 +190,15 @@
 
                                                             <h3 class="params-title">@Group</h3>
 
-                                                            var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
+                                                            //var select = Model.ProductFieldViewModels.Where(x => x.IdFieldGroup == item);
                                                             ProductField first = null;
                                                             foreach (var model in Model.ProductFields)
                                                             {
                                                                 first = model;
-                                                                select = select.Where(x => x.IdProduct == first.ProductId);
+                                                                //select = select.Where(x => x.IdProduct == first.ProductId);
                                                                 break;
                                                             }
-                                                            foreach (var selectItem in select)
+                                                            @*foreach (var selectItem in select)
                                                             {
                                                                 <ul class="params-list">
 
@@ -291,7 +291,7 @@
                                                                     }
                                                                 </ul>
 
-                                                            }
+                                                            }*@
 
                                                         }
                                                     </section>
@@ -332,7 +332,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '@Url.Action("Borrow","HomePage")',
+                    @*url: '@Url.Action("Borrow","HomePage")',*@
                     data: { 'productid': post_data },
 
                     success: function(msg) {

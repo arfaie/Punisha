@@ -1,4 +1,4 @@
-﻿@model ECommerce.Models.ViewModels.MultiModelSearchProduct
+﻿@*@model ECommerce.Models.ViewModels.MultiModelSearchProduct*@
 
 @{
     ViewBag.Title = "جستجو";
@@ -286,7 +286,7 @@
                                 {
 
                                     <li>
-                                        <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@item.Id" class="filter-label">
+                                        @*<a asp-controller="HomePage" asp-action="SearchProduct" asp-route-categorysearch="@item.Id" class="filter-label">
                                             <div class="form-auth-row">
                                                 <label class="ui-checkbox">
                                                     <input type="checkbox" value="@item.Id" name="categorysearch" id="@i">
@@ -294,7 +294,7 @@
                                                 </label>
                                                 <label for="remember" class="remember-me">@item.Title</label>
                                             </div>
-                                        </a>
+                                        </a>*@
                                     </li>
                                     i++;
                                 }
@@ -322,7 +322,7 @@
                     @foreach (var item in Model.Cars)
                     {
                         <li>
-                            <a asp-controller="HomePage" asp-action="SearchProduct" asp-route-carsearch="@item.Id" class="filter-label">
+                            @*<a asp-controller="HomePage" asp-action="SearchProduct" asp-route-carsearch="@item.Id" class="filter-label">
                                 <div class="form-auth-row">
                                     <label for="#" class="ui-checkbox">
                                         <input type="checkbox" value="@item.Id" name="carsearch" id="carsearch">
@@ -330,7 +330,7 @@
                                     </label>
                                     <label for="remember" class="remember-me">@item.Name</label>
                                 </div>
-                            </a>
+                            </a>*@
                         </li>
                     }
 
