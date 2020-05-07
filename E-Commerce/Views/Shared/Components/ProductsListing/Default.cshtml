@@ -6,17 +6,17 @@
         <span class="mdi mdi-sort-variant"></span>
         <ul class="listing-sort">
             مرتب‌سازی بر اساس :
-            @*<li><a href="#">پربازدید ترین</a></li>
-                <li><a href="#">محبوب ترین</a></li>*@
-            <li class="listing-active"><a href="#">جدید ترین</a></li>
-            <li><a href="#">پرفروش ترین</a></li>
-            <li><a href="#">ارزان ترین</a></li>
-            <li><a href="#">گران ترین</a></li>
+            @*<li><a >پربازدید ترین</a></li>
+                <li><a >محبوب ترین</a></li>*@
+            <li id="sorting0" class="listing-active"><a class="sorting-value">جدید ترین</a></li>
+            <li id="sorting1"><a class="sorting-value">پرفروش ترین</a></li>
+            <li id="sorting2"><a class="sorting-value">ارزان ترین</a></li>
+            <li id="sorting3"><a class="sorting-value">گران ترین</a></li>
         </ul>
     </div>
 
     <ul class="listing-item">
-        <li style="display:block">
+        <li style="display:block" class="product-grid">
 
             @foreach (var product in Model.OrderByDescending(x => x.AddingDateTime))
             {
@@ -47,137 +47,111 @@
                             </div>*@
 
                         <div class="product-box-row">
-                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
-                            <span class="price-currency">تومان </span>
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </li>
-        <li>
-            @foreach (var product in Model.OrderByDescending(x => x.FactorItems?.Count))
-            {
-                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
-                    <div class="promotion-box">
-                        <div class="product-seller-details">
-                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
-                        </div>
-
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
-                            <img src="@Helper.NormalImagePath@product.ImageName">
-                        </a>
-
-                        <div class="product-box-content">
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
-                        </div>
-
-                        @*<div class="product-box-rate">
-                                <span>۲,۶۵۰ نفر</span>
-
-                                <div class="stars">
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                </div>
-                            </div>*@
-
-                        <div class="product-box-row">
-                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
-                            <span class="price-currency">تومان </span>
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </li>
-        <li>
-            @foreach (var product in Model.OrderBy(x => x.Price))
-            {
-                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
-                    <div class="promotion-box">
-                        <div class="product-seller-details">
-                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
-                        </div>
-
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
-                            <img src="@Helper.NormalImagePath@product.ImageName">
-                        </a>
-
-                        <div class="product-box-content">
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
-                        </div>
-
-                        @*<div class="product-box-rate">
-                                <span>۲,۶۵۰ نفر</span>
-
-                                <div class="stars">
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                </div>
-                            </div>*@
-
-                        <div class="product-box-row">
-                            <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
-                            <span class="price-currency">تومان </span>
-                        </div>
-                    </div>
-                </div>
-            }
-
-        </li>
-        <li>
-            @foreach (var product in Model.OrderByDescending(x => x.Price))
-            {
-                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
-                    <div class="promotion-box">
-                        <div class="product-seller-details">
-                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
-                        </div>
-
-                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
-                            <img src="@Helper.NormalImagePath@product.ImageName">
-                        </a>
-
-                        <div class="product-box-content">
-                            <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
-                        </div>
-
-                        @*<div class="product-box-rate">
-                                <span>۲,۶۵۰ نفر</span>
-
-                                <div class="stars">
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                    <span><img src="~/images/search/star-1.svg"></span>
-                                </div>
-                            </div>*@
-                        @if (product.Price > product.PriceWithDiscount)
-                        {
-                            <div class="product-box-row">
-                                <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
+                            @if (product.Price > product.PriceWithDiscount)
+                            {
+                                <del><span class="price-value-wrapper-del">@product.Price.ToString("N0")</span></del>
                                 <span class="price-value-wrapper">@product.PriceWithDiscount.ToString("N0")</span>
                                 <span class="price-currency">تومان </span>
+                            }
+                            else
+                            {
+                                <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                                <span class="price-currency">تومان </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </li>
+        @*<li>
+                @foreach (var product in Model.OrderByDescending(x => x.FactorItems?.Count))
+                {
+                    <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                        <div class="promotion-box">
+                            <div class="product-seller-details">
+                                <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
                             </div>
-                        }
-                        else
-                        {
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.NormalImagePath@product.ImageName">
+                        </a>
+
+                            <div class="product-box-content">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                            </div>
+
                             <div class="product-box-row">
                                 <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
                                 <span class="price-currency">تومان </span>
                             </div>
-                        }
+                        </div>
                     </div>
-                </div>
-            }
-        </li>
+                }
+
+            </li>
+            <li>
+                @foreach (var product in Model.OrderBy(x => x.Price))
+                {
+                    <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                        <div class="promotion-box">
+                            <div class="product-seller-details">
+                                <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                            </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.NormalImagePath@product.ImageName">
+                        </a>
+
+                            <div class="product-box-content">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                            </div>
+
+                            <div class="product-box-row">
+                                <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                                <span class="price-currency">تومان </span>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </li>
+            <li>
+                @foreach (var product in Model.OrderByDescending(x => x.Price))
+                {
+                    <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
+                        <div class="promotion-box">
+                            <div class="product-seller-details">
+                                <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
+                            </div>
+
+                        <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
+                            <img src="@Helper.NormalImagePath@product.ImageName">
+                        </a>
+
+                            <div class="product-box-content">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
+                            </div>
+
+                            @if (product.Price > product.PriceWithDiscount)
+                            {
+                                <div class="product-box-row">
+                                    <del><span>@product.Price.ToString("N0")<span> تومان</span></span></del>
+                                    <span class="price-value-wrapper">@product.PriceWithDiscount.ToString("N0")</span>
+                                    <span class="price-currency">تومان </span>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="product-box-row">
+                                    <span class="price-value-wrapper">@product.Price.ToString("N0")</span>
+                                    <span class="price-currency">تومان </span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </li>*@
         @*<li>
                 <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
                     <div class="promotion-box">
@@ -185,12 +159,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-2.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -218,12 +192,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-10.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -251,12 +225,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-9.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -284,12 +258,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-6.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -317,12 +291,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -350,12 +324,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-2.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -383,12 +357,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-7.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -416,12 +390,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-6.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -449,12 +423,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-5.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -482,12 +456,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -515,12 +489,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-3.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -549,12 +523,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -582,12 +556,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-2.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -615,12 +589,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-3.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -648,12 +622,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-4.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -681,12 +655,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-5.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -714,12 +688,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-6.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -747,12 +721,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-8.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -780,12 +754,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-9.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -813,12 +787,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-7.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -846,12 +820,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-4.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -879,12 +853,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -913,12 +887,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-2.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -946,12 +920,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-10.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -979,12 +953,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-9.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1012,12 +986,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-6.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1045,12 +1019,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1078,12 +1052,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-2.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1111,12 +1085,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-7.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1144,12 +1118,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-6.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1177,12 +1151,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-5.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1210,12 +1184,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-1.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1243,12 +1217,12 @@
                             <span class="product-main-seller">فروشنده : ای جی</span>
                         </div>
 
-                        <a href="#" class="promotion-box-image">
+                        <a  class="promotion-box-image">
                             <img src="~/images/search/product-3.jpg">
                         </a>
 
                         <div class="product-box-content">
-                            <a href="#" class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
+                            <a  class="product-box-title">شارژر همراه شیاومی مدل PLM09ZM ظرفیت 10000 میلی آمپر ساعت</a>
                         </div>
 
                         <div class="product-box-rate">
@@ -1271,15 +1245,48 @@
                 </div>
             </li>*@
     </ul>
-    @*<div class="pager">
-            <ul class="page-item">
-                <li class="pagination-item"><a href="#" class="pager-item-active">1</a></li>
-                <li class="pagination-item"><a href="#">2</a></li>
-                <li class="pagination-item"><a href="#">3</a></li>
-                <li class="pagination-item"><a href="#">4</a></li>
-                <li class="pagination-item"><a href="#">5</a></li>
-                <div class="pager-items-partition"></div>
-                <li class="pagination-item"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
-            </ul>
-        </div>*@
+    <div class="pager">
+        <ul class="page-item">
+            @*<li class="pagination-item"><a  class="pager-item-active">1</a></li>
+                <li class="pagination-item"><a >2</a></li>
+                <li class="pagination-item"><a >3</a></li>
+                <li class="pagination-item"><a >4</a></li>
+                <li class="pagination-item"><a >5</a></li>
+                <li class="pagination-item"><a ><i class="fa fa-angle-double-left"></i></a></li>*@
+        </ul>
+    </div>
 </div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var count = @ViewBag.Count;
+        var skip = @ViewBag.Skip;
+        var limit = @ViewBag.Limit;
+
+        if (skip === 0) {
+            $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light disabled"  aria-label="Previous" rel="prev"><span aria-hidden="true">&lsaquo;</span><span class="sr-only">قبلی</span></a></li>');
+        } else {
+            $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light"  aria-label="Previous" rel="prev" data-number="' + (skip - 1) + '"><span aria-hidden="true">&lsaquo;</span><span class="sr-only">قبلی</span></a></li>');
+        }
+
+        var min = Math.min(skip - 2, Math.ceil(count / limit) - 5);
+
+        if (min < 0) {
+            min = 0;
+        }
+
+        for (var i = min; i < Math.ceil(count / limit) && i < min + 5; i += 1) {
+            $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light' + (skip === i ? ' active' : '') + '" data-number="' + i + '">' + (i + 1) + '</a></li>');
+        }
+
+        if (skip >= Math.ceil(count / limit) - 1) {
+            $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light disabled"  aria-label="Next" rel="next"><span aria-hidden="true">&rsaquo;</span><span class="sr-only">بعدی</span></a></li>');
+        } else {
+            $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light"  aria-label="Next" rel="next" data-number="' + (skip + 1) + '"><span aria-hidden="true">&rsaquo;</span><span class="sr-only">بعدی</span></a></li>');
+        }
+
+    });
+
+</script>

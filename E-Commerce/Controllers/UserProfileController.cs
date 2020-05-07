@@ -208,7 +208,7 @@ namespace ECommerce.Controllers
 
                 if (string.IsNullOrWhiteSpace(id))
                 {
-                    _context.Addresses.Add(model);
+                    await _context.Addresses.AddAsync(model);
                     await _context.SaveChangesAsync();
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
@@ -489,7 +489,7 @@ namespace ECommerce.Controllers
                 UserId = user.Id
             };
 
-            _context.Addresses.Add(address);
+            await _context.Addresses.AddAsync(address);
 
             try
             {

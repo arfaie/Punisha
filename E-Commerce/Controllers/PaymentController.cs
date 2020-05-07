@@ -70,10 +70,10 @@ namespace ECommerce.Controllers
 						factor.FactorCode = $"CBT-{random.Next(1234567, 10000000)}";
 					} while (allFactorCodes.Contains(factor.FactorCode));
 
-					await using var transaction = _context.Database.BeginTransaction();
+					await using var transaction = await _context.Database.BeginTransactionAsync();
 					try
 					{
-						_context.Factors.Add(factor);
+						await _context.Factors.AddAsync(factor);
 						await _context.SaveChangesAsync();
 
 						foreach (var product in products)
@@ -88,7 +88,7 @@ namespace ECommerce.Controllers
 								Discount = product.Price - product.PriceWithDiscount
 							};
 
-							_context.FactorItems.Add(factorItem);
+							await _context.FactorItems.AddAsync(factorItem);
 						}
 
 						factor.TotalPrice = (int)factor.FactorItems.Sum(x => x.UnitCount * (x.UnitPrice - x.Discount));
@@ -278,19 +278,53 @@ namespace ECommerce.Controllers
 			var collection = HttpUtility.ParseQueryString(HttpContext.Request.QueryString.Value);
 			var status = collection["Status"];
 
-			if (status != "OK")
-			{
-				return RedirectToAction(nameof(FailedPayment), new { factorCode = "", error = "خطا در پرداخت" });
-			}
-
-			var authority = collection["Authority"];
-
 			var factor = await _context.Factors.FirstOrDefaultAsync(x => x.Id == id);
 
 			if (factor == null)
 			{
 				return RedirectToAction(nameof(FailedPayment), new { error = "خطا در تایید فاکتور" });
 			}
+
+			var user = await _userManager.GetUserAsync(HttpContext.User);
+
+			if (user == null)
+			{
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
+			}
+
+			if (status != "OK")
+			{
+				var failStatus = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت نشده");
+
+				if (failStatus == null)
+				{
+					failStatus = new Status
+					{
+						Title = "پرداخت نشده"
+					};
+
+					await _context.Statuses.AddAsync(failStatus);
+					await _context.SaveChangesAsync();
+				}
+
+				var order = new Order
+				{
+					Description = user.UserName,
+					TransactionNumber = collection["Authority"].TrimStart('0'),
+					StatusId = failStatus.Id,
+					TransactionDate = DateTime.UtcNow,
+					IssueCode = 0,
+					FactorId = factor.Id,
+					TransactionStatus = false
+				};
+
+				await _context.Orders.AddAsync(order);
+				await _context.SaveChangesAsync();
+
+				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در پرداخت" });
+			}
+
+			var authority = collection["Authority"];
 
 			TempData["FactorCode"] = factor.FactorCode;
 
@@ -303,30 +337,51 @@ namespace ECommerce.Controllers
 
 			if (!verificationResponse.IsSuccess)
 			{
+				var failStatus = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت نشده");
+
+				if (failStatus == null)
+				{
+					failStatus = new Status
+					{
+						Title = "پرداخت نشده"
+					};
+
+					await _context.Statuses.AddAsync(failStatus);
+					await _context.SaveChangesAsync();
+				}
+
+				var order = new Order
+				{
+					Description = user.UserName,
+					TransactionNumber = verificationResponse.RefId,
+					StatusId = failStatus.Id,
+					TransactionDate = DateTime.UtcNow,
+					IssueCode = 0,
+					FactorId = factor.Id,
+					TransactionStatus = false
+				};
+
+				await _context.Orders.AddAsync(order);
+				await _context.SaveChangesAsync();
+
 				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید پرداخت" });
 			}
 
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-
-			if (user == null)
-			{
-				return RedirectToAction(nameof(FailedPayment), new { factorCode = factor.FactorCode, error = "خطا در تایید کاربر" });
-			}
 			//string dateTimes = Helper.GetPersianDateText(DateTime.Now);
 
-			var statuses = await _context.Statuses.FirstOrDefaultAsync();
+			var statuses = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "پرداخت شده	");
 			if (statuses == null)
 			{
 				statuses = new Status
 				{
-					Title = "در صف بررسی"
+					Title = "پرداخت شده	"
 				};
 
-				_context.Statuses.Add(statuses);
+				await _context.Statuses.AddAsync(statuses);
 				await _context.SaveChangesAsync();
 			}
 
-			await using (var transaction = _context.Database.BeginTransaction())
+			await using (var transaction = await _context.Database.BeginTransactionAsync())
 			{
 				try
 				{
@@ -341,7 +396,7 @@ namespace ECommerce.Controllers
 						TransactionStatus = true
 					};
 
-					_context.Orders.Add(order);
+					await _context.Orders.AddAsync(order);
 
 					factor.IsPaid = true;
 					_context.Factors.Update(factor);

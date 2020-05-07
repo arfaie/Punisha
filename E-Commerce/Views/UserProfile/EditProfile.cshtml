@@ -61,8 +61,6 @@
                                     </select>
                                 </div>
 
-
-
                                 @*<div class="form-group">
                                         <label asp-for="@Model.CarId" class="col-lg-4 col-sm-4 control-label"></label>
                                         <div class="col-lg-6">
@@ -78,10 +76,10 @@
                                 @*<div class="form-legal-item has-diviter-item">
                                         <div class="form-auth-row">
                                             <label for="#" class="ui-checkbox has-diviter">
-                                                <input type="checkbox" value="1" name="login" checked="" id="remember">
+                                                <input type="checkbox" value="1" name="login" checked="" id="check@(brand.Id)">
                                                 <span class="ui-checkbox-check"></span>
                                             </label>
-                                            <label for="remember" class="remember-me has-diviter-remember-me">تبعه خارجی فاقد کد ملی هستم</label>
+                                            <label for="check@(brand.Id)" class="remember-me has-diviter-remember-me">تبعه خارجی فاقد کد ملی هستم</label>
                                         </div>
                                     </div>*@
 
@@ -169,7 +167,6 @@
                 $("#carEdit").html(items);
             });
 
-         
         });
 
     </script>

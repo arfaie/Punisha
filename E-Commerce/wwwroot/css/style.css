@@ -1126,14 +1126,14 @@ nav.main-menu {
 		display: none !important;
 	}
 
-    .countdown .countdown-label {
-        padding-top: .25rem;
-        color: #8c8c8c;
-        font-family: 'iranyekan';
-        font-size: .75rem;
-        font-weight: 600;
-        display: none;
-    }
+	.countdown .countdown-label {
+		padding-top: .25rem;
+		color: #8c8c8c;
+		font-family: 'iranyekan';
+		font-size: .75rem;
+		font-weight: 600;
+		display: none;
+	}
 
 	.countdown.h4 .countdown-label,
 	.countdown.h5 .countdown-label,
@@ -1779,13 +1779,13 @@ nav.main-menu {
 
 .widget-product .card-header .card-title span,
 .brand-slider .card-header .card-title span {
-    display: inline-block;
-    border-bottom: 1px solid #ef5661;
-    font-weight: 500;
-    font: 14px iranyekan;
-    padding-bottom: 10px;
-    position: relative;
-    top: 1px;
+	display: inline-block;
+	border-bottom: 1px solid #ef5661;
+	font-weight: 500;
+	font: 14px iranyekan;
+	padding-bottom: 10px;
+	position: relative;
+	top: 1px;
 }
 
 .widget-product .card-header .view-all,
@@ -4854,6 +4854,12 @@ ul.listing-sort {
 					font-weight: 700;
 				}
 
+				.js-products .listing-listing ul.listing-item li .promotion-box .product-box-row .price-value-wrapper-del {
+					font-weight: 400;
+					font-size: .75rem;
+					color: #979898;
+				}
+
 .pager {
 	width: 100%;
 	height: auto;
@@ -4867,6 +4873,7 @@ ul.listing-sort {
 		line-height: 35px;
 		display: inline-block;
 		padding: 0 15px;
+		margin-top: 1rem;
 	}
 
 		.pager ul.page-item li.pagination-item {
@@ -4878,12 +4885,12 @@ ul.listing-sort {
 				background: #fff;
 				color: #777;
 				margin-right: 3px;
-				width: 30px;
-				height: 30px;
+				/* width: 30px; */
+				/* height: 30px; */
 				display: inline-block;
-				margin-top: 15px;
-				font: 14px iranyekan;
-				line-height: 30px;
+				margin: 5px;
+				/* font: 14px iranyekan; */
+				/* line-height: 30px;*/
 			}
 
 				.pager ul.page-item li.pagination-item a.pager-item-active {
@@ -4904,7 +4911,6 @@ ul.listing-sort {
 			margin-right: 30px;
 		}
 /*search-category---------------------*/
-
 /*profile------------------------------*/
 .profile-box {
 	width: 100%;
@@ -4941,7 +4947,7 @@ ul.listing-sort {
 
 		.profile-box .profile-box-content span.profile-box-phone {
 			font-size: 13px;
-			font-weight: 300px;
+			font-weight: 300;
 			color: #525252;
 			margin-right: 10px;
 		}
@@ -5341,7 +5347,7 @@ span.profile-order-cancel-button {
 
 	.product-box-profile .product-box-count {
 		position: absolute;
-		top: 10;
+		top: 10px;
 		left: 10px;
 		color: #fff;
 		font-weight: 700;
@@ -6392,7 +6398,7 @@ header.shopping-page {
 	width: 100%;
 	height: auto;
 	background: #fff;
-	box-shadow: -1 2px 12px 0 hsla(0,0%,44.3%,.14);
+	box-shadow: -1px 2px 12px 0 hsla(0,0%,44.3%,.14);
 	position: relative;
 	text-align: center;
 }
@@ -8932,14 +8938,14 @@ ul.faq-list {
 		background: none;
 	}
 
-        .widget-product .product-carousel .item, .brand-slider .owl-carousel .item {
-            background: #fff;
-            box-shadow: 0 2px 4px 0 rgba(0,0,0,.09);
-            border-radius: 5px;
-            border: 1px solid #f6f6f6;
-            padding-bottom: 15px;
-            height:240px;
-        }
+		.widget-product .product-carousel .item, .brand-slider .owl-carousel .item {
+			background: #fff;
+			box-shadow: 0 2px 4px 0 rgba(0,0,0,.09);
+			border-radius: 5px;
+			border: 1px solid #f6f6f6;
+			padding-bottom: 15px;
+			height: 240px;
+		}
 
 	.widget-product span.title-one, .widget-product .title-super-markets {
 		border-bottom: none !important;
@@ -9961,3 +9967,7 @@ span.stars, span.stars span {
 	span.stars span {
 		background-position: 0 0;
 	}
+
+#slider-range {
+	margin: 15px;
+}

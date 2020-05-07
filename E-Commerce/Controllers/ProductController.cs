@@ -49,7 +49,7 @@ namespace ECommerce.Controllers
 							UserId = user.Id,
 							RegistrationDateAndTime = DateTime.UtcNow
 						};
-						_context.Histories.Add(history);
+						await _context.Histories.AddAsync(history);
 					}
 					await _context.SaveChangesAsync();
 				}
@@ -85,25 +85,38 @@ namespace ECommerce.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> CategoryGroup(string id)
+		public async Task<IActionResult> CategoryGroup(string id, int skip = 0, int limit = 12)
 		{
 			ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
+
+			var products = await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
+				ViewBag.MaxPrice = products.Max(x => x.Price);
+
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
 
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
-
-			await Helper.AddOfferToProductsAsync(_context, user, products);
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
 
 			return View(products);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Category(string id)
+		public async Task<IActionResult> Category(string id, int skip = 0, int limit = 12)
 		{
 			var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -113,39 +126,95 @@ namespace ECommerce.Controllers
 				ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == category.CategoryGroupId);
 			}
 
+			var products = await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
+				ViewBag.MaxPrice = products.Max(x => x.Price);
+
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
+
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.CategoryId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
-
-			await Helper.AddOfferToProductsAsync(_context, user, products);
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
 
 			return View(products);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Brand(string id)
+		public async Task<IActionResult> Brand(string id, int skip = 0, int limit = 12)
 		{
 			ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
 
+			var products = await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.OfferItems).ToListAsync();
+
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
+				ViewBag.MaxPrice = products.Max(x => x.Price);
+
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
+
 			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
 			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.OfferItems).ToListAsync();
-
-			await Helper.AddOfferToProductsAsync(_context, user, products);
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
 
 			return View(products);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Car(string id)
+		public async Task<IActionResult> Maker(string id, int skip = 0, int limit = 12)
+		{
+			ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == id);
+			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
+
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
+				ViewBag.MaxPrice = products.Max(x => x.Price);
+
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
+
+			return View(products);
+		}
+
+		[HttpGet]
+		[AutoValidateAntiforgeryToken]
+		public async Task<IActionResult> Car(string id, int skip = 0, int limit = 12)
 		{
 			var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -155,44 +224,35 @@ namespace ECommerce.Controllers
 				ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == car.MakerId);
 			}
 
-			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			var user = await _userManager.GetUserAsync(HttpContext.User);
 			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.CarId).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
 
-			await Helper.AddOfferToProductsAsync(_context, user, products);
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				ViewBag.MinPrice = products.Min(x => x.PriceWithDiscount);
+				ViewBag.MaxPrice = products.Max(x => x.Price);
+
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
 
 			return View(products);
 		}
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Maker(string id)
+		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryGroupId = "0", string categoryId = "0", string brandId = "0", int minPrice = 0, int maxPrice = 0, string categories = "", string brands = "", string cars = "", int sorting = 0, int skip = 0, int limit = 12, bool isAjax = false)
 		{
-			ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == id);
-
-			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
-			var user = await _userManager.GetUserAsync(HttpContext.User);
-			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
-
-			await Helper.AddOfferToProductsAsync(_context, user, products);
-
-			return View(products);
-		}
-
-		[HttpGet]
-		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryId = "0", string brandId = "0")
-		{
-			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
-			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
-
 			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).Include(x => x.CarProducts).ThenInclude(x => x.Car).ToListAsync();
 
 			if (!String.IsNullOrWhiteSpace(carId) && carId != "0")
@@ -204,7 +264,11 @@ namespace ECommerce.Controllers
 				products = products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.MakerId).Contains(makerId)).ToList();
 			}
 
-			if (!String.IsNullOrWhiteSpace(categoryId) && categoryId != "0")
+			if (!String.IsNullOrWhiteSpace(categoryGroupId) && categoryGroupId != "0")
+			{
+				products = products.Where(x => x.Category.CategoryGroupId == categoryGroupId).ToList();
+			}
+			else if (!String.IsNullOrWhiteSpace(categoryId) && categoryId != "0")
 			{
 				products = products.Where(x => x.CategoryId == categoryId).ToList();
 			}
@@ -214,11 +278,94 @@ namespace ECommerce.Controllers
 				products = products.Where(x => x.BrandId == brandId).ToList();
 			}
 
-			var user = await _userManager.GetUserAsync(HttpContext.User);
+			//var enumerable = products.ToList();
+			var minimumPrice = 0;
+			var maximumPrice = 0;
 
-			await Helper.AddOfferToProductsAsync(_context, user, products);
+			if (products.Count > 0)
+			{
+				var user = await _userManager.GetUserAsync(HttpContext.User);
+				await Helper.AddOfferToProductsAsync(_context, user, products);
+
+				minimumPrice = (int)products.Min(x => x.PriceWithDiscount);
+				maximumPrice = products.Max(x => x.Price);
+
+				products = applyFilterAndSort(products, minPrice, maxPrice, categories, brands, cars, sorting);
+			}
+
+			ViewBag.Count = products.Count;
+
+			if (products.Count > 0)
+			{
+				products = products.Skip(skip * limit).Take(limit).ToList();
+			}
+
+			if (isAjax)
+			{
+				var result = new { products, count = ViewBag.Count, minPrice = minimumPrice, maxPrice = maximumPrice };
+				return Json(result);
+			}
+
+			ViewBag.MinPrice = minimumPrice;
+			ViewBag.MaxPrice = maximumPrice;
+
+			ViewBag.CategoryGroups = await _context.CategoryGroups.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
+			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
+			ViewBag.Skip = skip;
+			ViewBag.Limit = limit;
 
 			return View(products);
+		}
+
+		private static List<Product> applyFilterAndSort(List<Product> products, int minPrice, int maxPrice, string categories, string brands, string cars, int sorting)
+		{
+			if (!String.IsNullOrWhiteSpace(categories))
+			{
+				products = products.Where(x => categories.Contains(x.CategoryId)).ToList();
+			}
+
+			if (!String.IsNullOrWhiteSpace(brands))
+			{
+				products = products.Where(x => brands.Contains(x.BrandId)).ToList();
+			}
+
+			if (!String.IsNullOrWhiteSpace(cars))
+			{
+				products = products.Where(x => x.CarProducts.Any(y => cars.Contains(y.CarId))).ToList();
+			}
+
+			if (minPrice != 0)
+			{
+				products = products.Where(x => x.PriceWithDiscount >= minPrice).ToList();
+			}
+
+			if (maxPrice != 0)
+			{
+				products = products.Where(x => x.Price <= maxPrice).ToList();
+			}
+
+			switch (sorting)
+			{
+				case 1: // پرفروش ترین
+					products = products.OrderByDescending(x => x.FactorItems?.Count).ToList();
+					break;
+
+				case 2: // ارزان ترین
+					products = products.OrderBy(x => x.Price).ToList();
+					break;
+
+				case 3: // گران ترین
+					products = products.OrderByDescending(x => x.Price).ToList();
+					break;
+
+				default: // جدیدترین
+					products = products.OrderByDescending(x => x.AddingDateTime).ToList();
+					break;
+			}
+
+			return products;
 		}
 
 		[HttpGet]
@@ -308,7 +455,7 @@ namespace ECommerce.Controllers
 				UserId = user.Id
 			};
 
-			_context.CommentAndStars.Add(feedback);
+			await _context.CommentAndStars.AddAsync(feedback);
 
 			await _context.SaveChangesAsync();
 

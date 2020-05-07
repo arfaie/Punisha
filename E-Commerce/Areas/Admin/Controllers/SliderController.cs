@@ -82,7 +82,7 @@ namespace ECommerce.Areas.Admin.Controllers
                     {
                         model.Image = "defaultpic.png";
                     }
-                    _context.Sliders.Add(model);
+                    await _context.Sliders.AddAsync(model);
                     await _context.SaveChangesAsync();
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
                     return Json(new { Status = "success" });

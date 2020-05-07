@@ -78,7 +78,11 @@ $(document).ready(function () {
         $(".checkout-tab-pill").removeClass("listing-active-cart");
         $(this).addClass("listing-active-cart");
         $(".cart-tab-main").slideUp(0);
-        $(".cart-tab-main").eq(index).slideDown(0);
+
+        // call ajax and sort items
+        // populate page
+
+        $(".cart-tab-main").eq(0).slideDown(0);
     });
 
     $("ul.listing-sort li").click(function () {
@@ -86,7 +90,11 @@ $(document).ready(function () {
         $("ul.listing-sort li").removeClass("listing-active");
         $(this).addClass("listing-active");
         $("ul.listing-item li").slideUp(0);
-        $("ul.listing-item li").eq(index).slideDown(0);
+
+        // call ajax and sort items
+        // populate page
+
+        $("ul.listing-item li").eq(0).slideDown(0);
     });
 
     $(".box-header-sidebar").on('click', function (e) {
