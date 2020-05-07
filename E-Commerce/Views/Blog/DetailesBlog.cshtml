@@ -58,6 +58,10 @@
                                         <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item.tags.Id" rel="tag">@item.tags.Title</a></li>
                                     }
                                 </ul>
+
+
+                                @await Component.InvokeAsync("BlogComment",Model.Id)
+
                             </div>
                         </div>
                     </article>

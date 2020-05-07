@@ -81,13 +81,34 @@ namespace E_Commerce.Areas.Admin.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(string id)
         {
-            var blogcomment = await _context.BlogComments.Include(x => x.ApplicationUser).Include(x => x.BlogId).FirstOrDefaultAsync(c => c.Id == id);
+            var blogcomment = await _context.BlogComments.FirstOrDefaultAsync(c => c.Id == id);
             if (blogcomment == null)
             {
                 return RedirectToAction("Index");
             }
 
-            return PartialView("Delete", $"{blogcomment.News?.Title} {blogcomment.ApplicationUser?.UserName}");
+            return PartialView("Delete", $"این کامنت");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(string id, string redirectUrl)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = await _context.BlogComments.FirstOrDefaultAsync(c => c.Id == id);
+
+                _context.Remove(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Delete, ToastType.Red);
+
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
+            TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Yellow);
+
+            return RedirectToAction("Index");
         }
     }
 }
