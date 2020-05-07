@@ -50,6 +50,7 @@ namespace ECommerce.Data
         public DbSet<Email> Emails { get; set; }
         public DbSet<AboutUs> AboutUses { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<BlogComment> BlogComments { get; set; }
 
         public DbSet<ShippingState> ShippingStates { get; set; }
 
@@ -98,6 +99,7 @@ namespace ECommerce.Data
             builder.Entity<Email>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.Entity<AboutUs>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
             builder.Entity<Question>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
+            builder.Entity<BlogComment>().Property(x => x.Id).HasDefaultValueSql("NEWID()");
 
             addShippingStates(builder);
 

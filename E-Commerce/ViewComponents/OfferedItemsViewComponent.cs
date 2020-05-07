@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EShop.ViewComponents
 {
-	public class OfferedItemsViewComponent : ViewComponent
-	{
-		public async Task<IViewComponentResult> InvokeAsync(List<Product> products)
-		{
-			return View(products.Where(x => x.DiscountPercent > 0 || x.DiscountPercent > 0).ToList());
-		}
-	}
+    public class OfferedItemsViewComponent : ViewComponent
+    {
+        public async Task<IViewComponentResult> InvokeAsync(List<Product> products)
+        {
+            return View(products.Where(x => x.DiscountPercent > 0 || x.DiscountPercent > 0 && x.IsShow == true).ToList());
+        }
+    }
 }

@@ -241,6 +241,34 @@ namespace ECommerce.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("ECommerce.Models.BlogComment", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<bool>("Accepted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("BlogId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BlogId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BlogComments");
+                });
+
             modelBuilder.Entity("ECommerce.Models.Brand", b =>
                 {
                     b.Property<string>("Id")
@@ -7517,6 +7545,9 @@ namespace ECommerce.Migrations
                     b.Property<bool>("IsSellable")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsShow")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -8278,6 +8309,17 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.UserGroup", "UserGroup")
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("UserGroupId");
+                });
+
+            modelBuilder.Entity("ECommerce.Models.BlogComment", b =>
+                {
+                    b.HasOne("ECommerce.Models.News", "News")
+                        .WithMany()
+                        .HasForeignKey("BlogId");
+
+                    b.HasOne("ECommerce.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Car", b =>
