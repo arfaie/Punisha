@@ -1,4 +1,4 @@
-﻿@model ECommerce.Models.ViewModels.MultiModelSearchProduct
+﻿@*@model ECommerce.Models.ViewModels.MultiModelSearchProduct*@
 
 @{
     ViewBag.Title = "جستجو";
@@ -8,8 +8,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, Ecommerce
 
-<!--responsive-sidebar----------------------->
-<div class="col-12">
+@*<div class="col-12">
     <div class="header-filters">
         <button class="btn-filter btn-filter-advanced" onclick="document.getElementById('modal-search').style.display='block'">جستجوی پیشرفته</button>
         <button class="btn-filter btn-filter-direction" data-toggle="modal" data-target="#exampleModalCenter">پربازدیدترین</button>
@@ -57,31 +56,7 @@
                             </a>
                         </div>
 
-                        @*<div class="filter">
-                                <div class="toggle-box">
-                                    <div class="toggle-box-active">
-                                        <ul>
-                                            <li class="has-sub">
-                                                <a href="#">دسته‌بندی نتایج</a>
-                                                <ul class="catalog-list">
-                                                    <li>
-                                                        <a href="#" class="catalog-link"><i class="fa fa-angle-left"></i>کالای دیجیتال</a>
-                                                        <div class="show-more">
-                                                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی</span>
-                                                            <span class="catalog-cat-item"><i class="fa fa-angle-down"></i>لوازم جانبی گوشی موبایل</span>
-                                                            <ul class="catalog-list">
-                                                                <li><a href="#" class="catalog-link"> کیف و کاور گوشی</a></li>
-                                                                <li><a href="#" class="catalog-link">محافظ صفحه نمایش گوشی</a></li>
-                                                                <li><a href="#" class="catalog-link">هندزفری</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>*@
+                        
 
                         <div class="filter">
                             <div class="toggle-box">
@@ -243,33 +218,16 @@
             </nav>
         </div>
     </div>
-</div>
-<!-- Modal -->
+</div>*@
+
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 305px; margin:20px auto;">
         <div class="modal-content">
-            @*<div class="modal-header">
-                    <div class="remodal-header">مرتب‌سازی بر اساس</div>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>*@
-            @*<div class="remodal-list-sort">
-
-                    <ul class="listing-sort">
-                        <li class="listing-active"><a href="#">پربازدید ترین</a></li>
-                        <li><a href="#">پرفروش ترین</a></li>
-                        <li><a href="#">محبوب ترین</a></li>
-                        <li><a href="#">جدید ترین</a></li>
-                        <li><a href="#">ارزان ترین</a></li>
-                        <li><a href="#">گران ترین</a></li>
-                    </ul>
-                </div>*@
+           
         </div>
     </div>
 </div>
-<!--        responsive-sidebar----------------------->
-<div class="col-lg-3 col-md-4 col-xs-12">
+@*<div class="col-lg-3 col-md-4 col-xs-12">
     <div class="sidebar-wrapper search-sidebar">
         <div class="box-sidebar">
             <span class="box-header-sidebar">دسته‌بندی نتایج</span>
@@ -306,14 +264,7 @@
             </div>
         </div>
 
-        @*<div class="box-sidebar">
-                <span class="box-header-sidebar"> جستجو در نتایج:</span>
-                <form action="#">
-                    <input type="text" class="input-sidebar" placeholder="نام محصول یا برند مورد نظر را بنویسید…">
 
-                    <a href="#"><button class="btn-search-sidebar"><img src="~/assets/images/search.png"></button></a>
-                </form>
-            </div>*@
 
         <div class="box-sidebar">
             <span class="box-header-sidebar"><i class="fa fa-chevron-down arrow"></i>لیست ماشین ها</span>
@@ -338,53 +289,15 @@
             </div>
         </div>
 
-        @*<div class="box-sidebar">
-                <div class="filter-switch">
-                    <div class="switch-box">
-                        <div class="centered hidden-xs">
-                            <div class="card">
-                                <a href="#">
-                                    <label for="switch1">
-                                        <input type="checkbox" id="switch1" /><span class="switch"><h1 class="switch-title">فقط کالای موجود</h1></span>
-                                        <span class="toggle"></span>
-                                    </label>
-                                </a>
-                            </div>
-                            <br />
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+       
 
-        @*<div class="box-sidebar">
-                <div class="filter-switch">
-                    <div class="switch-box">
-                        <div class="centered hidden-xs">
-                            <div class="card">
-                                <a href="#">
-                                    <label for="switch2">
-                                        <input type="checkbox" id="switch2" /><span class="switch"><h1 class="switch-title">فقط کالای آماده ارسال</h1></span>
-                                        <span class="toggle"></span>
-                                    </label>
-                                </a>
-                            </div>
-                            <br />
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+        
 
     </div>
-</div>
-<div class="col-lg-9 col-md-8 col-xs-12 pull-left">
+</div>*@
+@*<div class="col-lg-9 col-md-8 col-xs-12 pull-left">
     <div class="js-products">
-        @*<div class="breadcrumb-container">
-                <ul class="js-breadcrumb">
-                    <li><a href="#">فروشگاه اینترنتی دیجی استور</a></li>
-                    <li><a href="#">کالای دیجیتال</a></li>
-                    <li><a href="#">لوازم جانبی کالای دیجیتال</a></li>
-                </ul>
-            </div>*@
+        
 
         <div class="listing-listing">
             <div class="listing-counter">۱۹۲,۷۳۲ کالا</div>
@@ -452,5 +365,5 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 <!--search-category------------------------->
