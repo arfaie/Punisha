@@ -1,0 +1,34 @@
+﻿@model Question
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, ECommerce
+
+    <form asp-controller="Question" asp-action="Accept">
+
+        @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "تایید پرسش " })
+
+        @{
+            if (Model.Accepted)
+            {
+                <div class="modal-body form-horizontal">
+                    آیا از رد این پرسش مطمئن هستید؟
+                </div>
+
+                <input type="hidden" name="status" value="0" />
+            }
+            else
+            {
+                <div class="modal-body form-horizontal">
+                    آیا از تایید این پرسش مطمئن هستید؟
+                </div>
+
+                <input type="hidden" name="status" value="1" />
+            }
+        }
+
+
+        <input type="hidden" name="redirectUrl" value="@Url.Action("index","Question")" />
+
+        @await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "تایید " })
+
+    </form>

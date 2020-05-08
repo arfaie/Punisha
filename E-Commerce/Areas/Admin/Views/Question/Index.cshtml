@@ -101,6 +101,24 @@
                                                 <i class="glyphicon glyphicon-trash"></i>
                                                 حذف
                                             </a>
+                                            
+                                            @if (item.Accepted)
+                                            {
+                                                <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="Accept"
+                                                   data-target="#modal-action" asp-route-id="@item.Id">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                    تایید
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="btn btn-danger" id="showagency" data-toggle="modal" asp-action="Accept"
+                                                   data-target="#modal-action" asp-route-id="@item.Id">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                    رد
+                                                </a>
+                                            }
+                                            
 
                                         </td>
                                     </tr>
