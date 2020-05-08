@@ -84,6 +84,13 @@
                         <span class="required-star" style="color:red;">*</span>
                         <textarea type="text" id="nameAdd" class="input-name-checkout" placeholder="پرسش خود را وارد نمایید" style="height:80px;"></textarea>
 
+                        <label for="emailAdd">ایمیل</label>
+                        <input type="text" id="emailAdd" class="input-name-checkout" placeholder="ایمیل خود را وارد نمایید" />
+
+                        <label for="phoneAdd">شماره همراه</label>
+                        <input type="text" id="phoneAdd" class="input-name-checkout" placeholder="شماره همراه خود را وارد نمایید" />
+
+
                         <div class="form-checkout-valid-row">
                             <div class="parent-btn">
                                 <button id="addAddressButton" class="dk-btn dk-btn-info">
@@ -114,7 +121,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    data: { "Questions": $("#nameAdd").val() },
+                    data: { "Questions": $("#nameAdd").val(),"Email":$("#emailAdd").val(),"Phone": $("#phoneAdd").val() },
                     url: '@Url.Action("AddQusetion", "Home")',
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=utf-8'

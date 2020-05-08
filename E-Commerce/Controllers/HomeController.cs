@@ -116,13 +116,15 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddQusetion(string Questions)
+        public async Task<IActionResult> AddQusetion(string Questions,string Email,string Phone)
         {
             if (!string.IsNullOrWhiteSpace(Questions))
             {
                 var question = new Question
                 {
                     Questions = Questions,
+                    Email = Email,
+                    PhoneNumber = Phone,
                     Answer = "",
                     Accepted = false
                 };
