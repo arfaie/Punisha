@@ -5,79 +5,75 @@
     Layout = "~/Views/Shared/_LayoutNews.cshtml";
 }
 
-
-<!-- Main Content
-========================================-->
-
-<main class="entry-main">
-
-    <!-- Blog Section
+    <!-- Main Content
     ========================================-->
-    <div class="blog section-without-title" id="blog">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-9">
-                    <form class="search-form visible-sm-block visible-xs-block">
-                        <div class="form-group">
-                            <div class="search-input-group">
-                                <input type="text" class="form-control" placeholder="جستجو..">
-                                <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                    </form>
-                    <article class="single-post">
-                        <figure class="entry-header wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
-                            <div class="entry-post-info">
-                                <h2>@Model.Title</h2>
-                                <p class="posted-on">تاریخ:<strong class="persianumber">@Model.Date.ToPersianDateString()</strong></p>
-                            </div>
-                            <div class="post-image">
-                                <img alt="" src="@ViewBag.path@Model.ImageName" class="img-responsive">
-                            </div>
-                            @*<ul class="entry-Categories list-unstyled list-inline">
-                                @foreach (var item in Model?.NewsTagses)
-                                {
-                                <li><a href="#">@item?.tags?.Title</a></li>
-                                }
+    <main class="entry-main">
 
-                            </ul>*@
-                        </figure>
-                        <div class="entry-content wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s">
-                            <p class="text-justify">
-                                @Model.Text
-                            </p>
+        <!-- Blog Section
+        ========================================-->
+        <div class="blog section-without-title" id="blog">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form class="search-form visible-sm-block visible-xs-block">
+                            <div class="form-group">
+                                <div class="search-input-group">
+                                    <input type="text" class="form-control" placeholder="جستجو..">
+                                    <button class="appsLand-btn appsLand-btn-gradient search-btn"><span><i class="fa fa-search"></i></span></button>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </form>
+                        <article class="single-post">
+                            <figure class="entry-header wow fadeInUp" data-wow-duration="1s" data-wow-delay="0s">
+                                <div class="entry-post-info">
+                                    <h2>@Model.Title</h2>
+                                    <p class="posted-on">تاریخ:<strong class="persianumber">@Model.Date.ToPersianDateString()</strong></p>
+                                </div>
+                                <div class="post-image">
+                                    <img alt="" src="@Helper.NormalImagePath@Model.ImageName" class="img-responsive">
+                                </div>
 
-                        </div>
-                        <div class="entry-footer">
-                            <div class="post-footer-data">
-                                <ul class="entry-tags list-unstyled list-inline pull-left">
-                                    <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
-                                    @foreach (var item in Model.NewsTagses)
-                                    {
-                                        <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item.tags.Id" rel="tag">@item.tags.Title</a></li>
-                                    }
+                            </figure>
+                            <div class="entry-content wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.1s">
+                                <p class="text-justify">
+                                    @Model.Text
+                                </p>
+
+                            </div>
+                            <div class="entry-footer">
+                                <div class="post-footer-data">
+                                    <ul class="entry-tags list-unstyled list-inline pull-left">
+                                        <li><strong><i class="fa fa-tags"></i> تگ ها:</strong></li>
+                                        @foreach (var item in Model.NewsTagses)
+                                        {
+                                            <li><a asp-controller="Blog" asp-action="searchBlog" asp-route-tagId="@item.tags.Id" rel="tag">@item.tags.Title</a></li>
+                                        }
+                                    </ul>
+                                    <ul class="list-unstyled list-inline pull-right comment-share">
+                                        @*<li><strong><i class="fa fa-comments"></i> تعليقات: 10</strong></li>*@
+                                        @*<li>
+                                <ul class="list-unstyled list-inline share-links">
+                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر فيسبوك"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر تويتر"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر جوجال بلس"><i class="fa fa-google-plus"></i></a></li>
+                                    <li><a href="#" data-toggle="tooltip" data-placement="top" title="مشاركه عبر الايميل"><i class="fa fa-envelope-o"></i></a></li>
                                 </ul>
+                            </li>*@
+                                    </ul>
+                                </div>
+
+                                @await Component.InvokeAsync("BlogComment", Model.Id)
+
                             </div>
-                        </div>
-                    </article>
+                        </article>
+                    </div>
+                    @await Component.InvokeAsync("NewsPanel")
                 </div>
-                @await Component.InvokeAsync("NewsPanel")
             </div>
         </div>
-    </div>
-</main>
+    </main>
 
-
-<!-- Scroll To Top
-========================================-->
-<div class="scrollToTop appsLand-btn appsLand-btn-gradient"><span><i class="fa fa-angle-up"></i></span></div>
-
-<!-- Loading
-========================================-->
-@*<div class="loading">
-        <div class="spinner">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>*@
+    <!-- Scroll To Top
+    ========================================-->
+    <div class="scrollToTop appsLand-btn appsLand-btn-gradient"><span><i class="fa fa-angle-up"></i></span></div>

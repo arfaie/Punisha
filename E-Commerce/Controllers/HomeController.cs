@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ECommerce.Models.Helpers;
 using ECommerce.Models.Helpers.OptionEnums;
+using Microsoft.AspNetCore.Http;
 
 namespace ECommerce.Controllers
 {
@@ -116,13 +117,15 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddQusetion(string Questions)
+        public async Task<IActionResult> AddQusetion(string Questions, string Email, string Phone)
         {
             if (!string.IsNullOrWhiteSpace(Questions))
             {
                 var question = new Question
                 {
                     Questions = Questions,
+                    Email = Email,
+                    PhoneNumber = Phone,
                     Answer = "",
                     Accepted = false
                 };
@@ -146,6 +149,27 @@ namespace ECommerce.Controllers
             TempData["Notification"] = Notification.ShowNotif("خطا در ثبت پرسش", ToastType.Red);
             return Json(new { status = "fail", message = Notification.ShowNotif("خطا در ثبت پرسش", ToastType.Red) });
 
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCommentBlog(BlogComment model)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user == null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            model.UserId = user.Id;
+            string blogid = HttpContext.Session.GetString("BlogId");
+            HttpContext.Session.SetString("BlogId", "");
+            model.BlogId = blogid;
+
+            _context.BlogComments.Add(model);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("DetailesBlog", "Blog", blogid);
         }
     }
 }
