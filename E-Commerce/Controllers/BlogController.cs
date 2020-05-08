@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using ECommerce.Data;
 using ECommerce.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,9 +37,13 @@ namespace ECommerce.Controllers
         public async Task<IActionResult> DetailesBlog(string id)
         {
             ViewBag.path = "/upload/normalimage/";
-
+            
             ViewBag.tags = await _context.Tags.ToListAsync();
-
+            if (string.IsNullOrWhiteSpace(HttpContext.Session.GetString("BlogId")))
+            {
+                HttpContext.Session.SetString("BlogId", id);
+            }
+            
             return View(await _context.Newses.Include(n => n.NewCategories).Include(x => x.NewsTagses)
                 .ThenInclude(x => x.tags).FirstOrDefaultAsync(x => x.Id == id));
         }
