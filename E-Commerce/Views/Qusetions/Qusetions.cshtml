@@ -11,7 +11,7 @@
 <div class="info-page-cover">
     <div class="col-lg-12 col-md-12 col-xs-12 mx-auto">
         <div class="info-page-cover-title">پاسخ پرسش‌های پرتکرار</div>
-        <form asp-controller="Home" asp-action="QusetionSearch" method="get" class="info-page-search">
+        <form asp-controller="Qusetions" asp-action="QusetionSearch" method="get" class="info-page-search">
             <input name="Title" type="text" class="info-page-input-search" placeholder="پرسش خود را جستجو کنید">
             <a href="#"><button type="submit" class="btn-info-page-search">جستجو</button></a>
         </form>
@@ -122,7 +122,7 @@
                 $.ajax({
                     type: 'POST',
                     data: { "Questions": $("#nameAdd").val(),"Email":$("#emailAdd").val(),"Phone": $("#phoneAdd").val() },
-                    url: '@Url.Action("AddQusetion", "Home")',
+                    url: '@Url.Action("AddQusetion", "Qusetions")',
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=utf-8'
                     })

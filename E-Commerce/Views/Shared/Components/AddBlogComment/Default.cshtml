@@ -1,7 +1,7 @@
 ﻿@model BlogComment
 @inject SignInManager<ApplicationUser> SignInManager
 
-<form asp-controller="Home" asp-action="AddCommentBlog" class="replay-form">
+<form asp-controller="Blog" asp-action="AddCommentBlog" class="replay-form">
     <h3>دیدگاه شما</h3>
     <div class="row">
         @*<div class="col-md-6">
@@ -19,16 +19,11 @@
         <textarea asp-for="Comment" class="form-control" placeholder="دیدگاه شما"></textarea>
     </div>
     <div>
-        <p>برای ثیت نظر ایتدا باید وارد حساب کاربری خود در سایت شوید.</p>
+        <p>برای ثبت نظر ابتدا باید وارد <a asp-controller="Account" asp-action="Login">حساب کاربری</a> خود در سایت شوید.</p>
         @if (SignInManager.IsSignedIn(User))
         {
-            <button type="submit" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
+            <button asp-controller="Blog" asp-action="AddCommentBlog" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
         }
-        else
-        {
-            <button asp-controller="Account" asp-action="Login" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
-        }
-
     </div>
 </form>
 
