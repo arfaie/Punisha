@@ -11,41 +11,42 @@
                         <div class="comment-header">
                             <h4>@item.ApplicationUser?.FullName</h4>
                             @*<p>
-                                منذ سنه
-                            </p>*@
+                                    منذ سنه
+                                </p>*@
                             @*<a href="#" class="comment-replay">
-                                <i class="fa fa-reply"></i> تعليق
-                            </a>*@
+                                    <i class="fa fa-reply"></i> تعليق
+                                </a>*@
                         </div>
                         <p>
-                           @item.Comment
+                            @item.Comment
                         </p>
                     </div>
                 </div>
             </li>
         }
     }
-    
+
 
 </ul>
 <form class="replay-form">
-    <h3>كتابه تعليق</h3>
+    <h3>دیدگاه شما</h3>
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="الاسم">
+                <input type="text" class="form-control" placeholder="نام شما">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <input type="text" class="form-control" placeholder="البريد الالكتروني">
+                <input type="text" class="form-control" placeholder="ایمیل شما">
             </div>
         </div>
     </div>
     <div class="form-group">
-        <textarea class="form-control" placeholder="التعليق"></textarea>
+        <textarea class="form-control" placeholder="دیدگاه شما"></textarea>
     </div>
     <div>
-        <button type="submit" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> تعليق </span></button>
+        <button type="submit" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
     </div>
 </form>
+
