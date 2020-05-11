@@ -62,8 +62,9 @@ namespace E_Commerce.Areas.Admin.Controllers
 
                     return PartialView("_SuccessfulResponse", redirectUrl);
                 }
-
-                _context.Update(model);
+                var comment=_context.BlogComments.FirstOrDefault(x => x.Id == id);
+                comment.Accepted = model.Accepted;
+                _context.Update(comment);
                 await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);

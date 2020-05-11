@@ -571,6 +571,7 @@
                 } else {
                     $('.page-item').append('<li class="pagination-item"><a class="more-button page-link btn btn-light"  aria-label="Next" rel="next" data-number="' + (skip + 1) + '"><span aria-hidden="true">&rsaquo;</span><span class="sr-only">بعدی</span></a></li>');
                 }
+                scrollToTop();
 
             })
             .fail(function (xhr, b, error) {
@@ -580,5 +581,10 @@
 
             });
         }
-
+    function scrollToTop() {
+           window.scrollTo({
+  top: 0,
+  behavior: 'smooth',
+});
+        }
 </script>
