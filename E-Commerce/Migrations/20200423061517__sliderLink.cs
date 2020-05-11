@@ -6,17 +6,17 @@ namespace ECommerce.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Link",
-                table: "Sliders",
-                nullable: true);
+            //migrationBuilder.AddColumn<string>(
+            //    name: "Link",
+            //    table: "Sliders",
+            //    nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Link",
-                table: "Sliders");
+            //migrationBuilder.DropColumn(
+            //    name: "Link",
+            //    table: "Sliders");
         }
     }
 }

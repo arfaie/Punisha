@@ -43,7 +43,7 @@ namespace ECommerce.Controllers
             ViewBag.Categories = await _context.Categories.OrderBy(x => x.Title).ToListAsync();
             ViewBag.Brands = await _context.Brands.OrderBy(x => x.Title).ToListAsync();
 
-            return View(await Helper.GetAllProductsWithOfferAsync(_context, user));
+           return View(await Helper.GetAllProductsWithOfferAsync(_context, user));
         }
 
         public async Task<IActionResult> About()

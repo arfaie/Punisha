@@ -449,7 +449,7 @@ namespace ECommerce.Controllers
                 return Json(new { status = "fail", message = Notification.ShowNotif("خطا در یافتن سفارش", ToastType.Red) });
             }
 
-            if (order.Status.Title == "تحویل به مشتری" || order.Status.Title == "در صف بررسی" || order.Status.Title == "آماده سازی سفارش" || order.Status.Title == "تحویل به پست")
+            if (order.Status.Title == "تحویل به مشتری" || order.Status.Title == "پرداخت شده" || order.Status.Title == "در صف بررسی" || order.Status.Title == "آماده سازی سفارش" || order.Status.Title == "تحویل به پست")
             {
                 var status = await _context.Statuses.FirstOrDefaultAsync(x => x.Title == "درخواست مرجوعی");
 

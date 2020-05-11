@@ -6,18 +6,18 @@ namespace ECommerce.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<bool>(
-                name: "IsShow",
-                table: "Products",
-                nullable: false,
-                defaultValue: false);
+            //migrationBuilder.AddColumn<bool>(
+            //    name: "IsShow",
+            //    table: "Products",
+            //    nullable: false,
+            //    defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "IsShow",
-                table: "Products");
+            //migrationBuilder.DropColumn(
+            //    name: "IsShow",
+            //    table: "Products");
         }
     }
 }
