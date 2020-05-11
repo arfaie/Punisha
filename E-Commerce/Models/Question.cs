@@ -16,6 +16,12 @@ namespace ECommerce.Models
         [Display(Name = "پاسخ")]
         public string Answer { get; set; }
 
+        [Display(Name = "ایمیل")]
+        public string Email { get; set; }
+
+        [Display(Name = "شماره همراه")]
+        public string PhoneNumber { get; set; }
+
         [Display(Name = "وضعیت")]
         public bool Accepted { get; set; }
     }

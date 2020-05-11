@@ -50,6 +50,15 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (!String.IsNullOrWhiteSpace(model.Answer))
+                {
+                    model.Accepted = true;
+                }
+                else
+                {
+                    model.Accepted = false;
+                }
+
                 if (String.IsNullOrWhiteSpace(id))
                 {
                     _context.Questions.Add(model);
@@ -98,6 +107,46 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
 
             TempData["Notification"] = Notification.ShowNotif(MessageType.DeleteError, ToastType.Red);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Accept(string id)
+        {
+            var question = await _context.Questions.FirstOrDefaultAsync(c => c.Id == id);
+            if (question != null)
+            {
+                return PartialView("Accept",question);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Accept(string id, string redirectUrl,string status)
+        {
+            if (ModelState.IsValid)
+            {
+                var model = await _context.Questions.SingleOrDefaultAsync(q => q.Id == id);
+                if (status == "0")
+                {
+                    model.Accepted = false;
+                }
+                else
+                {
+                    model.Accepted = true;
+                }
+                
+                _context.Questions.Update(model);
+                await _context.SaveChangesAsync();
+
+                TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
+                return PartialView("_SuccessfulResponse", redirectUrl);
+            }
+
+            TempData["Notification"] = Notification.ShowNotif(MessageType.EditError, ToastType.Red);
             return RedirectToAction("Index");
         }
     }

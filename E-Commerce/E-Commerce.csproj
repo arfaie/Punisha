@@ -769,7 +769,6 @@
     <None Include="Views\Home\ContactSlider2.cshtml" />
     <None Include="Views\Home\Error404.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
-    <None Include="Views\Home\Qusetions.cshtml" />
     <None Include="Views\Manage\AddPhoneNumber.cshtml" />
     <None Include="Views\Manage\ChangePassword.cshtml" />
     <None Include="Views\Manage\Index.cshtml" />

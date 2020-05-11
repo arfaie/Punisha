@@ -54,6 +54,9 @@ namespace ECommerce.Models
 		[Required(ErrorMessage = "فیلد قیمت نمی تواند خالی یاشد.")]
 		public int Price { get; set; }
 
+        [Display(Name = "نمایش")]
+        public bool IsShow { get; set; }
+
 		[Display(Name = "زمان اضافه کردن")]
 		public DateTime AddingDateTime { get; set; }
 

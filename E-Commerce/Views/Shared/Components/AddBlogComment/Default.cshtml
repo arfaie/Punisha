@@ -1,0 +1,29 @@
+﻿@model BlogComment
+@inject SignInManager<ApplicationUser> SignInManager
+
+<form asp-controller="Blog" asp-action="AddCommentBlog" class="replay-form">
+    <h3>دیدگاه شما</h3>
+    <div class="row">
+        @*<div class="col-md-6">
+                <div class="form-group">
+                    <input asp-for="" type="text" class="form-control" placeholder="نام شما">
+                </div>
+            </div>*@
+        @*<div class="col-md-6">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="ایمیل شما">
+                </div>
+            </div>*@
+    </div>
+    <div class="form-group">
+        <textarea asp-for="Comment" class="form-control" placeholder="دیدگاه شما"></textarea>
+    </div>
+    <div>
+        <p>برای ثبت نظر ابتدا باید وارد <a asp-controller="Account" asp-action="Login">حساب کاربری</a> خود در سایت شوید.</p>
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <button asp-controller="Blog" asp-action="AddCommentBlog" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
+        }
+    </div>
+</form>
+

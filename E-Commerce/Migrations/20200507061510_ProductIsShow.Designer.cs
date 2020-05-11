@@ -4,14 +4,16 @@ using ECommerce.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ECommerce.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200507061510_ProductIsShow")]
+    partial class ProductIsShow
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -239,34 +241,6 @@ namespace ECommerce.Migrations
                     b.HasIndex("UserGroupId");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("ECommerce.Models.BlogComment", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)")
-                        .HasDefaultValueSql("NEWID()");
-
-                    b.Property<bool>("Accepted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("BlogId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BlogId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BlogComments");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Brand", b =>
@@ -7632,12 +7606,6 @@ namespace ECommerce.Migrations
                     b.Property<string>("Answer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Questions")
                         .HasColumnType("nvarchar(max)");
 
@@ -8101,7 +8069,7 @@ namespace ECommerce.Migrations
                         new
                         {
                             Id = "6f9c65d681937c32dafcec03",
-                            Title = "پرداخت شده"
+                            Title = "در صف بررسی"
                         },
                         new
                         {
@@ -8315,17 +8283,6 @@ namespace ECommerce.Migrations
                     b.HasOne("ECommerce.Models.UserGroup", "UserGroup")
                         .WithMany("ApplicationUsers")
                         .HasForeignKey("UserGroupId");
-                });
-
-            modelBuilder.Entity("ECommerce.Models.BlogComment", b =>
-                {
-                    b.HasOne("ECommerce.Models.News", "News")
-                        .WithMany()
-                        .HasForeignKey("BlogId");
-
-                    b.HasOne("ECommerce.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("ECommerce.Models.Car", b =>
