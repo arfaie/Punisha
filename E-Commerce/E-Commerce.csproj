@@ -5,6 +5,18 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Product\Home.cshtml" />
+    <Content Remove="Views\Product\ProductDetailes.cshtml" />
+    <Content Remove="Views\Product\SearchProduct.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\News\.idea\misc.xml" />
+    <Content Include="wwwroot\News\.idea\modules.xml" />
+    <Content Include="wwwroot\News\.idea\workspace.xml" />
+  </ItemGroup>
+
   <!--<ItemGroup>
     <Compile Include="Areas\Admin\Controllers\AboutUsController.cs" />
     <Compile Include="Areas\Admin\Controllers\AddressController.cs" />
@@ -620,7 +632,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include=".bowerrc" />
     <None Include="Areas\Admin\Views\AboutUs\Edit.cshtml" />
     <None Include="Areas\Admin\Views\AboutUs\Index.cshtml" />
     <None Include="Areas\Admin\Views\Address\AddEdit.cshtml" />
@@ -742,8 +753,6 @@
     <None Include="Areas\Admin\Views\User\UserAddress.cshtml" />
     <None Include="Areas\Admin\Views\_ViewImports.cshtml" />
     <None Include="Areas\Admin\Views\_ViewStart.cshtml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
-    <None Include="Properties\PublishProfiles\FolderProfile.pubxml.user" />
     <None Include="Views\Account\AccessDenied.cshtml" />
     <None Include="Views\Account\ConfirmMobile.cshtml" />
     <None Include="Views\Account\ForgotPassword.cshtml" />
@@ -779,11 +788,8 @@
     <None Include="Views\Product\CategoryGroup.cshtml" />
     <None Include="Views\Product\Details.cshtml" />
     <None Include="Views\Product\Factor.cshtml" />
-    <None Include="Views\Product\Home.cshtml" />
     <None Include="Views\Product\Maker.cshtml" />
-    <None Include="Views\Product\ProductDetailes.cshtml" />
     <None Include="Views\Product\Search.cshtml" />
-    <None Include="Views\Product\SearchProduct.cshtml" />
     <None Include="Views\Shared\Components\AdminNavbarEmail\Default.cshtml" />
     <None Include="Views\Shared\Components\AdminNavbarOrders\Default.cshtml" />
     <None Include="Views\Shared\Components\AdminNavbarProduct\Default.cshtml" />
@@ -972,10 +978,6 @@
     <None Include="wwwroot\persiandatepicker\calendar.js" />
     <None Include="wwwroot\persiandatepicker\jquery.Bootstrap-PersianDateTimePicker.js" />
     <None Include="wwwroot\Reports\ReportFactor.mrt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="wwwroot\js\iziToast-master\types\index.d.ts" />
   </ItemGroup>
 
   <ItemGroup>

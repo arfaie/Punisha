@@ -299,10 +299,30 @@ namespace ECommerce.Controllers
 			{
 				products = products.Skip(skip * limit).Take(limit).ToList();
 			}
+					
 
 			if (isAjax)
 			{
-				var result = new { products, count = ViewBag.Count, minPrice = minimumPrice, maxPrice = maximumPrice };
+				foreach (var product in products)
+				{
+					product.CarIds = null;
+					product.CarProducts = null;
+					product.Category = null;
+					product.CommentAndStars = null;
+					product.FactorItems = null;
+					product.Histories = null;
+					product.OfferItems = null;
+					product.ProductFields = null;
+					product.ProductGalleries = null;
+					product.Unit = null;
+
+					if (product.Brand != null)
+					{
+						product.Brand.Products = null;
+					}
+				}
+
+				var result = new { products, count = ViewBag.Count }; //, minPrice = minimumPrice, maxPrice = maximumPrice
 				return Json(result);
 			}
 

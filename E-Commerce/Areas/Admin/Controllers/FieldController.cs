@@ -7,11 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-// TODO field
 namespace ECommerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
@@ -142,7 +140,7 @@ namespace ECommerce.Areas.Admin.Controllers
                         if (!isExist)
                         {
                             var s = _context.CategoryFields.Where(x => x.CategoryId == item.CategoryId).FirstOrDefault();
-                            var ss =  _context.ProductFields.Where(x => x.FieldId == item.FieldId).FirstOrDefault();
+                            var ss = _context.ProductFields.Where(x => x.FieldId == item.FieldId).FirstOrDefault();
                             _context.CategoryFields.Remove(s);
                             _context.ProductFields.Remove(ss);
                         }
