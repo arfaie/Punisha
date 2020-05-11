@@ -15,14 +15,18 @@
                 </div>
             </div>*@
     </div>
-    <div class="form-group">
-        <textarea asp-for="Comment" class="form-control" placeholder="دیدگاه شما"></textarea>
-    </div>
+    
     <div>
+        @if (!SignInManager.IsSignedIn(User))
+        {
         <p>برای ثبت نظر ابتدا باید وارد <a asp-controller="Account" asp-action="Login">حساب کاربری</a> خود در سایت شوید.</p>
+        }
         @if (SignInManager.IsSignedIn(User))
         {
-            <button asp-controller="Blog" asp-action="AddCommentBlog" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
+        <div class="form-group">
+            <textarea asp-for="Comment" class="form-control" placeholder="دیدگاه شما"></textarea>
+        </div>
+        <button asp-controller="Blog" asp-action="AddCommentBlog" class="appsLand-btn appsLand-btn-gradient"> <span><i class="fa fa-send"></i> ارسال نظر </span></button>
         }
     </div>
 </form>
