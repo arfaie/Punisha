@@ -440,8 +440,8 @@ namespace ECommerce.Controllers
 
 		[HttpPost]
 		public async Task<IActionResult> AddCommentAndStar(string productId, string stars, string comment)
-		{
-			var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
+        {
+            var product = await _context.Products.SingleOrDefaultAsync(b => b.Id == productId);
 			if (product == null)
 			{
 				return Json(new { status = "fail", message = "خطا در یافتن محصول" });

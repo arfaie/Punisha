@@ -25,9 +25,9 @@
 
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <div class="product-feedback">
-                        <a href="#" class="btn feedback-survey-btn" onclick="document.getElementById('modal').style.display='block'">بازخورد درباره این کالا</a>
-                    </div>
+                    @*<div class="product-feedback">
+                            <a href="#" class="btn feedback-survey-btn" onclick="document.getElementById('modal').style.display='block'">بازخورد درباره این کالا</a>
+                        </div>*@
                 }
 
             </div>
@@ -196,24 +196,144 @@
                     </div>
                     <div class="tab comments" style="display:none;">
 
-                        <h2 class="comments-headline">
+                        <h2 class="comments-headline" style="margin-left: 50%;">
                             نظرات کاربران
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <span>
+                                    <span>ثبت نظر</span>
+                                </span>
+                            }
+                            else
+                            {
+                                <p>برای ثبت نظر ابتدا باید وارد<a asp-controller="Account" asp-action="Login">حساب کاربری خود در سایت </a>بشید.</p>
+                            }
+
                         </h2>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <section>
+                                <div class="col-lg-8 col-md-8 col-xs-12 pull-right" style="padding:0">
+                                    <div class="comments-summary-box">
+                                        <form action="#" class="form-checkout">
+
+                                            @*<div class="form-checkout-row">*@
+
+                                            <div class="form-checkout-valid-row">
+                                                <label for="province">امتیاز محصول</label>
+                                                <span class="required-star" style="color:red;">*</span>
+                                                <select name="" id="stars">
+                                                    <option value="0" selected="selected">تعداد ستاره</option>
+                                                    <option value="5">5 ستاره</option>
+                                                    <option value="4">4 ستاره</option>
+                                                    <option value="3">3 ستاره</option>
+                                                    <option value="2">2 ستاره</option>
+                                                    <option value="1">1 ستاره</option>
+                                                </select>
+                                            </div>
+
+                                            <label for="address">توضیحات</label>
+                                            <span class="required-star" style="color:red;">*</span>
+                                            <input type="text" id="comment" class="input-name-checkout" placeholder="توضیحات خود را وارد نمایید" style="height: 80px; width: 100%;">
+
+                                            <div class="form-checkout-valid-row">
+                                                <div class="parent-btn">
+                                                    <button id="sendFeedbackButton" class="dk-btn dk-btn-info">
+                                                        ثبت نظر
+                                                        <i class="fa fa-check sign-in"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            @*</div>*@
+                                        </form>
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                        else
+                        {
+
+                        }
+
+
+                        @*@if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="col-lg-6 col-md-6 col-xs-12 pull-right" style="padding:0">
+                                    <div class="comments-summary-box">
+                                        <ul class="comments-item-rating">
+                                        <form action="#" class="form-checkout">
+
+                                            <div class="form-checkout-row">
+
+                                                <div class="form-checkout-valid-row">
+                                                    <label for="province">امتیاز محصول</label>
+                                                    <span class="required-star" style="color:red;">*</span>
+                                                    <select name="" id="stars">
+                                                        <option value="0" selected="selected">تعداد ستاره</option>
+                                                        <option value="5">5 ستاره</option>
+                                                        <option value="4">4 ستاره</option>
+                                                        <option value="3">3 ستاره</option>
+                                                        <option value="2">2 ستاره</option>
+                                                        <option value="1">1 ستاره</option>
+                                                    </select>
+                                                </div>
+
+                                                <label for="address">توضیحات</label>
+                                                <span class="required-star" style="color:red;">*</span>
+                                                <input type="text" id="comment" class="input-name-checkout" placeholder="توضیحات خود را وارد نمایید" style="height: 80px;">
+
+                                                <div class="form-checkout-valid-row">
+                                                    <div class="parent-btn">
+                                                        <button id="sendFeedbackButton" class="dk-btn dk-btn-info">
+                                                            ثبت نظر
+                                                            <i class="fa fa-check sign-in"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            }
+                            else
+                            {
+
+                            }*@
+
+
 
                         <div id="product-comment-list">
+
                             <ul class="comments-list">
+
+
+
+
 
                                 @foreach (var commentAndStar in Model.CommentAndStars.OrderByDescending(x => x.Date))
                                 {
                                     if (commentAndStar.IsApproved)
                                     {
-                                        <li style="display:block">
+                                        <li style="display: block">
                                             <section>
                                                 <div class="col-lg-12 col-md-12 col-xs-12">
                                                     <div class="article">
                                                         <div class="header">
                                                             <div>
-                                                                <span>توسط @($"{commentAndStar.User?.UserName.Substring(0, 4)}xxx{commentAndStar.User?.UserName.Substring(7)}") در تاریخ @Helper.GetGregorianToPersianDateInverse(commentAndStar.Date)</span>
+                                                                @*<span>توسط @($"{commentAndStar.User?.UserName.Substring(0, 4)}xxx{commentAndStar.User?.UserName.Substring(7)}") در تاریخ @Helper.GetGregorianToPersianDateInverse(commentAndStar.Date)</span>*@
+                                                                @if (commentAndStar.User.FullName == null)
+                                                                {
+                                                                    <span>توسط @($"مهمان") در تاریخ @Helper.GetGregorianToPersianDateInverse(commentAndStar.Date)</span>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <span>توسط @($"{commentAndStar.User?.FullName}") در تاریخ @Helper.GetGregorianToPersianDateInverse(commentAndStar.Date)</span>
+                                                                }
+
                                                             </div>
                                                         </div>
                                                         <div class="profile-comment-rating">
@@ -275,49 +395,48 @@
     </div>
 </div>
 <!--single-product------------------------->
+@*<div class="remodal-overlay" id="modal">
+        <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
+            <div class="remodal">
+                <a href="#" class="remodal-close" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
+                <div class="middle-container">
+                    <form action="#" class="form-checkout">
+                        <div class="form-checkout-headline">ارسال نظر</div>
+                        <div class="form-checkout-row">
 
-<div class="remodal-overlay" id="modal">
-    <div class="col-lg-8 col-md-8 col-xs-12 mx-auto">
-        <div class="remodal">
-            <a href="#" class="remodal-close" onclick="document.getElementById('modal').style.display='none'"><i class="fa fa-close"></i></a>
-            <div class="middle-container">
-                <form action="#" class="form-checkout">
-                    <div class="form-checkout-headline">ارسال نظر</div>
-                    <div class="form-checkout-row">
-
-                        <div class="form-checkout-valid-row">
-                            <label for="province">امتیاز محصول</label>
-                            @*<span class="required-star" style="color:red;">*</span>*@
-                            <select name="" id="stars">
-                                <option value="0" selected="selected">تعداد ستاره</option>
-                                <option value="5">5 ستاره</option>
-                                <option value="4">4 ستاره</option>
-                                <option value="3">3 ستاره</option>
-                                <option value="2">2 ستاره</option>
-                                <option value="1">1 ستاره</option>
-                            </select>
-                        </div>
-
-                        <label for="address">توضیحات</label>
-                        @*<span class="required-star" style="color:red;">*</span>*@
-                        <input type="text" id="comment" class="input-name-checkout" placeholder="توضیحات خود را وارد نمایید" style="height:80px;">
-
-                        <div class="form-checkout-valid-row">
-                            <div class="parent-btn">
-                                <button id="sendFeedbackButton" class="dk-btn dk-btn-info">
-                                    ثبت نظر
-                                    <i class="fa fa-check sign-in"></i>
-                                </button>
+                            <div class="form-checkout-valid-row">
+                                <label for="province">امتیاز محصول</label>
+                                <span class="required-star" style="color:red;">*</span>
+                                <select name="" id="stars">
+                                    <option value="0" selected="selected">تعداد ستاره</option>
+                                    <option value="5">5 ستاره</option>
+                                    <option value="4">4 ستاره</option>
+                                    <option value="3">3 ستاره</option>
+                                    <option value="2">2 ستاره</option>
+                                    <option value="1">1 ستاره</option>
+                                </select>
                             </div>
-                        </div>
 
-                        <a href="#" class="cancel-edit-address" onclick="document.getElementById('modal').style.display='none'">انصراف و بازگشت</a>
-                    </div>
-                </form>
+                            <label for="address">توضیحات</label>
+                            <span class="required-star" style="color:red;">*</span>
+                            <input type="text" id="comment" class="input-name-checkout" placeholder="توضیحات خود را وارد نمایید" style="height:80px;">
+
+                            <div class="form-checkout-valid-row">
+                                <div class="parent-btn">
+                                    <button id="sendFeedbackButton" class="dk-btn dk-btn-info">
+                                        ثبت نظر
+                                        <i class="fa fa-check sign-in"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <a href="#" class="cancel-edit-address" onclick="document.getElementById('modal').style.display='none'">انصراف و بازگشت</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </div>*@
 
 @section Scripts{
     <script>
