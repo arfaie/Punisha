@@ -26,7 +26,6 @@ namespace E_Commerce.Areas.Admin.Controllers
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
-        
         {
             var select = await _context.AboutUses.FirstOrDefaultAsync();
             return View(select);
