@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AboutUsController : Controller
     {
         private readonly ApplicationDbContext _context;
