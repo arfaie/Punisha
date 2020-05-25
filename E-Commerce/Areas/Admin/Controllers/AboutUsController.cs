@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class AboutUsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,8 +26,10 @@ namespace E_Commerce.Areas.Admin.Controllers
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Index()
+        
         {
-            return View(await _context.AboutUses.FirstOrDefaultAsync());
+            var select = await _context.AboutUses.FirstOrDefaultAsync();
+            return View(select);
         }
 
         [HttpGet]
