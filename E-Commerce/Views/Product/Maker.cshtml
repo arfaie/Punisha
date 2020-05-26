@@ -5,7 +5,7 @@
 }
 
 <!--search-category------------------------->
-@await Component.InvokeAsync("ProductsFilter", new { ViewBag.CategoryGroups, ViewBag.Categories, ViewBag.Brands, ViewBag.Cars })
+@await Component.InvokeAsync("ProductsFilter", new { ViewBag.CategoryGroups, ViewBag.Categories, ViewBag.Brands, ViewBag.Cars, ViewBag.MakerId })
 
 <div class="col-lg-9 col-md-8 col-xs-12 pull-left">
     <div class="js-products">
@@ -17,7 +17,6 @@
                 {
                     <li><a asp-controller="Product" asp-action="Maker" asp-route-id="@ViewBag.Maker.Id">@ViewBag.Maker.Name</a></li>
                 }
-
             </ul>
         </div>
     </div>
@@ -27,7 +26,6 @@
     <div class="js-products" style="margin-top: 0px; background: white">
 
         @await Component.InvokeAsync("ProductsListing", new { products = Model, count = ViewBag.Count, skip = ViewBag.Skip, limit = ViewBag.Limit })
-
     </div>
 </div>
 <!--search-category------------------------->

@@ -81,12 +81,10 @@
 
                                                                     }
                                                                 }
-
                                                             </ul>
                                                         </div>
                                                     </li>
                                                 }
-
                                             </ul>
                                         </li>
                                     </ul>
@@ -115,14 +113,12 @@
                                                         </a>
                                                     </li>
                                                 }
-
                                             </ul>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </nav>
@@ -202,12 +198,10 @@
                                         }
 
                                     }
-
                                 </ul>
                             </div>
                         </li>
                     }
-
                 </ul>
             </div>
         </div>
@@ -255,7 +249,6 @@
                             </a>
                         </li>
                     }
-
                 </ul>
             </div>
         </div>
@@ -284,7 +277,6 @@
                             </a>
                         </li>
                     }
-
                 </ul>
             </div>
         </div>
@@ -306,7 +298,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -315,7 +306,55 @@
 
 <script>
 
+    var showOnlyInStock = false;
+
     $(document).ready(function () {
+
+        $('#switch1').on('change.bootstrapSwitch', function(e) {
+            showOnlyInStock = e.target.checked;
+
+            var skip = parseInt($(this).attr("data-number"));
+
+            var sortingId = $('.listing-sort li.listing-active').prop('id').replace("sorting", "");
+
+            var minPrice = $("#slider-range").slider("values", 0);
+
+            var maxPrice = $("#slider-range").slider("values", 1);
+
+            var categories = "";
+            var brands = "";
+            var cars = "";
+
+            $(".checkCategories").each(function () {
+                if (this.checked) {
+                    // the checkbox is now checked
+                    categories += $(this).prop('id').replace("checkCategory", "");
+                } else {
+                    // the checkbox is now no longer checked
+                }
+            });
+
+            $(".checkBrands").each(function () {
+                if (this.checked) {
+                    // the checkbox is now checked
+                    brands += $(this).prop('id').replace("checkCategory", "");
+                } else {
+                    // the checkbox is now no longer checked
+                }
+            });
+
+            $(".checkCars").each(function () {
+                if (this.checked) {
+                    // the checkbox is now checked
+                    cars += $(this).prop('id').replace("checkCategory", "");
+                } else {
+                    // the checkbox is now no longer checked
+                }
+            });
+
+            getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit, showOnlyInStock);
+        });
+
         $("#slider-range").slider({
             range: true,
             min: @ViewBag.MinPrice,
@@ -376,7 +415,7 @@
              }
          });
 
-        getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
+         getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit, showOnlyInStock);
      });
 
         $(document).on('click', '.sorting-value', function (e) {
@@ -421,7 +460,7 @@
                  }
              });
 
-            getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
+            getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit, showOnlyInStock);
          });
 
         $(document).on('change', '.checkCategories, .checkBrands, .checkCars', function (e) {
@@ -465,7 +504,7 @@
 
             var maxPrice = $("#slider-range").slider("values", 1);
 
-            getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
+            getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit, showOnlyInStock);
          });
 
     });
@@ -510,16 +549,16 @@
             }
         });
 
-        getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit);
+        getAds("@ViewBag.MakerId", "@ViewBag.CarId", "@ViewBag.CategoryGroupId", "@ViewBag.CategoryId", "@ViewBag.BrandId", categories, brands, cars, minPrice, maxPrice, sortingId, skip, @ViewBag.Limit, showOnlyInStock);
     }
 
-    function getAds(makerId, carId, categoryGroupId, categoryId, brandId, categories, brands, cars, minPrice, maxPrice, sortingId, skip, limit) {
+    function getAds(makerId, carId, categoryGroupId, categoryId, brandId, categories, brands, cars, minPrice, maxPrice, sortingId, skip, limit, showOnlyInStock) {
 
         $('.product-grid').fadeTo(.25, 0.5);
 
             $.ajax({
                 type: 'GET',
-                data: { "makerId": makerId, "carId": carId, "categoryGroupId": categoryGroupId, "categoryId": categoryId, "brandId": brandId, "categories": categories, "brands": brands, "cars": cars, "minPrice": minPrice, "maxPrice": maxPrice, "sorting": sortingId, "skip": skip, "limit" : limit, "isAjax": true },
+                data: { "makerId": makerId, "carId": carId, "categoryGroupId": categoryGroupId, "categoryId": categoryId, "brandId": brandId, "categories": categories, "brands": brands, "cars": cars, "minPrice": minPrice, "maxPrice": maxPrice, "sorting": sortingId, "skip": skip, "limit": limit, "showOnlyInStock": showOnlyInStock, "isAjax": true },
                 url: "/Product/Search",
                 dataType: 'json',
                 contentType: "application/json; charset=utf-8",

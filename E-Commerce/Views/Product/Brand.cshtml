@@ -5,7 +5,7 @@
 }
 
 <!--search-category------------------------->
-@await Component.InvokeAsync("ProductsFilter", new { ViewBag.CategoryGroups, ViewBag.Categories, ViewBag.Brands, ViewBag.Cars })
+@await Component.InvokeAsync("ProductsFilter", new { ViewBag.CategoryGroups, ViewBag.Categories, ViewBag.Brands, ViewBag.Cars, ViewBag.BrandId })
 
 <div class="col-lg-9 col-md-8 col-xs-12 pull-left">
     <div class="js-products">
@@ -31,7 +31,6 @@
     <div class="js-products" style="margin-top: 0px; background: white">
 
         @await Component.InvokeAsync("ProductsListing", new { products = Model, count = ViewBag.Count, skip = ViewBag.Skip, limit = ViewBag.Limit })
-
     </div>
 </div>
 <!--search-category------------------------->

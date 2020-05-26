@@ -87,6 +87,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> CategoryGroup(string id, int skip = 0, int limit = 12)
 		{
+			ViewBag.CategoryGroupId = id;
 			ViewBag.CategoryGroup = await _context.CategoryGroups.FirstOrDefaultAsync(x => x.Id == id);
 
 			var products = await _context.Products.Where(x => x.Category.CategoryGroupId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
@@ -118,6 +119,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Category(string id, int skip = 0, int limit = 12)
 		{
+			ViewBag.CategoryId = id;
 			var category = await _context.Categories.FirstOrDefaultAsync(x => x.Id == id);
 
 			if (category != null)
@@ -155,6 +157,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Brand(string id, int skip = 0, int limit = 12)
 		{
+			ViewBag.BrandId = id;
 			ViewBag.Brand = await _context.Brands.FirstOrDefaultAsync(x => x.Id == id);
 
 			var products = await _context.Products.Where(x => x.BrandId == id).Include(x => x.Category).Include(x => x.Brand).Include(x => x.OfferItems).ToListAsync();
@@ -186,6 +189,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Maker(string id, int skip = 0, int limit = 12)
 		{
+			ViewBag.MakerId = id;
 			ViewBag.Maker = await _context.Makers.FirstOrDefaultAsync(x => x.Id == id);
 			var products = await _context.Products.Where(x => x.CarProducts != null && x.CarProducts.Select(y => y.Car.Maker.Id).Contains(id)).Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).ToListAsync();
 
@@ -216,6 +220,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Car(string id, int skip = 0, int limit = 12)
 		{
+			ViewBag.CarId = id;
 			var car = await _context.Cars.FirstOrDefaultAsync(x => x.Id == id);
 
 			if (car != null)
@@ -251,9 +256,14 @@ namespace ECommerce.Controllers
 
 		[HttpGet]
 		[AutoValidateAntiforgeryToken]
-		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryGroupId = "0", string categoryId = "0", string brandId = "0", int minPrice = 0, int maxPrice = 0, string categories = "", string brands = "", string cars = "", int sorting = 0, int skip = 0, int limit = 12, bool isAjax = false)
+		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryGroupId = "0", string categoryId = "0", string brandId = "0", int minPrice = 0, int maxPrice = 0, string categories = "", string brands = "", string cars = "", int sorting = 0, int skip = 0, int limit = 12, bool showOnlyInStock = false, bool isAjax = false)
 		{
 			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).Include(x => x.CarProducts).ThenInclude(x => x.Car).ToListAsync();
+
+			if (showOnlyInStock)
+			{
+				products = products.Where(x => x.Inventory > x.OrderPoint).ToList();
+			}
 
 			if (!String.IsNullOrWhiteSpace(carId) && carId != "0")
 			{
@@ -299,7 +309,6 @@ namespace ECommerce.Controllers
 			{
 				products = products.Skip(skip * limit).Take(limit).ToList();
 			}
-					
 
 			if (isAjax)
 			{
@@ -335,6 +344,12 @@ namespace ECommerce.Controllers
 			ViewBag.Cars = await _context.Cars.Include(x => x.Maker).OrderBy(x => x.Name).ToListAsync();
 			ViewBag.Skip = skip;
 			ViewBag.Limit = limit;
+
+			ViewBag.MakerId = makerId;
+			ViewBag.CarId = carId;
+			ViewBag.CategoryGroupId = categoryGroupId;
+			ViewBag.CategoryId = categoryId;
+			ViewBag.brandId = brandId;
 
 			return View(products);
 		}
