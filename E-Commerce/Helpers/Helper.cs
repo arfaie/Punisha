@@ -20,7 +20,7 @@ namespace ECommerce.Helpers
 
 		private static readonly List<ConfirmationCodeViewModel> ConfirmationCodes = new List<ConfirmationCodeViewModel>();
 
-		public static int GenerateShortenCode(string mobile, string link)
+        public static int GenerateShortenCode(string mobile, string link)
 		{
 			var number = new Random().Next(10001, 99999);
 

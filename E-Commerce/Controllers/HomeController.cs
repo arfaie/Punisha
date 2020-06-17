@@ -82,22 +82,40 @@ namespace ECommerce.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<IActionResult> getEmail(string strEmail)
         {
             if (ModelState.IsValid)
             {
-                Email model = new Email();
-                model.strEmail = strEmail;
-                model.Readed = false;
+                
+                try
+                {
+                    if (!string.IsNullOrEmpty(strEmail))
+                    {
+                        Email model = new Email();
+                        model.strEmail = strEmail;
+                        model.Readed = false;
 
-                await _context.Emails.AddAsync(model);
-                await _context.SaveChangesAsync();
+                        await _context.Emails.AddAsync(model);
+                        await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                        return Json(new { status = "success", message = "ایمیل شما با موفقیت ثبت شد"});
+                    }
+                    else
+                    {
+                        return Json(new { status = "fail", message = "لطفا ایمیل را صحیح وارد نمایید" });
+                    }
+
+                }
+                catch (Exception)
+                {
+
+                    return Json(new { status = "fail", message = "خطا در ثبت ایمیل" });
+                }
+
             }
 
-            return RedirectToAction("Index");
+            return Json(new { status = "fail", message = "ایمیل وارد شده صحیح نمیباشد" });
         }
 
     }

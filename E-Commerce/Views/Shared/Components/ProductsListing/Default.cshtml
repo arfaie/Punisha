@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Product>
+@using ECommerce.Helpers;
 
 <div class="listing-listing">
     <div class="listing-counter">@Model.Count() کالا</div>
@@ -20,12 +21,15 @@
 
             @foreach (var product in Model.OrderByDescending(x => x.AddingDateTime))
             {
-                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="    padding: 0;">
-                    <div class="promotion-box">
-                        <div class="product-seller-details">
-                            <span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : @product.Brand?.Title</span>
-                        </div>
 
+                string cars = null;
+
+                <div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="padding: 0;">
+                    <div class="promotion-box">
+
+                        <div class="product-seller-details">
+                            <span class="product-main-seller"><i class="fa fa-modx"></i>&nbsp;برند : @product.Brand?.Title</span>
+                        </div>
                         <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="promotion-box-image">
                             <img src="@Helper.ThumbnailImagePath@product.ImageName">
                         </a>
@@ -33,7 +37,17 @@
                         <div class="product-box-content">
                             <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="product-box-title">@product.Name</a>
                         </div>
-
+                        <div class="product-box-content">
+                            @foreach (var item in product.CarProducts)
+                            {
+                                cars += (item.Car.Maker.Name + " " + item.Car.Name);
+                                if (product.CarProducts.Last().Id != item.Id)
+                                {
+                                    cars += ",";
+                                }
+                            }
+                            <span class="product-box-title"><i class="fa fa-car"></i>&nbsp;خودرو : @cars</span>
+                        </div>
                         <div class="product-box-row">
                             @if (product.Price > product.PriceWithDiscount)
                             {

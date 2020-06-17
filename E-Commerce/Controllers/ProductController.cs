@@ -4,6 +4,7 @@ using ECommerce.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -258,7 +259,7 @@ namespace ECommerce.Controllers
 		[AutoValidateAntiforgeryToken]
 		public async Task<IActionResult> Search(string makerId = "0", string carId = "0", string categoryGroupId = "0", string categoryId = "0", string brandId = "0", int minPrice = 0, int maxPrice = 0, string categories = "", string brands = "", string cars = "", int sorting = 0, int skip = 0, int limit = 12, bool showOnlyInStock = false, bool isAjax = false)
 		{
-			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).Include(x => x.CarProducts).ThenInclude(x => x.Car).ToListAsync();
+			var products = await _context.Products.Include(x => x.Category).Include(x => x.Brand).Include(x => x.FactorItems).Include(x => x.OfferItems).Include(x => x.CarProducts).ThenInclude(x => x.Car).ThenInclude(x => x.Maker).ToListAsync();
 
 			if (showOnlyInStock)
 			{
@@ -309,13 +310,24 @@ namespace ECommerce.Controllers
 			{
 				products = products.Skip(skip * limit).Take(limit).ToList();
 			}
-
-			if (isAjax)
+           
+            if (isAjax)
 			{
-				foreach (var product in products)
+                
+                ViewBag.Result = products;
+
+                foreach (var product in products)
 				{
 					product.CarIds = null;
-					product.CarProducts = null;
+                    foreach (var item in product.CarProducts)
+                    {
+                        item.Product = null;
+                        item.CarId = null;
+                        item.ProductId = null;
+                        item.Car.CarProducts = null;
+                        item.Car.Maker.Cars = null;
+                    }
+					//product.CarProducts= null;
 					product.Category = null;
 					product.CommentAndStars = null;
 					product.FactorItems = null;
@@ -330,8 +342,8 @@ namespace ECommerce.Controllers
 						product.Brand.Products = null;
 					}
 				}
-
-				var result = new { products, count = ViewBag.Count }; //, minPrice = minimumPrice, maxPrice = maximumPrice
+                
+                var result = new { products, count = ViewBag.Count }; //, minPrice = minimumPrice, maxPrice = maximumPrice
 				return Json(result);
 			}
 

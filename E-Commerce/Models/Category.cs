@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Models
 {
@@ -22,6 +23,8 @@ namespace ECommerce.Models
 
 		public ICollection<CategoryField> CategoryFields { get; set; }
 
+
+        
 		public ICollection<Product> Products { get; set; }
 
 		public ICollection<Field> Fields { get; set; }

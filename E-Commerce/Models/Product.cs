@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace ECommerce.Models
 {
@@ -91,7 +92,7 @@ namespace ECommerce.Models
 		public ICollection<CommentAndStar> CommentAndStars { get; set; }
 
 		public ICollection<History> Histories { get; set; }
-
-		public ICollection<CarProduct> CarProducts { get; set; }
+        [JsonIgnore]
+        public ICollection<CarProduct> CarProducts { get; set; }
 	}
 }

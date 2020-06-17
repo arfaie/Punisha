@@ -1,4 +1,25 @@
 ﻿<!--     responsive-sidebar----------------------->
+@{
+    string carNamess = null;
+    if (ViewBag.Result != null)
+    {
+        IEnumerable<Product> newModel = ViewBag.Result;
+
+        foreach (var item_ in newModel)
+        {
+            foreach (var item in item_.CarProducts)
+            {
+                carNamess += (item.Car.Maker.Name + " " + item.Car.Name);
+                if (item_.CarProducts.Last().Id != item.Id)
+                {
+                    carNamess += ",";
+                }
+            }
+
+        }
+    }
+
+}
 <div class="col-12">
     <div class="header-filters">
         @*<button class="btn-filter btn-filter-advanced" onclick="document.getElementById('modal-search').style.display='block'">جستجوی پیشرفته</button>
@@ -570,12 +591,24 @@
                 $('.product-grid').empty();
 
                 //var result = new { products, count = ViewBag.Count, minPrice = ViewBag.MinPrice, maxPrice = ViewBag.MaxPrice };
+                @{
 
+
+                }
                 $.each(data.products, function (index, product) {
-
-                    var newItem = '<div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="padding: 0;">\<div class="promotion-box">\<div class="product-seller-details">\<span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : ' + product.brand.title + '</span>\</div><a href="/Product/Details/'+product.id+' "class="promotion-box-image">\<img src="@Helper.ThumbnailImagePath' + product.imageName + '">\</a>\<div class="product-box-content">\<a asp-controller="Product" asp-action="Details" asp-route-id="' + product.id + '" class="product-box-title">' + product.name + '</a>\</div>\<div class="product-box-row">productPrice</div>\</div>\</div>';
+                    var cars = '';
+                    $.each(product.carProducts, function (index, carNames) {
+                        cars += carNames.car.maker.name + ' ' + carNames.car.name;
+                        var lastElement = product.carProducts[product.carProducts.length - 1].id;
+                        if (lastElement != carNames.id) {
+                            cars += '،';
+                        }
+                    });
+                    
+                    var newItem = '<div class="col-lg-4 col-md-4 col-xs-12 pull-right" style="padding: 0;">\<div class="promotion-box">\<div class="product-seller-details">\<span class="product-main-seller"><i class="fa fa-car"></i>&nbsp;برند : ' + product.brand.title + '</span>\</div><a href="/Product/Details/' + product.id + ' "class="promotion-box-image">\<img src="@Helper.ThumbnailImagePath' + product.imageName + '">\</a>\<div class="product-box-content">\<a asp-controller="Product" asp-action="Details" asp-route-id="' + product.id + '" class="product-box-title">' + product.name + '</a>\</div>\<div class="product-box-content"><span class="product-box-title"><i class="fa fa-car"></i> خودرو : ' + cars + '</span></div>\<div class="product-box-row">productPrice</div>\</div>\</div>';
 
                     if (product.price > product.priceWithDiscount) {
+
                         newItem = newItem.replace('productPrice', '<del><span class="price-value-wrapper-del">' + product.price.toLocaleString('en') + '</span></del> <span class="price-value-wrapper">' + product.priceWithDiscount.toLocaleString('en') + '</span> <span class="price-currency">تومان </span>');
                     } else {
                         newItem = newItem.replace('productPrice', '<span class="price-value-wrapper">' + product.price.toLocaleString('en') + '</span> <span class="price-currency">تومان </span>');

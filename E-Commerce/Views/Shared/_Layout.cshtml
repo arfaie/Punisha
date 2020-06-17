@@ -131,11 +131,10 @@
                             از تخفیف‌ها و جدیدترین‌های کاربیوتیک باخبر
                             شوید:
                         </span>
+                        <form>
+                            <input type="email" id="txtEmail" class="input-footer" required="required" placeholder="آدرس ایمیل خود را وارد کنید">
 
-                        <form asp-controller="Home" asp-action="getEmail" method="post">
-                            <input type="text" name="strEmail" class="input-footer" placeholder="آدرس ایمیل خود را وارد کنید">
-
-                            <button class="btn-footer-post" style="background: rebeccapurple">ارسال</button>
+                            <a id="btnEmail" class="btn-footer-post" style="background: rebeccapurple">ارسال</a>
                         </form>
                     </div>
 
@@ -203,7 +202,36 @@
 
     <script src="~/js/main.js"></script>
     <script src="~/js/script.js"></script>
-
+    <script>
+        $('#btnEmail').on("click", function () {
+            var post_data = $('#txtEmail').val();
+            if (!validEmail(post_data)) {
+                var scriptOption = "<script> iziToast.show({message:'" + 'ایمیل وارد شده صحیح نمیباشد' + "'" + ",theme: 'light', color: '2',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
+                            $("#notificationDiv").append(scriptOption);
+            }
+            else{
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("getEmail","Home")',
+                    data: { 'strEmail': post_data },
+                    success: function(msg) {
+                        if (msg.status === 'success') {
+                            $('#txtEmail').val('');
+                        } else {
+                            //alert(msg.message);
+                        }
+                        var scriptOption = "<script> iziToast.show({message:'" + msg.message + "'" + ",theme: 'light', color: '2',icon: 'icon icon-check', iconColor: '#1ABC9C' ,messageColor: 'snow',backgroundColor: '#1ABC9C',maxWidth: 500,layout: 2,balloon: false,close: true,closeOnEscape: true,closeOnClick: true,displayMode: 0, position: 'topLeft',targetFirst: true,timeout: 5000,rtl: true,animateInside: true,drag: true,pauseOnHover: true,resetOnHover: false,progressBar: true,progressBarColor: '',progressBarEasing: 'linear',overlay: false,overlayClose: false,overlayColor: 'rgba(0, 0, 0, 0.6)',transitionIn: 'fadeInUp',transitionOut: 'fadeOut',transitionInMobile: 'fadeInUp',transitionOutMobile: 'fadeOutDown' }); <\/script>";
+                            $("#notificationDiv").append(scriptOption);
+                    }
+                });
+            }
+                
+        })
+        function validEmail(v) {
+    var r = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+    return (v.match(r) == null) ? false : true;
+}
+    </script>
     <!--Load the API from the specified URL
     * The async attribute allows the browser to render the page while the API loads
     * The key parameter will contain your own API key (which is not needed for this tutorial)
