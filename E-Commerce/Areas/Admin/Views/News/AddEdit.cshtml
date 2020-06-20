@@ -3,96 +3,85 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, ECommerce
 
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    string date = "";
+}
+@if (!String.IsNullOrWhiteSpace(Model.Id))
+{
+    date = Model.Date.ToPersianDateString();
+}
+
     <form asp-controller="News" asp-action="AddEdit" enctype="multipart/form-data">
 
         <link href="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" />
 
-        @{
-            string date = "";
-        }
-
-        @*header*@
-        @if (!String.IsNullOrWhiteSpace(Model.Id))
-        {
-            date = Model.Date.ToPersianDateString();
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "ویرایش خبر" })
-        }
-        else
-        {
-            @await Html.PartialAsync("_ModalHeader", new ModalHeader { Heading = "افزودن خبر" })
-        }
         @*body*@
-        <div class="modal-body form-horizontal">
-            <div class="row">
-                <input type="hidden" asp-for="Id" class="form-control" />
+        <div style="margin-bottom:20px"> </div>
+        <div class="col col-md-12">
+            <input type="hidden" asp-for="Id" class="form-control" />
+            <div class="col-lg-3">
                 <div class="form-group">
-                    <label asp-for="Title" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+                    <label asp-for="Title"></label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
-
+            </div>
+            <div class="col-lg-3">
                 <div class="form-group">
-                    <label asp-for="Text" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        @*<input asp-for="Description" class="form-control" />*@
-                        <textarea asp-for="Text" class="form-control"></textarea>
-                        <span asp-validation-for="Text" class="text-danger"></span>
-                    </div>
+                    <label asp-for="Date"></label>
+                    <input asp-for="Date" class="form-control hidden" />
+                    <input value="@date" type="text" class="form-control" id="fromDate1" name="strDate" placeholder="تاریخ" data-MdDateTimePicker="true" data-placement="left" />
                 </div>
-
+            </div>
+            <div class="col-lg-3">
                 <div class="form-group">
-                    <label asp-for="Date" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <input asp-for="Date" class="form-control hidden" />
-                        <input value="@date" type="text" class="form-control" id="fromDate1" name="strDate" placeholder="تاریخ" data-MdDateTimePicker="true"  data-placement="left" />
-                    </div>
+                    <label asp-for="IdCategories"></label>
+                    <select asp-for="IdCategories" asp-items="@ViewBag.newscategory" class="form-control"></select>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label asp-for="IdCategories" class="col-lg-2 col-sm-2 control-label"></label>
-                    <div class="col-lg-6">
-                        <select asp-for="IdCategories" asp-items="@ViewBag.newscategory" class="form-control"></select>
-                    </div>
-                </div>
-
-                @if (String.IsNullOrWhiteSpace(Model.Id))
-                {
+            @if (String.IsNullOrWhiteSpace(Model.Id))
+            {
+                <div class="col-lg-3">
                     <div class="form-group">
-                        <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
-                        <div class="col-lg-6">
-                            <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
-                        </div>
-                        @if (!String.IsNullOrWhiteSpace(Model.Id))
-                        {
-                            <input type="hidden" name="ImgName" value="@Model.ImageName" />
-                        }
+                        <label asp-for="ImageName"></label>
+                        <input required="required" type="file" id="files" name="files" multiple class="btn btn-danger" />
                     </div>
-                }
-                else
+                </div>
+                @if (!String.IsNullOrWhiteSpace(Model.Id))
                 {
-                    <div class="form-group">
-                        <label asp-for="ImageName" class="col-lg-2 col-sm-2 control-label"></label>
-                        <div class="col-lg-6">
-                            <input type="file" id="files" name="files" multiple class="btn btn-danger" />
-                        </div>
-                        @if (!String.IsNullOrWhiteSpace(Model.Id))
-                        {
-                            <input type="hidden" name="ImgName" value="@Model.ImageName" />
-                        }
-                    </div>
+                    <input type="hidden" name="ImgName" value="@Model.ImageName" />
                 }
+            }
+            else
+            {
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label asp-for="ImageName"></label>
+                        <input type="file" id="files" name="files" multiple class="btn btn-danger" />
+                    </div>
+                </div>
+                @if (!String.IsNullOrWhiteSpace(Model.Id))
+                {
+                    <input type="hidden" name="ImgName" value="@Model.ImageName" />
+                }
+            }
 
-                <input type="hidden" name="redirectUrl" value="@Url.Action("index", "News")" />
-
+        </div>
+        <br />
+        <br />
+        <div class="col-lg-12">
+            <div class="form-group">
+                <textarea asp-for="Text" class="form-control"></textarea>
+                <span asp-validation-for="Text" class="text-danger"></span>
             </div>
         </div>
+        <input type="hidden" name="redirectUrl" value="@Url.Action("index", "News")" />
+
         @*footer*@
         @if (!String.IsNullOrWhiteSpace(Model.Id))
         {
-            @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "ویرایش موسسه" })*@
-
             <div class="modal-footer">
                 <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
                 <input type="submit" id="submitdata" class="btn btn-info" value="ویرایش خبر" />
@@ -100,8 +89,6 @@
         }
         else
         {
-            @*@await Html.PartialAsync("_ModalFooter", new ModalFooter { SubmitButtonText = "افزودن موسسه" })*@
-
             <div class="modal-footer">
                 <button class="btn btn-info" type="button" data-dismiss="modal" value="برگشت">برگشت</button>
                 <input type="submit" id="submitdata" class="btn btn-success" value="افزودن خبر" />
@@ -109,10 +96,21 @@
         }
     </form>
 
-<script src="~/persiandatepicker/calendar.js"></script>
-<script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+@section scripts {
+    <script src="~/persiandatepicker/calendar.js"></script>
+    <script src="~/persiandatepicker/jquery.Bootstrap-PersianDateTimePicker.js"></script>
+    <script src="~/js/CK_Editor/ckeditor/ckeditor.js"></script>
+    <script>
+        var roxyFileman = '/lib/fileman/index.html';
 
-<script>
+        CKEDITOR.replace('Text', {
+            filebrowserBrowseUrl: roxyFileman,
+        });
+    </script>
+
+
+
+    <script>
 
         $(document).ready(function () {
            $('.select2List').select2();
@@ -165,4 +163,5 @@
 
         });
 
-</script>
+    </script>
+}

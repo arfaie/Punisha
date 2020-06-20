@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<Product>
 
 @{
-    ViewBag.Title = "به کاربیوتیک خوش آمدید";
+    ViewBag.Title = "کاربیوتیک-فروشگاه آنلاین لوازم یدکی خودرو";
 }
-
+<meta name="description" content="کاربیوتیک، فرشگاه قطعات و لوازم یدکی خودرو">
+<meta name="keywords" content=" carbiotic.ir ، لوازم جانبی خودرو،قطعات خودرو،تاکسیرانی،پراید،پزو،سمند،206،،carbiotic،آذربایجان شرقی،شهرک فناوری خودرو">
 <!-- Start Main Slider -------------------->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-9 col-xs-12 pull-right">
+        <div class="col-lg-9 col-xs-12 pull-right" style="margin-bottom: -60px;">
             @await Component.InvokeAsync("MainSlider")
         </div>
         <!-- End Main Slider ---------------------->
@@ -99,7 +100,13 @@
 <!--   slider-product-------------------->
 <script>
     $(document).ready(function () {
-
+        var id = $("#MakerList").val();
+        if (id === "0")
+        {
+            $("#CarList").empty();
+            var items = '<option value="0">نوع خود رو انتخاب نشده است</option>';
+            $("#CarList").html(items);
+        };
         var cars = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.Cars))');
 
         $("#MakerList").change(function () {
@@ -109,9 +116,11 @@
             var items = '<option value="0">همه</option>';
 
             if (id === "0") {
-                $.each(cars, function (index, value) {
-                    items += '<option value="' + value.Id + '">' + value.Name + '</option>';
-                });
+                $("#CarList").empty();
+                var items = '<option value="0">نوع خود رو انتخاب نشده است</option>';
+                //$.each(cars, function (index, value) {
+                //    items += '<option value="' + value.Id + '">' + value.Name + '</option>';
+                //});
             }
             else {
                 $.each(cars, function (index, value) {

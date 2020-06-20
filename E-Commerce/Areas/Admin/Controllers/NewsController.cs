@@ -82,9 +82,7 @@ namespace E_Commerce.Areas.Admin.Controllers
                         img.Resize(uploads + filename, _env.WebRootPath + "\\upload\\thumbnailimage\\" + filename);
                     }
                 }
-                //upload image
 
-                //var select = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
 
                 if (String.IsNullOrWhiteSpace(id))
                 {
@@ -93,48 +91,13 @@ namespace E_Commerce.Areas.Admin.Controllers
                         model.ImageName = "defaultpic.png";
                     }
 
-                    //Add PriceChange
-                    //PriceChange priceChange = new PriceChange();
-                    //priceChange.ProductId = model.Id;
-                    //priceChange.Old = model.Price;
-
-                    //var CurrentDate = DateTime.Now;
-                    //PersianCalendar pcalender = new PersianCalendar();
-                    //int year = pcalender.GetYear(CurrentDate);
-                    //int month = pcalender.GetMonth(CurrentDate);
-                    //int day = pcalender.GetDayOfMonth(CurrentDate);
-                    //string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
-
-                    //priceChange.Date = Convert.ToDateTime(ShamsiDate);
-                    //_context.PriceChanges.Add(priceChange);
-                    //Add PriceChange
-
                     await _context.Newses.AddAsync(model);
 
                     await _context.SaveChangesAsync();
 
-                    //var carProducts = await _context.CarProducts.Where(x => x.ProductId == model.Id).ToListAsync();
-                    //_context.CarProducts.RemoveRange(carProducts);
-
-                    //if (model.CarIds != null)
-                    //{
-                    //    foreach (var carId in model.CarIds)
-                    //    {
-                    //        var newCarProduct = new CarProduct
-                    //        {
-                    //            CarId = carId,
-                    //            ProductId = model.Id
-                    //        };
-
-                    //        _context.CarProducts.Add(newCarProduct);
-                    //    }
-                    //}
-
-                    //await _context.SaveChangesAsync();
 
                     TempData["Notification"] = Notification.ShowNotif(MessageType.Add, ToastType.Green);
-                    //return PartialView("_SuccessfulResponse", redirectUrl);
-                    //return Json(new { status = "success", message = "محصول با موفقیت ایجاد شد" });
+
                     return RedirectToAction("Index");
                 }
 
@@ -143,45 +106,13 @@ namespace E_Commerce.Areas.Admin.Controllers
                     model.ImageName = imgName;
                 }
 
-                //if (select.Price != model.Price)
-                //{
-                //    PriceChange priceChange = new PriceChange();
-                //    priceChange.ProductId = model.Id;
-                //    priceChange.Old = model.Price;
-
-                //    var CurrentDate = DateTime.Now;
-                //    PersianCalendar pcalender = new PersianCalendar();
-                //    int year = pcalender.GetYear(CurrentDate);
-                //    int month = pcalender.GetMonth(CurrentDate);
-                //    int day = pcalender.GetDayOfMonth(CurrentDate);
-                //    string ShamsiDate = string.Format("{0:yyyy/MM/dd}", Convert.ToDateTime(year + "/" + month + "/" + day));
-
-                //    priceChange.Date = Convert.ToDateTime(ShamsiDate);
-                //    _context.PriceChanges.Add(priceChange);
-                //}
-
-                //_context.CarProducts.RemoveRange(await _context.CarProducts.Where(x => x.ProductId == model.Id).ToListAsync());
-
-                //if (model.CarIds != null)
-                //{
-                //    foreach (var carId in model.CarIds)
-                //    {
-                //        var newCarProduct = new CarProduct
-                //        {
-                //            CarId = carId,
-                //            ProductId = model.Id
-                //        };
-
-                //        _context.CarProducts.Add(newCarProduct);
-                //    }
-                //}
+             
 
                 _context.Newses.Update(model);
                 await _context.SaveChangesAsync();
 
                 TempData["Notification"] = Notification.ShowNotif(MessageType.Edit, ToastType.Blue);
-                //return Json(new { status = "success", message = "اطلاعات محصول با موفقیت ویرایش شد" });
-                //return PartialView("_SuccessfulResponse", redirectUrl);
+
                 return RedirectToAction("Index");
             }
             if (!String.IsNullOrWhiteSpace(id))
@@ -245,5 +176,47 @@ namespace E_Commerce.Areas.Admin.Controllers
 
             return RedirectToAction("Index");
         }
+
+        //public async Task<IActionResult> ck()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public async Task<IActionResult> ck(string text)
+        //{
+        //    string a = text;
+        //    return View();
+        //}
+
+        [HttpPost]
+        [Route("file-upload")]
+        public IActionResult UploadImage(IFormFile upload, string CKEditorFuncNum, string CKEditor, string langCode)
+        {
+            if (upload.Length <= 0) return null;
+
+            var fileName = Guid.NewGuid() + Path.GetExtension(upload.FileName).ToLower();
+
+
+
+            var path = Path.Combine(
+                _env.WebRootPath, "/upload/News",
+                fileName);
+
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                upload.CopyTo(stream);
+
+            }
+
+
+
+            var url = $"{"/upload/News/"}{fileName}";
+
+
+            return Json(new { uploaded = true, url });
+        }
+
+
     }
 }

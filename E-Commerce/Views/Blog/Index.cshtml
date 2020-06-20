@@ -43,7 +43,7 @@
                                                 <p class="posted-on">@item.Date.ToPersianDateString()</p>
                                             </div>
                                             <div class="entry-expert">
-                                                <p>
+                                                @*<p>
                                                     @{
                                                         if (item.Text.Length < 100)
                                                         {
@@ -55,7 +55,7 @@
                                                         }
                                                     }
                                                    
-                                                </p>
+                                                </p>*@
                                                 <div class="post-readMore">
                                                     <a asp-controller="Blog" asp-action="DetailesBlog" asp-route-id="@item.Id" class="pull-left read-more-link">
                                                         ادامه مطلب <i class="fa fa-long-arrow-left"></i>

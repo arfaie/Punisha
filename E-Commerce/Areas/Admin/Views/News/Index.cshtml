@@ -38,8 +38,7 @@
                     <div class="md-form-group md-label-floating col-md-6">
                         <div class="margin-top">
                             <div class="col-xs-6 col-md-6">
-                                <a class="btn btn-primary marginbutoom" id="showbook" data-toggle="modal" asp-action="AddEdit"
-                                   data-target="#modal-action-news">
+                                <a class="btn btn-primary marginbutoom" id="showbook"  asp-action="AddEdit">
                                     <i class="glyphicon glyphicon-plus"></i>
                                     افزودن اخبار جدید
                                 </a>
@@ -86,8 +85,8 @@
                                         </td>
 
                                         <td>
-                                            <a class="btn btn-info" id="editbook" data-toggle="modal" asp-action="AddEdit"
-                                               data-target="#modal-action-news" asp-route-Id="@item.Id">
+                                            <a class="btn btn-info" id="editbook" asp-action="AddEdit"
+                                                asp-route-Id="@item.Id">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                                 ویرایش
                                             </a>
